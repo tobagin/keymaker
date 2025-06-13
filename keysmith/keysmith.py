@@ -13,6 +13,130 @@ import functools # For partial, if needed later, good to have
 # Forward declaration for type hinting if GenerateKeyDialog uses KeySmithWindow methods directly
 # class KeySmithWindow(Adw.ApplicationWindow): pass
 
+from datetime import datetime # For date formatting, if used directly in KeyDetailsDialog
+
+class KeyDetailsDialog(Adw.Dialog):
+    def __init__(self, parent_window, pub_key_path_str, pub_key_filename, **kwargs):
+        super().__init__(transient_for=parent_window, modal=True, **kwargs)
+
+        self.pub_key_path = pathlib.Path(pub_key_path_str)
+        self.pub_key_filename = pub_key_filename
+
+        self.set_title("SSH Key Details")
+        self.set_default_size(550, 450) # Adjusted width slightly
+
+        page = Adw.PreferencesPage()
+        group = Adw.PreferencesGroup()
+        page.add(group)
+
+        # Filename (already known)
+        self.filename_row = Adw.ActionRow(title="Filename", subtitle=self.pub_key_filename)
+        group.add(self.filename_row)
+
+        # Key Type (placeholder, will be filled by data fetching)
+        self.key_type_row = Adw.ActionRow(title="Key Type", subtitle="Loading...")
+        group.add(self.key_type_row)
+
+        # Bit Size (placeholder)
+        self.bit_size_row = Adw.ActionRow(title="Bit Size", subtitle="Loading...")
+        group.add(self.bit_size_row)
+
+        # Creation Date (placeholder)
+        self.creation_date_row = Adw.ActionRow(title="Last Modified Date", subtitle="Loading...") # Changed to Last Modified
+        group.add(self.creation_date_row)
+
+        # Full Comment (placeholder, using ExpanderRow for potentially long comments)
+        self.comment_expander = Adw.ExpanderRow(
+            title="Comment",
+            subtitle="Loading..."
+        )
+        # Use a Box to avoid ActionRow's inherent styling if just a label is needed.
+        comment_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.comment_label = Gtk.Label(wrap=True, xalign=0, selectable=True,
+                                       css_classes=['body'], # Use Adwaita text style
+                                       margin_top=6, margin_bottom=6, margin_start=6, margin_end=6)
+        comment_box.append(self.comment_label)
+        self.comment_expander.add_row(comment_box) # Add the box as a row
+        group.add(self.comment_expander)
+
+
+        # Full Public Key (using ExpanderRow and TextView)
+        self.pubkey_expander = Adw.ExpanderRow(
+            title="Full Public Key Content" # More descriptive title
+        )
+
+        pubkey_text_view = Gtk.TextView(
+            editable=False,
+            wrap_mode=Gtk.WrapMode.WORD_CHAR,
+            monospace=True,
+            cursor_visible=False,
+            left_margin=6, right_margin=6, top_margin=6, bottom_margin=6
+        )
+        self.pubkey_buffer = pubkey_text_view.get_buffer()
+        self.pubkey_buffer.set_text("Loading public key content...")
+
+        scrolled_window = Gtk.ScrolledWindow(
+            height_request=150,
+            hscrollbar_policy=Gtk.PolicyType.NEVER,
+            vscrollbar_policy=Gtk.PolicyType.AUTOMATIC
+        )
+        scrolled_window.set_child(pubkey_text_view)
+        # Adw.ExpanderRow.add_row expects a Gtk.ListBoxRow or Adw.PreferencesRow.
+        # To embed custom content like a ScrolledWindow, we can wrap it in an ActionRow
+        # or just add the ScrolledWindow if the theme handles it well (often it does).
+        # For more control and consistent padding, ActionRow is safer.
+        pubkey_content_row = Adw.ActionRow()
+        pubkey_content_row.set_child(scrolled_window)
+        self.pubkey_expander.add_row(pubkey_content_row)
+        group.add(self.pubkey_expander)
+
+        self.set_child(page)
+
+        self.add_response("close", "_Close")
+        self.set_default_response("close")
+        self.connect("response", lambda dialog, response_id: self.close())
+
+    def update_details(self, details_data):
+        self.key_type_row.set_subtitle(details_data.get("key_type", "N/A"))
+        self.bit_size_row.set_subtitle(str(details_data.get("bit_size", "N/A"))) # Ensure string
+        self.creation_date_row.set_subtitle(details_data.get("creation_date", "N/A"))
+
+        full_comment = details_data.get("full_comment", "N/A")
+        is_error_comment = "error" in full_comment.lower() or \
+                           "failed" in full_comment.lower() or \
+                           "not found" in full_comment.lower() or \
+                           full_comment == "N/A" or \
+                           full_comment == "Could not parse details from ssh-keygen."
+
+        if full_comment and full_comment != "No comment":
+            comment_lines = full_comment.splitlines()
+            first_line = comment_lines[0] if comment_lines else ""
+
+            if is_error_comment or full_comment == "N/A":
+                self.comment_expander.set_subtitle(first_line) # Show error or N/A directly
+            else: # Actual comment content
+                self.comment_expander.set_subtitle(first_line[:70] + "..." if len(first_line) > 70 else first_line)
+
+            self.comment_expander.set_visible(True)
+            # Expand if it's an error, multi-line, or long. Collapse for "N/A" unless it's an error message.
+            self.comment_expander.set_expanded(is_error_comment or len(comment_lines) > 1 or len(full_comment) > 70)
+        else: # "No comment" or empty string
+            self.comment_expander.set_subtitle("No comment")
+            self.comment_expander.set_visible(True)
+            self.comment_expander.set_expanded(False)
+        self.comment_label.set_text(full_comment if full_comment else "")
+
+        public_key_content = details_data.get("public_key_content", "Error loading key content.")
+        self.pubkey_buffer.set_text(public_key_content)
+
+        is_error_pubkey = "error" in public_key_content.lower() or \
+                          "failed" in public_key_content.lower() or \
+                          "not found" in public_key_content.lower() or \
+                          public_key_content == "Could not load public key content."
+
+        # Auto-expand if content is not a known error/placeholder and is somewhat long, or if it is an error.
+        self.pubkey_expander.set_expanded(is_error_pubkey or (public_key_content and len(public_key_content) > 100 and not public_key_content.startswith("Could not load")))
+
 
 class EditPassphraseDialog(Adw.Dialog):
     def __init__(self, parent_window, pub_key_path_str, pub_key_filename, **kwargs):
@@ -656,7 +780,16 @@ class KeySmithWindow(Adw.ApplicationWindow):
             button_box.append(delete_button)
 
             row.add_suffix(button_box)
-            # row.set_activatable_widget(copy_button) # Activating row for copy might be too much with multiple buttons
+
+            # Add Details button as a separate suffix, not part of the linked group
+            details_button = Gtk.Button(icon_name="dialog-information-symbolic")
+            details_button.set_tooltip_text("View key details")
+            details_button.set_valign(Gtk.Align.CENTER)
+            # Optionally make it flat if desired, but default Adw.ActionRow suffix styling is usually good
+            # details_button.add_css_class("flat")
+            details_button.connect("clicked", self.show_key_details_dialog, str(full_path), filename)
+            row.add_suffix(details_button)
+
 
         self.key_list_box.append(row)
 
@@ -667,6 +800,124 @@ class KeySmithWindow(Adw.ApplicationWindow):
     def show_edit_passphrase_dialog(self, button, pub_key_path_str, pub_key_filename):
         dialog = EditPassphraseDialog(self, pub_key_path_str, pub_key_filename)
         dialog.present()
+
+    def show_key_details_dialog(self, button, pub_key_path_str, pub_key_filename):
+        dialog = KeyDetailsDialog(self, pub_key_path_str, pub_key_filename)
+        dialog.present()
+
+        # Data fetching logic will be added in the next step (Plan Step 3)
+        # For now, the dialog will show "Loading..."
+        # Example of how it might be called later:
+        # self.fetch_and_display_key_details(dialog, pub_key_path_str)
+        # print(f"KeyDetailsDialog presented for {pub_key_filename}. Data loading pending.")
+        self.fetch_and_display_key_details(dialog, pub_key_path_str)
+
+    def fetch_and_display_key_details(self, dialog_instance, pub_key_path_str):
+        pub_key_path = pathlib.Path(pub_key_path_str)
+        details_data = {
+            "key_type": "N/A",
+            "bit_size": "N/A",
+            "full_comment": "N/A", # Default to N/A, changed if found
+            "creation_date": "N/A",
+            "public_key_content": "Could not load public key content."
+        }
+
+        # 1. Read Public Key File Content
+        try:
+            if pub_key_path.exists() and pub_key_path.is_file():
+                with open(pub_key_path, "r") as f:
+                    details_data["public_key_content"] = f.read().strip()
+            else:
+                details_data["public_key_content"] = "Public key file not found or is not a file."
+        except Exception as e:
+            details_data["public_key_content"] = f"Error reading public key file: {str(e)}"
+            print(f"Error reading {pub_key_path}: {e}")
+
+        # 2. Run ssh-keygen -lf <keyfile> for bit size, type, and full comment
+        if pub_key_path.exists() and pub_key_path.is_file():
+            try:
+                cmd = ["ssh-keygen", "-lf", str(pub_key_path)]
+                result = subprocess.run(cmd, capture_output=True, text=True, check=False, timeout=5)
+
+                if result.returncode == 0 and result.stdout:
+                    parts = result.stdout.strip().split(" ", 2) # bits, fingerprint, comment_and_type
+                    if len(parts) >= 3:
+                        details_data["bit_size"] = parts[0]
+                        # parts[1] is fingerprint
+                        comment_and_type_part = parts[2].strip()
+
+                        known_key_types = ["RSA", "DSA", "ECDSA", "ED25519",
+                                           "SSH_DSS_KEY", "SSH_RSA_KEY",
+                                           "SSK_ECDSA_KEY", "SSH_ED25519_KEY"] # Add more variations if found
+
+                        if comment_and_type_part.endswith(")") and "(" in comment_and_type_part:
+                            type_start_index = comment_and_type_part.rfind("(")
+                            potential_type = comment_and_type_part[type_start_index+1:-1]
+                            # Check if this potential type is known or looks like a type
+                            if potential_type.upper() in known_key_types or \
+                               any(kt.startswith(potential_type.upper()) for kt in known_key_types) or \
+                               len(potential_type) < 15: # Heuristic: types are usually short
+                                details_data["key_type"] = potential_type
+                                details_data["full_comment"] = comment_and_type_part[:type_start_index].strip()
+                            else: # Parentheses might be part of the comment itself
+                                details_data["key_type"] = "Unknown"
+                                details_data["full_comment"] = comment_and_type_part
+                        else: # No parentheses for type
+                            words = comment_and_type_part.split()
+                            if words and words[-1].upper() in known_key_types:
+                                details_data["key_type"] = words[-1]
+                                details_data["full_comment"] = " ".join(words[:-1]).strip()
+                            elif words and words[0].upper() in known_key_types and ' ' not in words[0]: # e.g. "RSA user@host"
+                                details_data["key_type"] = words[0]
+                                details_data["full_comment"] = " ".join(words[1:]).strip()
+                            else: # Assume all of it is a comment, or type is not clearly separable
+                                details_data["key_type"] = "Unknown"
+                                details_data["full_comment"] = comment_and_type_part
+
+                        if not details_data["full_comment"] and details_data["full_comment"] != "": # If after parsing, comment is empty string
+                            details_data["full_comment"] = "No comment"
+                        elif details_data["full_comment"] == "" and details_data["key_type"] == comment_and_type_part : # Case where entire part was taken as type
+                            details_data["full_comment"] = "No comment"
+
+
+                    else: # len(parts) < 3
+                        print(f"Could not parse `ssh-keygen -lf` output (not enough parts) for {pub_key_path}: {result.stdout.strip()}")
+                        details_data["full_comment"] = "Could not parse details from ssh-keygen output."
+                else:
+                    stderr_msg = result.stderr.strip() if result.stderr else "Unknown error"
+                    print(f"ssh-keygen -lf failed for {pub_key_path}: {stderr_msg}")
+                    details_data["full_comment"] = f"Failed to get details via ssh-keygen: {stderr_msg}"
+                    # key_type and bit_size remain N/A
+
+            except FileNotFoundError:
+                details_data["full_comment"] = "ssh-keygen command not found."
+            except subprocess.TimeoutExpired:
+                details_data["full_comment"] = "ssh-keygen command timed out while fetching details."
+            except Exception as e:
+                details_data["full_comment"] = f"Error running ssh-keygen for details: {str(e)}"
+                print(f"Error running ssh-keygen for {pub_key_path}: {e}")
+        else:
+            details_data["full_comment"] = "Public key file not found for ssh-keygen processing."
+
+
+        # 3. Get File Timestamp (Last Modified)
+        try:
+            if pub_key_path.exists() and pub_key_path.is_file(): # Re-check existence for safety
+                mod_timestamp = os.path.getmtime(pub_key_path)
+                # Use datetime.fromtimestamp (note: 'datetime' is the module, 'datetime' is also the class)
+                mod_date_obj = datetime.fromtimestamp(mod_timestamp)
+                details_data["creation_date"] = mod_date_obj.strftime("%Y-%m-%d %H:%M:%S")
+            elif not pub_key_path.exists(): # If it was deleted in the meantime or never existed
+                 details_data["creation_date"] = "File no longer exists."
+            else: # Path is not a file
+                details_data["creation_date"] = "Path is not a file."
+
+        except Exception as e:
+            details_data["creation_date"] = f"Error getting file date: {str(e)}"
+            print(f"Error getting mtime for {pub_key_path}: {e}")
+
+        GLib.idle_add(dialog_instance.update_details, details_data)
+
 
     def refresh_key_list(self, button=None):
         # Clear existing items from the list_box
