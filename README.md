@@ -64,7 +64,63 @@ For a more detailed roadmap, please see [Project Vision Document/Wiki Link - Pla
 
 ## Getting Started
 
-(Instructions for building and running will be added here once the initial development is further along.)
+This section guides you through building and running KeySmith from source. For end-users, KeySmith is intended to be distributed as a Flatpak, which will manage dependencies automatically.
+
+### Dependencies
+
+To build KeySmith from source, you will need the following development packages:
+
+*   **Python 3**: (Typically `python3` and `python3-dev` or `python3-devel`)
+*   **GTK4**: (`libgtk-4-dev` or similar)
+*   **Libadwaita**: (`libadwaita-1-dev` or similar)
+*   **Meson Build System**: (`meson`)
+*   **Ninja**: (Usually a dependency of Meson, or `ninja-build`)
+*   **GLib Schemas Compiler**: `glib-compile-schemas` (Often part of `libglib2.0-dev` or `glib2-devel`)
+*   **Desktop File Utilities**: `desktop-file-utils` (for `desktop-file-validate` during development, optional but good practice)
+*   **(Optional) Flatpak tools**: `flatpak-builder` (if you intend to build the Flatpak package locally).
+
+The exact package names may vary depending on your Linux distribution.
+
+### Building from Source
+
+Once you have the dependencies installed, you can build KeySmith using Meson:
+
+1.  **Setup the build directory:**
+    ```bash
+    meson setup builddir
+    ```
+    (You can replace `builddir` with your preferred build directory name.)
+
+2.  **Compile the project:**
+    ```bash
+    meson compile -C builddir
+    ```
+
+### Running
+
+After successful compilation, you can run KeySmith directly from the build directory:
+
+```bash
+./builddir/keysmith
+```
+(If you used a different build directory name, replace `builddir` accordingly.)
+
+If the application has issues finding its settings (e.g., default key types not loading), you may need to specify the GSettings schema directory when running from the build directory without a system-wide install. First, ensure schemas are compiled in your build output (Meson might do this, or you can run `glib-compile-schemas builddir/data/` if your schemas are output there). Then run:
+
+```bash
+GSETTINGS_SCHEMA_DIR=./builddir/data ./builddir/keysmith
+```
+Adjust the path `builddir/data` if your compiled schemas (`gschemas.compiled`) are located elsewhere within the build directory.
+
+### Running Tests
+
+Basic unit tests are located in the `tests/` directory. You can run them using Python's `unittest` module from the root of the project:
+
+```bash
+python3 -m unittest tests.test_keysmith
+```
+
+**Note:** Running these tests in some minimal or sandboxed environments might encounter issues related to GObject Introspection (`gi` module) if the environment is not fully set up for GTK application testing. The tests primarily focus on command generation logic and use mocking for UI and subprocess interactions, so they should pass in a development environment where KeySmith itself can run.
 
 ## Contributing
 
