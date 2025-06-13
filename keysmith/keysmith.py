@@ -14,6 +14,193 @@ import functools # For partial, if needed later, good to have
 # class KeySmithWindow(Adw.ApplicationWindow): pass
 
 
+class EditPassphraseDialog(Adw.Dialog):
+    def __init__(self, parent_window, pub_key_path_str, pub_key_filename, **kwargs):
+        super().__init__(transient_for=parent_window, modal=True, **kwargs)
+
+        self.pub_key_path = pathlib.Path(pub_key_path_str) # Path to the public key
+        self.pub_key_filename = pub_key_filename
+
+        # Determine private key filename. ssh-keygen -p -f operates on the private key.
+        # The pub_key_path_str is for the .pub file, so we derive the private key path from it.
+        if self.pub_key_filename.endswith(".pub"):
+            self.priv_key_filename = self.pub_key_filename[:-4]
+        else:
+            # This case implies pub_key_filename might already be the private key name,
+            # or it's a name without .pub extension. Assume it's the base for private key.
+            self.priv_key_filename = self.pub_key_filename
+
+        # The actual private key path needed for ssh-keygen -p -f
+        self.priv_key_path = self.pub_key_path.with_name(self.priv_key_filename)
+
+
+        self.set_title("Change SSH Key Passphrase")
+        self.set_default_size(450, -1)
+
+        page = Adw.PreferencesPage()
+        content_group = Adw.PreferencesGroup()
+        page.add(content_group)
+
+        filename_row = Adw.ActionRow(
+            title="Key File", # Using ActionRow to display non-editable info
+            subtitle=self.priv_key_filename # Display the private key filename
+        )
+        content_group.add(filename_row)
+
+        self.old_passphrase_entry = Adw.PasswordEntryRow(
+            title="Current Passphrase", # "Old" implies it must exist, "Current" is more neutral
+            subtitle="Leave blank if key has no current passphrase."
+        )
+        content_group.add(self.old_passphrase_entry)
+
+        self.new_passphrase_entry = Adw.PasswordEntryRow(
+            title="New Passphrase",
+            subtitle="Leave blank to remove existing passphrase."
+        )
+        content_group.add(self.new_passphrase_entry)
+
+        self.confirm_passphrase_entry = Adw.PasswordEntryRow(
+            title="Confirm New Passphrase"
+        )
+        content_group.add(self.confirm_passphrase_entry)
+
+        self.set_child(page)
+
+        self.add_response("cancel", "_Cancel")
+        self.change_button = self.add_response("change", "_Change Passphrase")
+        # self.change_button.add_css_class("suggested-action") # This is done by ResponseAppearance
+
+        self.set_response_appearance("change", Adw.ResponseAppearance.SUGGESTED)
+        self.set_default_response("cancel") # Changed from "change" for safer default
+
+        self.new_passphrase_entry.connect("notify::text", self.validate_passphrases)
+        self.confirm_passphrase_entry.connect("notify::text", self.validate_passphrases)
+
+        self.connect("response", self.on_dialog_response)
+
+        self.validate_passphrases() # Initial validation
+
+    def validate_passphrases(self, widget=None, pspec=None): # Added pspec for notify::text
+        new_pass = self.new_passphrase_entry.get_text()
+        confirm_pass = self.confirm_passphrase_entry.get_text()
+        self.set_response_enabled("change", new_pass == confirm_pass)
+
+    def on_dialog_response(self, dialog, response_id):
+        parent_window = self.get_transient_for() # KeySmithWindow instance
+
+        if response_id == "change":
+            old_passphrase = self.old_passphrase_entry.get_text()
+            new_passphrase = self.new_passphrase_entry.get_text()
+
+            if not hasattr(self, 'priv_key_path') or not self.priv_key_path: # Initial check for attribute
+                error_body_msg = "Internal error: Private key path not determined."
+                error_dialog = Adw.MessageDialog(
+                    transient_for=parent_window, modal=True,
+                    heading="Error", body=error_body_msg
+                )
+                error_dialog.add_response("ok_internal_err", "_Ok")
+                error_dialog.set_default_response("ok_internal_err")
+                error_dialog.connect("response", lambda d, r: d.close())
+                error_dialog.present()
+                self.close() # Close the EditPassphraseDialog
+                return
+
+            if not self.priv_key_path.exists():
+                error_dialog = Adw.MessageDialog(
+                    transient_for=parent_window, modal=True,
+                    heading="Error",
+                    body=f"Private key file '{self.priv_key_path.name}' not found or is inaccessible. Cannot change passphrase."
+                )
+                error_dialog.add_response("ok_priv_nf", "_Ok")
+                error_dialog.set_default_response("ok_priv_nf")
+                error_dialog.connect("response", lambda d, r: d.close())
+                error_dialog.present()
+                self.close()
+                return
+
+            cmd = [
+                "ssh-keygen",
+                "-p", # Change passphrase
+                "-f", str(self.priv_key_path), # Private key file
+                "-P", old_passphrase,          # Old passphrase
+                "-N", new_passphrase           # New passphrase
+            ]
+
+            print(f"Executing command: ssh-keygen -p -f {self.priv_key_path} -P '****' -N '****'") # Avoid logging passphrases
+
+            try:
+                result = subprocess.run(cmd, capture_output=True, text=True, check=False, timeout=15) # Increased timeout slightly
+
+                if result.returncode == 0:
+                    if parent_window and hasattr(parent_window, 'show_toast'):
+                        parent_window.show_toast(
+                            f"Passphrase for '{self.priv_key_filename}' changed successfully.",
+                            Adw.ToastPriority.NORMAL
+                        )
+                else:
+                    error_message = f"Failed to change passphrase for '{self.priv_key_filename}'.\n\n"
+                    stderr_lower = result.stderr.lower() if result.stderr else ""
+
+                    if "bad old passphrase" in stderr_lower or "incorrect passphrase" in stderr_lower:
+                         error_message = f"The current passphrase provided was incorrect for '{self.priv_key_filename}'."
+                    elif "load key" in stderr_lower and "failed" in stderr_lower:
+                        error_message += f"Failed to load key '{self.priv_key_filename}'. It might be corrupted or not a valid private key."
+                    elif result.stderr and result.stderr.strip(): # Fallback to raw stderr if specific error not matched
+                        error_message += f"Details: {result.stderr.strip()}"
+                    else:
+                        error_message += "Unknown error from ssh-keygen."
+
+                    error_dialog = Adw.MessageDialog(
+                        transient_for=parent_window, modal=True,
+                        heading="Passphrase Change Failed",
+                        body=error_message
+                    )
+                    error_dialog.add_response("ok_err_change", "_Ok")
+                    error_dialog.set_default_response("ok_err_change")
+                    error_dialog.connect("response", lambda d, r: d.close())
+                    error_dialog.present()
+                    print(f"ssh-keygen error (Return Code: {result.returncode}): {result.stderr}")
+
+            except FileNotFoundError:
+                error_dialog = Adw.MessageDialog(
+                    transient_for=parent_window, modal=True,
+                    heading="Command Error", body="`ssh-keygen` command not found. Please ensure OpenSSH client tools are installed and in your system's PATH."
+                )
+                error_dialog.add_response("ok_fnf", "_Ok")
+                error_dialog.set_default_response("ok_fnf")
+                error_dialog.connect("response", lambda d, r: d.close())
+                error_dialog.present()
+            except subprocess.TimeoutExpired:
+                error_dialog = Adw.MessageDialog(
+                    transient_for=parent_window, modal=True,
+                    heading="Timeout Error", body=f"The command to change passphrase for '{self.priv_key_filename}' timed out."
+                )
+                error_dialog.add_response("ok_timeout", "_Ok")
+                error_dialog.set_default_response("ok_timeout")
+                error_dialog.connect("response", lambda d, r: d.close())
+                error_dialog.present()
+            except Exception as e:
+                error_dialog = Adw.MessageDialog(
+                    transient_for=parent_window, modal=True,
+                    heading="Unexpected Error",
+                    body=f"An unexpected error occurred while trying to change the passphrase: {str(e)}"
+                )
+                error_dialog.add_response("ok_unexpected", "_Ok")
+                error_dialog.set_default_response("ok_unexpected")
+                error_dialog.connect("response", lambda d, r: d.close())
+                error_dialog.present()
+                print(f"Unexpected error during passphrase change: {e}")
+
+        elif response_id == "cancel":
+            if parent_window and hasattr(parent_window, 'show_toast'):
+                parent_window.show_toast(
+                    f"Passphrase change for '{self.priv_key_filename}' cancelled.",
+                    Adw.ToastPriority.NORMAL
+                )
+
+        self.close()
+
+
 class ConfirmDeleteDialog(Adw.Dialog):
     def __init__(self, parent_window, pub_key_path_str, pub_key_filename, **kwargs):
         super().__init__(transient_for=parent_window, modal=True, **kwargs)
@@ -455,11 +642,16 @@ class KeySmithWindow(Adw.ApplicationWindow):
             deploy_button.connect("clicked", self.show_deploy_key_dialog, str(full_path))
             button_box.append(deploy_button)
 
+            edit_passphrase_button = Gtk.Button(icon_name="dialog-password-symbolic")
+            edit_passphrase_button.set_tooltip_text("Change passphrase for this SSH key")
+            edit_passphrase_button.set_valign(Gtk.Align.CENTER)
+            edit_passphrase_button.connect("clicked", self.show_edit_passphrase_dialog, str(full_path), filename)
+            button_box.append(edit_passphrase_button) # Added before delete button
+
             delete_button = Gtk.Button(icon_name="user-trash-symbolic")
             delete_button.add_css_class("destructive-action")
             delete_button.set_tooltip_text("Delete this SSH key pair (public and private)")
             delete_button.set_valign(Gtk.Align.CENTER)
-            # Pass both full_path (for actual deletion) and filename (for dialog message)
             delete_button.connect("clicked", self.show_confirm_delete_dialog, str(full_path), filename)
             button_box.append(delete_button)
 
@@ -470,6 +662,10 @@ class KeySmithWindow(Adw.ApplicationWindow):
 
     def show_confirm_delete_dialog(self, button, pub_key_path_str, pub_key_filename):
         dialog = ConfirmDeleteDialog(self, pub_key_path_str, pub_key_filename)
+        dialog.present()
+
+    def show_edit_passphrase_dialog(self, button, pub_key_path_str, pub_key_filename):
+        dialog = EditPassphraseDialog(self, pub_key_path_str, pub_key_filename)
         dialog.present()
 
     def refresh_key_list(self, button=None):
