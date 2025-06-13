@@ -14,6 +14,151 @@ import functools # For partial, if needed later, good to have
 # class KeySmithWindow(Adw.ApplicationWindow): pass
 
 
+class ConfirmDeleteDialog(Adw.Dialog):
+    def __init__(self, parent_window, pub_key_path_str, pub_key_filename, **kwargs):
+        super().__init__(transient_for=parent_window, modal=True, **kwargs)
+
+        self.pub_key_path = pathlib.Path(pub_key_path_str)
+        self.pub_key_filename = pub_key_filename
+
+        # Determine private key filename (remove .pub if present)
+        if self.pub_key_filename.endswith(".pub"):
+            self.priv_key_filename = self.pub_key_filename[:-4]
+        else:
+            # Should not happen if we always pass .pub filename, but as a fallback
+            self.priv_key_filename = self.pub_key_filename + "_private"
+
+        self.set_title("Confirm Key Deletion")
+        self.set_default_size(450, -1) # Width, height auto, adjusted width
+
+        # Content for the dialog
+        content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        content_box.set_margin_top(18) # Increased margin
+        content_box.set_margin_bottom(18)
+        content_box.set_margin_start(18)
+        content_box.set_margin_end(18)
+
+        # Warning Icon and Label
+        warning_image = Gtk.Image(icon_name="dialog-warning-symbolic")
+        warning_image.set_pixel_size(48) # Use pixel_size for better control
+        content_box.append(warning_image)
+
+        main_warning_label = Gtk.Label(wrap=True, justify=Gtk.Justification.CENTER)
+        main_warning_label.set_markup("<b>You are about to permanently delete an SSH key pair.</b>")
+        content_box.append(main_warning_label)
+
+        files_label = Gtk.Label(wrap=True, justify=Gtk.Justification.CENTER)
+        files_text = "The following files will be deleted:\n" # Use \n for newlines in Gtk.Label
+        files_text += f"• Public key: <b>{self.pub_key_filename}</b>\n"
+        files_text += f"• Private key: <b>{self.priv_key_filename}</b>"
+        files_label.set_markup(files_text)
+        content_box.append(files_label)
+
+        irreversible_label = Gtk.Label(wrap=True, justify=Gtk.Justification.CENTER,
+                                       label="This action is irreversible. Are you sure you want to proceed?")
+        content_box.append(irreversible_label)
+
+        self.set_child(content_box)
+
+        # Dialog Actions/Responses
+        self.add_response("cancel", "_Cancel")
+        delete_response_button = self.add_response("delete", "_Delete Key Pair")
+        # delete_response_button.add_css_class("destructive-action") # Provided by ResponseAppearance
+
+        self.set_response_appearance("delete", Adw.ResponseAppearance.DESTRUCTIVE)
+        self.set_default_response("cancel")
+        self.connect("response", self.on_dialog_response)
+
+    def on_dialog_response(self, dialog, response_id):
+        parent_window = self.get_transient_for() # KeySmithWindow instance
+
+        if response_id == "delete":
+            priv_key_path = self.pub_key_path.with_name(self.priv_key_filename)
+            files_deleted_successfully = True
+            error_message = ""
+
+            deleted_pub = False
+            deleted_priv = False
+            pub_existed = self.pub_key_path.exists()
+            priv_existed = priv_key_path.exists()
+
+            try:
+                # Delete public key
+                if pub_existed:
+                    os.remove(self.pub_key_path)
+                    print(f"Successfully deleted public key: {self.pub_key_path}")
+                    deleted_pub = True
+                else:
+                    print(f"Public key not found, skipping deletion: {self.pub_key_path}")
+
+                # Delete private key
+                if priv_existed:
+                    os.remove(priv_key_path)
+                    print(f"Successfully deleted private key: {priv_key_path}")
+                    deleted_priv = True
+                else:
+                    print(f"Private key not found, skipping deletion: {priv_key_path}")
+
+                if not pub_existed and not priv_existed: # Neither file existed initially
+                    error_message = f"Error: Neither public key '{self.pub_key_filename}' nor private key '{self.priv_key_filename}' were found."
+                    files_deleted_successfully = False
+                elif not deleted_pub and not deleted_priv and (pub_existed or priv_existed): # Files existed but failed to delete (covered by specific exceptions)
+                    # This case should ideally be caught by specific exceptions below.
+                    # If it's reached, it implies an issue not caught by os.remove exceptions.
+                    pass
+                elif not (deleted_pub and pub_existed) and not (deleted_priv and priv_existed) and (pub_existed or priv_existed):
+                    # This means at least one existed but wasn't deleted, and no specific error was caught
+                    # This is a fallback, usually PermissionError etc. would be more specific
+                    error_message = "An unknown error occurred during deletion. Not all parts of the key pair were removed."
+                    files_deleted_successfully = False
+
+
+            except FileNotFoundError: # Should ideally not happen if .exists() is checked, but as a safeguard
+                error_message = f"Error: File not found during deletion. A key file might have been removed externally."
+                files_deleted_successfully = False
+            except PermissionError:
+                error_message = "Error: Permission denied. Could not delete key files."
+                files_deleted_successfully = False
+            except Exception as e:
+                error_message = f"An unexpected error occurred: {e}"
+                files_deleted_successfully = False
+
+            if files_deleted_successfully and (deleted_pub or deleted_priv): # At least one part of pair was deleted
+                parent_window.show_toast(
+                    f"Key pair for '{self.pub_key_filename}' deleted.",
+                    Adw.ToastPriority.NORMAL
+                )
+                parent_window.refresh_key_list()
+            elif files_deleted_successfully and not pub_existed and not priv_existed: # No files existed, but no error deleting them
+                 parent_window.show_toast(
+                    f"Key pair for '{self.pub_key_filename}' already removed.",
+                    Adw.ToastPriority.NORMAL
+                )
+                 parent_window.refresh_key_list() # Refresh to ensure UI consistency
+            else:
+                # Show a more prominent error dialog for deletion failure
+                error_dialog = Adw.MessageDialog(
+                    transient_for=parent_window, # Attach to main window
+                    modal=True,
+                    heading="Deletion Failed",
+                    body=error_message if error_message else "Failed to delete one or both key files." # Default if no specific msg
+                )
+                error_dialog.add_response("ok_err_delete", "_Ok")
+                error_dialog.set_default_response("ok_err_delete")
+                error_dialog.connect("response", lambda d, r: d.close())
+                error_dialog.present()
+                print(f"Deletion failed: {error_message}")
+
+        elif response_id == "cancel":
+            if parent_window and hasattr(parent_window, 'show_toast'):
+                parent_window.show_toast(
+                    f"Deletion of '{self.pub_key_filename}' cancelled.",
+                    Adw.ToastPriority.NORMAL
+                )
+
+        self.close()
+
+
 class DeployKeyDialog(Adw.Dialog):
     def __init__(self, parent_window, pub_key_path, **kwargs):
         super().__init__(transient_for=parent_window, modal=True, **kwargs)
@@ -310,11 +455,22 @@ class KeySmithWindow(Adw.ApplicationWindow):
             deploy_button.connect("clicked", self.show_deploy_key_dialog, str(full_path))
             button_box.append(deploy_button)
 
+            delete_button = Gtk.Button(icon_name="user-trash-symbolic")
+            delete_button.add_css_class("destructive-action")
+            delete_button.set_tooltip_text("Delete this SSH key pair (public and private)")
+            delete_button.set_valign(Gtk.Align.CENTER)
+            # Pass both full_path (for actual deletion) and filename (for dialog message)
+            delete_button.connect("clicked", self.show_confirm_delete_dialog, str(full_path), filename)
+            button_box.append(delete_button)
+
             row.add_suffix(button_box)
-            # row.set_activatable_widget(copy_button) # Activating row for copy might be too much with two buttons
+            # row.set_activatable_widget(copy_button) # Activating row for copy might be too much with multiple buttons
 
         self.key_list_box.append(row)
 
+    def show_confirm_delete_dialog(self, button, pub_key_path_str, pub_key_filename):
+        dialog = ConfirmDeleteDialog(self, pub_key_path_str, pub_key_filename)
+        dialog.present()
 
     def refresh_key_list(self, button=None):
         # Clear existing items from the list_box
