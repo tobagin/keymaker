@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.tobagin.KeySmith</id>
+
+  <name>KeySmith</name>
+  <summary>A GUI for ssh-keygen &amp; ssh-copy-id</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <developer_name>tobagin</developer_name>
+  <!-- <url type="homepage">https://example.com/keysmith</url> -->
+  <!-- <url type="bugtracker">https://github.com/tobagin/KeySmith/issues</url> -->
+  <!-- <url type="donation">https://example.com/donate</url> -->
+
+  <description>
+    <p>
+      KeySmith provides a user-friendly graphical interface for managing SSH keys.
+      It simplifies the process of generating new key pairs, viewing existing keys,
+      copying public keys, and deploying them to servers.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Generate new Ed25519 SSH key pairs.</li>
+      <li>List keys from ~/.ssh with their type and fingerprint.</li>
+      <li>Easily copy public keys for services like GitHub or GitLab.</li>
+      <li>Deploy public keys to servers using ssh-copy-id.</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">io.github.tobagin.KeySmith.desktop</launchable>
+
+  <screenshots>
+    <!-- Add screenshots later, e.g.: -->
+    <!--
+    <screenshot type="default">
+      <image>https://example.com/keysmith_screenshot.png</image>
+      <caption>Main window of KeySmith</caption>
+    </screenshot>
+    -->
+  </screenshots>
+
+  <releases>
+    <release version="0.1.0" date="YYYY-MM-DD">
+      <description>
+        <p>Initial release of KeySmith.</p>
+      </description>
+    </release>
+  </releases>
+
+  <content_rating type="oars-1.1" />
+
+  <provides>
+    <binary>keysmith</binary>
+  </provides>
+</component>
