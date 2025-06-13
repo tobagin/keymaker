@@ -40,6 +40,12 @@ install_data(
   install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
 )
 
+# GSettings schema
+install_data(
+  'data/' + keysmith_name + '.gschema.xml',
+  install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
+)
+
 # Translations
 po_dir = join_paths(meson.source_root(), 'po')
 gnome.post_install_update_icon_cache(true)

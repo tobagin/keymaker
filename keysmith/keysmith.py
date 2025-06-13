@@ -15,6 +15,125 @@ import functools # For partial, if needed later, good to have
 
 from datetime import datetime # For date formatting, if used directly in KeyDetailsDialog
 
+# Schema ID, should match the gschema.xml and meson.build
+# This should also be the application ID for Adw.Application
+SETTINGS_SCHEMA_ID = "io.github.tobagin.KeySmith"
+
+# Forward declare for type hints if used before definition in file
+# class KeySmithWindow: pass # Assuming it's defined later or imported
+
+class PreferencesDialog(Adw.PreferencesWindow):
+    def __init__(self, parent_window, **kwargs):
+        super().__init__(transient_for=parent_window, modal=True, **kwargs)
+        self.set_search_enabled(False) # No search needed for these few settings
+        self.set_title("Preferences")
+        self.set_default_size(480, 320) # Adjusted height slightly
+
+        # Initialize GSettings
+        try:
+            self.settings = Gio.Settings.new(SETTINGS_SCHEMA_ID)
+        except GLib.Error as e:
+            print(f"Error loading GSettings schema {SETTINGS_SCHEMA_ID}: {e}")
+            self.settings = None
+            # Consider showing an error message in the dialog if settings can't be loaded
+            # For now, widgets will be created but bindings might fail or be skipped.
+
+        page = Adw.PreferencesPage()
+        self.add(page)
+
+        # --- Default Key Generation Settings ---
+        group = Adw.PreferencesGroup(title="New Key Defaults")
+        page.add(group)
+
+        # Default Key Type
+        key_type_model = Gtk.StringList.new(["Ed25519", "RSA"])
+        self.default_key_type_row = Adw.ComboRow(
+            title="Default Key Type",
+            model=key_type_model,
+        )
+        group.add(self.default_key_type_row)
+
+        if self.settings:
+            current_default_type = self.settings.get_string("default-key-type")
+            for i, item_str_obj in enumerate(key_type_model): # Use item_str_obj
+                if item_str_obj.get_string() == current_default_type:
+                    self.default_key_type_row.set_selected(i)
+                    break
+
+            self.default_key_type_row.connect("notify::selected-item", self.on_default_key_type_changed) # notify::selected-item is better for Adw.ComboRow
+            self.settings.connect(f"changed::default-key-type", self.on_gsettings_key_type_changed)
+
+        # Default RSA Bit Size
+        rsa_bits_model = Gtk.StringList.new(["2048", "3072", "4096", "8192"])
+        self.default_rsa_bits_row = Adw.ComboRow(
+            title="Default RSA Bit Size",
+            subtitle="Applies when 'RSA' is the default key type.",
+            model=rsa_bits_model,
+        )
+        group.add(self.default_rsa_bits_row)
+
+        if self.settings:
+            current_default_bits = self.settings.get_int("default-rsa-bits")
+            for i, item_str_obj in enumerate(rsa_bits_model):
+                if item_str_obj.get_string() == str(current_default_bits):
+                    self.default_rsa_bits_row.set_selected(i)
+                    break
+
+            self.default_rsa_bits_row.connect("notify::selected-item", self.on_default_rsa_bits_changed) # notify::selected-item
+            self.settings.connect(f"changed::default-rsa-bits", self.on_gsettings_rsa_bits_changed)
+
+        self.update_rsa_bits_sensitivity() # Call after both rows are initialized
+
+    def on_default_key_type_changed(self, combo_row, pspec):
+        if not self.settings: return
+        selected_item_obj = combo_row.get_selected_item() # Returns Gtk.StringObject
+        if selected_item_obj:
+            new_type = selected_item_obj.get_string()
+            self.settings.set_string("default-key-type", new_type)
+        self.update_rsa_bits_sensitivity()
+
+    def on_gsettings_key_type_changed(self, settings, key_name):
+        current_default_type = settings.get_string(key_name)
+        model = self.default_key_type_row.get_model()
+        for i, item_str_obj in enumerate(model):
+            if item_str_obj.get_string() == current_default_type:
+                if self.default_key_type_row.get_selected() != i:
+                    self.default_key_type_row.set_selected(i)
+                break
+        # Sensitivity update will be triggered by the set_selected causing notify::selected-item if it changes,
+        # or we can call it explicitly if there's a chance it doesn't change but sensitivity still needs update.
+        # self.update_rsa_bits_sensitivity() # Already called by the row's signal if selection changes.
+
+    def on_default_rsa_bits_changed(self, combo_row, pspec):
+        if not self.settings: return
+        selected_item_obj = combo_row.get_selected_item()
+        if selected_item_obj:
+            new_bits_str = selected_item_obj.get_string()
+            try:
+                self.settings.set_int("default-rsa-bits", int(new_bits_str))
+            except ValueError:
+                print(f"Error: Could not convert RSA bits '{new_bits_str}' to int.")
+
+    def on_gsettings_rsa_bits_changed(self, settings, key_name):
+        current_default_bits = settings.get_int(key_name)
+        model = self.default_rsa_bits_row.get_model()
+        for i, item_str_obj in enumerate(model):
+            if item_str_obj.get_string() == str(current_default_bits):
+                if self.default_rsa_bits_row.get_selected() != i:
+                    self.default_rsa_bits_row.set_selected(i)
+                break
+
+    def update_rsa_bits_sensitivity(self):
+        is_rsa_selected = False
+        if self.settings: # Check if settings are available
+             # Check if default_key_type_row and its selected_item are not None
+            selected_item_obj = self.default_key_type_row.get_selected_item()
+            if selected_item_obj:
+                is_rsa_selected = (selected_item_obj.get_string() == "RSA")
+
+        self.default_rsa_bits_row.set_sensitive(is_rsa_selected)
+
+
 class KeyDetailsDialog(Adw.Dialog):
     def __init__(self, parent_window, pub_key_path_str, pub_key_filename, **kwargs):
         super().__init__(transient_for=parent_window, modal=True, **kwargs)
@@ -534,104 +653,152 @@ class DeployKeyDialog(Adw.Dialog):
 class GenerateKeyDialog(Adw.Dialog):
     def __init__(self, parent_window, **kwargs):
         super().__init__(transient_for=parent_window, modal=True, **kwargs)
-        self.parent_window = parent_window # To call refresh_key_list and show_toast
+        self.parent_window = parent_window
         self.set_title("Generate New SSH Key")
-        # Adw.Dialog uses response buttons.
-        self.add_button("Cancel", Gtk.ResponseType.CANCEL)
-        self.add_button("Generate", Gtk.ResponseType.OK)
-        self.set_default_response(Gtk.ResponseType.OK)
+        self.set_default_size(450, -1) # Auto height
+
+        # Initialize GSettings
+        try:
+            self.settings = Gio.Settings.new(SETTINGS_SCHEMA_ID)
+        except GLib.Error as e:
+            print(f"Error loading GSettings schema {SETTINGS_SCHEMA_ID} in GenerateKeyDialog: {e}")
+            self.settings = None
+
+        # Retrieve defaults from GSettings
+        self.gsettings_default_key_type = "Ed25519" # Fallback
+        self.gsettings_default_rsa_bits = 4096    # Fallback
+        if self.settings:
+            self.gsettings_default_key_type = self.settings.get_string("default-key-type")
+            self.gsettings_default_rsa_bits = self.settings.get_int("default-rsa-bits")
+
+        page = Adw.PreferencesPage()
+        content_group = Adw.PreferencesGroup(title="Key Properties") # Changed title
+        page.add(content_group)
+        self.set_child(page)
+
+
+        # Key Type Adw.ComboRow
+        key_type_model = Gtk.StringList.new(["Ed25519", "RSA"])
+        self.key_type_combo_row = Adw.ComboRow(title="Key Type", model=key_type_model)
+        content_group.add(self.key_type_combo_row)
+
+        for i, item_str_obj in enumerate(key_type_model):
+            if item_str_obj.get_string() == self.gsettings_default_key_type:
+                self.key_type_combo_row.set_selected(i)
+                break
+
+        # RSA Bit Size Adw.ComboRow - NEW
+        rsa_bits_model = Gtk.StringList.new(["2048", "3072", "4096", "8192"])
+        self.rsa_bits_combo_row = Adw.ComboRow(
+            title="RSA Bit Size",
+            model=rsa_bits_model,
+            subtitle="Only applies if Key Type is RSA."
+        )
+        content_group.add(self.rsa_bits_combo_row)
+
+        for i, item_str_obj in enumerate(rsa_bits_model):
+            if item_str_obj.get_string() == str(self.gsettings_default_rsa_bits):
+                self.rsa_bits_combo_row.set_selected(i)
+                break
+
+        self.key_type_combo_row.connect("notify::selected-item", self.on_key_type_selection_changed)
+
+        # Filename Adw.EntryRow
+        self.filename_entry = Adw.EntryRow(title="Filename")
+        content_group.add(self.filename_entry)
+
+        # Comment Adw.EntryRow
+        self.comment_entry = Adw.EntryRow(title="Comment (Optional)")
+        content_group.add(self.comment_entry)
+
+        # Passphrase Adw.PasswordEntryRow
+        self.passphrase_entry = Adw.PasswordEntryRow(title="Passphrase (Optional)")
+        self.passphrase_entry.set_show_apply_button(True)
+        content_group.add(self.passphrase_entry)
+
+        self.add_response("cancel", "_Cancel")
+        generate_button = self.add_response("generate", "_Generate")
+        generate_button.get_style_context().add_class("suggested-action") # Adw.Dialog doesn't use set_response_appearance
+        self.set_default_response("generate")
         self.connect("response", self.on_dialog_response)
 
-        self.content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10) # spacing reduced a bit
-        self.set_child(self.content_box)
+        self.on_key_type_selection_changed(self.key_type_combo_row) # Call once to set initial state
+        # self.update_rsa_bits_row_visibility() # Called by on_key_type_selection_changed
 
-        preferences_group = Adw.PreferencesGroup()
-        self.content_box.append(preferences_group)
+    def on_key_type_selection_changed(self, combo_row, pspec=None):
+        selected_item_obj = combo_row.get_selected_item()
+        if not selected_item_obj: return
 
-        # Key Type
-        self.key_type_row = Adw.ComboRow(title="Key Type")
-        self.key_type_model = Gtk.StringList.new(["Ed25519", "RSA"]) # Add more types if desired
-        self.key_type_row.set_model(self.key_type_model)
-        self.key_type_row.set_selected(0) # Default to Ed25519
-        preferences_group.add(self.key_type_row)
+        key_type = selected_item_obj.get_string()
+        if key_type == "Ed25519":
+            self.filename_entry.set_text("id_ed25519")
+        elif key_type == "RSA":
+            self.filename_entry.set_text("id_rsa")
+        else:
+            self.filename_entry.set_text("id_unknown_type")
 
-        # Filename
-        self.filename_entry = Adw.EntryRow(title="Filename")
-        self.filename_entry.set_text("id_ed25519") # Default filename suggestion
-        preferences_group.add(self.filename_entry)
-        # Connect after filename_entry is created
-        self.key_type_row.connect("notify::selected-item", self._on_key_type_changed)
+        self.update_rsa_bits_row_visibility()
 
-        # Comment
-        self.comment_entry = Adw.EntryRow(title="Comment")
-        preferences_group.add(self.comment_entry)
+    def update_rsa_bits_row_visibility(self):
+        selected_item_obj = self.key_type_combo_row.get_selected_item()
+        is_rsa = False
+        if selected_item_obj:
+            key_type = selected_item_obj.get_string()
+            is_rsa = (key_type == "RSA")
 
-        # Passphrase
-        self.passphrase_entry = Adw.PasswordEntryRow(title="Passphrase")
-        # self.passphrase_entry.set_placeholder_text("Leave blank for no passphrase") # Not available in AdwEntryRow
-        self.passphrase_entry.set_show_apply_button(True) # For visibility toggle
-        preferences_group.add(self.passphrase_entry)
-
-        # Set dialog size hints if needed, or let it auto-size.
-        # self.set_default_size(450, 350) # Adjusted size
-
-    def _on_key_type_changed(self, combo_row, pspec):
-        selected_item = combo_row.get_selected_item()
-        if selected_item:
-            key_type = selected_item.get_string()
-            if key_type == "Ed25519":
-                self.filename_entry.set_text("id_ed25519")
-            elif key_type == "RSA":
-                self.filename_entry.set_text("id_rsa")
-            # Add more cases if more key types are added
+        self.rsa_bits_combo_row.set_visible(is_rsa)
+        self.rsa_bits_combo_row.set_sensitive(is_rsa)
 
     def on_dialog_response(self, dialog, response_id):
-        if response_id == Gtk.ResponseType.OK:
+        if response_id == "generate": # Changed from Gtk.ResponseType.OK
             self.do_generate_key()
-        else: # Gtk.ResponseType.CANCEL or closing the dialog (X button)
+        else:
             self.close()
 
     def do_generate_key(self):
-        key_type_item = self.key_type_row.get_selected_item()
-        # get_string() is the correct method for Gtk.StringObject from Gtk.StringList
-        key_type = key_type_item.get_string().lower() if key_type_item else None
-
-        if not key_type:
+        key_type_item_obj = self.key_type_combo_row.get_selected_item()
+        if not key_type_item_obj:
             self.show_error_dialog("Please select a key type.")
             return
+        key_type = key_type_item_obj.get_string() # No .lower() here, use as is for display, lower for cmd
 
         filename = self.filename_entry.get_text().strip()
         if not filename:
             self.show_error_dialog("Filename cannot be empty.")
-            # To prevent dialog from closing on OK if validation fails,
-            # we might need to stop the response signal or handle it differently.
-            # For now, error dialog is shown, but main dialog might still close.
-            # A better approach might be to connect to "clicked" of the "Generate" button
-            # if using custom buttons, or handle "response" more carefully.
-            # For Adw.Dialog, this behavior is standard. User can re-open if needed.
             return
 
         comment = self.comment_entry.get_text().strip()
-        passphrase = self.passphrase_entry.get_text() # No strip for passphrase
+        passphrase = self.passphrase_entry.get_text()
 
         ssh_dir = pathlib.Path.home() / ".ssh"
         if not ssh_dir.exists():
             try:
-                # Create ~/.ssh with 700 permissions
                 ssh_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
             except Exception as e:
-                self.show_error_dialog(f"Error creating ~/.ssh directory: {e}")
+                self.show_error_dialog(f"Error creating ~/.ssh directory: {str(e)}")
                 return
 
-        full_key_path = ssh_dir / filename
+        # Note: filename_entry might not have .pub, but ssh-keygen creates both.
+        # We are defining the base name for the key pair.
+        full_key_path_base = ssh_dir / filename
 
-        if full_key_path.exists():
-            self.show_error_dialog(f"Error: File already exists at {full_key_path}.\nPlease choose a different filename.")
+        # Check if either potential private or public key file exists to prevent overwrite
+        # This check might need refinement if user explicitly adds .pub to filename_entry
+        if full_key_path_base.exists() or full_key_path_base.with_suffix(".pub").exists():
+            self.show_error_dialog(f"Error: File '{filename}' or '{filename}.pub' already exists in ~/.ssh.\nPlease choose a different filename.")
             return
 
-        cmd = ["ssh-keygen", "-t", key_type, "-f", str(full_key_path), "-C", comment]
+        cmd = ["ssh-keygen", "-t", key_type.lower()]
 
-        # ssh-keygen requires -N "" for no passphrase, not just omitting -N.
+        if key_type == "RSA":
+            rsa_bits_item_obj = self.rsa_bits_combo_row.get_selected_item()
+            if rsa_bits_item_obj:
+                rsa_bits = rsa_bits_item_obj.get_string()
+                cmd.extend(["-b", rsa_bits])
+            else: # Should not happen if row is visible and has a default
+                cmd.extend(["-b", str(self.gsettings_default_rsa_bits)])
+
+        cmd.extend(["-f", str(full_key_path_base), "-C", comment])
         cmd.extend(["-N", passphrase if passphrase else ""])
 
         try:
@@ -670,15 +837,17 @@ class KeySmithWindow(Adw.ApplicationWindow):
         self.set_default_size(600, 400)
         self.set_title("KeySmith")
 
+        # main_box will hold HeaderBar and content_area (which holds list/status page)
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        # self.set_content(self.main_box) will be set to toast_overlay's child
 
         self.toast_overlay = Adw.ToastOverlay()
-        self.set_content(self.toast_overlay)
-        self.toast_overlay.set_child(self.main_box)
+        self.toast_overlay.set_child(self.main_box) # main_box is child of overlay
+        self.set_content(self.toast_overlay) # overlay is content of window
 
         header_bar = Adw.HeaderBar()
-        self.main_box.append(header_bar)
+        # self.main_box.append(header_bar) # Prepend for correct order
+        self.main_box.prepend(header_bar)
+
 
         refresh_button = Gtk.Button(icon_name="view-refresh-symbolic")
         refresh_button.set_tooltip_text("Refresh SSH key list")
@@ -688,9 +857,22 @@ class KeySmithWindow(Adw.ApplicationWindow):
         generate_button = Gtk.Button(icon_name="document-new-symbolic", label="Generate")
         generate_button.set_tooltip_text("Generate new SSH key pair")
         generate_button.connect("clicked", self.show_generate_key_dialog)
-        header_bar.pack_start(generate_button)
+        header_bar.pack_start(generate_button) # Added to start, after refresh
 
-        # Container for the list and status page - Gtk.Stack might be better
+        # Create MenuButton for primary menu
+        menu_button = Gtk.MenuButton(
+            icon_name="open-menu-symbolic",
+            tooltip_text="Main Menu"
+        )
+        header_bar.pack_end(menu_button) # Add to the end of the header bar
+
+        menu_model = Gio.Menu()
+        menu_model.append("Preferences", "app.preferences")
+        menu_model.append("About KeySmith", "app.about")
+        menu_model.append("Quit", "app.quit")
+        menu_button.set_menu_model(menu_model)
+
+        # Container for the list and status page
         # but managing visibility directly is simpler for now.
         self.content_area = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, vexpand=True, hexpand=True)
         self.main_box.append(self.content_area)
@@ -971,19 +1153,65 @@ class KeySmithWindow(Adw.ApplicationWindow):
 
 class KeySmithApplication(Adw.Application):
     def __init__(self, **kwargs):
-        super().__init__(application_id="io.github.tobagin.KeySmith",
+        super().__init__(application_id=SETTINGS_SCHEMA_ID, # Use the constant
                          flags=Gio.ApplicationFlags.FLAGS_NONE,
                          **kwargs)
+        self.win = None # Keep a reference to the main window
 
     def do_activate(self):
-        win = KeySmithWindow(application=self)
-        win.present()
+        # Create and present the main window
+        if not self.win:
+            self.win = KeySmithWindow(application=self)
+        self.win.present()
 
     def do_startup(self):
-        Gtk.Application.do_startup(self)
+        Adw.Application.do_startup(self) # Use Adw.Application for startup
+
+        # Create "preferences" action
+        preferences_action = Gio.SimpleAction.new("preferences", None)
+        preferences_action.connect("activate", self.on_preferences_action)
+        self.add_action(preferences_action)
+
+        about_action = Gio.SimpleAction.new("about", None)
+        about_action.connect("activate", self.on_about_action)
+        self.add_action(about_action)
+
+        quit_action = Gio.SimpleAction.new("quit", None)
+        quit_action.connect("activate", self.on_quit_action)
+        self.add_action(quit_action)
+        self.set_accels_for_action("app.quit", ["<Control>q"])
+
+
+    def on_preferences_action(self, action, param):
+        # Create and show the preferences dialog
+        prefs_dialog = PreferencesDialog(parent_window=self.get_active_window())
+        prefs_dialog.present()
+
+    def on_about_action(self, action, param):
+        # Ensure your application ID matches your icon name if it's used here
+        app_icon_name = self.get_application_id() # e.g., "io.github.tobagin.KeySmith"
+
+        about_dialog = Adw.AboutWindow(
+            transient_for=self.get_active_window(),
+            application_name="KeySmith",
+            application_icon=app_icon_name,
+            developer_name="tobagin", # Replace with actual name or remove if not desired
+            version="0.1.0", # TODO: Get from a central place, e.g. meson.build project version
+            # website="https://github.com/tobagin/KeySmith", # Uncomment when available
+            # issue_url="https://github.com/tobagin/KeySmith/issues", # Uncomment when available
+            copyright="© 2024 Your Name or Project" # Replace
+        )
+        # Example: Add more details if desired
+        # about_dialog.set_developers(["Your Name <your.email@example.com>"])
+        # about_dialog.set_license_type(Gtk.License.GPL_3_0_ONLY) # Or your chosen license
+        # about_dialog.set_comments("A simple utility to manage SSH keys.")
+        about_dialog.present()
+
+    def on_quit_action(self, action, param):
+        self.quit()
 
     def do_shutdown(self):
-        Gtk.Application.do_shutdown(self)
+        Adw.Application.do_shutdown(self) # Use Adw.Application for shutdown
 
 
 def main():
