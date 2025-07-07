@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=KeySmith
-Exec=keysmith
-Icon=io.github.tobagin.KeySmith
-Type=Application
-Categories=GTK;GNOME;Utility;Security;
-StartupNotify=true
-Comment=Manage SSH keys with ease
-Keywords=ssh;keys;security;keygen;ssh-copy-id;

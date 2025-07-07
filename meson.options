@@ -1,7 +1,0 @@
-option(
-  'profile',
-  type : 'combo',
-  choices : ['development', 'release'],
-  value : 'development',
-  description : 'Choose the build profile'
-)
