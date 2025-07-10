@@ -1,0 +1,74 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyListWidget : Box {
+  orientation: vertical;
+  spacing: 0;
+  vexpand: true;
+
+  Adw.StatusPage empty_state {
+    title: _("No SSH Keys Found");
+    description: _("Generate your first SSH key to get started with secure authentication");
+    icon-name: "dialog-password-symbolic";
+    vexpand: true;
+    
+    Button {
+      label: _("Generate SSH Key");
+      halign: center;
+      action-name: "win.generate-key";
+      styles ["pill", "suggested-action"]
+    }
+  }
+
+  ScrolledWindow list_scroll {
+    hscrollbar-policy: never;
+    vexpand: true;
+    margin-top: 18;
+    margin-bottom: 18;
+    margin-start: 18;
+    margin-end: 18;
+
+    Adw.Clamp {
+      maximum-size: 900;
+      tightening-threshold: 500;
+
+      Box {
+        orientation: vertical;
+        spacing: 0;
+
+        Box list_header {
+          orientation: horizontal;
+          spacing: 12;
+          margin-bottom: 12;
+
+          Label {
+            label: _("SSH Keys");
+            styles ["title-4"]
+            halign: start;
+            hexpand: true;
+          }
+
+          Label key_count_label {
+            styles ["caption", "dim-label"]
+            halign: end;
+          }
+        }
+
+        ListBox key_list_box {
+          selection-mode: none;
+          styles ["boxed-list"]
+          
+          Adw.ActionRow placeholder_row {
+            visible: false;
+            title: _("Loading SSH keys...");
+            
+            [prefix]
+            Spinner {
+              spinning: true;
+            }
+          }
+        }
+      }
+    }
+  }
+}

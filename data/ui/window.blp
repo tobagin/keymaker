@@ -1,0 +1,74 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeySmithWindow : Adw.ApplicationWindow {
+  title: "KeySmith";
+  default-width: 800;
+  default-height: 600;
+  width-request: 400;
+  height-request: 300;
+
+  content: Adw.ToolbarView toolbar_view {
+    [top]
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: "KeySmith";
+        subtitle: "GUI for SSH key management tasks";
+      };
+
+      [start]
+      Button generate_button {
+        icon-name: "list-add-symbolic";
+        tooltip-text: _("Generate New SSH Key");
+        action-name: "win.generate-key";
+      }
+
+      [end]
+      MenuButton menu_button {
+        icon-name: "open-menu-symbolic";
+        tooltip-text: _("Main Menu");
+        menu-model: main_menu;
+      }
+
+      [end]
+      Button refresh_button {
+        icon-name: "view-refresh-symbolic";
+        tooltip-text: _("Refresh Key List");
+        action-name: "win.refresh";
+      }
+    }
+
+    content: Adw.ToastOverlay toast_overlay {
+      Adw.Clamp {
+        maximum-size: 1200;
+        tightening-threshold: 600;
+        
+        Box main_box {
+          orientation: vertical;
+          spacing: 0;
+          vexpand: true;
+          // Key list will be added programmatically
+        }
+      }
+    };
+  };
+}
+
+menu main_menu {
+  section {
+    item {
+      label: _("_Preferences");
+      action: "app.preferences";
+    }
+    item {
+      label: _("_About KeySmith");
+      action: "app.about";
+    }
+  }
+  section {
+    item {
+      label: _("_Quit");
+      action: "app.quit";
+    }
+  }
+}

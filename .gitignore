@@ -1,3 +1,4 @@
+# Project-specific files
 .claude
 examples/
 PRPs/
@@ -5,3 +6,115 @@ CLAUDE.md
 TASK.md
 INITIAL.md
 PLANNING.md
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+venv_linux/
+
+# Meson build directories
+builddir/
+build/
+build-*/
+
+# Flatpak build directories
+.flatpak-builder/
+repo/
+
+# VS Code
+.vscode/
+
+# GTK/GLib compiled resources
+*.gresource
+
+# Compiled GSettings schemas
+gschemas.compiled
+
+# Temporary files
+*~
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Application specific
+keysmith.egg-info/
+*.keysmith
+
+# Test artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Local development
+local_config.py
+test_keys/
+
+*.whl

@@ -1,0 +1,67 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyRow : Adw.ActionRow {
+  activatable: true;
+
+  [prefix]
+  Box prefix_box {
+    orientation: horizontal;
+    spacing: 12;
+    valign: center;
+
+    Image key_icon {
+      icon-name: "dialog-password-symbolic";
+      pixel-size: 32;
+      styles ["accent"]
+    }
+  }
+
+  [suffix]
+  Box action_box {
+    orientation: horizontal;
+    spacing: 2;
+    valign: center;
+
+    Label key_type_label {
+      styles ["caption", "accent", "pill"]
+      valign: center;
+      margin-end: 6;
+    }
+
+    Button details_button {
+      icon-name: "dialog-information-symbolic";
+      tooltip-text: _("View Details");
+      valign: center;
+      styles ["flat"]
+    }
+
+    Button copy_button {
+      icon-name: "edit-copy-symbolic";
+      tooltip-text: _("Copy Public Key");
+      valign: center;
+      styles ["flat"]
+    }
+
+    Button copy_id_button {
+      icon-name: "network-server-symbolic";
+      tooltip-text: _("Copy to Server");
+      valign: center;
+      styles ["flat"]
+    }
+
+    Button change_passphrase_button {
+      icon-name: "dialog-password-symbolic";
+      tooltip-text: _("Change Passphrase");
+      valign: center;
+      styles ["flat"]
+    }
+
+    Button delete_button {
+      icon-name: "user-trash-symbolic";
+      tooltip-text: _("Delete Key");
+      valign: center;
+      styles ["flat", "destructive-action"]
+    }
+  }
+}

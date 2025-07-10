@@ -1,0 +1,2 @@
+option('profile', type: 'combo', choices: ['default', 'development'], value: 'default', description: 'Build profile')
+option('enable_tests', type: 'boolean', value: true, description: 'Enable building and running tests')

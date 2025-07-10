@@ -1,0 +1,15 @@
+# List of source files containing translatable strings
+data/io.github.tobagin.keysmith.desktop.in
+data/io.github.tobagin.keysmith.metainfo.xml.in
+data/io.github.tobagin.keysmith.gschema.xml
+keysmith/__init__.py
+keysmith/main.py
+keysmith/ui/window.py
+keysmith/ui/generate_dialog.py
+keysmith/ui/help_dialog.py
+keysmith/ui/key_list.py
+keysmith/ui/key_row.py
+keysmith/ui/key_details_dialog.py
+keysmith/ui/change_passphrase_dialog.py
+keysmith/ui/copy_id_dialog.py
+keysmith/ui/preferences_dialog.py

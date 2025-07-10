@@ -1,0 +1,78 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $CopyIdDialog : Adw.Dialog {
+  title: _("Copy Key to Server");
+  content-width: 450;
+  content-height: 350;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-title: true;
+    }
+
+    [bottom]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Button copy_button {
+        label: _("Copy");
+        sensitive: false;
+        styles ["suggested-action", "pill"]
+      };
+    }
+
+    content: Adw.Clamp {
+      maximum-size: 450;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+
+      Box {
+        orientation: vertical;
+        spacing: 24;
+
+        Adw.PreferencesGroup {
+          title: _("Server Details");
+          description: _("Enter the server connection details");
+
+          Adw.EntryRow hostname_row {
+            title: _("Hostname or IP");
+          }
+
+          Adw.EntryRow username_row {
+            title: _("Username");
+          }
+
+          Adw.SpinRow port_row {
+            title: _("Port");
+            subtitle: _("SSH port (usually 22)");
+            adjustment: Adjustment {
+              lower: 1;
+              upper: 65535;
+              value: 22;
+              step-increment: 1;
+              page-increment: 10;
+            };
+          }
+        }
+
+        Box progress_box {
+          orientation: horizontal;
+          spacing: 12;
+          halign: center;
+          visible: false;
+
+          Spinner progress_spinner {
+          }
+
+          Label {
+            label: _("Copying key to server...");
+            styles ["dim-label"]
+          }
+        }
+      }
+    };
+  }
+}

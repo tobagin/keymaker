@@ -1,0 +1,78 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ChangePassphraseDialog : Adw.Dialog {
+  title: _("Change Passphrase");
+  content-width: 500;
+  content-height: 425;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-title: true;
+    }
+
+    [bottom]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Button change_button {
+        label: _("Change");
+        sensitive: false;
+        styles ["suggested-action", "pill"]
+      };
+    }
+
+    content: Adw.Clamp {
+      maximum-size: 400;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+
+      Box {
+        orientation: vertical;
+        spacing: 24;
+
+        Adw.PreferencesGroup {
+          title: _("Current Passphrase");
+          description: _("Enter the current passphrase for this key");
+
+          Adw.PasswordEntryRow current_passphrase_row {
+            title: _("Current Passphrase");
+            show-apply-button: false;
+          }
+        }
+
+        Adw.PreferencesGroup {
+          title: _("New Passphrase");
+          description: _("Enter the new passphrase (leave blank to remove passphrase)");
+
+          Adw.PasswordEntryRow new_passphrase_row {
+            title: _("New Passphrase");
+            show-apply-button: false;
+          }
+
+          Adw.PasswordEntryRow confirm_passphrase_row {
+            title: _("Confirm New Passphrase");
+            show-apply-button: false;
+          }
+        }
+
+        Box progress_box {
+          orientation: horizontal;
+          spacing: 12;
+          halign: center;
+          visible: false;
+
+          Spinner progress_spinner {
+          }
+
+          Label {
+            label: _("Changing passphrase...");
+            styles ["dim-label"]
+          }
+        }
+      }
+    };
+  }
+}

@@ -1,0 +1,104 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $PreferencesDialog : Adw.PreferencesDialog {
+  title: _("Preferences");
+
+  Adw.PreferencesPage {
+    title: _("General");
+    icon-name: "preferences-system-symbolic";
+
+    Adw.PreferencesGroup {
+      title: _("Appearance");
+
+      Adw.ComboRow theme_row {
+        title: _("Theme");
+        subtitle: _("Choose the application's theme");
+        model: StringList {
+          strings [
+            _("Auto (System Default)"),
+            _("Light"),
+            _("Dark")
+          ]
+        };
+        selected: 0;
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Key Generation Defaults");
+      description: _("Set default values for new SSH key generation");
+
+      Adw.ComboRow default_key_type_row {
+        title: _("Default Key Type");
+        subtitle: _("Default algorithm for new SSH keys");
+        model: StringList {
+          strings [
+            _("Ed25519 (Recommended)"),
+            _("RSA"),
+            _("ECDSA (Not Recommended)")
+          ]
+        };
+        selected: 0;
+      }
+
+      Adw.ComboRow default_rsa_bits_row {
+        title: _("Default RSA Key Size");
+        subtitle: _("Default bit size for RSA keys");
+        visible: false;
+        model: StringList {
+          strings [
+            _("2048 bits"),
+            _("3072 bits"),
+            _("4096 bits (Recommended)"),
+            _("8192 bits")
+          ]
+        };
+        selected: 2;
+      }
+
+      Adw.EntryRow default_comment_row {
+        title: _("Default Comment");
+        text: "";
+      }
+
+      Adw.SwitchRow use_passphrase_by_default_row {
+        title: _("Use Passphrase by Default");
+        subtitle: _("Enable passphrase protection by default for new keys");
+        active: true;
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Application Behavior");
+
+      Adw.SpinRow auto_refresh_interval_row {
+        title: _("Auto-refresh Interval");
+        subtitle: _("Automatically refresh key list (0 to disable, in seconds)");
+        adjustment: Adjustment {
+          lower: 0;
+          upper: 300;
+          value: 30;
+          step-increment: 1;
+          page-increment: 10;
+        };
+      }
+
+      Adw.SwitchRow confirm_deletions_row {
+        title: _("Confirm Key Deletions");
+        subtitle: _("Show confirmation dialog before deleting SSH keys");
+        active: true;
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Interface");
+
+      Adw.SwitchRow show_fingerprints_row {
+        title: _("Show Fingerprints");
+        subtitle: _("Display key fingerprints in the key list");
+        active: true;
+      }
+    }
+  }
+}

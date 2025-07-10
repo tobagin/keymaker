@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=KeySmith
+Comment=SSH Key Management Application
+Exec=keysmith
+Icon=io.github.tobagin.keysmith
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;System;Security;
+Keywords=ssh;keys;security;remote;authentication;
+StartupNotify=true
+MimeType=application/x-openssh-key;
+StartupWMClass=keysmith

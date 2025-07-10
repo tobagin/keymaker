@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/tobagin/keysmith/ui">
+    <file>window.ui</file>
+    <file>generate_dialog.ui</file>
+    <file>key_list.ui</file>
+    <file>key_row.ui</file>
+    <file>change_passphrase_dialog.ui</file>
+    <file>copy_id_dialog.ui</file>
+    <file>key_details_dialog.ui</file>
+    <file>preferences_dialog.ui</file>
+  </gresource>
+</gresources>

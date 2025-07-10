@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+"""KeySmith launcher script."""
+
+import os
+import sys
+
+# Add the module directory to Python path
+MODULE_DIR = '@MODULE_DIR@'
+if MODULE_DIR not in sys.path:
+    sys.path.insert(0, MODULE_DIR)
+
+if __name__ == '__main__':
+    try:
+        from keysmith.main import main
+        sys.exit(main())
+    except ImportError as e:
+        print(f"Error: Could not import KeySmith module: {e}", file=sys.stderr)
+        print(f"Module directory: {MODULE_DIR}", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)

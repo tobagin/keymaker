@@ -1,0 +1,115 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyDetailsDialog : Adw.Dialog {
+  title: _("SSH Key Details");
+  content-width: 500;
+  content-height: 600;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-title: true;
+    }
+
+    content: Adw.Clamp {
+      maximum-size: 500;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+
+      Box {
+        orientation: vertical;
+        spacing: 24;
+
+        Adw.PreferencesGroup {
+          title: _("Key Information");
+
+          Adw.ActionRow key_type_row {
+            title: _("Type");
+            subtitle-selectable: true;
+          }
+
+          Adw.ActionRow bit_size_row {
+            title: _("Bit Size");
+            subtitle-selectable: true;
+            visible: false;
+          }
+
+          Adw.ActionRow fingerprint_row {
+            title: _("Fingerprint");
+            subtitle-selectable: true;
+
+            [suffix]
+            Button copy_fingerprint_button {
+              icon-name: "edit-copy-symbolic";
+              tooltip-text: _("Copy Fingerprint");
+              valign: center;
+              styles ["flat"]
+            }
+          }
+
+          Adw.ActionRow comment_row {
+            title: _("Comment");
+            subtitle-selectable: true;
+            visible: false;
+          }
+        }
+
+        Adw.PreferencesGroup {
+          title: _("File Information");
+
+          Adw.ActionRow private_path_row {
+            title: _("Private Key");
+            subtitle-selectable: true;
+
+            [suffix]
+            Button copy_private_path_button {
+              icon-name: "edit-copy-symbolic";
+              tooltip-text: _("Copy Path");
+              valign: center;
+              styles ["flat"]
+            }
+          }
+
+          Adw.ActionRow public_path_row {
+            title: _("Public Key");
+            subtitle-selectable: true;
+
+            [suffix]
+            Button copy_public_path_button {
+              icon-name: "edit-copy-symbolic";
+              tooltip-text: _("Copy Path");
+              valign: center;
+              styles ["flat"]
+            }
+          }
+
+          Adw.ActionRow modified_row {
+            title: _("Last Modified");
+            subtitle-selectable: true;
+          }
+        }
+
+        Adw.PreferencesGroup {
+          title: _("Public Key Content");
+
+          ScrolledWindow public_key_scroll {
+            height-request: 120;
+            hscrollbar-policy: automatic;
+            vscrollbar-policy: automatic;
+            styles ["card"]
+
+            TextView public_key_text {
+              editable: false;
+              cursor-visible: false;
+              wrap-mode: char;
+              styles ["monospace"]
+            }
+          }
+        }
+      }
+    };
+  }
+}
