@@ -14,6 +14,14 @@ finish-args:
   - --talk-name=org.gnome.keyring
 
 modules:
+  - name: blueprint-compiler
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
+        tag: v0.16.0
+        commit: 04ef0944db56ab01307a29aaa7303df6067cb3c0
+
   - name: python3-typing-extensions
     buildsystem: simple
     build-commands:
@@ -31,6 +39,15 @@ modules:
       - type: file
         url: https://files.pythonhosted.org/packages/78/b6/6307fbef88d9b5ee7421e68d78a9f162e0da4900bc5f5793f6d3d0e34fb8/annotated_types-0.7.0-py3-none-any.whl
         sha256: 1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53
+
+  - name: python3-typing-inspection
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} "typing_inspection" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/17/69/cd203477f944c353c31bade965f880aa1061fd6bf05ded0726ca845b6ff7/typing_inspection-0.4.1-py3-none-any.whl
+        sha256: 389055682238f53b04f7badcb49b989835495a96700ced5dab2d8feae4b26f51
 
   - name: python3-pydantic-core
     buildsystem: simple
