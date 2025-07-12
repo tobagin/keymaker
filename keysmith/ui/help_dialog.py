@@ -502,7 +502,7 @@ Thanks to the OpenSSH team for the excellent ssh-keygen and ssh-copy-id tools th
 
 ---
 
-© 2024 KeySmith Contributors  
+© 2024 Thiago Fernandes  
 Licensed under GPL v3.0 or later
 """
         self._show_help_page("About KeySmith", content)

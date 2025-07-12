@@ -1,5 +1,5 @@
 # Spanish translation for KeySmith
-# Copyright (C) 2024 KeySmith Contributors
+# Copyright (C) 2024 Thiago Fernandes
 # This file is distributed under the same license as the KeySmith package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/tobagin/keysmith/issues\n"
 "POT-Creation-Date: 2024-01-01 12:00+0000\n"
 "PO-Revision-Date: 2024-01-01 12:00+0000\n"
-"Last-Translator: KeySmith Contributors\n"
+"Last-Translator: Thiago Fernandes\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"

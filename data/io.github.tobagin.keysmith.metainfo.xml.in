@@ -88,7 +88,7 @@
   <url type="bugtracker">https://github.com/tobagin/keysmith/issues</url>
   <url type="help">https://github.com/tobagin/keysmith/wiki</url>
   
-  <developer_name>KeySmith Contributors</developer_name>
+  <developer_name>Thiago Fernandes</developer_name>
   
   <releases>
     <release version="0.1.0" date="2024-01-01">

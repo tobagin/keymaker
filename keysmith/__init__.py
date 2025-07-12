@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 
 __version__ = "1.0.0"
-__author__ = "KeySmith Contributors"
+__author__ = "Thiago Fernandes"
 __license__ = "GPL-3.0-or-later"
 
 # Application constants
