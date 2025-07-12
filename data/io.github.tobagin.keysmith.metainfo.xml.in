@@ -91,6 +91,15 @@
   <developer_name>Thiago Fernandes</developer_name>
   
   <releases>
+    <release version="1.0.1" date="2025-01-12">
+      <description>
+        <p>Developer attribution update:</p>
+        <ul>
+          <li>Updated developer attribution to Thiago Fernandes</li>
+          <li>Updated copyright notices and translation headers</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.0" date="2024-01-01">
       <description>
         <p>Initial release of KeySmith:</p>
