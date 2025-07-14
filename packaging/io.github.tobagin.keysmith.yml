@@ -100,4 +100,4 @@ modules:
       - type: git
         url: https://github.com/tobagin/keysmith.git
         tag: v1.0.2
-        commit: 2c995d04687bfeb44a44e875a718950c61db7def
+        commit: 5be5c376f11a05ed7194d08ee1a3df1d7f82950b
