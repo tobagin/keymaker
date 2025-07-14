@@ -8,7 +8,7 @@ import locale
 import os
 from pathlib import Path
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = "Thiago Fernandes"
 __license__ = "GPL-3.0-or-later"
 

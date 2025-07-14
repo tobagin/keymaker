@@ -448,7 +448,7 @@ KeySmith supports standard accessibility features:
         """Show about information."""
         content = """# About KeySmith
 
-**Version**: 1.0.2  
+**Version**: 1.0.3  
 **License**: GNU General Public License v3.0 or later
 
 ## Description

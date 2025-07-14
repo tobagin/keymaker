@@ -91,6 +91,16 @@
   <developer_name>Thiago Fernandes</developer_name>
   
   <releases>
+    <release version="1.0.3" date="2025-07-14">
+      <description>
+        <p>Icon sizing fixes:</p>
+        <ul>
+          <li>Fixed 512x512 icon to correct dimensions (was 1024x1024)</li>
+          <li>Ensured all icon sizes match their directory specifications</li>
+          <li>Improved icon quality and consistency across all sizes</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.2" date="2025-07-14">
       <description>
         <p>Icon and quality improvements:</p>
