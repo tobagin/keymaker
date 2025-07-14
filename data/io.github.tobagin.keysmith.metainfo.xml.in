@@ -91,6 +91,16 @@
   <developer_name>Thiago Fernandes</developer_name>
   
   <releases>
+    <release version="1.0.2" date="2025-07-14">
+      <description>
+        <p>Icon and quality improvements:</p>
+        <ul>
+          <li>Updated application icon with new KeySmith branding</li>
+          <li>Improved visual consistency across all icon sizes</li>
+          <li>Enhanced application quality guidelines compliance</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.1" date="2025-01-12">
       <description>
         <p>Developer attribution update:</p>
