@@ -3,6 +3,7 @@
 import asyncio
 from datetime import datetime
 from pathlib import Path
+from typing import Callable, Optional
 
 from ..models import (
     KeyGenerationRequest,
@@ -269,11 +270,12 @@ async def delete_key_pair(ssh_key: SSHKey) -> None:
         raise SSHOperationError("; ".join(errors))
 
 
-async def copy_id_to_server(request: SSHCopyIDRequest) -> None:
+async def copy_id_to_server(request: SSHCopyIDRequest, password_callback: Optional[Callable[[], str]] = None) -> None:
     """Copy SSH key to remote server using ssh-copy-id.
 
     Args:
         request: SSH copy-id parameters
+        password_callback: Optional callback to get password when needed
 
     Raises:
         SSHOperationError: If copy operation fails
@@ -281,31 +283,111 @@ async def copy_id_to_server(request: SSHCopyIDRequest) -> None:
     if not request.ssh_key.public_path.exists():
         raise SSHOperationError(f"Public key not found: {request.ssh_key.public_path}")
 
-    # Build target specification
-    target = f"{request.username}@{request.hostname}"
-    if request.port != 22:
-        target = f"-p {request.port} {target}"
-
     cmd = ["ssh-copy-id", "-i", str(request.ssh_key.public_path)]
     if request.port != 22:
         cmd.extend(["-p", str(request.port)])
     cmd.append(f"{request.username}@{request.hostname}")
 
     try:
-        # Execute ssh-copy-id command
-        process = await asyncio.create_subprocess_exec(
-            *cmd,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-
-        stdout, stderr = await process.communicate()
-
-        if process.returncode != 0:
-            raise SSHOperationError(f"Failed to copy key to server: {stderr.decode()}")
+        # Try using pexpect for password handling if available
+        try:
+            import pexpect
+            await _copy_id_with_pexpect(cmd, password_callback)
+        except ImportError:
+            # Fallback to subprocess if pexpect is not available
+            await _copy_id_with_subprocess(cmd)
 
     except Exception as e:
         raise SSHOperationError(f"Failed to execute ssh-copy-id: {str(e)}")
+
+
+async def _copy_id_with_pexpect(cmd: list, password_callback: Optional[Callable[[], str]] = None) -> None:
+    """Copy SSH key using pexpect for password handling.
+
+    Args:
+        cmd: Command to execute
+        password_callback: Callback to get password when needed
+
+    Raises:
+        SSHOperationError: If copy operation fails
+    """
+    import pexpect
+    
+    def run_pexpect():
+        """Run pexpect in a separate thread."""
+        try:
+            # Start the process
+            child = pexpect.spawn(' '.join(cmd))
+            
+            # Set timeout
+            child.timeout = 30
+            
+            while True:
+                index = child.expect([
+                    pexpect.EOF,
+                    pexpect.TIMEOUT,
+                    r"password:",
+                    r"Password:",
+                    r"Are you sure you want to continue connecting.*",
+                    r"Host key verification failed",
+                    r"Permission denied",
+                    r"Connection refused",
+                    r"No route to host",
+                ])
+                
+                if index == 0:  # EOF - command finished
+                    break
+                elif index == 1:  # TIMEOUT
+                    raise SSHOperationError("Operation timed out")
+                elif index in [2, 3]:  # Password prompt
+                    if password_callback:
+                        password = password_callback()
+                        child.sendline(password)
+                    else:
+                        raise SSHOperationError("Password required but no callback provided")
+                elif index == 4:  # Host key verification
+                    child.sendline("yes")
+                elif index == 5:  # Host key verification failed
+                    raise SSHOperationError("Host key verification failed")
+                elif index == 6:  # Permission denied
+                    raise SSHOperationError("Permission denied (invalid password or key)")
+                elif index == 7:  # Connection refused
+                    raise SSHOperationError("Connection refused")
+                elif index == 8:  # No route to host
+                    raise SSHOperationError("No route to host")
+            
+            child.close()
+            
+            if child.exitstatus != 0:
+                raise SSHOperationError(f"ssh-copy-id failed with exit code {child.exitstatus}")
+                
+        except pexpect.exceptions.ExceptionPexpect as e:
+            raise SSHOperationError(f"pexpect error: {str(e)}")
+    
+    # Run in executor to avoid blocking
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, run_pexpect)
+
+
+async def _copy_id_with_subprocess(cmd: list) -> None:
+    """Copy SSH key using subprocess (fallback method).
+
+    Args:
+        cmd: Command to execute
+
+    Raises:
+        SSHOperationError: If copy operation fails
+    """
+    process = await asyncio.create_subprocess_exec(
+        *cmd,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+
+    stdout, stderr = await process.communicate()
+
+    if process.returncode != 0:
+        raise SSHOperationError(f"Failed to copy key to server: {stderr.decode()}")
 
 
 def get_public_key_content(ssh_key: SSHKey) -> str:

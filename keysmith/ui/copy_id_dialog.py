@@ -12,6 +12,7 @@ from gi.repository import Adw, GLib, GObject, Gtk
 
 from ..backend import copy_id_to_server
 from ..models import SSHCopyIDRequest, SSHKey, SSHOperationError
+from .password_dialog import PasswordDialog
 
 
 @Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/copy_id_dialog.ui')
@@ -44,7 +45,9 @@ class CopyIdDialog(Adw.Dialog):
         super().__init__(**kwargs)
 
         self.ssh_key = ssh_key
+        self._parent_window = parent
         self._copying = False
+        self._password = None
 
         # Setup signals
         self._setup_signals()
@@ -139,8 +142,8 @@ class CopyIdDialog(Adw.Dialog):
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
 
-            # Copy key to server
-            loop.run_until_complete(copy_id_to_server(request))
+            # Copy key to server with password callback
+            loop.run_until_complete(copy_id_to_server(request, self._password_callback))
 
             # Update UI on main thread
             GLib.idle_add(self._on_copy_success)
@@ -179,7 +182,7 @@ class CopyIdDialog(Adw.Dialog):
     def _show_error(self, message: str):
         """Show error message."""
         dialog = Adw.MessageDialog.new(
-            self,
+            self._parent_window,
             "Error",
             message
         )
@@ -188,3 +191,57 @@ class CopyIdDialog(Adw.Dialog):
         dialog.set_default_response("ok")
 
         dialog.present()
+
+    def _password_callback(self) -> str:
+        """Get password from user when needed.
+
+        Returns:
+            Password entered by user
+
+        Raises:
+            SSHOperationError: If user cancels password dialog
+        """
+        import threading
+        password = None
+        exception = None
+        dialog_closed = threading.Event()
+
+        def show_password_dialog():
+            """Show password dialog on main thread."""
+            nonlocal password, exception
+            try:
+                request = self._create_copy_request()
+                password_dialog = PasswordDialog(
+                    self._parent_window,
+                    request.hostname,
+                    request.username
+                )
+
+                def on_password_entered(dialog, entered_password):
+                    nonlocal password
+                    password = entered_password
+                    dialog_closed.set()
+
+                def on_password_cancelled(dialog):
+                    nonlocal exception
+                    exception = SSHOperationError("Password input cancelled by user")
+                    dialog_closed.set()
+
+                password_dialog.connect("password-entered", on_password_entered)
+                password_dialog.connect("password-cancelled", on_password_cancelled)
+                password_dialog.present()
+
+            except Exception as e:
+                exception = e
+                dialog_closed.set()
+
+        # Show dialog on main thread
+        GLib.idle_add(show_password_dialog)
+
+        # Wait for dialog to close
+        dialog_closed.wait()
+
+        if exception:
+            raise exception
+        
+        return password or ""
