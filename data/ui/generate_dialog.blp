@@ -1,10 +1,10 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $GenerateKeyDialog : Adw.Dialog {
+template $GenerateKeyDialog: Adw.Dialog {
   title: _("Generate SSH Key");
   content-width: 500;
-  content-height: 500;
+  content-height: 700;
 
   Adw.ToolbarView {
     [top]
@@ -15,107 +15,122 @@ template $GenerateKeyDialog : Adw.Dialog {
     [bottom]
     Adw.HeaderBar {
       show-end-title-buttons: false;
+
       title-widget: Button generate_button {
         label: _("Generate");
         sensitive: false;
-        styles ["suggested-action", "pill"]
+
+        styles [
+          "suggested-action",
+          "pill",
+        ]
       };
     }
 
-    content: Adw.Clamp {
-      maximum-size: 500;
-      margin-top: 24;
-      margin-bottom: 24;
-      margin-start: 24;
-      margin-end: 24;
+    content: Gtk.ScrolledWindow {
+      vexpand: true;
 
-      Box {
-        orientation: vertical;
-        spacing: 24;
+      child: Adw.Clamp {
+        maximum-size: 500;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 24;
+        margin-end: 24;
 
-        Adw.PreferencesGroup {
-          title: _("Key Type");
-          description: _("Choose the SSH key algorithm");
+        Box {
+          orientation: vertical;
+          spacing: 24;
 
-          Adw.ComboRow key_type_row {
-            title: _("Algorithm");
-            subtitle: _("Ed25519 is recommended for new keys");
-            model: StringList {
-              strings [
-                _("Ed25519 (Recommended)"),
-                _("RSA"),
-                _("ECDSA (Not Recommended)")
-              ]
-            };
-            selected: 0;
+          Adw.PreferencesGroup {
+            title: _("Key Type");
+            description: _("Choose the SSH key algorithm");
+
+            Adw.ComboRow key_type_row {
+              title: _("Algorithm");
+              subtitle: _("Ed25519 is recommended for new keys");
+
+              model: StringList {
+                strings [
+                  _("Ed25519 (Recommended)"),
+                  _("RSA"),
+                  _("ECDSA (Not Recommended)"),
+                ]
+              };
+
+              selected: 0;
+            }
+
+            Adw.ComboRow rsa_bits_row {
+              title: _("RSA Key Size");
+              subtitle: _("Higher bit sizes are more secure but slower");
+              visible: false;
+
+              model: StringList {
+                strings [
+                  _("2048 bits"),
+                  _("3072 bits"),
+                  _("4096 bits (Recommended)"),
+                  _("8192 bits"),
+                ]
+              };
+
+              selected: 2;
+            }
           }
 
-          Adw.ComboRow rsa_bits_row {
-            title: _("RSA Key Size");
-            subtitle: _("Higher bit sizes are more secure but slower");
+          Adw.PreferencesGroup {
+            title: _("Key Details");
+            description: _("Configure key filename and comment");
+
+            Adw.EntryRow filename_row {
+              title: _("Filename");
+              text: "id_ed25519";
+            }
+
+            Adw.EntryRow comment_row {
+              title: _("Comment");
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: _("Security");
+            description: _("Configure passphrase protection");
+
+            Adw.SwitchRow passphrase_switch {
+              title: _("Protect with Passphrase");
+              subtitle: _("Recommended for enhanced security");
+              active: true;
+            }
+
+            Adw.PasswordEntryRow passphrase_row {
+              title: _("Passphrase");
+              show-apply-button: false;
+            }
+
+            Adw.PasswordEntryRow passphrase_confirm_row {
+              title: _("Confirm Passphrase");
+              show-apply-button: false;
+            }
+          }
+
+          Box progress_box {
+            orientation: horizontal;
+            spacing: 12;
+            halign: center;
             visible: false;
-            model: StringList {
-              strings [
-                _("2048 bits"),
-                _("3072 bits"),
-                _("4096 bits (Recommended)"),
-                _("8192 bits")
+
+            Spinner progress_spinner {}
+
+            Label {
+              label: _("Generating SSH key...");
+
+              styles [
+                "dim-label",
               ]
-            };
-            selected: 2;
+            }
           }
         }
-
-        Adw.PreferencesGroup {
-          title: _("Key Details");
-          description: _("Configure key filename and comment");
-
-          Adw.EntryRow filename_row {
-            title: _("Filename");
-            text: "id_ed25519";
-          }
-
-          Adw.EntryRow comment_row {
-            title: _("Comment");
-          }
-        }
-
-        Adw.PreferencesGroup {
-          title: _("Security");
-          description: _("Configure passphrase protection");
-
-          Adw.SwitchRow passphrase_switch {
-            title: _("Protect with Passphrase");
-            subtitle: _("Recommended for enhanced security");
-            active: true;
-          }
-
-          Adw.PasswordEntryRow passphrase_row {
-            title: _("Passphrase");
-            show-apply-button: false;
-          }
-
-          Adw.PasswordEntryRow passphrase_confirm_row {
-            title: _("Confirm Passphrase");
-            show-apply-button: false;
-          }
-        }
-
-        Box progress_box {
-          orientation: horizontal;
-          spacing: 12;
-          halign: center;
-          visible: false;
-
-          Spinner progress_spinner {
-          }
-
-          Label {
-            label: _("Generating SSH key...");
-            styles ["dim-label"]
-          }
-        }
-      }
+      };
     };
   }
 }
