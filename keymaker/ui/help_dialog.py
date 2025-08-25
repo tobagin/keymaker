@@ -1,4 +1,4 @@
-"""Help dialog for KeySmith application."""
+"""Help dialog for Key Maker application."""
 
 import gi
 
@@ -9,7 +9,7 @@ from gi.repository import Adw, Gtk, Gio
 
 
 class HelpDialog(Adw.Dialog):
-    """Help dialog with comprehensive KeySmith documentation."""
+    """Help dialog with comprehensive Key Maker documentation."""
 
     def __init__(self, parent: Gtk.Window, **kwargs):
         """Initialize the help dialog.
@@ -20,7 +20,7 @@ class HelpDialog(Adw.Dialog):
         """
         super().__init__(**kwargs)
         
-        self.set_title("KeySmith Help")
+        self.set_title("Key Maker Help")
         self.set_content_width(800)
         self.set_content_height(600)
         
@@ -34,7 +34,7 @@ class HelpDialog(Adw.Dialog):
         """Create the help dialog content."""
         # Create header bar
         header_bar = Adw.HeaderBar()
-        header_bar.set_title_widget(Adw.WindowTitle(title="KeySmith Help", subtitle="SSH Key Management"))
+        header_bar.set_title_widget(Adw.WindowTitle(title="Key Maker Help", subtitle="SSH Key Management"))
         
         # Create navigation view
         nav_view = Adw.NavigationView()
@@ -85,10 +85,10 @@ class HelpDialog(Adw.Dialog):
         
         # Add about section
         about_group = Adw.PreferencesGroup()
-        about_group.set_title("About KeySmith")
+        about_group.set_title("About Key Maker")
         
         about_row = Adw.ActionRow()
-        about_row.set_title("About KeySmith")
+        about_row.set_title("About Key Maker")
         about_row.set_subtitle("Version information and credits")
         about_row.set_activatable(True)
         about_row.add_suffix(Gtk.Image.new_from_icon_name("go-next-symbolic"))
@@ -113,9 +113,9 @@ class HelpDialog(Adw.Dialog):
     
     def _show_getting_started(self):
         """Show getting started help."""
-        content = """# Getting Started with KeySmith
+        content = """# Getting Started with Key Maker
 
-KeySmith is a user-friendly application for managing SSH keys on your system. It provides a graphical interface for common SSH key operations without requiring command-line knowledge.
+Key Maker is a user-friendly application for managing SSH keys on your system. It provides a graphical interface for common SSH key operations without requiring command-line knowledge.
 
 ## What are SSH Keys?
 
@@ -132,7 +132,7 @@ SSH keys are cryptographic keys used for secure authentication to remote servers
 
 ## Your SSH Directory
 
-KeySmith manages keys in your `~/.ssh` directory:
+Key Maker manages keys in your `~/.ssh` directory:
 - Private keys: `~/.ssh/keyname`
 - Public keys: `~/.ssh/keyname.pub`
 
@@ -141,7 +141,7 @@ The application automatically scans this directory and displays all your keys.
 ## Key Security
 
 - Private keys are set to 600 permissions (readable only by you)
-- KeySmith never stores or logs your passphrases
+- Key Maker never stores or logs your passphrases
 - All cryptographic operations use your system's OpenSSH tools
 """
         self._show_help_page("Getting Started", content)
@@ -150,7 +150,7 @@ The application automatically scans this directory and displays all your keys.
         """Show key generation help."""
         content = """# Generating SSH Keys
 
-KeySmith supports generating three types of SSH keys:
+Key Maker supports generating three types of SSH keys:
 
 ## Key Types
 
@@ -199,7 +199,7 @@ Once generated, your key appears in the main window. You can:
         """Show key management help."""
         content = """# Managing Your SSH Keys
 
-KeySmith provides several tools for managing your existing SSH keys.
+Key Maker provides several tools for managing your existing SSH keys.
 
 ## Key List
 
@@ -244,7 +244,7 @@ Use the context menu to securely delete key pairs:
 - This action cannot be undone
 
 ## Refresh
-Click the refresh button if you've added keys outside of KeySmith or if the list seems out of sync.
+Click the refresh button if you've added keys outside of Key Maker or if the list seems out of sync.
 """
         self._show_help_page("Key Management", content)
     
@@ -290,9 +290,9 @@ Follow these guidelines to keep your SSH keys secure:
 - You shared a private key by mistake
 - You see unauthorized access in logs
 
-## KeySmith Security
+## Key Maker Security
 
-KeySmith follows security best practices:
+Key Maker follows security best practices:
 - Never stores or logs passphrases
 - Uses secure file permissions (600 for private keys)
 - Delegates all cryptography to OpenSSH tools
@@ -308,7 +308,7 @@ Common issues and their solutions:
 
 ## Keys Not Appearing
 
-**Problem**: Keys don't show up in KeySmith
+**Problem**: Keys don't show up in Key Maker
 **Solutions**:
 - Click the refresh button
 - Check that keys are in `~/.ssh/` directory
@@ -351,7 +351,7 @@ Common issues and their solutions:
 
 ## Performance Issues
 
-**Problem**: KeySmith is slow with many keys
+**Problem**: Key Maker is slow with many keys
 **Solutions**:
 - Organize keys in subdirectories (advanced)
 - Remove unused old keys
@@ -436,7 +436,7 @@ Speed up your workflow with these keyboard shortcuts:
 
 ## Accessibility
 
-KeySmith supports standard accessibility features:
+Key Maker supports standard accessibility features:
 - Full keyboard navigation
 - Screen reader compatibility
 - High contrast themes
@@ -446,14 +446,14 @@ KeySmith supports standard accessibility features:
     
     def _show_about(self):
         """Show about information."""
-        content = """# About KeySmith
+        content = """# About Key Maker
 
-**Version**: 1.0.3  
+**Version**: 1.1.0  
 **License**: GNU General Public License v3.0 or later
 
 ## Description
 
-KeySmith is a modern, user-friendly application for managing SSH keys on Linux systems. It provides a graphical interface for common SSH key operations including generation, management, and deployment.
+Key Maker is a modern, user-friendly application for managing SSH keys on Linux systems. It provides a graphical interface for common SSH key operations including generation, management, and deployment.
 
 ## Features
 
@@ -474,7 +474,7 @@ KeySmith is a modern, user-friendly application for managing SSH keys on Linux s
 
 ## Security
 
-KeySmith prioritizes security:
+Key Maker prioritizes security:
 - Never stores or logs passphrases
 - Delegates cryptography to OpenSSH tools
 - Uses secure file permissions
@@ -483,11 +483,11 @@ KeySmith prioritizes security:
 
 ## Contributing
 
-KeySmith is open source software. Contributions are welcome!
+Key Maker is open source software. Contributions are welcome!
 
-- **Source Code**: https://github.com/tobagin/keysmith
-- **Bug Reports**: https://github.com/tobagin/keysmith/issues
-- **Documentation**: https://github.com/tobagin/keysmith/wiki
+- **Source Code**: https://github.com/tobagin/keymaker
+- **Bug Reports**: https://github.com/tobagin/keymaker/issues
+- **Documentation**: https://github.com/tobagin/keymaker/wiki
 
 ## Credits
 
@@ -498,14 +498,14 @@ KeySmith is open source software. Contributions are welcome!
 
 ## Acknowledgments
 
-Thanks to the OpenSSH team for the excellent ssh-keygen and ssh-copy-id tools that power KeySmith's functionality.
+Thanks to the OpenSSH team for the excellent ssh-keygen and ssh-copy-id tools that power Key Maker's functionality.
 
 ---
 
 © 2024 Thiago Fernandes  
 Licensed under GPL v3.0 or later
 """
-        self._show_help_page("About KeySmith", content)
+        self._show_help_page("About Key Maker", content)
     
     def _show_help_page(self, title: str, content: str):
         """Show a help page with the given content.

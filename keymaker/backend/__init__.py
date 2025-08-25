@@ -1,4 +1,4 @@
-"""KeySmith backend operations."""
+"""Keymaker backend operations."""
 
 from .key_scanner import (
     is_ssh_key_file,

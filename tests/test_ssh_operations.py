@@ -7,14 +7,14 @@ from pathlib import Path
 from datetime import datetime
 from unittest.mock import Mock, patch, AsyncMock
 
-from keysmith.models import (
+from keymaker.models import (
     SSHKey,
     SSHKeyType,
     KeyGenerationRequest,
     PassphraseChangeRequest,
     SSHOperationError,
 )
-from keysmith.backend.ssh_operations import (
+from keymaker.backend.ssh_operations import (
     generate_key,
     get_fingerprint,
     get_key_type,
@@ -47,7 +47,7 @@ class TestGenerateKey:
                 mock_exec.return_value = mock_process
                 
                 # Mock get_fingerprint
-                with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
+                with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
                     mock_fingerprint.return_value = "SHA256:abcd1234"
                     
                     # Mock Path.home() to return our temp directory
@@ -99,7 +99,7 @@ class TestGenerateKey:
                 mock_process.returncode = 0
                 mock_exec.return_value = mock_process
                 
-                with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
+                with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
                     mock_fingerprint.return_value = "SHA256:rsa1234"
                     
                     with patch('pathlib.Path.home') as mock_home:
@@ -143,7 +143,7 @@ class TestGenerateKey:
                 mock_process.returncode = 0
                 mock_exec.return_value = mock_process
                 
-                with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
+                with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
                     mock_fingerprint.return_value = "SHA256:secure1234"
                     
                     with patch('pathlib.Path.home') as mock_home:

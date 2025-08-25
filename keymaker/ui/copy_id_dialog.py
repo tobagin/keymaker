@@ -15,7 +15,7 @@ from ..models import SSHCopyIDRequest, SSHKey, SSHOperationError
 from .password_dialog import PasswordDialog
 
 
-@Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/copy_id_dialog.ui')
+@Gtk.Template(resource_path='/io/github/tobagin/keymaker/ui/copy_id_dialog.ui')
 class CopyIdDialog(Adw.Dialog):
     """Copy key to server dialog using Adwaita PreferencesDialog."""
 

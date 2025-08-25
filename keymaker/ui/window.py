@@ -1,4 +1,4 @@
-"""Main application window for KeySmith."""
+"""Main application window for Key Maker."""
 
 import gi
 
@@ -20,11 +20,11 @@ from .key_list import KeyListWidget
 from .help_dialog import HelpDialog
 
 
-@Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/window.ui')
-class KeySmithWindow(Adw.ApplicationWindow):
+@Gtk.Template(resource_path='/io/github/tobagin/keymaker/ui/window.ui')
+class KeyMakerWindow(Adw.ApplicationWindow):
     """Main application window using Adwaita components."""
 
-    __gtype_name__ = 'KeySmithWindow'
+    __gtype_name__ = 'KeyMakerWindow'
 
     # Template child widgets
     toolbar_view = Gtk.Template.Child()

@@ -6,8 +6,8 @@ from pathlib import Path
 from datetime import datetime
 from unittest.mock import Mock, patch
 
-from keysmith.models import SSHKey, SSHKeyType, SSHOperationError
-from keysmith.backend.key_scanner import (
+from keymaker.models import SSHKey, SSHKeyType, SSHOperationError
+from keymaker.backend.key_scanner import (
     scan_ssh_directory,
     refresh_ssh_key_metadata,
     is_ssh_key_file,
@@ -66,8 +66,8 @@ class TestScanSSHDirectory:
             config_file = ssh_dir / "config"
             config_file.write_text("Host example.com\n  User myuser")
             
-            with patch('keysmith.backend.key_scanner.get_key_type') as mock_get_key_type:
-                with patch('keysmith.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
+            with patch('keymaker.backend.key_scanner.get_key_type') as mock_get_key_type:
+                with patch('keymaker.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
                     # Mock responses based on key type
                     def mock_key_type_side_effect(path):
                         if "ed25519" in str(path):
@@ -121,8 +121,8 @@ class TestScanSSHDirectory:
             error_private.touch(mode=0o600)
             error_public.touch()
             
-            with patch('keysmith.backend.key_scanner.get_key_type') as mock_get_key_type:
-                with patch('keysmith.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
+            with patch('keymaker.backend.key_scanner.get_key_type') as mock_get_key_type:
+                with patch('keymaker.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
                     # Mock get_key_type to raise exception for error_key
                     def mock_key_type_side_effect(path):
                         if "error_key" in str(path):
@@ -154,8 +154,8 @@ class TestScanSSHDirectory:
                 private_path.touch(mode=0o600)
                 public_path.write_text("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5 user@host")
                 
-                with patch('keysmith.backend.key_scanner.get_key_type') as mock_get_key_type:
-                    with patch('keysmith.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
+                with patch('keymaker.backend.key_scanner.get_key_type') as mock_get_key_type:
+                    with patch('keymaker.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
                         mock_get_key_type.return_value = SSHKeyType.ED25519
                         mock_get_fingerprint.return_value = "SHA256:fingerprint"
                         
@@ -178,8 +178,8 @@ class TestBuildSSHKeyModel:
             private_path.touch(mode=0o600)
             public_path.write_text("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5 user@host")
             
-            with patch('keysmith.backend.key_scanner.get_key_type') as mock_get_key_type:
-                with patch('keysmith.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
+            with patch('keymaker.backend.key_scanner.get_key_type') as mock_get_key_type:
+                with patch('keymaker.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
                     mock_get_key_type.return_value = SSHKeyType.ED25519
                     mock_get_fingerprint.return_value = "SHA256:fingerprint"
                     
@@ -203,9 +203,9 @@ class TestBuildSSHKeyModel:
             private_path.touch(mode=0o600)
             public_path.write_text("ssh-rsa AAAAB3NzaC1yc2E user@host")
             
-            with patch('keysmith.backend.key_scanner.get_key_type') as mock_get_key_type:
-                with patch('keysmith.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
-                    with patch('keysmith.backend.key_scanner._extract_bit_size') as mock_extract_bits:
+            with patch('keymaker.backend.key_scanner.get_key_type') as mock_get_key_type:
+                with patch('keymaker.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
+                    with patch('keymaker.backend.key_scanner._extract_bit_size') as mock_extract_bits:
                         mock_get_key_type.return_value = SSHKeyType.RSA
                         mock_get_fingerprint.return_value = "SHA256:rsafingerprint"
                         mock_extract_bits.return_value = 4096
@@ -223,7 +223,7 @@ class TestBuildSSHKeyModel:
             private_path = Path(tmpdir) / "invalid_key"
             private_path.touch(mode=0o600)
             
-            with patch('keysmith.backend.key_scanner.get_key_type') as mock_get_key_type:
+            with patch('keymaker.backend.key_scanner.get_key_type') as mock_get_key_type:
                 mock_get_key_type.side_effect = Exception("Mock error")
                 
                 ssh_key = await _build_ssh_key_model(private_path)
@@ -361,7 +361,7 @@ class TestRefreshSSHKeyMetadata:
                 last_modified=datetime.now()
             )
             
-            with patch('keysmith.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
+            with patch('keymaker.backend.key_scanner.get_fingerprint') as mock_get_fingerprint:
                 mock_get_fingerprint.return_value = "SHA256:new_fingerprint"
                 
                 refreshed_key = await refresh_ssh_key_metadata(original_key)

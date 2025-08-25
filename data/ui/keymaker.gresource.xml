@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/io/github/tobagin/keysmith/ui">
+  <gresource prefix="/io/github/tobagin/keymaker/ui">
     <file>window.ui</file>
     <file>generate_dialog.ui</file>
     <file>key_list.ui</file>

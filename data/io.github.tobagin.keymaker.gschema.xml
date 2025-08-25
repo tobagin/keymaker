@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="keysmith">
-  <schema id="io.github.tobagin.keysmith" path="/io/github/tobagin/keysmith/">
+<schemalist gettext-domain="keymaker">
+  <schema id="io.github.tobagin.keymaker" path="/io/github/tobagin/keymaker/">
     <key name="window-width" type="i">
       <default>800</default>
       <summary>Default window width</summary>

@@ -105,8 +105,8 @@ ehthumbs.db
 Thumbs.db
 
 # Application specific
-keysmith.egg-info/
-*.keysmith
+keymaker.egg-info/
+*.keymaker
 
 # Test artifacts
 .coverage

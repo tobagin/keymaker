@@ -1,4 +1,4 @@
 # Translations
-i18n.gettext('keysmith',
+i18n.gettext('keymaker',
   preset: 'glib'
 )

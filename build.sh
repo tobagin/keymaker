@@ -1,11 +1,11 @@
 #!/bin/bash
-# Convenience script for building the KeySmith SSH key management application
+# Convenience script for building the KeyMaker SSH key management application
 
 set -e
 
 # Configuration
-APP_ID="io.github.tobagin.keysmith"
-PROJECT_NAME="KeySmith"
+APP_ID="io.github.tobagin.keymaker"
+PROJECT_NAME="KeyMaker"
 BUILD_DIR=".flatpak-builder"
 REPO_DIR="repo"
 
@@ -45,7 +45,7 @@ show_help() {
     cat << EOF
 Usage: $0 [OPTIONS]
 
-Build the KeySmith SSH key management application using Flatpak.
+Build the KeyMaker SSH key management application using Flatpak.
 
 OPTIONS:
     --dev               Build from local sources (development mode)
@@ -174,12 +174,12 @@ install_app() {
         print_info "Installing $PROJECT_NAME..."
         
         # Add local repo if not already added
-        if ! flatpak remote-list | grep -q "keysmith-local"; then
-            flatpak remote-add --user --no-gpg-verify keysmith-local "$REPO_DIR"
+        if ! flatpak remote-list | grep -q "keymaker-local"; then
+            flatpak remote-add --user --no-gpg-verify keymaker-local "$REPO_DIR"
         fi
         
         # Install/update the application (force reinstall if already installed)
-        if flatpak install -y --user --reinstall keysmith-local "$APP_ID"; then
+        if flatpak install -y --user --reinstall keymaker-local "$APP_ID"; then
             print_success "Installation completed successfully"
             print_info "You can now run the application with:"
             print_info "  flatpak run $APP_ID"

@@ -10,7 +10,7 @@ from gi.repository import Adw, Gdk, GObject, Gtk
 from ..models import SSHKey
 
 
-@Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/key_details_dialog.ui')
+@Gtk.Template(resource_path='/io/github/tobagin/keymaker/ui/key_details_dialog.ui')
 class KeyDetailsDialog(Adw.Dialog):
     """SSH key details dialog using Adwaita Dialog."""
 

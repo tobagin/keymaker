@@ -1,1 +1,1 @@
-"""KeySmith tests."""
+"""KeyMaker tests."""

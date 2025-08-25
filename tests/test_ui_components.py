@@ -10,11 +10,11 @@ mock_gtk = MagicMock()
 mock_adw = MagicMock()
 
 with patch.dict('sys.modules', {'gi.repository.Gtk': mock_gtk, 'gi.repository.Adw': mock_adw}):
-    from keysmith.models import SSHKey, SSHKeyType, KeyGenerationRequest
-    from keysmith.ui.key_row import KeyRow
-    from keysmith.ui.key_list import KeyListWidget
-    from keysmith.ui.generate_dialog import GenerateKeyDialog
-    from keysmith.ui.window import KeySmithWindow
+    from keymaker.models import SSHKey, SSHKeyType, KeyGenerationRequest
+    from keymaker.ui.key_row import KeyRow
+    from keymaker.ui.key_list import KeyListWidget
+    from keymaker.ui.generate_dialog import GenerateKeyDialog
+    from keymaker.ui.window import KeyMakerWindow
 
 
 class TestKeyRow:
@@ -31,7 +31,7 @@ class TestKeyRow:
             last_modified=datetime.now()
         )
         
-        with patch('keysmith.ui.key_row.Adw.ActionRow.__init__') as mock_init:
+        with patch('keymaker.ui.key_row.Adw.ActionRow.__init__') as mock_init:
             mock_init.return_value = None
             
             # Mock the ActionRow methods
@@ -43,8 +43,8 @@ class TestKeyRow:
             mock_row.add_suffix = Mock()
             mock_row.insert_action_group = Mock()
             
-            with patch('keysmith.ui.key_row.KeyRow._setup_content') as mock_setup:
-                with patch('keysmith.ui.key_row.KeyRow._setup_actions') as mock_actions:
+            with patch('keymaker.ui.key_row.KeyRow._setup_content') as mock_setup:
+                with patch('keymaker.ui.key_row.KeyRow._setup_actions') as mock_actions:
                     row = KeyRow(ssh_key)
                     
                     assert row.ssh_key == ssh_key
@@ -62,11 +62,11 @@ class TestKeyRow:
             last_modified=datetime.now()
         )
         
-        with patch('keysmith.ui.key_row.Adw.ActionRow.__init__') as mock_init:
+        with patch('keymaker.ui.key_row.Adw.ActionRow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_row.KeyRow._setup_content'):
-                with patch('keysmith.ui.key_row.KeyRow._setup_actions'):
+            with patch('keymaker.ui.key_row.KeyRow._setup_content'):
+                with patch('keymaker.ui.key_row.KeyRow._setup_actions'):
                     row = KeyRow(ssh_key)
                     
                     subtitle = row._format_subtitle()
@@ -87,11 +87,11 @@ class TestKeyRow:
             bit_size=4096
         )
         
-        with patch('keysmith.ui.key_row.Adw.ActionRow.__init__') as mock_init:
+        with patch('keymaker.ui.key_row.Adw.ActionRow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_row.KeyRow._setup_content'):
-                with patch('keysmith.ui.key_row.KeyRow._setup_actions'):
+            with patch('keymaker.ui.key_row.KeyRow._setup_content'):
+                with patch('keymaker.ui.key_row.KeyRow._setup_actions'):
                     row = KeyRow(ssh_key)
                     
                     subtitle = row._format_subtitle()
@@ -110,11 +110,11 @@ class TestKeyRow:
             last_modified=datetime.now()
         )
         
-        with patch('keysmith.ui.key_row.Adw.ActionRow.__init__') as mock_init:
+        with patch('keymaker.ui.key_row.Adw.ActionRow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_row.KeyRow._setup_content'):
-                with patch('keysmith.ui.key_row.KeyRow._setup_actions'):
+            with patch('keymaker.ui.key_row.KeyRow._setup_content'):
+                with patch('keymaker.ui.key_row.KeyRow._setup_actions'):
                     row = KeyRow(ssh_key)
                     
                     icon = row._get_key_icon()
@@ -132,11 +132,11 @@ class TestKeyRow:
             bit_size=4096
         )
         
-        with patch('keysmith.ui.key_row.Adw.ActionRow.__init__') as mock_init:
+        with patch('keymaker.ui.key_row.Adw.ActionRow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_row.KeyRow._setup_content'):
-                with patch('keysmith.ui.key_row.KeyRow._setup_actions'):
+            with patch('keymaker.ui.key_row.KeyRow._setup_content'):
+                with patch('keymaker.ui.key_row.KeyRow._setup_actions'):
                     row = KeyRow(ssh_key)
                     
                     icon = row._get_key_icon()
@@ -163,7 +163,7 @@ class TestKeyRow:
             last_modified=datetime.now()
         )
         
-        with patch('keysmith.ui.key_row.Adw.ActionRow.__init__') as mock_init:
+        with patch('keymaker.ui.key_row.Adw.ActionRow.__init__') as mock_init:
             mock_init.return_value = None
             
             mock_row = Mock()
@@ -171,9 +171,9 @@ class TestKeyRow:
             mock_row.set_subtitle = Mock()
             mock_row.set_icon_name = Mock()
             
-            with patch('keysmith.ui.key_row.KeyRow._setup_content'):
-                with patch('keysmith.ui.key_row.KeyRow._setup_actions'):
-                    with patch('keysmith.ui.key_row.KeyRow._update_prefix_badge'):
+            with patch('keymaker.ui.key_row.KeyRow._setup_content'):
+                with patch('keymaker.ui.key_row.KeyRow._setup_actions'):
+                    with patch('keymaker.ui.key_row.KeyRow._update_prefix_badge'):
                         row = KeyRow(old_key)
                         
                         # Mock the methods
@@ -194,10 +194,10 @@ class TestKeyListWidget:
     
     def test_key_list_initialization(self):
         """Test key list initialization."""
-        with patch('keysmith.ui.key_list.Gtk.Box.__init__') as mock_init:
+        with patch('keymaker.ui.key_list.Gtk.Box.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_list.KeyListWidget._setup_ui') as mock_setup:
+            with patch('keymaker.ui.key_list.KeyListWidget._setup_ui') as mock_setup:
                 key_list = KeyListWidget()
                 
                 assert key_list._ssh_keys == []
@@ -216,11 +216,11 @@ class TestKeyListWidget:
             )
         ]
         
-        with patch('keysmith.ui.key_list.Gtk.Box.__init__') as mock_init:
+        with patch('keymaker.ui.key_list.Gtk.Box.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_list.KeyListWidget._setup_ui'):
-                with patch('keysmith.ui.key_list.KeyListWidget._refresh_list') as mock_refresh:
+            with patch('keymaker.ui.key_list.KeyListWidget._setup_ui'):
+                with patch('keymaker.ui.key_list.KeyListWidget._refresh_list') as mock_refresh:
                     key_list = KeyListWidget()
                     
                     key_list.set_keys(ssh_keys)
@@ -238,11 +238,11 @@ class TestKeyListWidget:
             last_modified=datetime.now()
         )
         
-        with patch('keysmith.ui.key_list.Gtk.Box.__init__') as mock_init:
+        with patch('keymaker.ui.key_list.Gtk.Box.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_list.KeyListWidget._setup_ui'):
-                with patch('keysmith.ui.key_list.KeyListWidget._add_key_row') as mock_add:
+            with patch('keymaker.ui.key_list.KeyListWidget._setup_ui'):
+                with patch('keymaker.ui.key_list.KeyListWidget._add_key_row') as mock_add:
                     key_list = KeyListWidget()
                     
                     key_list.add_key(ssh_key)
@@ -260,10 +260,10 @@ class TestKeyListWidget:
             last_modified=datetime.now()
         )
         
-        with patch('keysmith.ui.key_list.Gtk.Box.__init__') as mock_init:
+        with patch('keymaker.ui.key_list.Gtk.Box.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_list.KeyListWidget._setup_ui'):
+            with patch('keymaker.ui.key_list.KeyListWidget._setup_ui'):
                 key_list = KeyListWidget()
                 key_list._ssh_keys = [ssh_key]
                 
@@ -279,10 +279,10 @@ class TestKeyListWidget:
     
     def test_is_empty(self):
         """Test checking if key list is empty."""
-        with patch('keysmith.ui.key_list.Gtk.Box.__init__') as mock_init:
+        with patch('keymaker.ui.key_list.Gtk.Box.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_list.KeyListWidget._setup_ui'):
+            with patch('keymaker.ui.key_list.KeyListWidget._setup_ui'):
                 key_list = KeyListWidget()
                 
                 assert key_list.is_empty() is True
@@ -301,10 +301,10 @@ class TestKeyListWidget:
     
     def test_get_key_count(self):
         """Test getting key count."""
-        with patch('keysmith.ui.key_list.Gtk.Box.__init__') as mock_init:
+        with patch('keymaker.ui.key_list.Gtk.Box.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.key_list.KeyListWidget._setup_ui'):
+            with patch('keymaker.ui.key_list.KeyListWidget._setup_ui'):
                 key_list = KeyListWidget()
                 
                 assert key_list.get_key_count() == 0
@@ -329,10 +329,10 @@ class TestGenerateKeyDialog:
         """Test dialog initialization."""
         mock_parent = Mock()
         
-        with patch('keysmith.ui.generate_dialog.Adw.PreferencesWindow.__init__') as mock_init:
+        with patch('keymaker.ui.generate_dialog.Adw.PreferencesWindow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.generate_dialog.GenerateKeyDialog._setup_ui') as mock_setup:
+            with patch('keymaker.ui.generate_dialog.GenerateKeyDialog._setup_ui') as mock_setup:
                 dialog = GenerateKeyDialog(mock_parent)
                 
                 assert dialog._generating is False
@@ -342,10 +342,10 @@ class TestGenerateKeyDialog:
         """Test creating generation request for Ed25519."""
         mock_parent = Mock()
         
-        with patch('keysmith.ui.generate_dialog.Adw.PreferencesWindow.__init__') as mock_init:
+        with patch('keymaker.ui.generate_dialog.Adw.PreferencesWindow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.generate_dialog.GenerateKeyDialog._setup_ui'):
+            with patch('keymaker.ui.generate_dialog.GenerateKeyDialog._setup_ui'):
                 dialog = GenerateKeyDialog(mock_parent)
                 
                 # Mock UI components
@@ -369,10 +369,10 @@ class TestGenerateKeyDialog:
         """Test creating generation request for RSA."""
         mock_parent = Mock()
         
-        with patch('keysmith.ui.generate_dialog.Adw.PreferencesWindow.__init__') as mock_init:
+        with patch('keymaker.ui.generate_dialog.Adw.PreferencesWindow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.generate_dialog.GenerateKeyDialog._setup_ui'):
+            with patch('keymaker.ui.generate_dialog.GenerateKeyDialog._setup_ui'):
                 dialog = GenerateKeyDialog(mock_parent)
                 
                 # Mock UI components
@@ -401,10 +401,10 @@ class TestGenerateKeyDialog:
         """Test filename validation."""
         mock_parent = Mock()
         
-        with patch('keysmith.ui.generate_dialog.Adw.PreferencesWindow.__init__') as mock_init:
+        with patch('keymaker.ui.generate_dialog.Adw.PreferencesWindow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.generate_dialog.GenerateKeyDialog._setup_ui'):
+            with patch('keymaker.ui.generate_dialog.GenerateKeyDialog._setup_ui'):
                 dialog = GenerateKeyDialog(mock_parent)
                 
                 # Valid filenames
@@ -419,18 +419,18 @@ class TestGenerateKeyDialog:
                 assert dialog._validate_filename("a" * 256) is False
 
 
-class TestKeySmithWindow:
+class TestKeyMakerWindow:
     """Test main application window."""
     
     def test_window_initialization(self):
         """Test window initialization."""
         mock_app = Mock()
         
-        with patch('keysmith.ui.window.Adw.ApplicationWindow.__init__') as mock_init:
+        with patch('keymaker.ui.window.Adw.ApplicationWindow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.window.KeySmithWindow._setup_ui') as mock_setup:
-                window = KeySmithWindow(mock_app)
+            with patch('keymaker.ui.window.KeyMakerWindow._setup_ui') as mock_setup:
+                window = KeyMakerWindow(mock_app)
                 
                 assert window._loop is None
                 mock_setup.assert_called_once()
@@ -449,11 +449,11 @@ class TestKeySmithWindow:
             bit_size=None
         )
         
-        with patch('keysmith.ui.window.Adw.ApplicationWindow.__init__') as mock_init:
+        with patch('keymaker.ui.window.Adw.ApplicationWindow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.window.KeySmithWindow._setup_ui'):
-                window = KeySmithWindow(mock_app)
+            with patch('keymaker.ui.window.KeyMakerWindow._setup_ui'):
+                window = KeyMakerWindow(mock_app)
                 
                 details = window._format_key_details(ssh_key)
                 
@@ -477,11 +477,11 @@ class TestKeySmithWindow:
             bit_size=4096
         )
         
-        with patch('keysmith.ui.window.Adw.ApplicationWindow.__init__') as mock_init:
+        with patch('keymaker.ui.window.Adw.ApplicationWindow.__init__') as mock_init:
             mock_init.return_value = None
             
-            with patch('keysmith.ui.window.KeySmithWindow._setup_ui'):
-                window = KeySmithWindow(mock_app)
+            with patch('keymaker.ui.window.KeyMakerWindow._setup_ui'):
+                window = KeyMakerWindow(mock_app)
                 
                 details = window._format_key_details(ssh_key)
                 

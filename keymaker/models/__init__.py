@@ -1,4 +1,4 @@
-"""KeySmith data models."""
+"""Keymaker data models."""
 
 from .ssh_key import (
     KeyDeletionRequest,

@@ -1,10 +1,10 @@
-# KeySmith
+# Key Maker
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![GTK](https://img.shields.io/badge/GTK-4.0+-blue.svg)](https://www.gtk.org/)
 
-KeySmith is a modern GTK4/Libadwaita application that provides a user-friendly graphical interface for SSH key management tasks. It simplifies the process of generating, managing, and deploying SSH keys through an intuitive GUI while maintaining security best practices.
+Key Maker is a modern GTK4/Libadwaita application that provides a user-friendly graphical interface for SSH key management tasks. It simplifies the process of generating, managing, and deploying SSH keys through an intuitive GUI while maintaining security best practices.
 
 ## Features
 
@@ -102,8 +102,8 @@ sudo pacman -S python gtk4 libadwaita meson ninja glib2 desktop-file-utils
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/tobagin/keysmith.git
-   cd keysmith
+   git clone https://github.com/tobagin/keymaker.git
+   cd keymaker
    ```
 
 2. **Set up Python virtual environment:**
@@ -122,12 +122,12 @@ sudo pacman -S python gtk4 libadwaita meson ninja glib2 desktop-file-utils
 4. **Run from build directory:**
    ```bash
    # If schemas aren't found, specify the schema directory
-   GSETTINGS_SCHEMA_DIR=./builddir/data ./builddir/keysmith
+   GSETTINGS_SCHEMA_DIR=./builddir/data ./builddir/keymaker
    ```
 
 #### System Installation
 
-To install KeySmith system-wide:
+To install Key Maker system-wide:
 
 ```bash
 sudo meson install -C builddir
@@ -145,7 +145,7 @@ pip install -r requirements-dev.txt
 pip install -e .
 
 # Run directly
-keysmith
+keymaker
 ```
 
 ## Usage
@@ -168,7 +168,7 @@ keysmith
 
 ### Application Preferences
 
-KeySmith stores preferences using GSettings:
+Key Maker stores preferences using GSettings:
 - Default key type (Ed25519/RSA)
 - Default RSA bit size
 - Auto-refresh settings
@@ -178,63 +178,63 @@ KeySmith stores preferences using GSettings:
 
 ### Environment Variables
 
-KeySmith supports configuration through environment variables. Copy `.env.example` to `.env` and customize:
+Key Maker supports configuration through environment variables. Copy `.env.example` to `.env` and customize:
 
 ```bash
 # Enable debug mode
-KEYSMITH_DEBUG=true
+KEYMAKER_DEBUG=true
 
 # Set default key type
-KEYSMITH_DEFAULT_KEY_TYPE=ed25519
+KEYMAKER_DEFAULT_KEY_TYPE=ed25519
 
 # Set default RSA bit size
-KEYSMITH_DEFAULT_RSA_BITS=4096
+KEYMAKER_DEFAULT_RSA_BITS=4096
 
 # Custom SSH directory
-KEYSMITH_SSH_DIR=~/.ssh
+KEYMAKER_SSH_DIR=~/.ssh
 
 # Enable verbose logging
-KEYSMITH_VERBOSE=true
+KEYMAKER_VERBOSE=true
 ```
 
 ### GSettings Schema
 
-KeySmith uses GSettings for persistent configuration:
+Key Maker uses GSettings for persistent configuration:
 
 ```bash
 # View all settings
-gsettings list-recursively io.github.tobagin.keysmith
+gsettings list-recursively io.github.tobagin.keymaker
 
 # Change default key type
-gsettings set io.github.tobagin.keysmith default-key-type 'rsa'
+gsettings set io.github.tobagin.keymaker default-key-type 'rsa'
 
 # Set default RSA bit size
-gsettings set io.github.tobagin.keysmith default-rsa-bits 4096
+gsettings set io.github.tobagin.keymaker default-rsa-bits 4096
 ```
 
 ## Testing
 
-KeySmith includes comprehensive unit tests:
+Key Maker includes comprehensive unit tests:
 
 ```bash
 # Run all tests
 python -m pytest tests/ -v
 
 # Run with coverage
-python -m pytest tests/ --cov=keysmith --cov-report=html
+python -m pytest tests/ --cov=keymaker --cov-report=html
 
 # Run specific test file
 python -m pytest tests/test_models.py -v
 
 # Run linting
-ruff check keysmith/ tests/
-black --check keysmith/ tests/
-mypy keysmith/
+ruff check keymaker/ tests/
+black --check keymaker/ tests/
+mypy keymaker/
 ```
 
 ## Security
 
-KeySmith follows security best practices:
+Key Maker follows security best practices:
 
 - **Never stores passphrases** - held in memory only during operations
 - **Delegates cryptography** to system OpenSSH tools
@@ -244,22 +244,22 @@ KeySmith follows security best practices:
 
 ## Flatpak Packaging
 
-KeySmith is designed for Flatpak distribution:
+Key Maker is designed for Flatpak distribution:
 
 ```bash
 # Build Flatpak (requires flatpak-builder)
-flatpak-builder --user --install --force-clean build-dir io.github.tobagin.keysmith.yml
+flatpak-builder --user --install --force-clean build-dir io.github.tobagin.keymaker.yml
 
 # Run Flatpak version
-flatpak run io.github.tobagin.keysmith
+flatpak run io.github.tobagin.keymaker
 ```
 
 ## Architecture
 
-KeySmith is organized into focused modules:
+Key Maker is organized into focused modules:
 
 ```
-keysmith/
+keymaker/
 ├── __init__.py          # Package initialization
 ├── main.py              # Application entry point
 ├── models/              # Pydantic data models
@@ -312,13 +312,13 @@ Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) 
 
 ## Support
 
-- **Bug Reports**: [GitHub Issues](https://github.com/tobagin/keysmith/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/tobagin/keysmith/discussions)
-- **Documentation**: [Project Wiki](https://github.com/tobagin/keysmith/wiki)
+- **Bug Reports**: [GitHub Issues](https://github.com/tobagin/keymaker/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/tobagin/keymaker/discussions)
+- **Documentation**: [Project Wiki](https://github.com/tobagin/keymaker/wiki)
 
 ## License
 
-KeySmith is licensed under the GNU General Public License v3.0 or later. See the [LICENSE](LICENSE) file for details.
+Key Maker is licensed under the GNU General Public License v3.0 or later. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 

@@ -1,4 +1,4 @@
-"""KeySmith - SSH Key Management Application.
+"""Key Maker - SSH Key Management Application.
 
 A GTK4/Libadwaita application for managing SSH keys with an intuitive GUI.
 """
@@ -8,13 +8,13 @@ import locale
 import os
 from pathlib import Path
 
-__version__ = "1.0.3"
+__version__ = "1.1.0"
 __author__ = "Thiago Fernandes"
 __license__ = "GPL-3.0-or-later"
 
 # Application constants
-APPLICATION_ID = "io.github.tobagin.keysmith"
-APPLICATION_NAME = "KeySmith"
+APPLICATION_ID = "io.github.tobagin.keymaker"
+APPLICATION_NAME = "Key Maker"
 
 # Set up translations
 def setup_translations():

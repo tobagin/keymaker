@@ -1,4 +1,4 @@
-"""Resource loading for KeySmith UI."""
+"""Resource loading for Key Maker UI."""
 
 import os
 from gi.repository import Gio, GLib
@@ -9,11 +9,11 @@ def load_ui_resources():
     # Try different resource paths
     resource_paths = [
         # Build directory for development
-        os.path.join(os.path.dirname(__file__), "..", "build", "data", "ui", "keysmith-ui.gresource"),
+        os.path.join(os.path.dirname(__file__), "..", "build", "data", "ui", "keymaker-ui.gresource"),
         # Flatpak installed location
-        "/app/share/keysmith/keysmith-ui.gresource",
+        "/app/share/keymaker/keymaker-ui.gresource",
         # System installed location
-        "/usr/share/keysmith/keysmith-ui.gresource",
+        "/usr/share/keymaker/keymaker-ui.gresource",
     ]
     
     for resource_path in resource_paths:

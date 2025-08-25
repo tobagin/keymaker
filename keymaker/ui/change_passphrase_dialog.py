@@ -14,7 +14,7 @@ from ..backend import change_passphrase
 from ..models import PassphraseChangeRequest, SSHKey, SSHOperationError
 
 
-@Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/change_passphrase_dialog.ui')
+@Gtk.Template(resource_path='/io/github/tobagin/keymaker/ui/change_passphrase_dialog.ui')
 class ChangePassphraseDialog(Adw.Dialog):
     """Change passphrase dialog using Adwaita PreferencesDialog."""
 

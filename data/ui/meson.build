@@ -31,11 +31,11 @@ endforeach
 
 # Create a dependency for the compiled UI files
 ui_resources = gnome.compile_resources(
-  'keysmith-ui',
-  'keysmith.gresource.xml',
+  'keymaker-ui',
+  'keymaker.gresource.xml',
   dependencies: compiled_ui_files,
   source_dir: meson.current_build_dir(),
   install: true,
-  install_dir: get_option('datadir') / 'keysmith',
+  install_dir: get_option('datadir') / 'keymaker',
   gresource_bundle: true
 )

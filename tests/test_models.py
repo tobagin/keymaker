@@ -6,7 +6,7 @@ from pathlib import Path
 from datetime import datetime
 from pydantic import ValidationError
 
-from keysmith.models import (
+from keymaker.models import (
     SSHKey,
     SSHKeyType,
     KeyGenerationRequest,

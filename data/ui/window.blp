@@ -1,8 +1,8 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $KeySmithWindow : Adw.ApplicationWindow {
-  title: "KeySmith";
+template $KeyMakerWindow : Adw.ApplicationWindow {
+  title: "Key Maker";
   default-width: 800;
   default-height: 600;
   width-request: 400;
@@ -12,7 +12,7 @@ template $KeySmithWindow : Adw.ApplicationWindow {
     [top]
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle {
-        title: "KeySmith";
+        title: "Key Maker";
         subtitle: "GUI for SSH key management tasks";
       };
 
@@ -61,7 +61,7 @@ menu main_menu {
       action: "app.preferences";
     }
     item {
-      label: _("_About KeySmith");
+      label: _("_About Key Maker");
       action: "app.about";
     }
   }

@@ -1,4 +1,4 @@
-"""Preferences dialog for KeySmith settings."""
+"""Preferences dialog for Key Maker settings."""
 
 import gi
 
@@ -8,7 +8,7 @@ gi.require_version('Adw', '1')
 from gi.repository import Adw, Gio, GObject, Gtk
 
 
-@Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/preferences_dialog.ui')
+@Gtk.Template(resource_path='/io/github/tobagin/keymaker/ui/preferences_dialog.ui')
 class PreferencesDialog(Adw.PreferencesDialog):
     """Preferences dialog using Adwaita PreferencesDialog."""
 
@@ -34,7 +34,7 @@ class PreferencesDialog(Adw.PreferencesDialog):
         super().__init__(**kwargs)
 
         # Get GSettings
-        self.settings = Gio.Settings.new("io.github.tobagin.keysmith")
+        self.settings = Gio.Settings.new("io.github.tobagin.keymaker")
 
         # Setup bindings and signals
         self._setup_bindings()

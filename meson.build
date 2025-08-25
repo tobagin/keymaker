@@ -1,5 +1,5 @@
-project('keysmith',
-  version: '1.0.4',
+project('keymaker',
+  version: '1.1.0',
   meson_version: '>= 0.59.0',
   default_options: [
     'warning_level=2',
@@ -13,9 +13,9 @@ python = import('python')
 i18n = import('i18n')
 
 # Application information
-APPLICATION_ID = 'io.github.tobagin.keysmith'
+APPLICATION_ID = 'io.github.tobagin.keymaker'
 PKGDATA_DIR = get_option('prefix') / get_option('datadir') / meson.project_name()
-MODULE_DIR = PKGDATA_DIR / 'keysmith'
+MODULE_DIR = PKGDATA_DIR / 'keymaker'
 
 # Find Python installation
 python_bin = python.find_installation('python3')
@@ -43,12 +43,12 @@ conf.set('MODULE_DIR', MODULE_DIR)
 conf.set('LOCALE_DIR', get_option('prefix') / get_option('localedir'))
 
 # Install Python module
-install_subdir('keysmith', install_dir: python_bin.get_install_dir())
+install_subdir('keymaker', install_dir: python_bin.get_install_dir())
 
 # Generate and install executable script
-keysmith_script = configure_file(
-  input: 'keysmith.in',
-  output: 'keysmith',
+keymaker_script = configure_file(
+  input: 'keymaker.in',
+  output: 'keymaker',
   configuration: conf,
   install: true,
   install_dir: get_option('bindir'),

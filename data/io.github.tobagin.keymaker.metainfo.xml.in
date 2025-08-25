@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.tobagin.keysmith</id>
+  <id>io.github.tobagin.keymaker</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  <name>KeySmith</name>
+  <name>Key Maker</name>
   <summary>SSH Key Management Application</summary>
+  
+  <!-- Flatpak ID transition support -->
+  <provides>
+    <id>io.github.tobagin.keysmith</id>
+  </provides>
+  <replaces>
+    <id>io.github.tobagin.keysmith</id>
+  </replaces>
   
   <description>
     <p>
-      KeySmith is a user-friendly graphical application for managing SSH keys. 
+      Key Maker is a user-friendly graphical application for managing SSH keys. 
       It provides an intuitive interface for generating, managing, and deploying 
       SSH keys without needing to use command-line tools.
     </p>
@@ -23,7 +31,7 @@
       <li>Modern GTK4 and Libadwaita user interface</li>
     </ul>
     <p>
-      KeySmith follows security best practices and delegates all cryptographic 
+      Key Maker follows security best practices and delegates all cryptographic 
       operations to the system's OpenSSH tools, ensuring your keys are handled 
       safely and securely.
     </p>
@@ -31,44 +39,44 @@
   
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/main-window-with-keys.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window-with-keys.png</image>
       <caption>Main window showing SSH key management with individual action buttons</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/main-window-no-keys.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window-no-keys.png</image>
       <caption>Clean interface when no SSH keys are present</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/generate-key-without-passphrase.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/generate-key-without-passphrase.png</image>
       <caption>Key generation dialog with comprehensive options</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/gerenate-ssh-key-passphrase-mismatch.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/gerenate-ssh-key-passphrase-mismatch.png</image>
       <caption>Real-time validation with helpful error feedback</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/key-details.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/key-details.png</image>
       <caption>Detailed SSH key information and fingerprint</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/copy-key-to-server.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/copy-key-to-server.png</image>
       <caption>Generate ssh-copy-id commands for server deployment</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/change-passphrase.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/change-passphrase.png</image>
       <caption>Secure passphrase management</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/delete-key.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/delete-key.png</image>
       <caption>Safe key deletion with confirmation</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/preferences.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/preferences.png</image>
       <caption>Comprehensive preferences and settings</caption>
     </screenshot>
   </screenshots>
   
-  <launchable type="desktop-id">io.github.tobagin.keysmith.desktop</launchable>
+  <launchable type="desktop-id">io.github.tobagin.keymaker.desktop</launchable>
   
   <categories>
     <category>System</category>
@@ -84,13 +92,26 @@
     <keyword>authentication</keyword>
   </keywords>
   
-  <url type="homepage">https://github.com/tobagin/keysmith</url>
-  <url type="bugtracker">https://github.com/tobagin/keysmith/issues</url>
-  <url type="help">https://github.com/tobagin/keysmith/wiki</url>
+  <url type="homepage">https://github.com/tobagin/keymaker</url>
+  <url type="bugtracker">https://github.com/tobagin/keymaker/issues</url>
+  <url type="help">https://github.com/tobagin/keymaker/wiki</url>
   
   <developer_name>Thiago Fernandes</developer_name>
   
   <releases>
+    <release version="1.1.0" date="2025-08-25">
+      <description>
+        <p>Major rebranding and application ID change:</p>
+        <ul>
+          <li>Renamed application from "KeySmith" to "Key Maker"</li>
+          <li>Changed application ID from io.github.tobagin.keysmith to io.github.tobagin.keymaker</li>
+          <li>Updated all branding, documentation, and user-facing text</li>
+          <li>Maintained backward compatibility through Flatpak ID transition support</li>
+          <li>Updated repository URL to reflect new name</li>
+          <li>Full rebranding across all components and files</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.3" date="2025-07-14">
       <description>
         <p>Icon sizing fixes:</p>
@@ -105,7 +126,7 @@
       <description>
         <p>Icon and quality improvements:</p>
         <ul>
-          <li>Updated application icon with new KeySmith branding</li>
+          <li>Updated application icon with new Key Maker branding</li>
           <li>Improved visual consistency across all icon sizes</li>
           <li>Enhanced application quality guidelines compliance</li>
         </ul>
@@ -122,7 +143,7 @@
     </release>
     <release version="0.1.0" date="2024-01-01">
       <description>
-        <p>Initial release of KeySmith:</p>
+        <p>Initial release of Key Maker:</p>
         <ul>
           <li>SSH key generation (Ed25519, RSA, ECDSA)</li>
           <li>Key management and listing</li>

@@ -1,4 +1,4 @@
-"""Performance tests for KeySmith with large SSH key collections."""
+"""Performance tests for Key Maker with large SSH key collections."""
 
 import pytest
 import tempfile
@@ -8,9 +8,9 @@ from pathlib import Path
 from unittest.mock import patch, Mock
 from datetime import datetime
 
-from keysmith.models import SSHKey, SSHKeyType
-from keysmith.backend.key_scanner import scan_ssh_directory
-from keysmith.backend.ssh_operations import get_fingerprint, get_key_type
+from keymaker.models import SSHKey, SSHKeyType
+from keymaker.backend.key_scanner import scan_ssh_directory
+from keymaker.backend.ssh_operations import get_fingerprint, get_key_type
 
 
 class TestLargeKeyCollectionPerformance:
@@ -48,13 +48,13 @@ class TestLargeKeyCollectionPerformance:
             # Create private key
             if key_type == SSHKeyType.RSA:
                 private_content = f"-----BEGIN RSA PRIVATE KEY-----\nmock_rsa_private_key_content_{i}\n-----END RSA PRIVATE KEY-----"
-                public_content = f"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAB mock_rsa_content_{i} test_{i}@keysmith.local"
+                public_content = f"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAB mock_rsa_content_{i} test_{i}@keymaker.local"
             elif key_type == SSHKeyType.ECDSA:
                 private_content = f"-----BEGIN EC PRIVATE KEY-----\nmock_ecdsa_private_key_content_{i}\n-----END EC PRIVATE KEY-----"
-                public_content = f"ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTY mock_ecdsa_content_{i} test_{i}@keysmith.local"
+                public_content = f"ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTY mock_ecdsa_content_{i} test_{i}@keymaker.local"
             else:  # ED25519
                 private_content = f"-----BEGIN OPENSSH PRIVATE KEY-----\nmock_ed25519_private_key_content_{i}\n-----END OPENSSH PRIVATE KEY-----"
-                public_content = f"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5 mock_ed25519_content_{i} test_{i}@keysmith.local"
+                public_content = f"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5 mock_ed25519_content_{i} test_{i}@keymaker.local"
             
             private_path.write_text(private_content)
             private_path.chmod(0o600)
@@ -68,8 +68,8 @@ class TestLargeKeyCollectionPerformance:
         self.create_many_keys(key_count)
         
         # Mock fingerprint and key type operations to focus on scanning logic
-        with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
-             patch('keysmith.backend.ssh_operations.get_key_type') as mock_key_type:
+        with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
+             patch('keymaker.backend.ssh_operations.get_key_type') as mock_key_type:
             
             def mock_fingerprint_func(path):
                 # Simulate some processing time
@@ -114,8 +114,8 @@ class TestLargeKeyCollectionPerformance:
         key_count = 200
         self.create_many_keys(key_count)
         
-        with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
-             patch('keysmith.backend.ssh_operations.get_key_type') as mock_key_type:
+        with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
+             patch('keymaker.backend.ssh_operations.get_key_type') as mock_key_type:
             
             # Fast mocks to focus on memory usage
             mock_fingerprint.side_effect = lambda path: f"SHA256:mock_{path.stem}"
@@ -148,8 +148,8 @@ class TestLargeKeyCollectionPerformance:
         key_count = 50
         self.create_many_keys(key_count)
         
-        with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
-             patch('keysmith.backend.ssh_operations.get_key_type') as mock_key_type:
+        with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
+             patch('keymaker.backend.ssh_operations.get_key_type') as mock_key_type:
             
             # Simulate realistic operation times
             mock_fingerprint.side_effect = lambda path: f"SHA256:mock_{path.stem}"
@@ -199,8 +199,8 @@ class TestLargeKeyCollectionPerformance:
             private_path.chmod(0o600)
             public_path.write_text(public_content)
         
-        with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
-             patch('keysmith.backend.ssh_operations.get_key_type') as mock_key_type:
+        with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
+             patch('keymaker.backend.ssh_operations.get_key_type') as mock_key_type:
             
             mock_fingerprint.side_effect = lambda path: f"SHA256:mock_{path.stem}"
             mock_key_type.side_effect = lambda path: SSHKeyType.ED25519
@@ -255,7 +255,7 @@ class TestUIPerformanceWithManyKeys:
                 public_path=public_path,
                 key_type=SSHKeyType.ED25519,
                 fingerprint=f"SHA256:mock_fingerprint_{i:04d}",
-                comment=f"test_{i}@keysmith.local",
+                comment=f"test_{i}@keymaker.local",
                 last_modified=datetime.now(),
                 bit_size=None
             )

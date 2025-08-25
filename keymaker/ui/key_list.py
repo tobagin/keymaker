@@ -13,7 +13,7 @@ from ..models import SSHKey
 from .key_row import KeyRow
 
 
-@Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/key_list.ui')
+@Gtk.Template(resource_path='/io/github/tobagin/keymaker/ui/key_list.ui')
 class KeyListWidget(Gtk.Box):
     """Widget displaying list of SSH keys using GTK4 ListBox."""
 

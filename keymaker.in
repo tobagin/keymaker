@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""KeySmith launcher script."""
+"""Key Maker launcher script."""
 
 import os
 import sys
@@ -12,10 +12,10 @@ if MODULE_DIR not in sys.path:
 
 if __name__ == '__main__':
     try:
-        from keysmith.main import main
+        from keymaker.main import main
         sys.exit(main())
     except ImportError as e:
-        print(f"Error: Could not import KeySmith module: {e}", file=sys.stderr)
+        print(f"Error: Could not import Key Maker module: {e}", file=sys.stderr)
         print(f"Module directory: {MODULE_DIR}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:

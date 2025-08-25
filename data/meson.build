@@ -1,7 +1,7 @@
 # Desktop file
 desktop_file = i18n.merge_file(
-  input: 'io.github.tobagin.keysmith.desktop.in',
-  output: 'io.github.tobagin.keysmith.desktop',
+  input: 'io.github.tobagin.keymaker.desktop.in',
+  output: 'io.github.tobagin.keymaker.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -18,8 +18,8 @@ endif
 
 # AppStream metadata
 appstream_file = i18n.merge_file(
-  input: 'io.github.tobagin.keysmith.metainfo.xml.in',
-  output: 'io.github.tobagin.keysmith.metainfo.xml',
+  input: 'io.github.tobagin.keymaker.metainfo.xml.in',
+  output: 'io.github.tobagin.keymaker.metainfo.xml',
   po_dir: '../po',
   install: true,
   install_dir: get_option('datadir') / 'metainfo'
@@ -35,8 +35,8 @@ endif
 
 # GSettings schema
 gsettings_schema = configure_file(
-  input: 'io.github.tobagin.keysmith.gschema.xml',
-  output: 'io.github.tobagin.keysmith.gschema.xml',
+  input: 'io.github.tobagin.keymaker.gschema.xml',
+  output: 'io.github.tobagin.keymaker.gschema.xml',
   copy: true
 )
 
@@ -56,5 +56,5 @@ subdir('icons')
 
 # Install screenshots (for documentation and future use)
 install_subdir('screenshots',
-  install_dir: get_option('datadir') / 'keysmith'
+  install_dir: get_option('datadir') / 'keymaker'
 )

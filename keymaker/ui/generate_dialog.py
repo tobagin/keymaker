@@ -14,7 +14,7 @@ from ..backend import generate_key
 from ..models import KeyGenerationRequest, SSHKey, SSHKeyType
 
 
-@Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/generate_dialog.ui')
+@Gtk.Template(resource_path='/io/github/tobagin/keymaker/ui/generate_dialog.ui')
 class GenerateKeyDialog(Adw.Dialog):
     """Key generation dialog using Adwaita PreferencesDialog."""
 
@@ -50,7 +50,7 @@ class GenerateKeyDialog(Adw.Dialog):
         self._generating = False
 
         # Get GSettings and apply defaults
-        self.settings = Gio.Settings.new("io.github.tobagin.keysmith")
+        self.settings = Gio.Settings.new("io.github.tobagin.keymaker")
         self._apply_defaults()
 
         # Setup signals
@@ -354,7 +354,7 @@ class GenerateKeyDialog(Adw.Dialog):
             guidance = "A key with this filename already exists. Please choose a different filename or delete the existing key first."
         elif "permission" in technical_error.lower():
             user_message = "Permission denied"
-            guidance = "KeySmith doesn't have permission to create files in the SSH directory. Please check that ~/.ssh directory exists and has proper permissions (700)."
+            guidance = "Key Maker doesn't have permission to create files in the SSH directory. Please check that ~/.ssh directory exists and has proper permissions (700)."
         elif "ssh-keygen" in technical_error.lower():
             user_message = "SSH tools not available"
             guidance = "The ssh-keygen command is not available on your system. Please install OpenSSH client tools."

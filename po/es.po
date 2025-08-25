@@ -1,12 +1,12 @@
-# Spanish translation for KeySmith
+# Spanish translation for Key Maker
 # Copyright (C) 2024 Thiago Fernandes
-# This file is distributed under the same license as the KeySmith package.
+# This file is distributed under the same license as the Key Maker package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: KeySmith 1.0.3\n"
-"Report-Msgid-Bugs-To: https://github.com/tobagin/keysmith/issues\n"
+"Project-Id-Version: Key Maker 1.0.3\n"
+"Report-Msgid-Bugs-To: https://github.com/tobagin/keymaker/issues\n"
 "POT-Creation-Date: 2024-01-01 12:00+0000\n"
 "PO-Revision-Date: 2024-01-01 12:00+0000\n"
 "Last-Translator: Thiago Fernandes\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid "Public key copied to clipboard"
 msgstr "Clave pública copiada al portapapeles"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid "Unable to copy public key to clipboard"
 msgstr "No se pudo copiar la clave pública al portapapeles"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid ""
 "Error details: {error}\n"
 "\n"
@@ -41,27 +41,27 @@ msgstr ""
 "• El sistema de portapapeles no está disponible\n"
 "• Los permisos de archivo impiden leer la clave"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid "Delete SSH Key?"
 msgstr "¿Eliminar clave SSH?"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid "Are you sure you want to delete the key '{keyname}'?"
 msgstr "¿Estás seguro de que quieres eliminar la clave '{keyname}'?"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid "Delete"
 msgstr "Eliminar"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid "Unable to load SSH keys"
 msgstr "No se pudieron cargar las claves SSH"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid ""
 "Error details: {error}\n"
 "\n"
@@ -81,11 +81,11 @@ msgstr ""
 "\n"
 "Intenta actualizar o verifica los permisos de tu directorio SSH."
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid "Unable to delete SSH key"
 msgstr "No se pudo eliminar la clave SSH"
 
-#: keysmith/ui/window.py
+#: keymaker/ui/window.py
 msgid ""
 "Error details: {error}\n"
 "\n"
@@ -105,43 +105,43 @@ msgstr ""
 "\n"
 "Intenta verificar los permisos de archivo o cerrar aplicaciones que puedan estar usando la clave."
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid "Unable to generate SSH key"
 msgstr "No se pudo generar la clave SSH"
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid "SSH key already exists"
 msgstr "La clave SSH ya existe"
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid "A key with this filename already exists. Please choose a different filename or delete the existing key first."
 msgstr "Ya existe una clave con este nombre de archivo. Por favor, elige un nombre diferente o elimina la clave existente primero."
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid "Permission denied"
 msgstr "Permiso denegado"
 
-#: keysmith/ui/generate_dialog.py
-msgid "KeySmith doesn't have permission to create files in the SSH directory. Please check that ~/.ssh directory exists and has proper permissions (700)."
-msgstr "KeySmith no tiene permisos para crear archivos en el directorio SSH. Por favor, verifica que el directorio ~/.ssh existe y tiene los permisos apropiados (700)."
+#: keymaker/ui/generate_dialog.py
+msgid "Key Maker doesn't have permission to create files in the SSH directory. Please check that ~/.ssh directory exists and has proper permissions (700)."
+msgstr "Key Maker no tiene permisos para crear archivos en el directorio SSH. Por favor, verifica que el directorio ~/.ssh existe y tiene los permisos apropiados (700)."
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid "SSH tools not available"
 msgstr "Herramientas SSH no disponibles"
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid "The ssh-keygen command is not available on your system. Please install OpenSSH client tools."
 msgstr "El comando ssh-keygen no está disponible en tu sistema. Por favor, instala las herramientas cliente de OpenSSH."
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid "Invalid key parameters"
 msgstr "Parámetros de clave inválidos"
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid "The key generation parameters are invalid. Please check the filename and other settings."
 msgstr "Los parámetros de generación de claves son inválidos. Por favor, verifica el nombre de archivo y otras configuraciones."
 
-#: keysmith/ui/generate_dialog.py
+#: keymaker/ui/generate_dialog.py
 msgid ""
 "This might happen if:\n"
 "• The ~/.ssh directory doesn't exist or has wrong permissions\n"
@@ -155,30 +155,30 @@ msgstr ""
 "• Espacio en disco insuficiente\n"
 "• El nombre de archivo contiene caracteres inválidos"
 
-#: data/io.github.tobagin.keysmith.desktop.in
-msgid "KeySmith"
-msgstr "KeySmith"
+#: data/io.github.tobagin.keymaker.desktop.in
+msgid "Key Maker"
+msgstr "Key Maker"
 
-#: data/io.github.tobagin.keysmith.desktop.in
+#: data/io.github.tobagin.keymaker.desktop.in
 msgid "SSH Key Management"
 msgstr "Gestión de Claves SSH"
 
-#: data/io.github.tobagin.keysmith.desktop.in
+#: data/io.github.tobagin.keymaker.desktop.in
 msgid "Manage SSH keys with a user-friendly graphical interface"
 msgstr "Gestiona claves SSH con una interfaz gráfica fácil de usar"
 
-#: data/io.github.tobagin.keysmith.desktop.in
+#: data/io.github.tobagin.keymaker.desktop.in
 msgid "SSH;key;cryptography;security;authentication;"
 msgstr "SSH;clave;criptografía;seguridad;autenticación;"
 
-#: keysmith/main.py
+#: keymaker/main.py
 msgid "SSH Key Management Application"
 msgstr "Aplicación de Gestión de Claves SSH"
 
-#: keysmith/main.py
+#: keymaker/main.py
 msgid "Enable verbose logging"
 msgstr "Habilitar registro detallado"
 
-#: keysmith/main.py
+#: keymaker/main.py
 msgid "A modern SSH key management application built with GTK4 and LibAdwaita"
 msgstr "Una aplicación moderna de gestión de claves SSH construida con GTK4 y LibAdwaita"

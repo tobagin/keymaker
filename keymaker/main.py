@@ -1,4 +1,4 @@
-"""Main application entry point for KeySmith."""
+"""Main application entry point for Key Maker."""
 
 import gi
 
@@ -14,14 +14,14 @@ from gi.repository import Adw, Gio, GLib, Gtk
 from . import APPLICATION_ID, APPLICATION_NAME, __version__
 # Load resources before importing UI
 from . import resources
-from .ui.window import KeySmithWindow
+from .ui.window import KeyMakerWindow
 
 
-class KeySmithApplication(Adw.Application):
-    """Main KeySmith application using Adwaita Application."""
+class KeyMakerApplication(Adw.Application):
+    """Main Key Maker application using Adwaita Application."""
 
     def __init__(self):
-        """Initialize the KeySmith application."""
+        """Initialize the Key Maker application."""
         super().__init__(
             application_id=APPLICATION_ID,
             flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE
@@ -87,7 +87,7 @@ class KeySmithApplication(Adw.Application):
         """Handle application activation."""
         # Create or present main window
         if self.window is None:
-            self.window = KeySmithWindow(application=self)
+            self.window = KeyMakerWindow(application=self)
 
         self.window.present()
 
@@ -183,9 +183,9 @@ class KeySmithApplication(Adw.Application):
         about_dialog.set_application_icon(APPLICATION_ID)
         about_dialog.set_version(__version__)
         about_dialog.set_comments("A modern SSH key management application built with GTK4 and LibAdwaita")
-        about_dialog.set_website("https://github.com/tobagin/keysmith")
-        about_dialog.set_issue_url("https://github.com/tobagin/keysmith/issues")
-        about_dialog.set_support_url("https://github.com/tobagin/keysmith/discussions")
+        about_dialog.set_website("https://github.com/tobagin/keymaker")
+        about_dialog.set_issue_url("https://github.com/tobagin/keymaker/issues")
+        about_dialog.set_support_url("https://github.com/tobagin/keymaker/discussions")
 
         # Set developers
         about_dialog.set_developers([
@@ -257,17 +257,17 @@ def main():
     ssh_dir.mkdir(mode=0o700, exist_ok=True)
 
     # Create and run application
-    app = KeySmithApplication()
+    app = KeyMakerApplication()
 
     # Run the application
     try:
         exit_code = app.run(sys.argv)
         return exit_code
     except KeyboardInterrupt:
-        print("\nKeySmith interrupted by user")
+        print("\nKey Maker interrupted by user")
         return 130
     except Exception as e:
-        print(f"KeySmith encountered an error: {e}")
+        print(f"Key Maker encountered an error: {e}")
         return 1
 
 

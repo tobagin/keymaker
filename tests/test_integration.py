@@ -1,4 +1,4 @@
-"""Integration tests for KeySmith workflows.
+"""Integration tests for Key Maker workflows.
 
 These tests exercise complete workflows including UI interactions,
 backend operations, and file system operations in a controlled environment.
@@ -13,7 +13,7 @@ from pathlib import Path
 from unittest.mock import patch, Mock
 from gi.repository import Gtk, Adw, GLib
 
-from keysmith.models import (
+from keymaker.models import (
     SSHKey,
     SSHKeyType,
     KeyGenerationRequest,
@@ -21,14 +21,14 @@ from keysmith.models import (
     KeyDeletionRequest,
     SSHOperationError,
 )
-from keysmith.backend.ssh_operations import (
+from keymaker.backend.ssh_operations import (
     generate_key,
     delete_key_pair,
     change_passphrase,
 )
-from keysmith.backend.key_scanner import scan_ssh_directory
-from keysmith.ui.window import KeySmithWindow
-from keysmith.ui.generate_dialog import GenerateKeyDialog
+from keymaker.backend.key_scanner import scan_ssh_directory
+from keymaker.ui.window import KeyMakerWindow
+from keymaker.ui.generate_dialog import GenerateKeyDialog
 
 
 class TestKeyGenerationWorkflow:
@@ -58,7 +58,7 @@ class TestKeyGenerationWorkflow:
         request = KeyGenerationRequest(
             key_type=SSHKeyType.ED25519,
             filename="test_integration",
-            comment="integration-test@keysmith.local",
+            comment="integration-test@keymaker.local",
             passphrase=None
         )
         
@@ -84,13 +84,13 @@ class TestKeyGenerationWorkflow:
                 private_key_path.chmod(0o600)
                 
                 public_key_path.write_text("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI"
-                                         "mock_public_key_content integration-test@keysmith.local\n")
+                                         "mock_public_key_content integration-test@keymaker.local\n")
                 return mock_process
             
             mock_exec.side_effect = create_key_files
             
             # Mock fingerprint generation
-            with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
+            with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
                 mock_fingerprint.return_value = "SHA256:mock_fingerprint_hash"
                 
                 # Execute key generation
@@ -101,7 +101,7 @@ class TestKeyGenerationWorkflow:
                 assert ssh_key.public_path == public_key_path
                 assert ssh_key.key_type == SSHKeyType.ED25519
                 assert ssh_key.fingerprint == "SHA256:mock_fingerprint_hash"
-                assert ssh_key.comment == "integration-test@keysmith.local"
+                assert ssh_key.comment == "integration-test@keymaker.local"
                 
                 # Verify files exist
                 assert private_key_path.exists()
@@ -116,7 +116,7 @@ class TestKeyGenerationWorkflow:
         request = KeyGenerationRequest(
             key_type=SSHKeyType.RSA,
             filename="test_rsa_protected",
-            comment="protected-test@keysmith.local",
+            comment="protected-test@keymaker.local",
             passphrase="test_passphrase_123",
             rsa_bits=2048
         )
@@ -136,7 +136,7 @@ class TestKeyGenerationWorkflow:
                 private_key_path.chmod(0o600)
                 
                 public_key_path.write_text("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAB"
-                                         "mock_rsa_public_key_content protected-test@keysmith.local\n")
+                                         "mock_rsa_public_key_content protected-test@keymaker.local\n")
                 
                 mock_process = Mock()
                 mock_process.communicate = asyncio.coroutine(lambda: (b"", b""))
@@ -145,7 +145,7 @@ class TestKeyGenerationWorkflow:
             
             mock_exec.side_effect = create_protected_key_files
             
-            with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
+            with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
                 mock_fingerprint.return_value = "SHA256:mock_rsa_fingerprint"
                 
                 ssh_key = await generate_key(request)
@@ -340,8 +340,8 @@ class TestKeyScanningWorkflow:
             public_path.write_text(f"{pub_prefix} mock_content user@host")
         
         # Mock fingerprint and key type detection
-        with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
-             patch('keysmith.backend.ssh_operations.get_key_type') as mock_key_type:
+        with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint, \
+             patch('keymaker.backend.ssh_operations.get_key_type') as mock_key_type:
             
             def mock_fingerprint_func(path):
                 if "ed25519" in str(path):
@@ -460,7 +460,7 @@ class TestErrorRecoveryWorkflows:
             
             mock_exec.side_effect = create_dir_and_files
             
-            with patch('keysmith.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
+            with patch('keymaker.backend.ssh_operations.get_fingerprint') as mock_fingerprint:
                 mock_fingerprint.return_value = "SHA256:test"
                 
                 ssh_key = await generate_key(request)

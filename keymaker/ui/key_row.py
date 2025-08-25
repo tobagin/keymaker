@@ -10,7 +10,7 @@ from gi.repository import Adw, Gio, GObject, Gtk
 from ..models import SSHKey, SSHKeyType
 
 
-@Gtk.Template(resource_path='/io/github/tobagin/keysmith/ui/key_row.ui')
+@Gtk.Template(resource_path='/io/github/tobagin/keymaker/ui/key_row.ui')
 class KeyRow(Adw.ActionRow):
     """Individual SSH key row widget using Adwaita ActionRow."""
 
