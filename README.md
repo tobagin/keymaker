@@ -1,38 +1,56 @@
 # Key Maker
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![GTK](https://img.shields.io/badge/GTK-4.0+-blue.svg)](https://www.gtk.org/)
+[![Vala](https://img.shields.io/badge/Vala-0.56+-blue.svg)](https://vala.dev/)
+[![GTK](https://img.shields.io/badge/GTK-4.18+-blue.svg)](https://www.gtk.org/)
+[![Libadwaita](https://img.shields.io/badge/Libadwaita-1.7+-blue.svg)](https://gitlab.gnome.org/GNOME/libadwaita)
 
-Key Maker is a modern GTK4/Libadwaita application that provides a user-friendly graphical interface for SSH key management tasks. It simplifies the process of generating, managing, and deploying SSH keys through an intuitive GUI while maintaining security best practices.
+Key Maker is a modern, native GTK4/Libadwaita application built with Vala that provides a user-friendly graphical interface for SSH key management tasks. It simplifies the process of generating, managing, and deploying SSH keys through an intuitive GUI while maintaining security best practices and following GNOME design guidelines.
 
 ## Features
 
 ### 🔑 SSH Key Generation
-- Generate Ed25519, RSA, and ECDSA SSH keys
-- Customizable filename, comment, and passphrase options
+- Generate Ed25519, RSA, and ECDSA SSH keys with a modern dialog
+- Smart filename generation with timestamp-based uniqueness
+- Comprehensive validation with real-time error feedback
+- Optional passphrase protection with confirmation matching
 - Configurable RSA bit sizes (2048, 3072, 4096, 8192)
-- Secure key permissions (600) automatically applied
+- Auto-updates filename when changing key types
+- Uses preference defaults (key type, RSA bits, comment, passphrase setting)
 
-### 📋 Key Management
-- Automatic scanning of `~/.ssh` directory
-- Display key type, fingerprint, and metadata
+### 📋 Key Management  
+- Automatic scanning and detection of SSH keys in `~/.ssh`
+- **Color-coded security indicators**: 🟢 Ed25519 (secure), 🟡 RSA (acceptable), 🔴 ECDSA (not recommended)
+- Display real key types, bit sizes, fingerprints, and comments
+- Toggle fingerprint visibility in preferences
 - One-click public key copying to clipboard
 - Generate ssh-copy-id commands for server deployment
-- Secure key deletion with confirmation dialogs
+- Smart delete confirmation system (can be disabled with safety warning)
 
 ### 🔒 Security & Passphrase Management
 - Change key passphrases safely
-- Never store or log passphrases
-- Delegate all cryptographic operations to OpenSSH tools
-- Secure file permission handling
+- Never store or log passphrases in memory or files
+- Delegate all cryptographic operations to system OpenSSH tools
+- Secure file permission handling (600 for private keys)
+- Input validation and sanitization
 
-### 🎨 Modern Interface
-- GTK4 and Libadwaita design
+### 🎨 Modern Interface & UX
+- Native GTK4 and Libadwaita design with Blueprint UI
 - Follows GNOME Human Interface Guidelines
-- Responsive and accessible interface
-- System theme integration
+- **Dual build system**: Development and production versions
+- Proper dialog centering and modal behavior
 - Toast notifications for user feedback
+- Comprehensive preferences with real-time validation
+- Responsive layout and accessibility support
+- **Flatpak packaging** for secure distribution
+
+### ⚙️ Smart Preferences System
+- Configurable defaults (key type, RSA bits, comment)
+- Show/hide fingerprints toggle
+- Delete confirmation settings with safety warnings
+- Auto-refresh intervals
+- Persistent settings with GSettings
+- Real-time preference validation and application
 
 ## Screenshots
 
@@ -69,36 +87,30 @@ Key Maker is a modern GTK4/Libadwaita application that provides a user-friendly 
 
 ## Installation
 
-### From Source
+Key Maker is distributed exclusively via Flatpak for security, consistency, and ease of installation across Linux distributions.
 
-#### Prerequisites
+### Prerequisites
 
 **System Dependencies:**
-- Python 3.9+
-- GTK4 development libraries
-- Libadwaita 1.2+ development libraries
-- Meson build system
-- Ninja build tool
-- GLib schema compiler
+- Flatpak and flatpak-builder
+- Development tools for building
 
 **Ubuntu/Debian:**
 ```bash
-sudo apt install python3-dev libgtk-4-dev libadwaita-1-dev meson ninja-build \
-  glib-compile-schemas desktop-file-utils
+sudo apt install flatpak flatpak-builder git
 ```
 
 **Fedora:**
 ```bash
-sudo dnf install python3-devel gtk4-devel libadwaita-devel meson ninja-build \
-  glib2-devel desktop-file-utils
+sudo dnf install flatpak flatpak-builder git
 ```
 
 **Arch Linux:**
 ```bash
-sudo pacman -S python gtk4 libadwaita meson ninja glib2 desktop-file-utils
+sudo pacman -S flatpak flatpak-builder git
 ```
 
-#### Build Instructions
+### Build and Install
 
 1. **Clone the repository:**
    ```bash
@@ -106,47 +118,36 @@ sudo pacman -S python gtk4 libadwaita meson ninja glib2 desktop-file-utils
    cd keymaker
    ```
 
-2. **Set up Python virtual environment:**
+2. **Build Development Version:**
    ```bash
-   python3 -m venv venv_linux
-   source venv_linux/bin/activate
-   pip install -r requirements.txt
+   # Build and install development version with Flatpak
+   ./scripts/build.sh --dev
+   
+   # Run the development version
+   flatpak run io.github.tobagin.keysmith.Devel
    ```
 
-3. **Configure and build:**
+3. **Build Production Version:**
    ```bash
-   meson setup builddir
-   meson compile -C builddir
+   # Build and install production version
+   ./scripts/build.sh
+   
+   # Run the production version  
+   flatpak run io.github.tobagin.keysmith
    ```
 
-4. **Run from build directory:**
-   ```bash
-   # If schemas aren't found, specify the schema directory
-   GSETTINGS_SCHEMA_DIR=./builddir/data ./builddir/keymaker
-   ```
+### Quick Start
 
-#### System Installation
-
-To install Key Maker system-wide:
+For the fastest setup experience:
 
 ```bash
-sudo meson install -C builddir
+git clone https://github.com/tobagin/keymaker.git
+cd keymaker
+./scripts/build.sh --dev
+flatpak run io.github.tobagin.keysmith.Devel
 ```
 
-### Development Setup
-
-For development, you can install in development mode:
-
-```bash
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Install in development mode
-pip install -e .
-
-# Run directly
-keymaker
-```
+The build script automatically handles all dependencies and creates a sandboxed Flatpak application ready to use.
 
 ## Usage
 
@@ -168,114 +169,163 @@ keymaker
 
 ### Application Preferences
 
-Key Maker stores preferences using GSettings:
-- Default key type (Ed25519/RSA)
-- Default RSA bit size
-- Auto-refresh settings
-- UI preferences
+Key Maker provides a comprehensive preferences system:
+
+**Generation Defaults:**
+- Default key type (Ed25519/RSA/ECDSA)
+- Default RSA bit size (2048/3072/4096/8192)  
+- Default comment template
+- Use passphrase by default setting
+
+**Interface Options:**
+- Show/hide fingerprints in key list
+- Auto-refresh interval
+- Delete confirmation behavior
+- Theme preferences (follows system)
+
+**Security Settings:**
+- Confirm key deletions (with safety warning when disabled)
+- Secure file permission handling
 
 ## Configuration
-
-### Environment Variables
-
-Key Maker supports configuration through environment variables. Copy `.env.example` to `.env` and customize:
-
-```bash
-# Enable debug mode
-KEYMAKER_DEBUG=true
-
-# Set default key type
-KEYMAKER_DEFAULT_KEY_TYPE=ed25519
-
-# Set default RSA bit size
-KEYMAKER_DEFAULT_RSA_BITS=4096
-
-# Custom SSH directory
-KEYMAKER_SSH_DIR=~/.ssh
-
-# Enable verbose logging
-KEYMAKER_VERBOSE=true
-```
 
 ### GSettings Schema
 
 Key Maker uses GSettings for persistent configuration:
 
 ```bash
-# View all settings
-gsettings list-recursively io.github.tobagin.keymaker
+# View all settings (Development)
+gsettings list-recursively io.github.tobagin.keysmith.Devel
+
+# View all settings (Production)  
+gsettings list-recursively io.github.tobagin.keysmith
 
 # Change default key type
-gsettings set io.github.tobagin.keymaker default-key-type 'rsa'
+gsettings set io.github.tobagin.keysmith.Devel default-key-type 'rsa'
 
 # Set default RSA bit size
-gsettings set io.github.tobagin.keymaker default-rsa-bits 4096
+gsettings set io.github.tobagin.keysmith.Devel default-rsa-bits 4096
+
+# Toggle fingerprint display
+gsettings set io.github.tobagin.keysmith.Devel show-fingerprints true
+
+# Configure delete confirmations
+gsettings set io.github.tobagin.keysmith.Devel confirm-deletions true
 ```
 
-## Testing
+### Debug Mode
 
-Key Maker includes comprehensive unit tests:
+Enable debug output for troubleshooting:
 
 ```bash
-# Run all tests
-python -m pytest tests/ -v
+# Run with debug messages
+G_MESSAGES_DEBUG=all flatpak run io.github.tobagin.keysmith.Devel
 
-# Run with coverage
-python -m pytest tests/ --cov=keymaker --cov-report=html
-
-# Run specific test file
-python -m pytest tests/test_models.py -v
-
-# Run linting
-ruff check keymaker/ tests/
-black --check keymaker/ tests/
-mypy keymaker/
+# Or for production version
+G_MESSAGES_DEBUG=all flatpak run io.github.tobagin.keysmith
 ```
+
+## Testing & Development
+
+### Manual Testing
+
+Test the application functionality:
+
+```bash
+# Build development version
+./scripts/build.sh --dev
+
+# Run with debug output
+G_MESSAGES_DEBUG=all flatpak run io.github.tobagin.keysmith.Devel
+
+# Test key generation with different types
+# Test preferences saving and loading  
+# Test key detection and color coding
+# Test delete confirmation behavior
+```
+
+### Code Quality
+
+Key Maker uses modern Vala practices:
+
+- **Memory safety**: Automatic memory management with reference counting
+- **Type safety**: Strong typing with compile-time checks  
+- **Blueprint UI**: Declarative UI definitions with compile-time validation
+- **GObject integration**: Native GLib/GTK integration
+- **Async/await**: Non-blocking operations for file I/O and subprocess calls
 
 ## Security
 
-Key Maker follows security best practices:
+Key Maker follows strict security practices:
 
-- **Never stores passphrases** - held in memory only during operations
-- **Delegates cryptography** to system OpenSSH tools
-- **Secure file permissions** - private keys use 600 permissions
-- **Input validation** - all user inputs are validated using Pydantic
-- **No shell injection** - subprocess calls never use `shell=True`
+- **Never stores passphrases** - kept only in memory during operations
+- **Delegates all cryptography** to system OpenSSH tools (ssh-keygen, ssh-add)
+- **Secure file permissions** - private keys automatically set to 600
+- **Input sanitization** - all user inputs validated before subprocess calls
+- **No shell injection** - direct subprocess execution without shell interpretation
+- **Sandboxed execution** - Flatpak provides additional security isolation
+- **Minimal permissions** - Only requires SSH directory access and SSH agent socket
 
-## Flatpak Packaging
+## Flatpak Architecture
 
-Key Maker is designed for Flatpak distribution:
+Key Maker is designed as a Flatpak-first application:
 
-```bash
-# Build Flatpak (requires flatpak-builder)
-flatpak-builder --user --install --force-clean build-dir io.github.tobagin.keymaker.yml
+**Development vs Production:**
+- Separate app IDs: `io.github.tobagin.keysmith.Devel` vs `io.github.tobagin.keysmith`
+- Independent settings and data directories
+- Different branding and theming
 
-# Run Flatpak version
-flatpak run io.github.tobagin.keymaker
+**Permissions:**
+```yaml
+finish-args:
+  - --share=network           # For ssh-copy-id operations
+  - --share=ipc               # Required for GTK
+  - --socket=x11              # X11 display access
+  - --socket=wayland          # Wayland display access  
+  - --socket=ssh-auth         # SSH agent communication
+  - --filesystem=~/.ssh:create # SSH directory access
+  - --talk-name=org.gnome.keyring     # Keyring integration
+  - --talk-name=org.freedesktop.secrets # Secret service
 ```
 
 ## Architecture
 
-Key Maker is organized into focused modules:
+Key Maker follows modern Vala/GTK application architecture:
 
 ```
-keymaker/
-├── __init__.py          # Package initialization
-├── main.py              # Application entry point
-├── models/              # Pydantic data models
-│   ├── __init__.py
-│   └── ssh_key.py
-├── backend/             # SSH operations and file scanning
-│   ├── __init__.py
-│   ├── ssh_operations.py
-│   └── key_scanner.py
-└── ui/                  # GTK4/Libadwaita interface
-    ├── __init__.py
-    ├── window.py        # Main application window
-    ├── key_list.py      # Key list widget
-    ├── key_row.py       # Individual key row
-    └── generate_dialog.py # Key generation dialog
+src/
+├── main.vala                    # Application entry point
+├── application.vala             # GtkApplication subclass
+├── models/                      # Data models and types
+│   ├── enums.vala              # SSH key types and error enums
+│   └── ssh-key.vala            # SSH key data structures
+├── backend/                     # Core business logic
+│   ├── ssh-operations.vala     # SSH key operations (generate, delete, etc.)
+│   └── key-scanner.vala        # SSH directory scanning and detection
+└── ui/                         # User interface components
+    ├── window.vala             # Main application window
+    ├── key-list.vala           # Key list container widget
+    ├── key-row.vala            # Individual key row with color coding
+    └── dialogs/                # Modal dialogs
+        ├── generate-dialog.vala         # Key generation
+        ├── preferences-dialog.vala      # Application settings
+        ├── delete-key-dialog.vala      # Delete confirmation
+        ├── key-details-dialog.vala     # Key information
+        └── ...                         # Other utility dialogs
+
+data/
+├── ui/                         # Blueprint UI definitions
+│   ├── *.blp                  # Declarative UI files
+│   └── keysmith.gresource.xml # UI resource bundling
+├── icons/                      # Application icons
+└── *.desktop.in              # Desktop entry templates
 ```
+
+**Design Patterns:**
+- **MVC Architecture**: Clear separation of models, views, and controllers
+- **Observer Pattern**: GSettings and UI binding for preferences
+- **Async Operations**: Non-blocking file I/O and subprocess execution
+- **Resource Management**: Automatic cleanup and error handling
 
 ## Future Development
 
@@ -303,12 +353,12 @@ Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) 
 
 ### Code Style
 
-- Follow PEP 8 style guidelines
-- Use type hints throughout
-- Add docstrings for all public functions
-- Include unit tests for new features
-- Format code with `black`
-- Lint with `ruff`
+- Follow Vala coding conventions
+- Use Blueprint for UI definitions
+- Add documentation comments for public APIs
+- Test changes with both development and production builds
+- Ensure proper error handling and memory management
+- Follow GNOME Human Interface Guidelines for UI changes
 
 ## Support
 
@@ -322,7 +372,9 @@ Key Maker is licensed under the GNU General Public License v3.0 or later. See th
 
 ## Acknowledgments
 
-- Built with [GTK4](https://www.gtk.org/) and [Libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/)
-- Uses [PyGObject](https://pygobject.gnome.org/) for Python bindings
-- Follows [GNOME Human Interface Guidelines](https://developer.gnome.org/hig/)
-- Inspired by the need for accessible SSH key management tools
+- Built with [Vala](https://vala.dev/) programming language
+- Uses [GTK4](https://www.gtk.org/) and [Libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/) for the modern interface
+- UI designed with [Blueprint](https://jwestman.pages.gitlab.gnome.org/blueprint-compiler/) for declarative interface definitions
+- Follows [GNOME Human Interface Guidelines](https://developer.gnome.org/hig/) for consistent user experience
+- Packaged with [Flatpak](https://flatpak.org/) for secure, cross-distribution deployment
+- Inspired by the need for accessible SSH key management tools that follow modern Linux desktop standards

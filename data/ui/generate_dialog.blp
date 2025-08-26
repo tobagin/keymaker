@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $GenerateKeyDialog: Adw.Dialog {
+template $KeyMakerGenerateKeyDialog: Adw.Dialog {
   title: _("Generate SSH Key");
   content-width: 500;
   content-height: 700;
@@ -110,6 +110,18 @@ template $GenerateKeyDialog: Adw.Dialog {
             Adw.PasswordEntryRow passphrase_confirm_row {
               title: _("Confirm Passphrase");
               show-apply-button: false;
+            }
+
+            Label error_label {
+              visible: false;
+              wrap: true;
+              halign: center;
+              margin-top: 12;
+
+              styles [
+                "error",
+                "caption"
+              ]
             }
           }
 

@@ -1,7 +1,7 @@
 # List of source files containing translatable strings
-data/io.github.tobagin.keymaker.desktop.in
-data/io.github.tobagin.keymaker.metainfo.xml.in
-data/io.github.tobagin.keymaker.gschema.xml
+data/io.github.tobagin.keysmith.desktop.in
+data/io.github.tobagin.keysmith.metainfo.xml.in
+data/io.github.tobagin.keysmith.gschema.xml
 keymaker/__init__.py
 keymaker/main.py
 keymaker/ui/window.py

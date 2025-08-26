@@ -6,11 +6,11 @@ This document explains how to build and test Key Maker using Flatpak, both for l
 
 Two Flatpak manifests are provided:
 
-1. **`io.github.tobagin.keymaker.yml`** - For git tags/releases
+1. **`io.github.tobagin.keysmith.yml`** - For git tags/releases
    - Uses `type: git` with specific tag and commit
    - Suitable for building releases and submission to Flathub
 
-2. **`io.github.tobagin.keymaker-local.yml`** - For local development
+2. **`io.github.tobagin.keysmith-local.yml`** - For local development
    - Uses `type: dir` with `path: .` to build from local source
    - Suitable for testing changes during development
 
@@ -39,13 +39,13 @@ For development and testing:
 mkdir -p build-flatpak
 
 # Build the application
-flatpak-builder build-flatpak io.github.tobagin.keymaker-local.yml --force-clean
+flatpak-builder build-flatpak io.github.tobagin.keysmith-local.yml --force-clean
 
 # Install locally for testing
-flatpak-builder --user --install build-flatpak io.github.tobagin.keymaker-local.yml --force-clean
+flatpak-builder --user --install build-flatpak io.github.tobagin.keysmith-local.yml --force-clean
 
 # Run the application
-flatpak run io.github.tobagin.keymaker
+flatpak run io.github.tobagin.keysmith
 ```
 
 ## Building from Git Tag
@@ -57,13 +57,13 @@ For releases:
 # Then build:
 mkdir -p build-flatpak-git
 
-flatpak-builder build-flatpak-git io.github.tobagin.keymaker.yml --force-clean
+flatpak-builder build-flatpak-git io.github.tobagin.keysmith.yml --force-clean
 
 # Install locally for testing
-flatpak-builder --user --install build-flatpak-git io.github.tobagin.keymaker.yml --force-clean
+flatpak-builder --user --install build-flatpak-git io.github.tobagin.keysmith.yml --force-clean
 
 # Run the application
-flatpak run io.github.tobagin.keymaker
+flatpak run io.github.tobagin.keysmith
 ```
 
 ## Permissions Explained
@@ -94,7 +94,7 @@ After installation, test the application:
 
 ```bash
 # Run the application
-flatpak run io.github.tobagin.keymaker
+flatpak run io.github.tobagin.keysmith
 
 # Check if it can access SSH directory
 ls -la ~/.ssh/
@@ -107,7 +107,7 @@ ls -la ~/.ssh/
 
 For Flathub submission:
 
-1. Use the git manifest (`io.github.tobagin.keymaker.yml`)
+1. Use the git manifest (`io.github.tobagin.keysmith.yml`)
 2. Update the git tag and commit hash to match your release
 3. Test thoroughly with the git manifest
 4. Submit to Flathub following their guidelines
@@ -120,14 +120,14 @@ If the build fails:
 
 ```bash
 # Check build logs (for local development)
-flatpak-builder --verbose build-flatpak io.github.tobagin.keymaker-local.yml --force-clean
+flatpak-builder --verbose build-flatpak io.github.tobagin.keysmith-local.yml --force-clean
 
 # Or for git version
-flatpak-builder --verbose build-flatpak io.github.tobagin.keymaker.yml --force-clean
+flatpak-builder --verbose build-flatpak io.github.tobagin.keysmith.yml --force-clean
 
 # Clean and rebuild
 rm -rf build-flatpak
-flatpak-builder build-flatpak io.github.tobagin.keymaker-local.yml --force-clean
+flatpak-builder build-flatpak io.github.tobagin.keysmith-local.yml --force-clean
 ```
 
 ### Runtime Issues
@@ -148,7 +148,7 @@ If SSH operations fail:
 
 ```bash
 # Check sandbox permissions
-flatpak run --command=sh io.github.tobagin.keymaker
+flatpak run --command=sh io.github.tobagin.keysmith
 ls -la ~/.ssh/
 ```
 

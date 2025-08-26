@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=@APP_NAME@
+Comment=SSH Key Management Application
+Exec=keymaker
+Icon=@APP_ID@
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;System;Security;
+Keywords=ssh;keys;security;remote;authentication;
+StartupNotify=true
+MimeType=application/x-openssh-key;
+StartupWMClass=keymaker

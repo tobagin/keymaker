@@ -155,19 +155,19 @@ msgstr ""
 "• Espacio en disco insuficiente\n"
 "• El nombre de archivo contiene caracteres inválidos"
 
-#: data/io.github.tobagin.keymaker.desktop.in
+#: data/io.github.tobagin.keysmith.desktop.in
 msgid "Key Maker"
 msgstr "Key Maker"
 
-#: data/io.github.tobagin.keymaker.desktop.in
+#: data/io.github.tobagin.keysmith.desktop.in
 msgid "SSH Key Management"
 msgstr "Gestión de Claves SSH"
 
-#: data/io.github.tobagin.keymaker.desktop.in
+#: data/io.github.tobagin.keysmith.desktop.in
 msgid "Manage SSH keys with a user-friendly graphical interface"
 msgstr "Gestiona claves SSH con una interfaz gráfica fácil de usar"
 
-#: data/io.github.tobagin.keymaker.desktop.in
+#: data/io.github.tobagin.keysmith.desktop.in
 msgid "SSH;key;cryptography;security;authentication;"
 msgstr "SSH;clave;criptografía;seguridad;autenticación;"
 

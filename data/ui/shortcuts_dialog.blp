@@ -1,0 +1,146 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerShortcutsDialog : Adw.Dialog {
+  title: "Keyboard Shortcuts";
+  content-width: 480;
+  content-height: 600;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: "Keyboard Shortcuts";
+      };
+    }
+
+    ScrolledWindow {
+      hscrollbar-policy: never;
+      vscrollbar-policy: automatic;
+      propagate-natural-height: true;
+
+      Box {
+        orientation: vertical;
+        spacing: 18;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 24;
+        margin-end: 24;
+
+        Adw.PreferencesGroup app_group {
+          title: "Application";
+
+          Adw.ActionRow preferences_row {
+            title: "Preferences";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "Ctrl+,";
+              styles ["caption", "monospace"]
+            }
+          }
+
+          Adw.ActionRow quit_row {
+            title: "Quit";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "Ctrl+Q";
+              styles ["caption", "monospace"]
+            }
+          }
+        }
+
+        Adw.PreferencesGroup key_management_group {
+          title: "SSH Key Management";
+
+          Adw.ActionRow generate_key_row {
+            title: "Generate New SSH Key";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "Ctrl+N";
+              styles ["caption", "monospace"]
+            }
+          }
+
+          Adw.ActionRow refresh_keys_row {
+            title: "Refresh Key List";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "Ctrl+R, F5";
+              styles ["caption", "monospace"]
+            }
+          }
+
+          Adw.ActionRow copy_public_key_row {
+            title: "Copy Public Key";
+            subtitle: "When a key is selected";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "Ctrl+C";
+              styles ["caption", "monospace"]
+            }
+          }
+
+          Adw.ActionRow delete_key_row {
+            title: "Delete Selected Key";
+            subtitle: "When a key is selected";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "Delete";
+              styles ["caption", "monospace"]
+            }
+          }
+        }
+
+        Adw.PreferencesGroup nav_group {
+          title: "Navigation & Help";
+
+          Adw.ActionRow help_row {
+            title: "Show Help";
+            subtitle: "Via menu only";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "";
+              styles ["caption", "monospace"]
+            }
+          }
+
+          Adw.ActionRow shortcuts_row {
+            title: "Show Shortcuts";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "Ctrl+?";
+              styles ["caption", "monospace"]
+            }
+          }
+
+          Adw.ActionRow about_row {
+            title: "About Key Maker";
+            activatable: false;
+
+            [suffix]
+            Label {
+              label: "F1";
+              styles ["caption", "monospace"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

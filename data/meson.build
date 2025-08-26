@@ -1,7 +1,14 @@
+# Configure desktop template
+desktop_template = configure_file(
+  input: 'io.github.tobagin.keysmith.desktop.in',
+  output: 'io.github.tobagin.keysmith.desktop.configured',
+  configuration: conf_data
+)
+
 # Desktop file
 desktop_file = i18n.merge_file(
-  input: 'io.github.tobagin.keymaker.desktop.in',
-  output: 'io.github.tobagin.keymaker.desktop',
+  input: desktop_template,
+  output: '@0@.desktop'.format(app_id),
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -16,28 +23,46 @@ if desktop_utils.found()
   )
 endif
 
-# AppStream metadata
-appstream_file = i18n.merge_file(
-  input: 'io.github.tobagin.keymaker.metainfo.xml.in',
-  output: 'io.github.tobagin.keymaker.metainfo.xml',
-  po_dir: '../po',
-  install: true,
-  install_dir: get_option('datadir') / 'metainfo'
-)
+# AppStream metadata (skip i18n for development builds to avoid ITS rules issues)
+if get_option('profile') == 'development'
+  appstream_file = configure_file(
+    input: 'io.github.tobagin.keysmith.metainfo.xml.in',
+    output: '@0@.metainfo.xml'.format(app_id),
+    configuration: conf_data,
+    install: true,
+    install_dir: get_option('datadir') / 'metainfo'
+  )
+else
+  appstream_configured = configure_file(
+    input: 'io.github.tobagin.keysmith.metainfo.xml.in',
+    output: '@0@.metainfo.xml.in'.format(app_id),
+    configuration: conf_data
+  )
+  
+  appstream_file = i18n.merge_file(
+    input: appstream_configured,
+    output: '@0@.metainfo.xml'.format(app_id),
+    po_dir: '../po',
+    install: true,
+    install_dir: get_option('datadir') / 'metainfo'
+  )
+endif
 
-# Validate appstream file
-appstream_util = find_program('appstream-util', required: false)
-if appstream_util.found()
-  test('Validate appstream file', appstream_util,
-    args: ['validate', appstream_file]
+# Metainfo validation
+appstreamcli = find_program('appstreamcli', required: false)
+if appstreamcli.found()
+  test('Validate metainfo',
+    appstreamcli,
+    args: ['validate', '--no-net', appstream_file],
+    suite: 'validation'
   )
 endif
 
 # GSettings schema
 gsettings_schema = configure_file(
-  input: 'io.github.tobagin.keymaker.gschema.xml',
-  output: 'io.github.tobagin.keymaker.gschema.xml',
-  copy: true
+  input: 'io.github.tobagin.keysmith.gschema.xml.in',
+  output: '@0@.gschema.xml'.format(app_id),
+  configuration: conf_data
 )
 
 # Install GSettings schema

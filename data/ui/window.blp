@@ -8,8 +8,9 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
   width-request: 400;
   height-request: 300;
 
-  content: Adw.ToolbarView toolbar_view {
-    [top]
+  content: Gtk.Box {
+    orientation: vertical;
+    
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle {
         title: "Key Maker";
@@ -38,7 +39,9 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
       }
     }
 
-    content: Adw.ToastOverlay toast_overlay {
+    Adw.ToastOverlay toast_overlay {
+      vexpand: true;
+      
       Adw.Clamp {
         maximum-size: 1200;
         tightening-threshold: 600;
@@ -50,7 +53,7 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
           // Key list will be added programmatically
         }
       }
-    };
+    }
   };
 }
 
@@ -59,6 +62,12 @@ menu main_menu {
     item {
       label: _("_Preferences");
       action: "app.preferences";
+    }
+  }
+  section {
+    item {
+      label: _("Keyboard _Shortcuts");
+      action: "app.shortcuts";
     }
     item {
       label: _("_About Key Maker");

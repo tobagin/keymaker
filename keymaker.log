@@ -1,0 +1,1476 @@
+(flatpak run:207157): GLib-GIO-DEBUG: 19:40:51.152: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+flatpak-INFO: 19:40:51.152: No installations directory in /etc/flatpak/installations.d. Skipping
+(flatpak run:207157): OSTree-DEBUG: 19:40:51.152: using fuse: 0
+flatpak-INFO: 19:40:51.153: Opening system flatpak installation at path /var/lib/flatpak
+(flatpak run:207157): OSTree-DEBUG: 19:40:51.153: using fuse: 0
+flatpak-INFO: 19:40:51.153: Opening user flatpak installation at path /home/tobagin/.local/share/flatpak
+flatpak-INFO: 19:40:51.153: Opening user flatpak installation at path /home/tobagin/.local/share/flatpak
+flatpak-INFO: 19:40:51.207: Opening user flatpak installation at path /home/tobagin/.local/share/flatpak
+(flatpak run:207157): OSTree-DEBUG: 19:40:51.208: using fuse: 0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: Metadata from runtime:
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	[Environment]
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	ALSA_CONFIG_PATH=/usr/share/alsa/alsa-flatpak.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	GI_TYPELIB_PATH=/app/lib/girepository-1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	GST_PLUGIN_SYSTEM_PATH=/app/lib/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	XDG_DATA_DIRS=/app/share:/usr/share:/usr/share/runtime/share:/run/host/user-share:/run/host/share
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	ALSA_CONFIG_DIR=/usr/share/alsa
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	__EGL_EXTERNAL_PLATFORM_CONFIG_DIRS=/etc/egl/egl_external_platform.d:/usr/lib/x86_64-linux-gnu/GL/egl/egl_external_platform.d:/usr/share/egl/egl_external_platform.d
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	PYTHONUSERBASE=/var/data/python
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	#
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: Metadata from app manifest:
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	[Context]
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	shared=network;ipc;
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	sockets=x11;wayland;fallback-x11;ssh-auth;
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	devices=dri;
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	filesystems=~/.ssh:create;
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	[Session Bus Policy]
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	org.gnome.keyring=talk
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	org.freedesktop.secrets=talk
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	[Environment]
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	ALSA_CONFIG_PATH=/usr/share/alsa/alsa-flatpak.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	GI_TYPELIB_PATH=/app/lib/girepository-1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	GST_PLUGIN_SYSTEM_PATH=/app/lib/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	XDG_DATA_DIRS=/app/share:/usr/share:/usr/share/runtime/share:/run/host/user-share:/run/host/share
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	ALSA_CONFIG_DIR=/usr/share/alsa
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	__EGL_EXTERNAL_PLATFORM_CONFIG_DIRS=/etc/egl/egl_external_platform.d:/usr/lib/x86_64-linux-gnu/GL/egl/egl_external_platform.d:/usr/share/egl/egl_external_platform.d
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	PYTHONUSERBASE=/var/data/python
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	#
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: No system-wide overrides for all apps
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: No system-wide per-app overrides for specified app
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: Per-user overrides for all apps:
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	#
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: Per-user overrides for specified app:
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	#
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: Command-line overrides:
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	#
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: Final context:
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	[Context]
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	shared=network;ipc;
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	sockets=x11;wayland;fallback-x11;ssh-auth;
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	devices=dri;
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	filesystems=~/.ssh:create;
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	[Session Bus Policy]
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	org.gnome.keyring=talk
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	org.freedesktop.secrets=talk
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	[Environment]
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	ALSA_CONFIG_PATH=/usr/share/alsa/alsa-flatpak.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	GI_TYPELIB_PATH=/app/lib/girepository-1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	GST_PLUGIN_SYSTEM_PATH=/app/lib/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	XDG_DATA_DIRS=/app/share:/usr/share:/usr/share/runtime/share:/run/host/user-share:/run/host/share
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	ALSA_CONFIG_DIR=/usr/share/alsa
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	__EGL_EXTERNAL_PLATFORM_CONFIG_DIRS=/etc/egl/egl_external_platform.d:/usr/lib/x86_64-linux-gnu/GL/egl/egl_external_platform.d:/usr/share/egl/egl_external_platform.d
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	PYTHONUSERBASE=/var/data/python
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.209: 	#
+flatpak-INFO: 19:40:51.215: Regenerating ld.so.cache /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/.ld.so/e94bd4060ea649d72f8f06423cae31ed8ff560eac6c972afc5bbad14dc28fc89
+flatpak-INFO: 19:40:51.216: /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/lib32 does not exist
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.216: bwrap --args 24 = ...
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.216:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.216:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.216:     /usr
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.216:     --lock-file
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.216:     /usr/.ref
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /home/tobagin/.local/share/flatpak/app/io.github.tobagin.keysmith.Devel/x86_64/master/c28347a358385699c4cf7e29b5f23d4ff00b268bb8304f0b7d639f4f9a50f60a/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /app
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --lock-file
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /app/.ref
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --tmpfs
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /home/tobagin/.local/share/flatpak/runtime/org.freedesktop.Platform.GL.default/x86_64/24.08/acc80b93676d289961a969404a78bd39104578767dddce82bdf6dd5124d64ef2/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /home/tobagin/.local/share/flatpak/runtime/org.freedesktop.Platform.GL.default/x86_64/24.08extra/52d6b51842bacea61aaafe2bec11b3a0da274b14cb06a12215d4834dd6c033da/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /home/tobagin/.local/share/flatpak/runtime/org.freedesktop.Platform.VAAPI.Intel/x86_64/24.08/8951879f0f08739922fec9109aa31e52f68cf8d34ffb6b181bb92ba64ad00556/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/dri/intel-vaapi-driver
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /home/tobagin/.local/share/flatpak/runtime/org.freedesktop.Platform.openh264/x86_64/2.5.1/0f52621e4540863ee86b1fe26216fff78fefa1096f367079692344139228e474/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/openh264
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform.Locale/x86_64/48/247ff494e0ef0d268fc7074a99f84b8f4071fa999ac7226f45ff0a2515416639-en/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/share/runtime/locale
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     19
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /run/flatpak/ld.so.conf.d/runtime-001-org.freedesktop.Platform.GL.default.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/intel_hasvk_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/intel_hasvk_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/intel_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/intel_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/lvp_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/lvp_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/nouveau_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/nouveau_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/radeon_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/radeon_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/virtio_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/virtio_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/glvnd/egl_vendor.d/50_mesa.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/glvnd/egl_vendor.d/50_mesa.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/OpenCL/vendors/rusticl.icd
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/OpenCL/vendors/rusticl.icd
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/crocus_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/crocus_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/i915_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/i915_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/iris_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/iris_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/kms_swrast_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/kms_swrast_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/libdril_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/libdril_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/nouveau_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/nouveau_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/nouveau_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/nouveau_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/r300_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/r300_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/r600_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/r600_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/r600_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/r600_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/radeonsi_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/radeonsi_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/radeonsi_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/radeonsi_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/swrast_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/swrast_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/virtio_gpu_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/virtio_gpu_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/virtio_gpu_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/virtio_gpu_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/vmwgfx_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/vmwgfx_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/zink_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/zink_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/d3d/d3dadapter9.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/d3d/d3dadapter9.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/d3d/d3dadapter9.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/lib/d3d/d3dadapter9.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.217:     /usr/lib/x86_64-linux-gnu/GL/default/lib/gbm/dri_gbm.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/lib/gbm/dri_gbm.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/explicit_layer.d/VkLayer_INTEL_nullhw.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vulkan/explicit_layer.d/VkLayer_INTEL_nullhw.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/explicit_layer.d/VkLayer_MESA_overlay.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vulkan/explicit_layer.d/VkLayer_MESA_overlay.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/explicit_layer.d/VkLayer_MESA_screenshot.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vulkan/explicit_layer.d/VkLayer_MESA_screenshot.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/explicit_layer.d/VkLayer_khronos_validation.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vulkan/explicit_layer.d/VkLayer_khronos_validation.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_nouveau.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_nouveau.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_nouveau.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_nouveau.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_nouveau.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_nouveau.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_nouveau.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_nouveau.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_r600.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_r600.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_r600.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_r600.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_r600.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_r600.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_r600.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_r600.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_radeonsi.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_radeonsi.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_radeonsi.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_radeonsi.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_radeonsi.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_radeonsi.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_radeonsi.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_radeonsi.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_trace.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_trace.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_trace.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_trace.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_trace.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_trace.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_virtio_gpu.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_virtio_gpu.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_virtio_gpu.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_virtio_gpu.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_virtio_gpu.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_virtio_gpu.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_virtio_gpu.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_virtio_gpu.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     20
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /run/flatpak/ld.so.conf.d/runtime-002-org.freedesktop.Platform.VAAPI.Intel.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     21
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /run/flatpak/ld.so.conf.d/runtime-003-org.freedesktop.Platform.openh264.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     22
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /run/flatpak/ld.so.conf.d/runtime-004-org.freedesktop.Platform.GL.default.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     usr/bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     usr/lib
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /lib
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     usr/lib64
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /lib64
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     usr/sbin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /sbin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     23
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /etc/ld.so.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --unshare-pid
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --unshare-ipc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --unshare-net
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --proc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /proc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --dev
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /dev
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.218:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/.ld.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     /run/ld-so-cache-dir
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     DESKTOP_SESSION
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     gnome
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     GDMSESSION
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     gnome
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     HOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     /home/tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     HOSTNAME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     optiplex-7020-fedora
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     LANG
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     en_IE.UTF-8
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     LD_LIBRARY_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     /app/lib
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     LOGNAME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     /app/bin:/usr/bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     PWD
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     /home/tobagin/Projects/keymaker
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     SHELL
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     /bin/sh
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     TERM
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     xterm-256color
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     USER
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     USERNAME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     XDG_CONFIG_DIRS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     /app/etc/xdg:/etc/xdg
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     XDG_CURRENT_DESKTOP
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     GNOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     XDG_DATA_DIRS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     /app/share:/usr/share
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     XDG_SESSION_DESKTOP
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.219:     gnome
+flatpak-INFO: 19:40:51.219: Running: '/usr/bin/bwrap --args 24 ldconfig -X -C /run/ld-so-cache-dir/e94bd4060ea649d72f8f06423cae31ed8ff560eac6c972afc5bbad14dc28fc89.KBo4Tg'
+flatpak-INFO: 19:40:51.287: /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/lib32 does not exist
+flatpak-INFO: 19:40:51.292: Cleaning up unused container id 2962391233
+flatpak-INFO: 19:40:51.292: Cleaning up per-app-ID state for io.github.tobagin.keysmith.Devel
+flatpak-INFO: 19:40:51.293: Allocated instance id 3336368445
+flatpak-INFO: 19:40:51.293: Add defaults in dir /io/github/tobagin/keysmith/Devel/
+flatpak-INFO: 19:40:51.293: Add locks in dir /io/github/tobagin/keysmith/Devel/
+flatpak-INFO: 19:40:51.295: Allowing dri access
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.295: Trying to create and export read/write: /home/tobagin/.ssh
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.295: /home is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.ssh is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Will create and export read/write: /home/tobagin/.ssh
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Trying to replace with tmpfs: /home/tobagin/.var/app
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.var is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.var/app is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Will replace with tmpfs: /home/tobagin/.var/app
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Trying to export read/write: /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.var is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.var/app is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Will export read/write: /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Trying to replace with tmpfs: /home/tobagin/.local/share/flatpak
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.local is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.local/share is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin/.local/share/flatpak is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Will replace with tmpfs: /home/tobagin/.local/share/flatpak
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Trying to ensure existence of directory: /home/tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: /home/tobagin is not a symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Will ensure existence of directory: /home/tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Converting FlatpakExports to bwrap arguments...
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: "/home/tobagin" is meant to be a directory
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Ensuring "/home/tobagin" is created as a directory
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: "/home/tobagin/.local/share/flatpak" is meant to be a tmpfs or empty directory
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Parent of "/home/tobagin/.local/share/flatpak" is not mapped, creating empty directory
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: "/home/tobagin/.ssh" is meant to be shared (ro or rw) with the container
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: "/home/tobagin/.var/app" is meant to be a tmpfs or empty directory
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: Parent of "/home/tobagin/.var/app" is not mapped, creating empty directory
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.296: "/home/tobagin/.var/app/io.github.tobagin.keysmith.Devel" is meant to be shared (ro or rw) with the container
+flatpak-INFO: 19:40:51.296: Allowing wayland access
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.297: Wayland display does not support security_context_manager_v1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.297: Using ordinary Wayland socket, without security context
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.299: Retrieved AT-SPI bus address "unix:path=/run/user/1000/at-spi/bus" from session bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366: bwrap --args 39 = ...
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /boot
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /boot
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /dev
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /dev
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /home
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /home
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /proc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /proc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /run
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /run
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /sys
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /sys
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /tmp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /tmp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /root
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /root
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /afs
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /afs
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /etc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /etc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /image
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /image
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /media
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /media
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /mnt
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /mnt
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /opt
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /opt
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /srv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /srv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /usr
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /usr
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /var
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /var
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     usr/bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     usr/lib
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /lib
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     usr/lib64
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /lib64
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     usr/sbin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /sbin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /run/user/1000/.dbus-proxy/
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /run/user/1000/.dbus-proxy/
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --perms
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     0600
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --file
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     37
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /.flatpak-info
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366: bwrap --args 42 = ...
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --fd=40
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     unix:path=/run/user/1000/bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /run/user/1000/.dbus-proxy/session-bus-proxy-IC3PB3
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --filter
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     '--own=io.github.tobagin.keysmith.Devel.*'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     '--own=org.mpris.MediaPlayer2.io.github.tobagin.keysmith.Devel.*'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --talk=org.gnome.keyring
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --talk=org.freedesktop.secrets
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     '--call=org.freedesktop.portal.*=*'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     '--broadcast=org.freedesktop.portal.*=@/org/freedesktop/portal/*'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     unix:path=/run/user/1000/at-spi/bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     /run/user/1000/.dbus-proxy/a11y-bus-proxy-KG1PB3
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --filter
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --sloppy-names
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --broadcast=org.a11y.atspi.Registry.EventListenerRegistered=@/org/a11y/atspi/registry
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --broadcast=org.a11y.atspi.Registry.EventListenerDeregistered=@/org/a11y/atspi/registry
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --call=org.a11y.atspi.Registry=org.a11y.atspi.Socket.Embed@/org/a11y/atspi/accessible/root
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --call=org.a11y.atspi.Registry=org.a11y.atspi.Socket.Unembed@/org/a11y/atspi/accessible/root
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --call=org.a11y.atspi.Registry=org.a11y.atspi.Registry.GetRegisteredEvents@/org/a11y/atspi/registry
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --call=org.a11y.atspi.Registry=org.a11y.atspi.DeviceEventController.GetKeystrokeListeners@/org/a11y/atspi/registry/deviceeventcontroller
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --call=org.a11y.atspi.Registry=org.a11y.atspi.DeviceEventController.GetDeviceEventListeners@/org/a11y/atspi/registry/deviceeventcontroller
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --call=org.a11y.atspi.Registry=org.a11y.atspi.DeviceEventController.NotifyListenersSync@/org/a11y/atspi/registry/deviceeventcontroller
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --call=org.a11y.atspi.Registry=org.a11y.atspi.DeviceEventController.NotifyListenersAsync@/org/a11y/atspi/registry/deviceeventcontroller
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     --filter
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.366:     '--call=io.github.tobagin.keysmith.Devel.Sandboxed.*=org.a11y.atspi.Socket.Embedded'
+flatpak-INFO: 19:40:51.366: Running '/usr/bin/bwrap --args 39 -- /usr/bin/xdg-dbus-proxy --args=42'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383: bwrap --args 39 = ...
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --lock-file
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/.ref
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /home/tobagin/.local/share/flatpak/app/io.github.tobagin.keysmith.Devel/x86_64/master/c28347a358385699c4cf7e29b5f23d4ff00b268bb8304f0b7d639f4f9a50f60a/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /app
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --lock-file
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /app/.ref
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --tmpfs
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /home/tobagin/.local/share/flatpak/runtime/org.freedesktop.Platform.GL.default/x86_64/24.08/acc80b93676d289961a969404a78bd39104578767dddce82bdf6dd5124d64ef2/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/default
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /home/tobagin/.local/share/flatpak/runtime/org.freedesktop.Platform.GL.default/x86_64/24.08extra/52d6b51842bacea61aaafe2bec11b3a0da274b14cb06a12215d4834dd6c033da/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/default
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /home/tobagin/.local/share/flatpak/runtime/org.freedesktop.Platform.VAAPI.Intel/x86_64/24.08/8951879f0f08739922fec9109aa31e52f68cf8d34ffb6b181bb92ba64ad00556/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/dri/intel-vaapi-driver
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /home/tobagin/.local/share/flatpak/runtime/org.freedesktop.Platform.openh264/x86_64/2.5.1/0f52621e4540863ee86b1fe26216fff78fefa1096f367079692344139228e474/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/openh264
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform.Locale/x86_64/48/247ff494e0ef0d268fc7074a99f84b8f4071fa999ac7226f45ff0a2515416639-en/files
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/share/runtime/locale
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     19
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /run/flatpak/ld.so.conf.d/runtime-001-org.freedesktop.Platform.GL.default.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/intel_hasvk_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/intel_hasvk_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/intel_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/intel_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/lvp_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/lvp_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/nouveau_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/nouveau_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.383:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/radeon_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/radeon_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/icd.d/virtio_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vulkan/icd.d/virtio_icd.x86_64.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/glvnd/egl_vendor.d/50_mesa.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/glvnd/egl_vendor.d/50_mesa.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/OpenCL/vendors/rusticl.icd
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/OpenCL/vendors/rusticl.icd
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/crocus_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/crocus_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/i915_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/i915_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/iris_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/iris_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/kms_swrast_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/kms_swrast_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/libdril_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/libdril_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/nouveau_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/nouveau_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/nouveau_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/nouveau_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/r300_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/r300_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/r600_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/r600_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/r600_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/r600_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/radeonsi_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/radeonsi_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/radeonsi_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/radeonsi_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/swrast_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/swrast_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/virtio_gpu_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/virtio_gpu_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/virtio_gpu_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/virtio_gpu_drv_video.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/vmwgfx_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/vmwgfx_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/dri/zink_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/dri/zink_dri.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/d3d/d3dadapter9.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/d3d/d3dadapter9.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/d3d/d3dadapter9.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/d3d/d3dadapter9.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/lib/gbm/dri_gbm.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/lib/gbm/dri_gbm.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/explicit_layer.d/VkLayer_INTEL_nullhw.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vulkan/explicit_layer.d/VkLayer_INTEL_nullhw.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/explicit_layer.d/VkLayer_MESA_overlay.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vulkan/explicit_layer.d/VkLayer_MESA_overlay.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/explicit_layer.d/VkLayer_MESA_screenshot.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vulkan/explicit_layer.d/VkLayer_MESA_screenshot.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/explicit_layer.d/VkLayer_khronos_validation.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vulkan/explicit_layer.d/VkLayer_khronos_validation.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_nouveau.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_nouveau.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_nouveau.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_nouveau.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_nouveau.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_nouveau.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_nouveau.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_nouveau.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_r600.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_r600.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_r600.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_r600.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_r600.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_r600.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_r600.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_r600.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_radeonsi.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_radeonsi.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_radeonsi.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_radeonsi.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.384:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_radeonsi.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_radeonsi.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_radeonsi.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_radeonsi.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_trace.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_trace.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_trace.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_trace.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_trace.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_trace.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_virtio_gpu.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_virtio_gpu.so
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_virtio_gpu.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_virtio_gpu.so.1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_virtio_gpu.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_virtio_gpu.so.1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/default/vdpau/libvdpau_virtio_gpu.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /usr/lib/x86_64-linux-gnu/GL/vdpau/libvdpau_virtio_gpu.so.1.0.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     20
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /run/flatpak/ld.so.conf.d/runtime-002-org.freedesktop.Platform.VAAPI.Intel.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     21
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /run/flatpak/ld.so.conf.d/runtime-003-org.freedesktop.Platform.openh264.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     22
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /run/flatpak/ld.so.conf.d/runtime-004-org.freedesktop.Platform.GL.default.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --unshare-user
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --disable-userns
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --proc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /proc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --unshare-pid
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --dir
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /tmp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --dir
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /var/tmp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --dir
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /run/host
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --perms
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     0700
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --dir
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /run/user/1000
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     XDG_RUNTIME_DIR
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /run/user/1000
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     ../run
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /var/run
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind-try
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /proc/self/ns/user
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /run/.userns
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/timezone
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /var/db/zoneinfo
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/block
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/block
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/class
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/class
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/dev
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/dev
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/devices
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /sys/devices
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     23
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/passwd
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     24
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/group
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     26
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/pkcs11/pkcs11.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/machine-id
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/machine-id
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/e2scrub.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/e2scrub.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/issue
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/issue
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/issue.net
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/issue.net
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/ld.so.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/ld.so.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/mke2fs.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/mke2fs.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/moduli
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     /etc/moduli
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.385:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     ../../proc/self/mounts
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/mtab
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/nsswitch.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/nsswitch.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     ../usr/lib/os-release
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/os-release
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/protocols
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/protocols
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/rc_maps.cfg
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/rc_maps.cfg
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/rpc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/rpc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/services
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/services
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/ssh_config
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/ssh_config
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/vdpau_wrapper.cfg
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/vdpau_wrapper.cfg
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/xattr.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/xattr.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/alsa
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/alsa
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/bash_completion.d
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/bash_completion.d
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/dbus-1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/dbus-1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/debuginfod
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/debuginfod
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/fonts
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/fonts
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/gss
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/gss
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/gtk-3.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/gtk-3.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/pki
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/pki
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/profile.d
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/profile.d
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/pulse
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/pulse
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/rc_keymaps
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/rc_keymaps
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/security
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/security
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/ssl
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/ssl
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.local/share/flatpak/runtime/org.gnome.Platform/x86_64/48/71990178e89854be9bbd3d61a1da74356ad1085ac64a998c692622aed751b1c4/files/etc/xdg
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/xdg
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/cache
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /var/cache
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /var/data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/config
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /var/config
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/cache/tmp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /var/tmp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     usr/bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     usr/lib
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /lib
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     usr/lib64
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /lib64
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     usr/sbin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /sbin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /usr/share/zoneinfo
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /usr/share/zoneinfo
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     ../usr/share/zoneinfo/Europe/Dublin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/localtime
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     27
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     /etc/timezone
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.386:     --seccomp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     28
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/.flatpak-helper/monitor
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/host/monitor
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/host/monitor/resolv.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /etc/resolv.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/host/monitor/host.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /etc/host.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/host/monitor/hosts
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /etc/hosts
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/host/monitor/gai.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /etc/gai.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     30
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /etc/pkcs11/modules/p11-kit-trust.module
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/.flatpak-helper/pkcs11-flatpak-5807
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/p11-kit/pkcs11
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     31
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /etc/ld.so.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     25
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /etc/ld.so.cache
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/.flatpak/3336368445
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/.flatpak/3336368445
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --lock-file
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/.flatpak/3336368445/.ref
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --perms
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     0600
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --file
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     32
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /.flatpak-info
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     33
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /.flatpak-info
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     container
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     flatpak
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     34
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/host/container-manager
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --info-fd
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     35
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/.flatpak/io.github.tobagin.keysmith.Devel/xdg-run
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/doc/by-app/io.github.tobagin.keysmith.Devel
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/doc
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --dev
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /dev
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --dev-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /dev/dri
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /dev/dri
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --dev-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /dev/udmabuf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /dev/udmabuf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/.flatpak/io.github.tobagin.keysmith.Devel/tmp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /tmp
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/app/io.github.tobagin.keysmith.Devel
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/app/io.github.tobagin.keysmith.Devel
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --dir
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /home/tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --dir
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /home/tobagin/.local/share/flatpak
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /home/tobagin/.ssh
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /home/tobagin/.ssh
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --dir
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /home/tobagin/.var/app
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /etc/os-release
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/host/os-release
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/wayland-0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/wayland-0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --tmpfs
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /tmp/.X11-unix
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/keyring/ssh
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/ssh-auth
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/.dbus-proxy/session-bus-proxy-IC3PB3
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/.dbus-proxy/a11y-bus-proxy-KG1PB3
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/at-spi-bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --sync-fd
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     38
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/user/1000/.flatpak/io.github.tobagin.keysmith.Devel/.ref
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/per-app-dirs-ref
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --lock-file
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/flatpak/per-app-dirs-ref
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/systemd/resolve/io.systemd.Resolve
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/systemd/resolve/io.systemd.Resolve
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/systemd/journal/socket
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/systemd/journal/socket
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/systemd/journal/stdout
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /run/systemd/journal/stdout
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.387:     /usr/share/fonts
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /run/host/fonts
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /usr/lib/fontconfig/cache
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /run/host/fonts-cache
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /home/tobagin/.cache/fontconfig
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /run/host/user-fonts-cache
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --ro-bind-data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     37
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /run/host/font-dirs.xml
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /usr/share/icons
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /run/host/share/icons
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --ro-bind
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /home/tobagin/.local/share/icons
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /run/host/user-share/icons
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /app/lib/debug/source
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /run/build
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --symlink
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /usr/lib/debug/source
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /run/build-runtime
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     ALSA_CONFIG_DIR
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /usr/share/alsa
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     ALSA_CONFIG_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /usr/share/alsa/alsa-flatpak.conf
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     AT_SPI_BUS_ADDRESS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     unix:path=/run/flatpak/at-spi-bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     BUNDLED_DEBUGPY_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /home/tobagin/.vscode/extensions/ms-python.debugpy-2025.10.0-linux-x64/bundled/libs/debugpy
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     BUN_INSTALL
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /home/tobagin/.bun
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     CHROME_DESKTOP
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     code.desktop
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     CLAUDECODE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     CLAUDE_CODE_ENTRYPOINT
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     cli
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     CLAUDE_CODE_SSE_PORT
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     40264
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     COLORTERM
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     truecolor
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     COREPACK_ENABLE_AUTO_PIN
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     DBUS_SESSION_BUS_ADDRESS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     unix:path=/run/flatpak/bus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     DEBUGINFOD_IMA_CERT_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /etc/keys/ima:
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     DEBUGINFOD_URLS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     'https://debuginfod.fedoraproject.org/ '
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     DESKTOP_SESSION
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     gnome
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     EDITOR
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /usr/bin/nano
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     ENABLE_IDE_INTEGRATION
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     true
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     FLATPAK_ID
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     io.github.tobagin.keysmith.Devel
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     FLATPAK_SANDBOX_DIR
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/sandbox
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GDMSESSION
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     gnome
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GDM_LANG
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     en_IE.UTF-8
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GEMINI_CLI_IDE_SERVER_PORT
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     45537
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GEMINI_CLI_IDE_WORKSPACE_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /home/tobagin/Projects/keymaker
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GIO_LAUNCHED_DESKTOP_FILE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /usr/share/applications/code.desktop
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GIO_LAUNCHED_DESKTOP_FILE_PID
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     8456
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GIT_ASKPASS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /usr/share/code/resources/app/extensions/git/dist/askpass.sh
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GIT_EDITOR
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     true
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GI_TYPELIB_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     /app/lib/girepository-1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GJS_DEBUG_OUTPUT
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     stderr
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     GJS_DEBUG_TOPICS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.388:     'JS ERROR;JS LOG'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     GNOME_SETUP_DISPLAY
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     :1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     GPG_TTY
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     'not a tty'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     GST_PLUGIN_SYSTEM_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /app/lib/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     G_MESSAGES_DEBUG
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     all
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     HISTCONTROL
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     ignoredups
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     HISTSIZE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     1000
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     HOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /home/tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     HOSTNAME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     optiplex-7020-fedora
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     INVOCATION_ID
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     f94e8e6007d049d18e98a78d96ec9b44
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     JOURNAL_STREAM
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     9:10776
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     LANG
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     en_IE.UTF-8
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     LD_LIBRARY_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     ''
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     LESSOPEN
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     '||/usr/bin/lesspipe.sh %s'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     LOGNAME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     LS_COLORS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;37;41:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.7z=01;31:*.ace=01;31:*.alz=01;31:*.apk=01;31:*.arc=01;31:*.arj=01;31:*.bz=01;31:*.bz2=01;31:*.cab=01;31:*.cpio=01;31:*.crate=01;31:*.deb=01;31:*.drpm=01;31:*.dwm=01;31:*.dz=01;31:*.ear=01;31:*.egg=01;31:*.esd=01;31:*.gz=01;31:*.jar=01;31:*.lha=01;31:*.lrz=01;31:*.lz=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.lzo=01;31:*.pyz=01;31:*.rar=01;31:*.rpm=01;31:*.rz=01;31:*.sar=01;31:*.swm=01;31:*.t7z=01;31:*.tar=01;31:*.taz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tgz=01;31:*.tlz=01;31:*.txz=01;31:*.tz=01;31:*.tzo=01;31:*.tzst=01;31:*.udeb=01;31:*.war=01;31:*.whl=01;31:*.wim=01;31:*.xz=01;31:*.z=01;31:*.zip=01;31:*.zoo=01;31:*.zst=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.m4a=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.oga=01;36:*.opus=01;36:*.spx=01;36:*.xspf=01;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     MAIL
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /var/spool/mail/tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     MANAGERPID
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     1850
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     MEMORY_PRESSURE_WATCH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@wayland.service/memory.pressure
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     MEMORY_PRESSURE_WRITE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     c29tZSAyMDAwMDAgMjAwMDAwMAA=
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     MOZ_GMP_PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /usr/lib64/mozilla/plugins/gmp-gmpopenh264/system-installed
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     NO_AT_BRIDGE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     NVM_BIN
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /home/tobagin/.nvm/versions/node/v24.4.1/bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     NVM_CD_FLAGS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     ''
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     NVM_DIR
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /home/tobagin/.nvm
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     NVM_INC
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /home/tobagin/.nvm/versions/node/v24.4.1/include/node
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     ORIGINAL_XDG_CURRENT_DESKTOP
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     GNOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     delta
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     PATH
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /app/bin:/usr/bin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     PS1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     '[📦 $FLATPAK_ID \W]\$ '
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     PWD
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /home/tobagin/Projects/keymaker
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     PYDEVD_DISABLE_FILE_VALIDATION
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     PYTHONUSERBASE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     /var/data/python
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     QT_IM_MODULE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     ibus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     SESSION_MANAGER
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     'local/unix:@/tmp/.ICE-unix/2195,unix/unix:/tmp/.ICE-unix/2195'
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.389:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     SHELL
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /bin/sh
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     SHLVL
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     2
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     SSH_AUTH_SOCK
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /run/flatpak/ssh-auth
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     STEAM_FRAME_FORCE_CLOSE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     1
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     SYSTEMD_EXEC_PID
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     2252
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     TERM
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     xterm-256color
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     TERM_PROGRAM
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     vscode
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     TERM_PROGRAM_VERSION
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     1.103.2
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     USER
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     USERNAME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     tobagin
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     VSCODE_DEBUGPY_ADAPTER_ENDPOINTS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /home/tobagin/.vscode/extensions/ms-python.debugpy-2025.10.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-1f214f4e85068b4d.txt
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     VSCODE_GIT_ASKPASS_EXTRA_ARGS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     ''
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     VSCODE_GIT_ASKPASS_MAIN
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /usr/share/code/resources/app/extensions/git/dist/askpass-main.js
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     VSCODE_GIT_ASKPASS_NODE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /usr/share/code/code
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     VSCODE_GIT_IPC_HANDLE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /run/user/1000/vscode-git-1d3d337d6b.sock
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     WAYLAND_DISPLAY
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     wayland-0
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XAUTHORITY
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /run/user/1000/.mutter-Xwaylandauth.PXVTB3
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_CACHE_HOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/cache
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_CONFIG_DIRS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /app/etc/xdg:/etc/xdg
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_CONFIG_HOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/config
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_CURRENT_DESKTOP
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     GNOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_DATA_DIRS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /app/share:/usr/share:/usr/share/runtime/share:/run/host/user-share:/run/host/share
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_DATA_HOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/data
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_MENU_PREFIX
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     gnome-
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_SESSION_CLASS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     user
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_SESSION_DESKTOP
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     gnome
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_SESSION_TYPE
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     wayland
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XDG_STATE_HOME
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /home/tobagin/.var/app/io.github.tobagin.keysmith.Devel/.local/state
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     XMODIFIERS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     @im=ibus
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     _
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /usr/bin/timeout
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     --setenv
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     __EGL_EXTERNAL_PLATFORM_CONFIG_DIRS
+(flatpak run:207157): flatpak-DEBUG: 19:40:51.390:     /etc/egl/egl_external_platform.d:/usr/lib/x86_64-linux-gnu/GL/egl/egl_external_platform.d:/usr/share/egl/egl_external_platform.d
+flatpak-INFO: 19:40:51.391: Running '/usr/bin/bwrap --args 39 -- keymaker'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.508: Using portal setting for org.gnome.fontconfig serial: 0
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.508: Ignoring portal setting for org.gnome.desktop.privacy disable-microphone
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy disable-camera
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy old-files-age
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.privacy remember-recent-files: true
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy disable-sound-output
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy send-software-usage-stats
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy report-technical-problems
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy remove-old-trash-files
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy remove-old-temp-files
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy privacy-screen
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy usb-protection
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy usb-protection-level
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy remember-app-usage
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy show-full-name-in-top-bar
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.privacy hide-identity
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.privacy recent-files-max-age: -1
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.a11y.interface show-status-shapes: false
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.a11y.interface high-contrast: false
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.a11y always-show-universal-access-status
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.a11y always-show-text-caret: false
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface toolkit-accessibility
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface gtk-color-palette
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface can-change-accels
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface document-font-name
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface enable-animations: true
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface cursor-blink: true
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface clock-show-weekday
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface icon-theme: 'Adwaita'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface gtk-im-preedit-style
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface scaling-factor
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface menus-have-tearoff
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface cursor-size: 24
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface clock-show-seconds
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface gtk-im-module: ''
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface gtk-timeout-initial
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface accent-color
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface gtk-theme: 'Adwaita'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface gtk-color-scheme
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface clock-show-date
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface cursor-blink-time: 1200
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface toolbar-icons-size
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface font-antialiasing: 'grayscale'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface toolbar-style
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface enable-hot-corners
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface monospace-font-name
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface gtk-timeout-repeat
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface overlay-scrolling: true
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface cursor-blink-timeout: 10
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface gtk-key-theme
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface toolbar-detachable
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface font-rendering: 'automatic'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface cursor-theme: 'Adwaita'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface avatar-directories
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface gtk-im-status-style
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface menubar-detachable
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface text-scaling-factor: 1.0
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface show-battery-percentage
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface clock-format
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface menubar-accel
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface gtk-enable-primary-paste: true
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface color-scheme
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.interface locate-pointer
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface font-rgba-order: 'rgb'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface font-hinting: 'slight'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.interface font-name: 'Adwaita Sans 11'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.sound theme-name: 'freedesktop'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.sound event-sounds: true
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.sound input-feedback-sounds: false
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.sound allow-volume-above-100-percent
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.peripherals.mouse left-handed
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.peripherals.mouse double-click: 400
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.peripherals.mouse natural-scroll
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.peripherals.mouse middle-click-emulation
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.peripherals.mouse speed
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.peripherals.mouse accel-profile
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.peripherals.mouse drag-threshold: 8
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.input-sources sources
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.input-sources mru-sources
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.input-sources show-all-sources
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.input-sources current
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.input-sources xkb-options
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.input-sources xkb-model
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.input-sources per-window
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.calendar show-weekdate
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences theme
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences focus-new-windows
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences disable-workarounds
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences num-workspaces
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences titlebar-uses-system-font
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences raise-on-click
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences titlebar-font
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences resize-with-right-button
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences auto-raise
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.wm.preferences action-right-click-titlebar: 'menu'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences mouse-button-modifier
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.wm.preferences action-double-click-titlebar: 'toggle-maximize'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences workspace-names
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences visual-bell-type
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.wm.preferences action-middle-click-titlebar: 'none'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences focus-mode
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Using portal setting for org.gnome.desktop.wm.preferences button-layout: 'appmenu:minimize,maximize,close'
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences auto-raise-delay
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences audible-bell
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.desktop.wm.preferences visual-bell
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.settings-daemon.plugins.xsettings overrides
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.settings-daemon.plugins.xsettings disabled-gtk-modules
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.509: Ignoring portal setting for org.gnome.settings-daemon.plugins.xsettings enabled-gtk-modules
+(io.github.tobagin.keysmith.Devel:2): Gtk-DEBUG: 19:40:51.516: Not using session manager
+(io.github.tobagin.keysmith.Devel:2): GVFS-DEBUG: 19:40:51.525: org.gtk.vfs.MountTracker.listMountableInfo call failed: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown (g-dbus-error-quark, 2)
+
+(io.github.tobagin.keysmith.Devel:2): GLib-GIO-DEBUG: 19:40:51.525: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+(io.github.tobagin.keysmith.Devel:2): GLib-GIO-DEBUG: 19:40:51.670: _g_io_module_get_default: Found default implementation keyfile (GKeyfileSettingsBackend) for ‘gsettings-backend’
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message: linux_read_sorted_physical_devices:
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:      Original order:
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:            [0] Intel(R) UHD Graphics 770 (ADL-S GT1)
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:            [1] llvmpipe (LLVM 19.1.7, 256 bits)
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:      Sorted order:
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:            [0] Intel(R) UHD Graphics 770 (ADL-S GT1)  
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:            [1] llvmpipe (LLVM 19.1.7, 256 bits)  
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message: linux_read_sorted_physical_devices:
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:      Original order:
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:            [0] Intel(R) UHD Graphics 770 (ADL-S GT1)
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:            [1] llvmpipe (LLVM 19.1.7, 256 bits)
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:      Sorted order:
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:            [0] Intel(R) UHD Graphics 770 (ADL-S GT1)  
+Gdk-INFO: 19:40:51.759: Vulkan: Loader Message:            [1] llvmpipe (LLVM 19.1.7, 256 bits)  
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.759: Vulkan: Loader Message: Copying old device 0 into new device 0
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.759: Vulkan: Loader Message: Copying old device 1 into new device 1
+Gdk-INFO: 19:40:51.761: Vulkan: Loader Message: linux_read_sorted_physical_devices:
+Gdk-INFO: 19:40:51.761: Vulkan: Loader Message:      Original order:
+Gdk-INFO: 19:40:51.761: Vulkan: Loader Message:            [0] Intel(R) UHD Graphics 770 (ADL-S GT1)
+Gdk-INFO: 19:40:51.761: Vulkan: Loader Message:            [1] llvmpipe (LLVM 19.1.7, 256 bits)
+Gdk-INFO: 19:40:51.761: Vulkan: Loader Message:      Sorted order:
+Gdk-INFO: 19:40:51.761: Vulkan: Loader Message:            [0] Intel(R) UHD Graphics 770 (ADL-S GT1)  
+Gdk-INFO: 19:40:51.761: Vulkan: Loader Message:            [1] llvmpipe (LLVM 19.1.7, 256 bits)  
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.761: Vulkan: Loader Message: Copying old device 0 into new device 0
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.761: Vulkan: Loader Message: Copying old device 1 into new device 1
+Gdk-INFO: 19:40:51.761: Vulkan: Loader Message: linux_read_sorted_physical_devices:
+Gdk-INFO: 19:40:51.762: Vulkan: Loader Message:      Original order:
+Gdk-INFO: 19:40:51.762: Vulkan: Loader Message:            [0] Intel(R) UHD Graphics 770 (ADL-S GT1)
+Gdk-INFO: 19:40:51.762: Vulkan: Loader Message:            [1] llvmpipe (LLVM 19.1.7, 256 bits)
+Gdk-INFO: 19:40:51.762: Vulkan: Loader Message:      Sorted order:
+Gdk-INFO: 19:40:51.762: Vulkan: Loader Message:            [0] Intel(R) UHD Graphics 770 (ADL-S GT1)  
+Gdk-INFO: 19:40:51.762: Vulkan: Loader Message:            [1] llvmpipe (LLVM 19.1.7, 256 bits)  
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.762: Vulkan: Loader Message: Copying old device 0 into new device 0
+(io.github.tobagin.keysmith.Devel:2): Gdk-DEBUG: 19:40:51.762: Vulkan: Loader Message: Copying old device 1 into new device 1
+Gdk-INFO: 19:40:51.764: Vulkan: Loader Message: Removing driver /usr/lib/x86_64-linux-gnu/GL/default/lib/libvulkan_intel_hasvk.so due to not having any physical devices
+Gdk-INFO: 19:40:51.764: Vulkan: Loader Message: Removing driver /usr/lib/x86_64-linux-gnu/GL/default/lib/libvulkan_nouveau.so due to not having any physical devices
+Gdk-INFO: 19:40:51.765: Vulkan: Loader Message: Removing driver /usr/lib/x86_64-linux-gnu/GL/default/lib/libvulkan_radeon.so due to not having any physical devices
+Gdk-INFO: 19:40:51.766: Vulkan: Loader Message: Removing driver /usr/lib/x86_64-linux-gnu/GL/default/lib/libvulkan_virtio.so due to not having any physical devices
+Gdk-INFO: 19:40:51.767: Vulkan: Loader Message: Failed to find vkGetDeviceProcAddr in layer "libVkLayer_MESA_device_select.so"
+Gdk-INFO: 19:40:51.768: Vulkan: Loader Message: vkCreateDevice layer callstack setup to:
+Gdk-INFO: 19:40:51.769: Vulkan: Loader Message:    <Application>
+Gdk-INFO: 19:40:51.769: Vulkan: Loader Message:      ||
+Gdk-INFO: 19:40:51.769: Vulkan: Loader Message:    <Loader>
+Gdk-INFO: 19:40:51.769: Vulkan: Loader Message:      ||
+Gdk-INFO: 19:40:51.769: Vulkan: Loader Message:    <Device>
+Gdk-INFO: 19:40:51.770: Vulkan: Loader Message:        Using "Intel(R) UHD Graphics 770 (ADL-S GT1)" with driver: "/usr/lib/x86_64-linux-gnu/GL/default/lib/libvulkan_intel.so"
+MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:940: FINISHME: support YUV colorspace with DRM format modifiers
+MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:972: FINISHME: support more multi-planar formats with DRM modifiers
+(io.github.tobagin.keysmith.Devel:2): Gtk-DEBUG: 19:40:52.155: snapshot symbolic icon using mask
+(io.github.tobagin.keysmith.Devel:2): Gtk-DEBUG: 19:40:52.158: snapshot symbolic icon using mask
+(io.github.tobagin.keysmith.Devel:2): Gtk-DEBUG: 19:40:52.160: snapshot symbolic icon using mask
+(io.github.tobagin.keysmith.Devel:2): Gtk-DEBUG: 19:40:52.161: snapshot symbolic icon using mask
+(io.github.tobagin.keysmith.Devel:2): Gtk-DEBUG: 19:40:52.161: snapshot symbolic icon using mask
+(io.github.tobagin.keysmith.Devel:2): Gtk-DEBUG: 19:40:52.162: snapshot symbolic icon using mask
+(io.github.tobagin.keysmith.Devel:2): Gtk-DEBUG: 19:40:52.163: snapshot symbolic icon using mask
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.186: window.vala:159: Starting SSH key scan...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.186: window.vala:164: Cleared existing keys, calling KeyScanner...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.186: key-scanner.vala:23: KeyScanner: Starting scan of directory: /home/tobagin/.ssh
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.186: key-scanner.vala:40: KeyScanner: Directory exists, enumerating files...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.187: key-scanner.vala:48: KeyScanner: Got enumerator, reading files...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.187: key-scanner.vala:70: KeyScanner: Found key pair: id_ed25519
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.187: key-scanner.vala:76: KeyScanner: Found 1 private keys, building models...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.187: key-scanner.vala:82: KeyScanner: Processing key 0: /home/tobagin/.ssh/id_ed25519
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.187: key-scanner.vala:108: KeyScanner: Building model for: /home/tobagin/.ssh/id_ed25519
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.187: key-scanner.vala:118: KeyScanner: Getting key type...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.202: key-scanner.vala:123: KeyScanner: Key type: ed25519
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.202: key-scanner.vala:129: KeyScanner: Getting fingerprint...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.214: key-scanner.vala:134: KeyScanner: Got fingerprint
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.214: key-scanner.vala:140: KeyScanner: Getting file info...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.215: key-scanner.vala:152: KeyScanner: Extracting comment...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.215: key-scanner.vala:156: KeyScanner: Getting bit size...
+** (io.github.tobagin.keysmith.Devel:2): DEBUG: 19:40:52.215: key-scanner.vala:168: KeyScanner: Creating SSHKey object...
+** (process:207181): DEBUG: 19:40:53.406: Error reading from socket: Error receiving message: Connection reset by peer
