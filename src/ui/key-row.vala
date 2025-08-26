@@ -111,28 +111,33 @@ public class KeyMaker.KeyRowWidget : Adw.ActionRow {
     private void update_key_type_styling () {
         // Remove existing style classes
         key_type_label.remove_css_class ("success");
+        key_type_label.remove_css_class ("accent");
         key_type_label.remove_css_class ("warning");
         key_type_label.remove_css_class ("error");
         key_icon.remove_css_class ("success");
+        key_icon.remove_css_class ("accent");
         key_icon.remove_css_class ("warning");
         key_icon.remove_css_class ("error");
         
-        // Apply color coding based on key type
+        // Apply color coding and icons based on key type
         switch (ssh_key.key_type) {
             case SSHKeyType.ED25519:
-                // Green for ED25519 (recommended)
+                // Green for ED25519 (most secure)
                 key_type_label.add_css_class ("success");
                 key_icon.add_css_class ("success");
+                key_icon.icon_name = "security-high-symbolic";
                 break;
             case SSHKeyType.RSA:
-                // Yellow for RSA (acceptable)
-                key_type_label.add_css_class ("warning");
-                key_icon.add_css_class ("warning");
+                // Blue/accent for RSA (good compatibility)
+                key_type_label.add_css_class ("accent");
+                key_icon.add_css_class ("accent");
+                key_icon.icon_name = "org.gnome.Settings-device-security-symbolic";
                 break;
             case SSHKeyType.ECDSA:
-                // Red for ECDSA (not recommended)
-                key_type_label.add_css_class ("error");
-                key_icon.add_css_class ("error");
+                // Yellow/warning for ECDSA (compatibility issues)
+                key_type_label.add_css_class ("warning");
+                key_icon.add_css_class ("warning");
+                key_icon.icon_name = "security-medium-symbolic";
                 break;
         }
     }
