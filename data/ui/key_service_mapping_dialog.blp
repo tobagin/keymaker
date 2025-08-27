@@ -1,0 +1,88 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerKeyServiceMappingDialog : Adw.Dialog {
+  title: _("Edit Key Service Mapping");
+  default-width: 500;
+  default-height: 400;
+
+  content: Gtk.Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("Service Mapping");
+        subtitle: _("Associate key with a service or server");
+      };
+    }
+
+    Adw.Clamp {
+      maximum-size: 600;
+      tightening-threshold: 400;
+      vexpand: true;
+      
+      Box {
+        orientation: vertical;
+        spacing: 24;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 12;
+        margin-end: 12;
+        
+        Adw.PreferencesGroup {
+          title: _("Service Information");
+          
+          Adw.EntryRow service_name_row {
+            title: _("Service Name");
+            text: "";
+          }
+          
+          Adw.ComboRow service_type_row {
+            title: _("Service Type");
+            subtitle: _("Choose the type of service or server");
+          }
+        }
+        
+        Adw.PreferencesGroup {
+          title: _("Connection Details");
+          description: _("Optional connection information for servers");
+          
+          Adw.EntryRow hostname_row {
+            title: _("Hostname");
+            text: "";
+          }
+          
+          Adw.EntryRow username_row {
+            title: _("Username");
+            text: "";
+          }
+        }
+        
+        Adw.PreferencesGroup {
+          title: _("Additional Information");
+          
+          Adw.EntryRow description_row {
+            title: _("Description");
+            text: "";
+          }
+        }
+        
+        Box {
+          orientation: horizontal;
+          spacing: 12;
+          halign: end;
+          
+          Button cancel_button {
+            label: _("Cancel");
+          }
+          
+          Button save_button {
+            label: _("Save Mapping");
+            sensitive: false;
+            styles ["suggested-action"]
+          }
+        }
+      }
+    }
+  };
+}

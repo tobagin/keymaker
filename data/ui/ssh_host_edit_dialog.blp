@@ -1,0 +1,139 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerSSHHostEditDialog : Adw.Dialog {
+  title: _("Edit SSH Host");
+  default-width: 500;
+  default-height: 600;
+
+  content: Gtk.Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("SSH Host Configuration");
+      };
+    }
+
+    Adw.Clamp {
+      maximum-size: 600;
+      tightening-threshold: 400;
+      vexpand: true;
+      
+      Box {
+        orientation: vertical;
+        spacing: 24;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 12;
+        margin-end: 12;
+        
+        Adw.PreferencesGroup {
+          title: _("Template");
+          description: _("Choose a template to pre-fill common configurations");
+          
+          Adw.ComboRow template_row {
+            title: _("Host Template");
+            subtitle: _("Pre-configured settings for common services");
+          }
+        }
+        
+        Adw.PreferencesGroup {
+          title: _("Basic Information");
+          
+          Adw.EntryRow host_name_row {
+            title: _("Host Name");
+            text: "";
+          }
+          
+          Adw.EntryRow hostname_row {
+            title: _("Hostname or IP");
+            text: "";
+          }
+        }
+        
+        Adw.PreferencesGroup {
+          title: _("Connection Settings");
+          
+          Adw.EntryRow user_row {
+            title: _("Username");
+            text: "";
+          }
+          
+          Adw.SpinRow port_row {
+            title: _("Port");
+            subtitle: _("SSH port number (default: 22)");
+            adjustment: Adjustment {
+              lower: 1;
+              upper: 65535;
+              value: 22;
+              step-increment: 1;
+              page-increment: 100;
+            };
+          }
+        }
+        
+        Adw.PreferencesGroup {
+          title: _("Authentication");
+          
+          Adw.ActionRow identity_file_row {
+            title: _("Identity File");
+            subtitle: _("SSH private key file for authentication");
+            activatable: true;
+            
+            [suffix]
+            Box {
+              orientation: horizontal;
+              spacing: 6;
+              
+              Label identity_file_label {
+                label: _("None selected");
+                styles ["dim-label"]
+              }
+              
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+          }
+        }
+        
+        Adw.PreferencesGroup {
+          title: _("Advanced Options");
+          
+          Adw.EntryRow proxy_jump_row {
+            title: _("Proxy Jump");
+            text: "";
+          }
+          
+          Adw.SwitchRow forward_agent_row {
+            title: _("Forward SSH Agent");
+            subtitle: _("Forward authentication agent connections");
+          }
+          
+          Adw.SwitchRow strict_host_key_checking_row {
+            title: _("Strict Host Key Checking");
+            subtitle: _("Verify host keys for security");
+            active: true;
+          }
+        }
+        
+        Box {
+          orientation: horizontal;
+          spacing: 12;
+          halign: end;
+          
+          Button cancel_button {
+            label: _("Cancel");
+          }
+          
+          Button save_button {
+            label: _("Save Host");
+            sensitive: false;
+            styles ["suggested-action"]
+          }
+        }
+      }
+    }
+  };
+}

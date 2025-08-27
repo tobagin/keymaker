@@ -1,0 +1,87 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerSSHConfigDialog : Adw.Dialog {
+  title: _("SSH Configuration");
+  default-width: 700;
+  default-height: 600;
+
+  content: Gtk.Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("SSH Configuration");
+        subtitle: _("Manage SSH client host configurations");
+      };
+
+      [start]
+      Button reload_button {
+        icon-name: "view-refresh-symbolic";
+        tooltip-text: _("Reload Configuration");
+      }
+
+      [end]
+      Button save_button {
+        label: _("Save Configuration");
+        styles ["suggested-action"]
+      }
+
+      [end]
+      Button add_host_button {
+        icon-name: "list-add-symbolic";
+        tooltip-text: _("Add New Host");
+      }
+    }
+
+    Box {
+      orientation: vertical;
+      spacing: 0;
+      
+      SearchBar {
+        SearchEntry search_entry {
+          placeholder-text: _("Search hosts...");
+          search-delay: 300;
+        }
+      }
+
+      Stack main_stack {
+        vexpand: true;
+        
+        Adw.StatusPage empty_state {
+          title: _("No SSH Hosts");
+          description: _("Add SSH host configurations to manage your connections");
+          icon-name: "network-server-symbolic";
+        }
+
+        ScrolledWindow hosts_page {
+          name: "hosts_page";
+          
+          Adw.Clamp {
+            maximum-size: 1000;
+            tightening-threshold: 600;
+            
+            Box {
+              orientation: vertical;
+              spacing: 12;
+              margin-top: 24;
+              margin-bottom: 24;
+              margin-start: 12;
+              margin-end: 12;
+              
+              Adw.PreferencesGroup {
+                title: _("SSH Hosts");
+                description: _("Configure SSH client host settings from ~/.ssh/config");
+                
+                ListBox hosts_list {
+                  selection-mode: none;
+                  styles ["boxed-list"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+}

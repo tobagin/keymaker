@@ -1,0 +1,86 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerAddKeyToAgentDialog : Adw.Dialog {
+  title: _("Add Key to Agent");
+  default-width: 500;
+  default-height: 400;
+
+  content: Gtk.Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("Add Key to Agent");
+      };
+    }
+
+    Adw.Clamp {
+      maximum-size: 600;
+      tightening-threshold: 400;
+      vexpand: true;
+      
+      Box {
+        orientation: vertical;
+        spacing: 24;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 12;
+        margin-end: 12;
+        
+        Adw.PreferencesGroup {
+          title: _("Select Key");
+          description: _("Choose an SSH key to add to the agent");
+          
+          ScrolledWindow {
+            min-content-height: 200;
+            max-content-height: 300;
+            
+            ListBox keys_list {
+              selection-mode: single;
+              styles ["boxed-list"]
+            }
+          }
+        }
+        
+        Adw.PreferencesGroup {
+          title: _("Options");
+          
+          Adw.SwitchRow enable_timeout_row {
+            title: _("Auto-remove after timeout");
+            subtitle: _("Automatically remove key from agent after specified time");
+          }
+          
+          Adw.SpinRow timeout_row {
+            title: _("Timeout (minutes)");
+            subtitle: _("Key will be removed after this many minutes");
+            sensitive: false;
+            adjustment: Adjustment {
+              lower: 1;
+              upper: 1440;
+              value: 60;
+              step-increment: 1;
+              page-increment: 60;
+            };
+          }
+        }
+        
+        Box {
+          orientation: horizontal;
+          spacing: 12;
+          halign: end;
+          
+          Button cancel_button {
+            label: _("Cancel");
+          }
+          
+          Button add_button {
+            label: _("Add to Agent");
+            sensitive: false;
+            styles ["suggested-action"]
+          }
+        }
+      }
+    }
+  };
+}

@@ -1,0 +1,76 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerSSHAgentDialog : Adw.Dialog {
+  title: _("SSH Agent Manager");
+  default-width: 600;
+  default-height: 500;
+
+  content: Gtk.Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: _("SSH Agent Manager");
+        subtitle: _("Manage keys loaded in SSH agent");
+      };
+
+      [start]
+      Button refresh_button {
+        icon-name: "view-refresh-symbolic";
+        tooltip-text: _("Refresh Agent Keys");
+      }
+
+      [end]
+      Button add_key_button {
+        icon-name: "list-add-symbolic";
+        tooltip-text: _("Add Key to Agent");
+        sensitive: false;
+      }
+
+      [end]
+      Button remove_all_button {
+        icon-name: "user-trash-symbolic";
+        tooltip-text: _("Remove All Keys");
+        sensitive: false;
+        styles ["destructive-action"]
+      }
+    }
+
+    Stack main_stack {
+      Adw.StatusPage status_page {
+        title: _("Loading...");
+        description: _("Checking SSH agent status");
+        icon-name: "view-refresh-symbolic";
+      }
+
+      ScrolledWindow keys_page {
+        name: "keys_page";
+        
+        Adw.Clamp {
+          maximum-size: 800;
+          tightening-threshold: 400;
+          
+          Box {
+            orientation: vertical;
+            spacing: 12;
+            margin-top: 24;
+            margin-bottom: 24;
+            margin-start: 12;
+            margin-end: 12;
+            
+            Adw.PreferencesGroup {
+              title: _("Keys Loaded in Agent");
+              description: _("These keys are currently available for SSH authentication");
+              
+              ListBox agent_keys_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+}
