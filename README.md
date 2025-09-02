@@ -27,8 +27,13 @@ Key Maker is a modern, native GTK4/Libadwaita application built with Vala that p
 - Generate ssh-copy-id commands for server deployment
 - Smart delete confirmation system (can be disabled with safety warning)
 
-### 🔒 Security & Passphrase Management
+### 🔒 Security & Advanced SSH Management
 - Change key passphrases safely
+- **SSH Agent Intelligence**: Full SSH agent management with smart key loading/unloading
+- **Connection Diagnostics**: Real-time SSH connection testing and troubleshooting tools
+- **Emergency Vault**: Secure encrypted backup and restore system for SSH keys
+- **Automated Key Rotation**: Scheduled key rotation with rollback capabilities
+- **SSH Tunneling**: Create and manage SSH tunnels with persistent configurations
 - Never store or log passphrases in memory or files
 - Delegate all cryptographic operations to system OpenSSH tools
 - Secure file permission handling (600 for private keys)
@@ -49,6 +54,9 @@ Key Maker is a modern, native GTK4/Libadwaita application built with Vala that p
 - Show/hide fingerprints toggle
 - Delete confirmation settings with safety warnings
 - Auto-refresh intervals
+- **Key-Service Mapping**: Associate keys with specific services and use cases
+- **Rotation Plans**: Configure automated key rotation schedules and policies
+- **Tunnel Configurations**: Persistent SSH tunnel management and quick access
 - Persistent settings with GSettings
 - Real-time preference validation and application
 
@@ -159,13 +167,19 @@ The build script automatically handles all dependencies and creates a sandboxed 
 4. Optionally add a passphrase for extra security
 5. Click "Generate" to create the key pair
 
-### Managing Existing Keys
+### Managing Existing Keys & Advanced Operations
 
 - **View Keys**: All keys in `~/.ssh` are automatically listed
 - **Copy Public Key**: Click the copy button to copy the public key to clipboard
 - **Generate ssh-copy-id Command**: Use the network button to generate deployment commands
 - **View Details**: Click the info button to see detailed key information
 - **Delete Keys**: Use the menu to securely delete key pairs
+- **SSH Agent Management**: Load/unload keys from SSH agent with intelligent status tracking
+- **Service Mapping**: Associate keys with specific services (GitHub, servers, etc.)
+- **Connection Testing**: Test SSH connections and diagnose connectivity issues
+- **Key Rotation**: Set up automated key rotation schedules with seamless deployment
+- **Emergency Backup**: Create encrypted backups of keys and restore when needed
+- **SSH Tunneling**: Create persistent tunnels for secure port forwarding
 
 ### Application Preferences
 
@@ -186,6 +200,9 @@ Key Maker provides a comprehensive preferences system:
 **Security Settings:**
 - Confirm key deletions (with safety warning when disabled)
 - Secure file permission handling
+- Key-service mappings and rotation policies
+- Emergency vault encryption settings
+- SSH tunnel security configurations
 
 ## Configuration
 
@@ -295,13 +312,20 @@ Key Maker follows modern Vala/GTK application architecture:
 ```
 src/
 ├── main.vala                    # Application entry point
-├── application.vala             # GtkApplication subclass
+├── application.vala             # GtkApplication subclass with action registration
 ├── models/                      # Data models and types
-│   ├── enums.vala              # SSH key types and error enums
-│   └── ssh-key.vala            # SSH key data structures
+│   ├── enums.vala              # SSH key types, rotation status, and error enums
+│   ├── ssh-key.vala            # SSH key data structures
+│   └── key-service-mapping.vala # Service association models
 ├── backend/                     # Core business logic
 │   ├── ssh-operations.vala     # SSH key operations (generate, delete, etc.)
-│   └── key-scanner.vala        # SSH directory scanning and detection
+│   ├── key-scanner.vala        # SSH directory scanning and detection
+│   ├── ssh-agent.vala          # SSH agent management and intelligence
+│   ├── connection-diagnostics.vala # SSH connection testing and troubleshooting
+│   ├── emergency-vault.vala    # Secure backup and restore system
+│   ├── key-rotation.vala       # Automated key rotation management
+│   ├── ssh-tunneling.vala      # SSH tunnel creation and management
+│   └── key-selection-manager.vala # Intelligent key selection logic
 └── ui/                         # User interface components
     ├── window.vala             # Main application window
     ├── key-list.vala           # Key list container widget
@@ -309,8 +333,12 @@ src/
     └── dialogs/                # Modal dialogs
         ├── generate-dialog.vala         # Key generation
         ├── preferences-dialog.vala      # Application settings
-        ├── delete-key-dialog.vala      # Delete confirmation
-        ├── key-details-dialog.vala     # Key information
+        ├── ssh-agent-dialog.vala        # SSH agent management
+        ├── connection-diagnostics-dialog.vala # Connection testing
+        ├── emergency-vault-dialog.vala  # Backup/restore interface
+        ├── key-rotation-dialog.vala     # Rotation scheduling
+        ├── ssh-tunneling-dialog.vala    # Tunnel management
+        ├── key-service-mapping-dialog.vala # Service associations
         └── ...                         # Other utility dialogs
 
 data/
@@ -327,17 +355,30 @@ data/
 - **Async Operations**: Non-blocking file I/O and subprocess execution
 - **Resource Management**: Automatic cleanup and error handling
 
-## Future Development
+## Development Roadmap
 
-### Phase 2: Workflow Integration
-- **SSH Config Management**: Edit `~/.ssh/config` files
-- **SSH Agent Integration**: Manage loaded keys
-- **Interactive ssh-copy-id**: Execute deployments directly
+### ✅ Phase 1: Core SSH Key Management (Completed)
+- SSH key generation (Ed25519, RSA, ECDSA) with comprehensive validation
+- Key detection, listing, and color-coded security indicators
+- Basic key operations (copy, delete, passphrase change)
+- Modern GTK4/Libadwaita interface with Blueprint UI
 
-### Phase 3: Advanced Features
-- **known_hosts Management**: Safe host key management
-- **Cloud Integration**: Direct GitHub/GitLab key deployment
-- **Security Auditing**: Key health and security recommendations
+### ✅ Phase 2: Workflow Integration (Completed)  
+- **SSH Config Management**: Full `~/.ssh/config` editing and host management
+- **SSH Agent Integration**: Complete agent management with key loading/unloading
+- **Key-Service Mapping**: Associate keys with specific services and workflows
+
+### ✅ Phase 3: Advanced SSH Management (Completed)
+- **Connection Diagnostics**: Real-time SSH connection testing and troubleshooting
+- **Emergency Vault**: Encrypted backup and restore system for SSH keys
+- **Automated Key Rotation**: Scheduled rotation with rollback capabilities  
+- **SSH Tunneling**: Persistent tunnel management and port forwarding
+
+### 🚧 Phase 4: Enterprise & Cloud Integration (Planned)
+- **known_hosts Management**: Safe host key verification and management
+- **Cloud Integration**: Direct GitHub/GitLab/cloud provider key deployment
+- **Security Auditing**: Key health monitoring and security recommendations
+- **Team Management**: Shared key policies and collaborative workflows
 
 ## Contributing
 
