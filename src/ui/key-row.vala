@@ -131,13 +131,13 @@ public class KeyMaker.KeyRowWidget : Adw.ActionRow {
                 // Blue/accent for RSA (good compatibility)
                 key_type_label.add_css_class ("accent");
                 key_icon.add_css_class ("accent");
-                key_icon.icon_name = "org.gnome.Settings-device-security-symbolic";
+                key_icon.icon_name = "security-medium-symbolic";
                 break;
             case SSHKeyType.ECDSA:
                 // Yellow/warning for ECDSA (compatibility issues)
                 key_type_label.add_css_class ("warning");
                 key_icon.add_css_class ("warning");
-                key_icon.icon_name = "security-medium-symbolic";
+                key_icon.icon_name = "security-low-symbolic";
                 break;
         }
     }

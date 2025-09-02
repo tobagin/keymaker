@@ -3,16 +3,27 @@ using Adw 1;
 
 template $KeyMakerSSHHostEditDialog : Adw.Dialog {
   title: _("Edit SSH Host");
-  default-width: 500;
-  default-height: 600;
 
-  content: Gtk.Box {
+  child: Gtk.Box {
     orientation: vertical;
     
     Adw.HeaderBar {
+      show-end-title-buttons: false;
       title-widget: Adw.WindowTitle {
         title: _("SSH Host Configuration");
       };
+      
+      [start]
+      Button cancel_button {
+        label: _("Cancel");
+      }
+      
+      [end]
+      Button save_button {
+        label: _("Save Host");
+        sensitive: false;
+        styles ["suggested-action"]
+      }
     }
 
     Adw.Clamp {
@@ -115,22 +126,6 @@ template $KeyMakerSSHHostEditDialog : Adw.Dialog {
             title: _("Strict Host Key Checking");
             subtitle: _("Verify host keys for security");
             active: true;
-          }
-        }
-        
-        Box {
-          orientation: horizontal;
-          spacing: 12;
-          halign: end;
-          
-          Button cancel_button {
-            label: _("Cancel");
-          }
-          
-          Button save_button {
-            label: _("Save Host");
-            sensitive: false;
-            styles ["suggested-action"]
           }
         }
       }

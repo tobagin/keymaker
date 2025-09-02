@@ -3,10 +3,8 @@ using Adw 1;
 
 template $KeyMakerSSHConfigDialog : Adw.Dialog {
   title: _("SSH Configuration");
-  default-width: 700;
-  default-height: 600;
 
-  content: Gtk.Box {
+  child: Gtk.Box {
     orientation: vertical;
     
     Adw.HeaderBar {
@@ -48,38 +46,43 @@ template $KeyMakerSSHConfigDialog : Adw.Dialog {
       Stack main_stack {
         vexpand: true;
         
-        Adw.StatusPage empty_state {
-          title: _("No SSH Hosts");
-          description: _("Add SSH host configurations to manage your connections");
-          icon-name: "network-server-symbolic";
+        StackPage {
+          name: "empty_state";
+          child: Adw.StatusPage empty_state {
+            title: _("No SSH Hosts");
+            description: _("Add SSH host configurations to manage your connections");
+            icon-name: "network-server-symbolic";
+          };
         }
 
-        ScrolledWindow hosts_page {
+        StackPage {
           name: "hosts_page";
-          
-          Adw.Clamp {
-            maximum-size: 1000;
-            tightening-threshold: 600;
+          child: ScrolledWindow hosts_page {
             
-            Box {
-              orientation: vertical;
-              spacing: 12;
-              margin-top: 24;
-              margin-bottom: 24;
-              margin-start: 12;
-              margin-end: 12;
+            Adw.Clamp {
+              maximum-size: 1000;
+              tightening-threshold: 600;
               
-              Adw.PreferencesGroup {
-                title: _("SSH Hosts");
-                description: _("Configure SSH client host settings from ~/.ssh/config");
+              Box {
+                orientation: vertical;
+                spacing: 12;
+                margin-top: 24;
+                margin-bottom: 24;
+                margin-start: 12;
+                margin-end: 12;
                 
-                ListBox hosts_list {
-                  selection-mode: none;
-                  styles ["boxed-list"]
+                Adw.PreferencesGroup {
+                  title: _("SSH Hosts");
+                  description: _("Configure SSH client host settings from ~/.ssh/config");
+                  
+                  ListBox hosts_list {
+                    selection-mode: none;
+                    styles ["boxed-list"]
+                  }
                 }
               }
             }
-          }
+          };
         }
       }
     }

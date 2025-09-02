@@ -258,11 +258,10 @@ namespace KeyMaker {
             try {
                 var variant = settings.get_value (settings_key);
                 if (variant.get_type_string () == "aa{sv}") {
-                    var array = variant.get_child_value (0);
-                    var n_children = (int) array.n_children ();
+                    var n_children = (int) variant.n_children ();
                     
                     for (int i = 0; i < n_children; i++) {
-                        var dict = array.get_child_value (i);
+                        var dict = variant.get_child_value (i);
                         var mapping = mapping_from_variant (dict);
                         if (mapping != null) {
                             mappings.add (mapping);

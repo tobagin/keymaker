@@ -1,0 +1,78 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerEmergencyVaultDialog : Adw.Dialog {
+  title: _("Emergency Access Vault");
+  content-width: 800;
+  content-height: 600;
+
+  child: Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: _("Emergency Access Vault");
+        subtitle: _("Secure backup and recovery system");
+      };
+      
+      [start]
+      Button create_backup_button {
+        icon-name: "list-add-symbolic";
+        tooltip-text: _("Create New Backup");
+        styles ["suggested-action"]
+      }
+    }
+
+    Stack main_stack {
+      vexpand: true;
+      margin-top: 12;
+      margin-bottom: 12;
+      margin-start: 12;
+      margin-end: 12;
+      
+      Adw.StatusPage vault_status_page {
+        name: "status";
+        margin-top: 12;
+        margin-bottom: 12;
+        margin-start: 12;
+        margin-end: 12;
+        
+        Box {
+          orientation: vertical;
+          spacing: 12;
+          halign: center;
+          
+          Image vault_status_icon {
+            icon-name: "folder-symbolic";
+            icon-size: large;
+          }
+          
+          Label vault_status_label {
+            label: _("Vault Status");
+            styles ["title-2"]
+          }
+        }
+      }
+      
+      Box backups_page {
+        name: "backups_page";
+        orientation: vertical;
+        spacing: 12;
+        margin-top: 12;
+        margin-bottom: 12;
+        margin-start: 12;
+        margin-end: 12;
+        
+        Adw.PreferencesGroup {
+          title: _("Emergency Backups");
+          description: _("Encrypted backups of your SSH keys for emergency recovery");
+          
+          ListBox backups_list {
+            selection-mode: none;
+            styles ["boxed-list"]
+          }
+        }
+      }
+    }
+  };
+}

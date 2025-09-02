@@ -3,10 +3,8 @@ using Adw 1;
 
 template $KeyMakerSSHAgentDialog : Adw.Dialog {
   title: _("SSH Agent Manager");
-  default-width: 600;
-  default-height: 500;
 
-  content: Gtk.Box {
+  child: Gtk.Box {
     orientation: vertical;
     
     Adw.HeaderBar header_bar {
@@ -39,12 +37,13 @@ template $KeyMakerSSHAgentDialog : Adw.Dialog {
 
     Stack main_stack {
       Adw.StatusPage status_page {
+        name: "status_page";
         title: _("Loading...");
         description: _("Checking SSH agent status");
         icon-name: "view-refresh-symbolic";
       }
 
-      ScrolledWindow keys_page {
+      ScrolledWindow keys_scrolled_window {
         name: "keys_page";
         
         Adw.Clamp {

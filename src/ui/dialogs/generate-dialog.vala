@@ -43,6 +43,9 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
     private unowned Gtk.Button generate_button;
     
     [GtkChild]
+    private unowned Gtk.Button cancel_button;
+    
+    [GtkChild]
     private unowned Gtk.Box progress_box;
     
     [GtkChild]
@@ -92,6 +95,9 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
         passphrase_confirm_row.notify["text"].connect (validate_form);
         passphrase_switch.notify["active"].connect (on_passphrase_switch_changed);
         generate_button.clicked.connect (() => generate_key_async.begin ());
+        cancel_button.clicked.connect (() => {
+            this.force_close ();
+        });
         
         // Load settings defaults
         load_settings_defaults ();

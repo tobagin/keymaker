@@ -1,0 +1,226 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerKeyRotationDialog : Adw.Dialog {
+  title: _("Key Rotation");
+  content-width: 700;
+  content-height: 600;
+
+  child: Gtk.Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Adw.WindowTitle {
+        title: _("Smart Key Rotation");
+        subtitle: _("Automated SSH key rotation with verification");
+      };
+      
+      [start]
+      Button cancel_button {
+        label: _("Cancel");
+      }
+      
+      [end]
+      Button start_rotation_button {
+        label: _("Start Rotation");
+        sensitive: false;
+        styles ["suggested-action"]
+      }
+    }
+
+    Stack main_stack {
+      vexpand: true;
+      
+      Box planning_page {
+        name: "planning";
+        orientation: vertical;
+        
+        Adw.Clamp {
+          maximum-size: 800;
+          tightening-threshold: 600;
+          vexpand: true;
+          
+          Box {
+            orientation: vertical;
+            spacing: 24;
+            margin-top: 24;
+            margin-bottom: 24;
+            margin-start: 12;
+            margin-end: 12;
+            
+            Adw.PreferencesGroup {
+              title: _("Rotation Settings");
+              
+              Adw.EntryRow reason_row {
+                title: _("Rotation Reason");
+                text: "Manual rotation";
+              }
+              
+              Adw.SwitchRow keep_old_key_row {
+                title: _("Keep Old Key");
+                subtitle: _("Backup old key instead of deleting it");
+                active: true;
+              }
+              
+              Adw.SwitchRow enable_rollback_row {
+                title: _("Enable Rollback");
+                subtitle: _("Automatically rollback on failure");
+                active: true;
+              }
+            }
+            
+            Adw.PreferencesGroup {
+              title: _("Deployment Targets");
+              description: _("Servers where the new key will be deployed");
+              
+              [header-suffix]
+              Button add_target_button {
+                icon-name: "list-add-symbolic";
+                tooltip-text: _("Add Target Server");
+                valign: center;
+                styles ["flat"]
+              }
+              
+              ListBox targets_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+            }
+            
+          }
+        }
+      }
+      
+      Box progress_page {
+        name: "progress";
+        orientation: vertical;
+        spacing: 24;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 24;
+        margin-end: 24;
+        
+        Box {
+          orientation: vertical;
+          spacing: 12;
+          halign: center;
+          
+          Label current_stage_label {
+            label: _("Initializing...");
+            styles ["title-2"]
+          }
+          
+          ProgressBar progress_bar {
+            fraction: 0.0;
+            width-request: 300;
+          }
+          
+          Label progress_details {
+            label: _("Preparing key rotation...");
+            styles ["dim-label"]
+          }
+        }
+        
+        Adw.PreferencesGroup {
+          title: _("Rotation Log");
+          vexpand: true;
+          
+          ScrolledWindow log_scroll {
+            min-content-height: 200;
+            vexpand: true;
+            
+            TextView log_view {
+              editable: false;
+              cursor-visible: false;
+              monospace: true;
+              styles ["card"]
+            }
+          }
+        }
+        
+        Box {
+          orientation: horizontal;
+          spacing: 12;
+          halign: center;
+          
+          Button pause_button {
+            label: _("Pause");
+            visible: false;
+          }
+          
+          Button abort_button {
+            label: _("Abort");
+            styles ["destructive-action"]
+          }
+        }
+      }
+      
+      Box results_page {
+        name: "results";
+        orientation: vertical;
+        
+        Adw.Clamp {
+          maximum-size: 800;
+          tightening-threshold: 600;
+          vexpand: true;
+          
+          Box {
+            orientation: vertical;
+            spacing: 24;
+            margin-top: 24;
+            margin-bottom: 24;
+            margin-start: 12;
+            margin-end: 12;
+            
+            Box {
+              orientation: horizontal;
+              spacing: 12;
+              halign: center;
+              
+              Image result_icon {
+                icon-name: "emblem-ok-symbolic";
+                icon-size: large;
+              }
+              
+              Box {
+                orientation: vertical;
+                spacing: 6;
+                
+                Label result_title {
+                  label: _("Rotation Successful");
+                  styles ["title-1"]
+                }
+                
+                Label result_summary {
+                  label: _("Key rotated successfully to all targets");
+                  styles ["dim-label"]
+                }
+              }
+            }
+            
+            Adw.PreferencesGroup {
+              title: _("Rotation Results");
+              
+              ListBox results_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+            }
+            
+            Box {
+              orientation: horizontal;
+              spacing: 12;
+              halign: end;
+              
+              Button close_button {
+                label: _("Close");
+                styles ["suggested-action"]
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+}

@@ -60,6 +60,32 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
 menu main_menu {
   section {
     item {
+      label: _("SSH _Agent Manager");
+      action: "app.ssh-agent";
+    }
+    item {
+      label: _("SSH _Configuration");
+      action: "app.ssh-config";
+    }
+    item {
+      label: _("Connection _Diagnostics");
+      action: "app.connection-diagnostics";
+    }
+    item {
+      label: _("Key _Rotation");
+      action: "app.key-rotation";
+    }
+    item {
+      label: _("_Emergency Vault");
+      action: "app.emergency-vault";
+    }
+    item {
+      label: _("SSH _Tunneling");
+      action: "app.ssh-tunneling";
+    }
+  }
+  section {
+    item {
       label: _("_Preferences");
       action: "app.preferences";
     }

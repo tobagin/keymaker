@@ -9,4 +9,9 @@ foreach size : icon_sizes
   )
 endforeach
 
-# Note: Scalable and symbolic icons removed as requested
+# Install custom symbolic icons
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-qr-code-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions',
+  rename: 'qr-code-symbolic.svg'
+)

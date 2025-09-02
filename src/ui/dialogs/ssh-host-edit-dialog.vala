@@ -80,6 +80,8 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     }
     
     private void setup_templates () {
+        if (template_row == null) return;
+        
         var templates = ssh_config.get_host_templates ();
         var model = new Gtk.StringList (null);
         
@@ -92,43 +94,75 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     }
     
     private void setup_signals () {
-        save_button.clicked.connect (on_save_clicked);
-        cancel_button.clicked.connect (on_cancel_clicked);
+        if (save_button != null) {
+            save_button.clicked.connect (on_save_clicked);
+        }
+        if (cancel_button != null) {
+            cancel_button.clicked.connect (on_cancel_clicked);
+        }
         
         // Update UI state when fields change
-        host_name_row.notify["text"].connect (update_ui_state);
-        template_row.notify["selected"].connect (on_template_changed);
+        if (host_name_row != null) {
+            host_name_row.notify["text"].connect (update_ui_state);
+        }
+        if (template_row != null) {
+            template_row.notify["selected"].connect (on_template_changed);
+        }
         
         // Identity file selection
-        identity_file_row.activated.connect (on_select_identity_file);
+        if (identity_file_row != null) {
+            identity_file_row.activated.connect (on_select_identity_file);
+        }
         
         // Port validation
-        port_row.set_range (1, 65535);
+        if (port_row != null) {
+            port_row.set_range (1, 65535);
+        }
     }
     
     private void populate_from_existing () {
-        host_name_row.text = existing_host.name;
-        hostname_row.text = existing_host.hostname ?? "";
-        user_row.text = existing_host.user ?? "";
-        port_row.value = existing_host.port ?? 22;
-        proxy_jump_row.text = existing_host.proxy_jump ?? "";
-        forward_agent_row.active = existing_host.forward_agent ?? false;
-        strict_host_key_checking_row.active = existing_host.strict_host_key_checking ?? true;
+        if (host_name_row != null) {
+            host_name_row.text = existing_host.name;
+        }
+        if (hostname_row != null) {
+            hostname_row.text = existing_host.hostname ?? "";
+        }
+        if (user_row != null) {
+            user_row.text = existing_host.user ?? "";
+        }
+        if (port_row != null) {
+            port_row.value = existing_host.port ?? 22;
+        }
+        if (proxy_jump_row != null) {
+            proxy_jump_row.text = existing_host.proxy_jump ?? "";
+        }
+        if (forward_agent_row != null) {
+            forward_agent_row.active = existing_host.forward_agent ?? false;
+        }
+        if (strict_host_key_checking_row != null) {
+            strict_host_key_checking_row.active = existing_host.strict_host_key_checking ?? true;
+        }
         
-        if (existing_host.identity_file != null) {
+        if (existing_host.identity_file != null && identity_file_label != null) {
             selected_identity_file = existing_host.identity_file;
             identity_file_label.label = Path.get_basename (selected_identity_file);
         }
     }
     
     private void set_defaults () {
-        port_row.value = 22;
-        forward_agent_row.active = false;
-        strict_host_key_checking_row.active = true;
+        if (port_row != null) {
+            port_row.value = 22;
+        }
+        if (forward_agent_row != null) {
+            forward_agent_row.active = false;
+        }
+        if (strict_host_key_checking_row != null) {
+            strict_host_key_checking_row.active = true;
+        }
     }
     
     private void on_template_changed () {
-        if (existing_host != null) {
+        if (existing_host != null || template_row == null) {
             return; // Don't apply templates to existing hosts
         }
         
@@ -144,24 +178,24 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     private void apply_template (string template_name) {
         switch (template_name) {
             case "GitHub":
-                hostname_row.text = "github.com";
-                user_row.text = "git";
-                port_row.value = 22;
+                if (hostname_row != null) hostname_row.text = "github.com";
+                if (user_row != null) user_row.text = "git";
+                if (port_row != null) port_row.value = 22;
                 break;
                 
             case "GitLab":
-                hostname_row.text = "gitlab.com";
-                user_row.text = "git";
-                port_row.value = 22;
+                if (hostname_row != null) hostname_row.text = "gitlab.com";
+                if (user_row != null) user_row.text = "git";
+                if (port_row != null) port_row.value = 22;
                 break;
                 
             case "Jump Host":
-                forward_agent_row.active = true;
+                if (forward_agent_row != null) forward_agent_row.active = true;
                 break;
                 
             case "Development Server":
-                forward_agent_row.active = true;
-                strict_host_key_checking_row.active = false;
+                if (forward_agent_row != null) forward_agent_row.active = true;
+                if (strict_host_key_checking_row != null) strict_host_key_checking_row.active = false;
                 break;
                 
             default: // Basic Server
@@ -181,17 +215,17 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         
         // Add filter for SSH keys
         var filter = new Gtk.FileFilter ();
-        filter.set_name ("SSH Keys");
+        filter.name = "SSH Keys";
         filter.add_pattern ("id_*");
         filter.add_pattern ("*_rsa");
         filter.add_pattern ("*_ed25519");
         filter.add_pattern ("*_ecdsa");
         
-        var filter_list = new Gio.ListStore (typeof (Gtk.FileFilter));
+        var filter_list = new GLib.ListStore (typeof (Gtk.FileFilter));
         filter_list.append (filter);
         dialog.set_filters (filter_list);
         
-        dialog.open.begin (this, null, (obj, res) => {
+        dialog.open.begin ((Gtk.Window?) this.get_root (), null, (obj, res) => {
             try {
                 var file = dialog.open.end (res);
                 selected_identity_file = file.get_path ();
@@ -203,11 +237,15 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     }
     
     private void update_ui_state () {
-        var host_name = host_name_row.text.strip ();
+        if (host_name_row == null || save_button == null) return;
+        
+        var host_name = (host_name_row.text != null) ? host_name_row.text.strip () : "";
         save_button.sensitive = (host_name.length > 0);
         
         // Show/hide template row for new hosts only
-        template_row.visible = (existing_host == null);
+        if (template_row != null) {
+            template_row.visible = (existing_host == null);
+        }
     }
     
     private void on_save_clicked () {
@@ -228,7 +266,8 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         host.name = host_name;
         host.hostname = hostname_row.text.strip () != "" ? hostname_row.text.strip () : null;
         host.user = user_row.text.strip () != "" ? user_row.text.strip () : null;
-        host.port = (int) port_row.value != 22 ? (int) port_row.value : null;
+        int port_val = (int) port_row.value;
+        host.port = (port_val != 22) ? (int?) port_val : null;
         host.identity_file = selected_identity_file;
         host.proxy_jump = proxy_jump_row.text.strip () != "" ? proxy_jump_row.text.strip () : null;
         host.forward_agent = forward_agent_row.active;

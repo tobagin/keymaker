@@ -6,28 +6,30 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
   content-width: 500;
   content-height: 700;
 
-  Adw.ToolbarView {
-    [top]
-    Adw.HeaderBar {
-      show-title: true;
-    }
-
-    [bottom]
+  Box {
+    orientation: vertical;
+    
     Adw.HeaderBar {
       show-end-title-buttons: false;
-
-      title-widget: Button generate_button {
+      title-widget: Adw.WindowTitle {
+        title: _("Generate SSH Key");
+        subtitle: _("Create a new SSH key pair");
+      };
+      
+      [start]
+      Button cancel_button {
+        label: _("Cancel");
+      }
+      
+      [end]
+      Button generate_button {
         label: _("Generate");
         sensitive: false;
-
-        styles [
-          "suggested-action",
-          "pill",
-        ]
-      };
+        styles ["suggested-action"]
+      }
     }
 
-    content: Gtk.ScrolledWindow {
+    Gtk.ScrolledWindow {
       vexpand: true;
 
       child: Adw.Clamp {
@@ -143,6 +145,6 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
           }
         }
       };
-    };
+    }
   }
 }

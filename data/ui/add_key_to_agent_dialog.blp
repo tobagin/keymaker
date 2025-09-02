@@ -3,10 +3,8 @@ using Adw 1;
 
 template $KeyMakerAddKeyToAgentDialog : Adw.Dialog {
   title: _("Add Key to Agent");
-  default-width: 500;
-  default-height: 400;
 
-  content: Gtk.Box {
+  child: Gtk.Box {
     orientation: vertical;
     
     Adw.HeaderBar {
@@ -65,22 +63,18 @@ template $KeyMakerAddKeyToAgentDialog : Adw.Dialog {
           }
         }
         
-        Box {
-          orientation: horizontal;
-          spacing: 12;
-          halign: end;
-          
-          Button cancel_button {
-            label: _("Cancel");
-          }
-          
-          Button add_button {
-            label: _("Add to Agent");
-            sensitive: false;
-            styles ["suggested-action"]
-          }
-        }
+        // Action buttons moved to bottom headerbar
       }
+    }
+    
+    // Bottom headerbar with Add to Agent button
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Button add_button {
+        label: _("Add to Agent");
+        sensitive: false;
+        styles ["suggested-action"]
+      };
     }
   };
 }

@@ -29,6 +29,18 @@ ui_files = [
   'key_details_dialog.blp',
   'preferences_dialog.blp',
   'shortcuts_dialog.blp',
+  'ssh_agent_dialog.blp',
+  'add_key_to_agent_dialog.blp',
+  'key_service_mapping_dialog.blp',
+  'ssh_config_dialog.blp',
+  'ssh_host_edit_dialog.blp',
+  'connection_diagnostics_dialog.blp',
+  'key_rotation_dialog.blp',
+  'emergency_vault_dialog.blp',
+  'create_backup_dialog.blp',
+  'restore_backup_dialog.blp',
+  'ssh_tunneling_dialog.blp',
+  'create_tunnel_dialog.blp',
 ]
 
 foreach ui_file : ui_files

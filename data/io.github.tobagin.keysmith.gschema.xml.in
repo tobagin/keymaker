@@ -72,5 +72,31 @@
       <summary>Last version for which release notes were shown</summary>
       <description>Tracks the last application version for which release notes were displayed to avoid showing them repeatedly</description>
     </key>
+    
+    <key name="key-service-mappings" type="aa{sv}">
+      <default>[]</default>
+      <summary>SSH key service mappings</summary>
+      <description>Stores associations between SSH keys and services they are used for</description>
+    </key>
+    
+    <key name="rotation-plans" type="aa{sv}">
+      <default>[]</default>
+      <summary>SSH key rotation plans</summary>
+      <description>Stores rotation plan configurations for SSH keys including targets and settings</description>
+    </key>
+    
+    <key name="tunnel-configurations" type="aa{sv}">
+      <default>[]</default>
+      <summary>SSH tunnel configurations</summary>
+      <description>Stores saved SSH tunnel configurations</description>
+    </key>
+  </schema>
+  
+  <schema id="@APP_ID@.tunneling" path="/@APP_PATH@/tunneling/">
+    <key name="configurations" type="aa{sv}">
+      <default>[]</default>
+      <summary>SSH tunnel configurations</summary>
+      <description>Stores saved SSH tunnel configurations</description>
+    </key>
   </schema>
 </schemalist>

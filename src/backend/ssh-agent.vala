@@ -13,19 +13,19 @@
 
 namespace KeyMaker {
     
-    public class SSHAgent {
+    public class SSHAgent : Object {
         
         public signal void agent_keys_changed ();
         
         private GenericArray<AgentKey> agent_keys;
         private bool agent_available;
         
-        public struct AgentKey {
-            public string fingerprint;
-            public string comment;
-            public string key_type;
-            public int bit_size;
-            public bool is_loaded;
+        public class AgentKey : Object {
+            public string fingerprint { get; set; }
+            public string comment { get; set; }
+            public string key_type { get; set; }
+            public int bit_size { get; set; }
+            public bool is_loaded { get; set; }
         }
         
         construct {
@@ -254,7 +254,7 @@ namespace KeyMaker {
                 return null;
             }
             
-            AgentKey key = AgentKey ();
+            var key = new AgentKey ();
             
             // Parse bit size
             key.bit_size = int.parse (parts[0]);
@@ -293,10 +293,10 @@ namespace KeyMaker {
          * Get agent status information
          */
         public async AgentStatus get_agent_status () throws KeyMakerError {
-            await check_agent_availability ();
-            var keys = await get_loaded_keys ();
+            yield check_agent_availability ();
+            var keys = yield get_loaded_keys ();
             
-            return new AgentStatus () {
+            return AgentStatus () {
                 is_available = agent_available,
                 loaded_keys_count = (int) keys.length,
                 agent_pid = get_agent_pid ()

@@ -1,0 +1,198 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerCreateTunnelDialog : Adw.Dialog {
+  title: _("Create Tunnel");
+  content-width: 600;
+  content-height: 750;
+
+  child: Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: _("Create New Tunnel");
+        subtitle: _("Configure SSH tunnel settings");
+      };
+    }
+
+    ScrolledWindow {
+      vexpand: true;
+      
+      Adw.Clamp {
+        maximum-size: 600;
+        tightening-threshold: 500;
+        
+        Box {
+          orientation: vertical;
+          spacing: 24;
+          margin-top: 24;
+          margin-bottom: 24;
+          margin-start: 12;
+          margin-end: 12;
+          
+          Adw.PreferencesGroup {
+            title: _("Basic Information");
+            
+            Adw.EntryRow name_entry {
+              title: _("Tunnel Name");
+              text: "New Tunnel";
+            }
+            
+            Adw.ActionRow {
+              title: _("Description");
+              
+              [suffix]
+              ScrolledWindow {
+                width-request: 250;
+                height-request: 60;
+                
+                TextView description_view {
+                  buffer: TextBuffer {
+                    text: "";
+                  };
+                  wrap-mode: word;
+                  styles ["card"]
+                }
+              }
+            }
+            
+            Adw.ComboRow tunnel_type_combo {
+              title: _("Tunnel Type");
+              subtitle: _("Select forwarding type");
+            }
+          }
+          
+          Adw.PreferencesGroup {
+            title: _("SSH Connection");
+            
+            Adw.EntryRow ssh_host_entry {
+              title: _("SSH Host");
+            }
+            
+            Adw.EntryRow ssh_user_entry {
+              title: _("SSH User");
+            }
+            
+            Adw.SpinRow ssh_port_row {
+              title: _("SSH Port");
+              adjustment: Adjustment {
+                lower: 1;
+                upper: 65535;
+                step-increment: 1;
+                value: 22;
+              };
+            }
+            
+            Adw.ActionRow ssh_key_row {
+              title: _("SSH Private Key");
+              subtitle: _("Optional - uses default if not specified");
+              
+              [suffix]
+              Button ssh_key_button {
+                label: _("Select Key...");
+                styles ["flat"]
+              }
+            }
+          }
+          
+          Adw.PreferencesGroup tunnel_config_group {
+            title: _("Tunnel Configuration");
+            
+            Adw.EntryRow local_host_entry {
+              title: _("Local Host");
+              text: "localhost";
+            }
+            
+            Adw.SpinRow local_port_row {
+              title: _("Local Port");
+              adjustment: Adjustment {
+                lower: 1;
+                upper: 65535;
+                step-increment: 1;
+                value: 8080;
+              };
+            }
+            
+            Adw.EntryRow remote_host_entry {
+              title: _("Remote Host");
+              text: "localhost";
+            }
+            
+            Adw.SpinRow remote_port_row {
+              title: _("Remote Port");
+              adjustment: Adjustment {
+                lower: 1;
+                upper: 65535;
+                step-increment: 1;
+                value: 80;
+              };
+            }
+          }
+          
+          Adw.PreferencesGroup x11_group {
+            title: _("X11 Forwarding Options");
+            
+            Adw.SwitchRow trusted_x11_row {
+              title: _("Trusted X11 Forwarding");
+              subtitle: _("Enable trusted X11 forwarding (-Y flag)");
+            }
+          }
+          
+          Adw.PreferencesGroup {
+            title: _("Advanced Options");
+            
+            Adw.SwitchRow compression_row {
+              title: _("Compression");
+              subtitle: _("Enable SSH compression for better performance");
+            }
+            
+            Adw.SwitchRow keep_alive_row {
+              title: _("Keep Alive");
+              subtitle: _("Send periodic keep-alive packets");
+              active: true;
+            }
+            
+            Adw.SwitchRow auto_reconnect_row {
+              title: _("Auto Reconnect");
+              subtitle: _("Automatically reconnect on connection failure");
+              active: true;
+            }
+            
+            Adw.SwitchRow bind_localhost_row {
+              title: _("Bind to Localhost Only");
+              subtitle: _("Restrict forwarding to localhost interface");
+              active: true;
+            }
+            
+            Adw.SpinRow connection_timeout_row {
+              title: _("Connection Timeout");
+              subtitle: _("Timeout in seconds for establishing connection");
+              adjustment: Adjustment {
+                lower: 5;
+                upper: 300;
+                step-increment: 5;
+                value: 30;
+              };
+            }
+          }
+          
+          Box {
+            orientation: horizontal;
+            spacing: 12;
+            halign: end;
+            
+            Button cancel_button {
+              label: _("Cancel");
+            }
+            
+            Button save_button {
+              label: _("Create Tunnel");
+              styles ["suggested-action"]
+            }
+          }
+        }
+      }
+    }
+  };
+}

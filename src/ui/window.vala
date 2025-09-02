@@ -151,6 +151,10 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         show_toast (_("SSH key '%s' generated successfully").printf (new_key.get_display_name ()));
     }
     
+    public GenericArray<SSHKey> get_ssh_keys () {
+        return ssh_keys;
+    }
+    
     private async void delete_key_directly (SSHKey ssh_key) {
         try {
             // Delete the key pair directly
@@ -183,7 +187,7 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     }
     
     
-    private void load_keys_simple () {
+    public void load_keys_simple () {
         debug ("Starting simple file-based key scanning...");
         
         try {

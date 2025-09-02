@@ -1,0 +1,162 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerCreateBackupDialog : Adw.Dialog {
+  title: _("Create Emergency Backup");
+  content-width: 600;
+  content-height: 700;
+
+  child: Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar header_bar {
+      show-end-title-buttons: false;
+      title-widget: Adw.WindowTitle {
+        title: _("Create Emergency Backup");
+        subtitle: _("Secure your SSH keys");
+      };
+      
+      [start]
+      Button cancel_button {
+        label: _("Cancel");
+      }
+      
+      [end]
+      Button create_button {
+        label: _("Create Backup");
+        styles ["suggested-action"]
+      }
+    }
+
+    Stack main_stack {
+      vexpand: true;
+      
+      ScrolledWindow {
+        name: "setup_page";
+        
+        Adw.Clamp {
+          maximum-size: 600;
+          tightening-threshold: 500;
+          
+          Box {
+            orientation: vertical;
+            spacing: 24;
+            margin-top: 24;
+            margin-bottom: 24;
+            margin-start: 12;
+            margin-end: 12;
+            
+            Adw.PreferencesGroup {
+              title: _("Backup Details");
+              
+              Adw.EntryRow name_entry {
+                title: _("Backup Name");
+                text: "Emergency Backup";
+              }
+              
+              Adw.EntryRow description_entry {
+                title: _("Description");
+                text: "Secure backup of SSH keys";
+              }
+            }
+            
+            Adw.PreferencesGroup {
+              title: _("Backup Type");
+              
+              Adw.ComboRow backup_type_combo {
+                title: _("Type");
+                subtitle: _("Choose backup format");
+              }
+              
+              Adw.SwitchRow set_expiry_row {
+                title: _("Set Expiration");
+                subtitle: _("Backup will expire after specified date");
+              }
+              
+              Adw.ActionRow expiry_row {
+                title: _("Expires On");
+                
+                [suffix]
+                Button expiry_button {
+                  label: _("Set Expiry Date");
+                  valign: center;
+                  styles ["flat"]
+                }
+              }
+              
+              Adw.SpinRow shares_count_row {
+                title: _("Total Shares");
+                subtitle: _("Number of secret shares to create");
+                adjustment: Adjustment {
+                  lower: 3;
+                  upper: 10;
+                  step-increment: 1;
+                  value: 5;
+                };
+              }
+              
+              Adw.SpinRow threshold_row {
+                title: _("Threshold");
+                subtitle: _("Minimum shares needed for recovery");
+                adjustment: Adjustment {
+                  lower: 2;
+                  upper: 5;
+                  step-increment: 1;
+                  value: 3;
+                };
+              }
+            }
+            
+            Adw.PreferencesGroup keys_group {
+              title: _("SSH Keys to Backup");
+              description: _("Select which keys to include in the backup");
+              
+              ListBox keys_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+              
+              Adw.ComboRow single_key_combo {
+                title: _("SSH Key");
+                subtitle: _("Select a single key for QR code backup");
+              }
+            }
+            
+          }
+        }
+      }
+      
+      Box {
+        name: "progress_page";
+        orientation: vertical;
+        spacing: 24;
+        margin-top: 48;
+        margin-bottom: 48;
+        margin-start: 24;
+        margin-end: 24;
+        
+        Box {
+          orientation: vertical;
+          spacing: 12;
+          halign: center;
+          
+          Spinner {
+            width-request: 48;
+            height-request: 48;
+            spinning: true;
+          }
+          
+          Label {
+            label: _("Creating Backup...");
+            styles ["title-2"]
+          }
+          
+          Label {
+            label: _("Please wait while your keys are being secured");
+            styles ["dim-label"]
+          }
+        }
+      }
+    }
+  };
+}

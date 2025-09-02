@@ -1,0 +1,87 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerSSHTunnelingDialog : Adw.Dialog {
+  title: _("SSH Tunneling");
+  content-width: 800;
+  content-height: 650;
+
+  child: Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: _("SSH Tunneling");
+        subtitle: _("Visual tunnel management");
+      };
+      
+      [end]
+      Button add_tunnel_button {
+        icon-name: "list-add-symbolic";
+        tooltip-text: _("Create New Tunnel");
+        styles ["suggested-action"]
+      }
+    }
+
+    Stack main_stack {
+      vexpand: true;
+      
+      Adw.StatusPage empty_state_page {
+        name: "empty_page";
+        title: _("No Tunnels Configured");
+        description: _("Create SSH tunnels for secure port forwarding and remote access");
+        icon-name: "network-transmit-symbolic";
+        
+        Box {
+          orientation: vertical;
+          spacing: 12;
+          halign: center;
+          
+          Button {
+            label: _("Create Your First Tunnel");
+            styles ["pill", "suggested-action"]
+            action-name: "app.add-tunnel";
+          }
+        }
+      }
+      
+      ScrolledWindow {
+        name: "tunnels_page";
+        
+        Adw.Clamp {
+          maximum-size: 800;
+          tightening-threshold: 600;
+          
+          Box {
+            orientation: vertical;
+            spacing: 24;
+            margin-top: 24;
+            margin-bottom: 24;
+            margin-start: 12;
+            margin-end: 12;
+            
+            Adw.PreferencesGroup active_group {
+              title: _("Active Tunnels");
+              description: _("Currently running SSH tunnels");
+              
+              ListBox active_tunnels_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+            }
+            
+            Adw.PreferencesGroup saved_group {
+              title: _("Saved Configurations");
+              description: _("Your tunnel configurations");
+              
+              ListBox tunnels_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+}

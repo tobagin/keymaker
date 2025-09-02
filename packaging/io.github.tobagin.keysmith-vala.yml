@@ -12,6 +12,7 @@ finish-args:
   - --socket=ssh-auth
   - --device=dri
   - --filesystem=~/.ssh:create
+  - --filesystem=/run/user:ro
   - --talk-name=org.freedesktop.secrets
   - --talk-name=org.gnome.keyring
 cleanup:
@@ -64,6 +65,42 @@ modules:
       - /libexec/ssh-keysign
       - /libexec/ssh-pkcs11-helper
       - /sbin
+
+  - name: qrencode
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DBUILD_SHARED_LIBS=ON
+    sources:
+      - type: git
+        url: https://github.com/fukuchi/libqrencode.git
+        tag: v4.1.1
+        commit: 715e29fd4cd71b6e452ae0f4e36d917b43122ce8
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /share/man
+      - '*.la'
+      - '*.a'
+
+  - name: zbar
+    buildsystem: simple
+    build-commands:
+      - autoreconf -fiv
+      - ./configure --prefix=/app --without-x --without-qt --without-gtk --without-python --disable-doc --without-dbus
+      - make
+      - make install
+    sources:
+      - type: git
+        url: https://github.com/mchehab/zbar.git
+        tag: 0.23.93
+        commit: bb05ec54eec57f8397cb13fb9161372a281a1219
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /share/man
+      - '*.la'
+      - '*.a'
 
   - name: keymaker
     buildsystem: meson

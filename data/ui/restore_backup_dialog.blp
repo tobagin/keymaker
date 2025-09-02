@@ -1,0 +1,136 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerRestoreBackupDialog : Adw.Dialog {
+  title: _("Restore from Backup");
+  content-width: 800;
+  content-height: 600;
+
+  child: Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Adw.WindowTitle {
+        title: _("Restore from Backup");
+        subtitle: _("Recover your SSH keys");
+      };
+      
+      [start]
+      Button cancel_button {
+        label: _("Cancel");
+      }
+      
+      [end]
+      Button restore_button {
+        label: _("Restore Key(s)");
+        styles ["suggested-action"]
+      }
+    }
+
+    Adw.NavigationView main_navigation {
+      vexpand: true;
+      
+      Adw.NavigationPage selection_page {
+        title: _("Select Backup");
+        
+        child: ScrolledWindow {        
+          child: Adw.Clamp {
+            maximum-size: 600;
+            tightening-threshold: 500;
+            
+            child: Box {
+              orientation: vertical;
+              spacing: 24;
+              margin-top: 24;
+              margin-bottom: 24;
+              margin-start: 12;
+              margin-end: 12;
+            
+              Adw.PreferencesGroup {
+                title: _("Available Backups");
+                description: _("Select a backup to restore");
+                
+                ListBox backups_list {
+                  selection-mode: single;
+                  styles ["boxed-list"]
+                }
+              }
+              
+              Adw.PreferencesGroup {
+                title: _("Restore Options");
+                
+                Adw.SwitchRow overwrite_existing_row {
+                  title: _("Overwrite Existing Keys");
+                  subtitle: _("Replace keys that already exist");
+                  active: false;
+                }
+                
+                Adw.SwitchRow backup_existing_row {
+                  title: _("Backup Existing Keys");
+                  subtitle: _("Create backups before overwriting");
+                  active: true;
+                }
+                
+                Adw.EntryRow passphrase_entry {
+                  title: _("Passphrase");
+                  input-purpose: password;
+                  show-apply-button: false;
+                }
+                
+                Adw.PreferencesRow shamir_row {
+                  title: _("Shamir Secret Shares");
+                  
+                  child: ScrolledWindow {
+                    min-content-height: 100;
+                    max-content-height: 200;
+                    vexpand: false;
+                    
+                    child: TextView shares_view {
+                      buffer: TextBuffer {};
+                      wrap-mode: word_char;
+                    };
+                  };
+                }
+              }
+              
+            };
+          };
+        };
+      }
+      
+      Adw.NavigationPage progress_page {
+        title: _("Restoring");
+        
+        child: Box {
+          orientation: vertical;
+          spacing: 24;
+          margin-top: 48;
+          margin-bottom: 48;
+          margin-start: 24;
+          margin-end: 24;
+        
+          Box {
+            orientation: vertical;
+            spacing: 12;
+            halign: center;
+            
+            ProgressBar restore_progress {
+              width-request: 300;
+            }
+            
+            Label restore_status_label {
+              label: _("Initializing restore...");
+              styles ["title-2"]
+            }
+            
+            Label {
+              label: _("Please wait while your keys are being restored");
+              styles ["dim-label"]
+            }
+          }
+        };
+      }
+    }
+  };
+}

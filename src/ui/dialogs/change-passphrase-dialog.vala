@@ -28,6 +28,9 @@ public class KeyMaker.ChangePassphraseDialog : Adw.Dialog {
     private unowned Gtk.Button change_button;
     
     [GtkChild]
+    private unowned Gtk.Button cancel_button;
+    
+    [GtkChild]
     private unowned Gtk.Box progress_box;
     
     [GtkChild]
@@ -52,6 +55,11 @@ public class KeyMaker.ChangePassphraseDialog : Adw.Dialog {
         // Connect validation signals
         new_passphrase_row.notify["text"].connect (validate_form);
         confirm_passphrase_row.notify["text"].connect (validate_form);
+        
+        // Connect button signals
+        cancel_button.clicked.connect (() => {
+            this.force_close ();
+        });
         
         // Initial validation
         validate_form ();

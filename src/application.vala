@@ -12,7 +12,7 @@
 namespace KeyMaker {
     public class Application : Adw.Application {
         
-        private KeyMaker.Window? window = null;
+        public KeyMaker.Window? window = null;
         private Settings settings;
 
         public Application () {
@@ -178,6 +178,36 @@ namespace KeyMaker {
             shortcuts_action.activate.connect (on_shortcuts_action);
             add_action (shortcuts_action);
             set_accels_for_action ("app.shortcuts", {"<Control>question"});
+
+            // SSH Agent action
+            var ssh_agent_action = new SimpleAction ("ssh-agent", null);
+            ssh_agent_action.activate.connect (on_ssh_agent_action);
+            add_action (ssh_agent_action);
+
+            // SSH Config action  
+            var ssh_config_action = new SimpleAction ("ssh-config", null);
+            ssh_config_action.activate.connect (on_ssh_config_action);
+            add_action (ssh_config_action);
+
+            // Connection Diagnostics action
+            var connection_diagnostics_action = new SimpleAction ("connection-diagnostics", null);
+            connection_diagnostics_action.activate.connect (on_connection_diagnostics_action);
+            add_action (connection_diagnostics_action);
+
+            // Key Rotation action
+            var key_rotation_action = new SimpleAction ("key-rotation", null);
+            key_rotation_action.activate.connect (on_key_rotation_action);
+            add_action (key_rotation_action);
+
+            // Emergency Vault action
+            var emergency_vault_action = new SimpleAction ("emergency-vault", null);
+            emergency_vault_action.activate.connect (on_emergency_vault_action);
+            add_action (emergency_vault_action);
+
+            // SSH Tunneling action
+            var ssh_tunneling_action = new SimpleAction ("ssh-tunneling", null);
+            ssh_tunneling_action.activate.connect (on_ssh_tunneling_action);
+            add_action (ssh_tunneling_action);
         }
 
         private void on_about_action () {
@@ -317,6 +347,67 @@ namespace KeyMaker {
 
         private void on_shortcuts_action () {
             KeyMaker.ShortcutsDialog.show (window);
+        }
+
+        private void on_ssh_agent_action () {
+            if (window != null) {
+                var dialog = new KeyMaker.SSHAgentDialog (window, window.get_ssh_keys ());
+                dialog.present (window);
+            }
+        }
+
+        private void on_ssh_config_action () {
+            if (window != null) {
+                var dialog = new KeyMaker.SSHConfigDialog (window);
+                dialog.present (window);
+            }
+        }
+
+        private void on_connection_diagnostics_action () {
+            if (window != null) {
+                var dialog = new KeyMaker.ConnectionDiagnosticsDialog (window);
+                dialog.present (window);
+            }
+        }
+
+        private void on_key_rotation_action () {
+            if (window != null) {
+                // Key rotation needs a specific key - create temporary placeholder files
+                try {
+                    var temp_dir = DirUtils.make_tmp ("keymaker_XXXXXX");
+                    var private_path = Path.build_filename (temp_dir, "placeholder");
+                    var public_path = Path.build_filename (temp_dir, "placeholder.pub");
+                    
+                    // Create empty placeholder files
+                    FileUtils.set_contents (private_path, "");
+                    FileUtils.set_contents (public_path, "");
+                    
+                    // Set secure permissions on private key
+                    Posix.chmod (private_path, 0x180); // 0600
+                    
+                    var private_file = File.new_for_path (private_path);
+                    var public_file = File.new_for_path (public_path);
+                    var placeholder_key = new KeyMaker.SSHKey (private_file, public_file, KeyMaker.SSHKeyType.RSA, "placeholder", null, new DateTime.now_local (), 2048);
+                    var dialog = new KeyMaker.KeyRotationDialog (window, placeholder_key);
+                    dialog.present (window);
+                } catch (Error e) {
+                    warning ("Failed to create placeholder files for key rotation: %s", e.message);
+                }
+            }
+        }
+
+        private void on_emergency_vault_action () {
+            if (window != null) {
+                var dialog = new KeyMaker.EmergencyVaultDialog (window);
+                dialog.present (window);
+            }
+        }
+
+        private void on_ssh_tunneling_action () {
+            if (window != null) {
+                var dialog = new KeyMaker.SSHTunnelingDialog (window);
+                dialog.present (window);
+            }
         }
         
         private void add_command_line_options () {

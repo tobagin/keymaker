@@ -48,17 +48,37 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         filtered_hosts = new GenericArray<SSHConfigHost> ();
         
         setup_signals ();
-        load_config ();
+        load_config.begin ((obj, res) => {
+            try {
+                load_config.end (res);
+            } catch (Error e) {
+                warning ("Failed to load SSH config: %s", e.message);
+                show_error ("Failed to load SSH config", e.message);
+            }
+        });
     }
     
     private void setup_signals () {
-        search_entry.search_changed.connect (on_search_changed);
-        add_host_button.clicked.connect (on_add_host_clicked);
-        save_button.clicked.connect (on_save_clicked);
-        reload_button.clicked.connect (on_reload_clicked);
-        hosts_list.row_activated.connect (on_host_row_activated);
+        // Add null checks to prevent crashes
+        if (search_entry != null) {
+            search_entry.search_changed.connect (on_search_changed);
+        }
+        if (add_host_button != null) {
+            add_host_button.clicked.connect (on_add_host_clicked);
+        }
+        if (save_button != null) {
+            save_button.clicked.connect (on_save_clicked);
+        }
+        if (reload_button != null) {
+            reload_button.clicked.connect (on_reload_clicked);
+        }
+        if (hosts_list != null) {
+            hosts_list.row_activated.connect (on_host_row_activated);
+        }
         
-        ssh_config.config_changed.connect (on_config_changed);
+        if (ssh_config != null) {
+            ssh_config.config_changed.connect (on_config_changed);
+        }
     }
     
     private async void load_config () {
@@ -78,7 +98,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         filtered_hosts.remove_range (0, filtered_hosts.length);
         
         // Apply search filter
-        var query = search_entry.text.strip ();
+        var query = (search_entry != null && search_entry.text != null) ? search_entry.text.strip () : "";
         if (query.length > 0) {
             var search_results = ssh_config.search_hosts (query);
             for (int i = 0; i < search_results.length; i++) {
@@ -100,7 +120,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
                 empty_state.description = "Add SSH host configurations to manage your connections";
                 empty_state.icon_name = "network-server-symbolic";
             }
-            main_stack.visible_child = empty_state;
+            main_stack.visible_child_name = "empty_state";
         } else {
             populate_hosts_list ();
             main_stack.visible_child_name = "hosts_page";
@@ -162,6 +182,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         edit_button.icon_name = "document-edit-symbolic";
         edit_button.tooltip_text = "Edit Host Configuration";
         edit_button.add_css_class ("flat");
+        edit_button.valign = Gtk.Align.CENTER;
         edit_button.clicked.connect (() => {
             edit_host (host);
         });
@@ -173,6 +194,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         delete_button.tooltip_text = "Delete Host";
         delete_button.add_css_class ("flat");
         delete_button.add_css_class ("destructive-action");
+        delete_button.valign = Gtk.Align.CENTER;
         delete_button.clicked.connect (() => {
             delete_host (host);
         });
@@ -189,17 +211,19 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     }
     
     private void on_add_host_clicked () {
-        var dialog = new SSHHostEditDialog (this, null);
+        var dialog = new SSHHostEditDialog ((Gtk.Window) this.get_root (), null);
         dialog.host_saved.connect ((host) => {
             ssh_config.add_host (host);
+            save_config_async.begin ();
             refresh_hosts_list ();
         });
         dialog.present (this);
     }
     
     private void edit_host (SSHConfigHost host) {
-        var dialog = new SSHHostEditDialog (this, host);
+        var dialog = new SSHHostEditDialog ((Gtk.Window) this.get_root (), host);
         dialog.host_saved.connect ((updated_host) => {
+            save_config_async.begin ();
             refresh_hosts_list ();
         });
         dialog.present (this);
@@ -219,11 +243,20 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         dialog.response.connect ((response) => {
             if (response == "delete") {
                 ssh_config.remove_host (host.name);
+                save_config_async.begin ();
                 refresh_hosts_list ();
             }
         });
         
         dialog.present (this);
+    }
+    
+    private async void save_config_async () {
+        try {
+            yield ssh_config.save_config ();
+        } catch (KeyMakerError e) {
+            warning ("Failed to save SSH config automatically: %s", e.message);
+        }
     }
     
     private async void on_save_clicked () {
@@ -255,7 +288,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     }
     
     private void on_host_row_activated (Gtk.ListBoxRow row) {
-        var host = (SSHConfigHost?) row.get_data ("ssh-host");
+        var host = (SSHConfigHost?) row.get_data<SSHConfigHost> ("ssh-host");
         if (host != null) {
             edit_host (host);
         }

@@ -32,6 +32,19 @@ namespace KeyMaker {
             }
         }
         
+        public string get_icon_name () {
+            switch (this) {
+                case ED25519:
+                    return "security-high-symbolic";
+                case RSA:
+                    return "security-medium-symbolic";
+                case ECDSA:
+                    return "security-low-symbolic";
+                default:
+                    assert_not_reached ();
+            }
+        }
+        
         public static SSHKeyType from_string (string type_str) throws KeyMakerError {
             switch (type_str.down ()) {
                 case "ed25519":
@@ -55,6 +68,7 @@ namespace KeyMaker {
         KEY_NOT_FOUND,
         PERMISSION_DENIED,
         VALIDATION_FAILED,
-        SUBPROCESS_FAILED
+        SUBPROCESS_FAILED,
+        INVALID_INPUT
     }
 }

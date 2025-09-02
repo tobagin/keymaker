@@ -45,7 +45,7 @@ public class KeyMaker.AboutDialog : GLib.Object {
         };
 
         // Load and set release notes from metainfo
-        load_release_notes(about);
+        // load_release_notes(about); // Commented out to prevent XML parsing errors
 
         // Set copyright
         about.set_copyright("© 2025 Key Maker Team");
