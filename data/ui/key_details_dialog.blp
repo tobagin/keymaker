@@ -3,7 +3,7 @@ using Adw 1;
 
 template $KeyMakerKeyDetailsDialog : Adw.Dialog {
   title: _("SSH Key Details");
-  content-width: 500;
+  content-width: 800;
   content-height: 600;
 
   Adw.ToolbarView {
@@ -43,7 +43,7 @@ template $KeyMakerKeyDetailsDialog : Adw.Dialog {
 
             [suffix]
             Button copy_fingerprint_button {
-              icon-name: "edit-copy-symbolic";
+              icon-name: "io.github.tobagin.keysmith-copy-public-key-symbolic";
               tooltip-text: _("Copy Fingerprint");
               valign: center;
               styles ["flat"]
@@ -53,7 +53,6 @@ template $KeyMakerKeyDetailsDialog : Adw.Dialog {
           Adw.ActionRow comment_row {
             title: _("Comment");
             subtitle-selectable: true;
-            visible: false;
           }
         }
 
@@ -66,11 +65,16 @@ template $KeyMakerKeyDetailsDialog : Adw.Dialog {
 
             [suffix]
             Button copy_private_path_button {
-              icon-name: "edit-copy-symbolic";
+              icon-name: "io.github.tobagin.keysmith-copy-public-key-symbolic";
               tooltip-text: _("Copy Path");
               valign: center;
               styles ["flat"]
             }
+          }
+
+          Adw.ActionRow private_permissions_row {
+            title: _("Private Key Permissions");
+            subtitle-selectable: true;
           }
 
           Adw.ActionRow public_path_row {
@@ -79,11 +83,16 @@ template $KeyMakerKeyDetailsDialog : Adw.Dialog {
 
             [suffix]
             Button copy_public_path_button {
-              icon-name: "edit-copy-symbolic";
+              icon-name: "io.github.tobagin.keysmith-copy-public-key-symbolic";
               tooltip-text: _("Copy Path");
               valign: center;
               styles ["flat"]
             }
+          }
+
+          Adw.ActionRow public_permissions_row {
+            title: _("Public Key Permissions");
+            subtitle-selectable: true;
           }
 
           Adw.ActionRow modified_row {
@@ -94,6 +103,12 @@ template $KeyMakerKeyDetailsDialog : Adw.Dialog {
 
         Adw.PreferencesGroup {
           title: _("Public Key Content");
+          header-suffix: Button copy_public_key_button {
+            icon-name: "io.github.tobagin.keysmith-copy-public-key-symbolic";
+            tooltip-text: _("Copy Public Key Content");
+            valign: center;
+            styles ["flat"]
+          };
 
           ScrolledWindow public_key_scroll {
             height-request: 120;

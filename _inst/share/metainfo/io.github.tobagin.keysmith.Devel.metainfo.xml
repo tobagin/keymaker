@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.tobagin.keysmith.Devel</id>
+  
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Key Maker (Devel)</name>
+  <summary>SSH Key Management Application</summary>
+  
+  <description>
+    <p>
+      Key Maker is a user-friendly graphical application for managing SSH keys. 
+      It provides an intuitive interface for generating, managing, and deploying 
+      SSH keys without needing to use command-line tools.
+    </p>
+    <p>
+      Features:
+    </p>
+    <ul>
+      <li>Generate Ed25519, RSA, and ECDSA SSH keys</li>
+      <li>Manage existing SSH keys in your ~/.ssh directory</li>
+      <li>Copy public keys to clipboard</li>
+      <li>Generate ssh-copy-id commands for server deployment</li>
+      <li>Change key passphrases</li>
+      <li>Secure key deletion with confirmation</li>
+      <li>Modern GTK4 and Libadwaita user interface</li>
+    </ul>
+  </description>
+  
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window-with-keys.png</image>
+      <caption>Main window showing SSH key management with individual action buttons</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window-no-keys.png</image>
+      <caption>Clean interface when no SSH keys are present</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/generate-key-without-passphrase.png</image>
+      <caption>Key generation dialog with comprehensive options</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/gerenate-ssh-key-passphrase-mismatch.png</image>
+      <caption>Real-time validation with helpful error feedback</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/key-details.png</image>
+      <caption>Detailed SSH key information and fingerprint</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/copy-key-to-server.png</image>
+      <caption>Generate ssh-copy-id commands for server deployment</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/change-passphrase.png</image>
+      <caption>Secure passphrase management</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/delete-key.png</image>
+      <caption>Safe key deletion with confirmation</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/preferences.png</image>
+      <caption>Comprehensive preferences and settings</caption>
+    </screenshot>
+  </screenshots>
+  
+  <url type="homepage">https://github.com/tobagin/keymaker</url>
+  <url type="bugtracker">https://github.com/tobagin/keymaker/issues</url>
+  <url type="help">https://github.com/tobagin/keymaker/wiki</url>
+  
+  <developer_name>Thiago Fernandes</developer_name>
+  
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </recommends>
+  
+  <categories>
+    <category>System</category>
+    <category>Security</category>
+    <category>Utility</category>
+  </categories>
+  
+  <keywords>
+    <keyword>ssh</keyword>
+    <keyword>keys</keyword>
+    <keyword>security</keyword>
+    <keyword>remote</keyword>
+    <keyword>authentication</keyword>
+  </keywords>
+  
+  <launchable type="desktop-id">io.github.tobagin.keysmith.Devel.desktop</launchable>
+  
+  <releases>
+    <release version="1.1.0" date="2025-08-25">
+      <description>
+        <p>Major rebranding and application ID change:</p>
+        <ul>
+          <li>Renamed application from "KeySmith" to "Key Maker"</li>
+          <li>Changed application ID from io.github.tobagin.keymaker to io.github.tobagin.keysmith</li>
+          <li>Updated all branding, documentation, and user-facing text</li>
+          <li>Maintained backward compatibility through Flatpak ID transition support</li>
+          <li>Updated repository URL to reflect new name</li>
+          <li>Full rebranding across all components and files</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.3" date="2025-07-14">
+      <description>
+        <p>Icon sizing fixes:</p>
+        <ul>
+          <li>Fixed 512x512 icon to correct dimensions (was 1024x1024)</li>
+          <li>Ensured all icon sizes match their directory specifications</li>
+          <li>Improved icon quality and consistency across all sizes</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.2" date="2025-07-14">
+      <description>
+        <p>Icon and quality improvements:</p>
+        <ul>
+          <li>Updated application icon with new Key Maker branding</li>
+          <li>Improved visual consistency across all icon sizes</li>
+          <li>Enhanced application quality guidelines compliance</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.1" date="2025-01-12">
+      <description>
+        <p>Developer attribution update:</p>
+        <ul>
+          <li>Updated developer attribution to Thiago Fernandes</li>
+          <li>Updated copyright notices and translation headers</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.1.0" date="2024-01-01">
+      <description>
+        <p>Initial release of Key Maker:</p>
+        <ul>
+          <li>SSH key generation (Ed25519, RSA, ECDSA)</li>
+          <li>Key management and listing</li>
+          <li>Public key copying to clipboard</li>
+          <li>ssh-copy-id command generation</li>
+          <li>Passphrase management</li>
+          <li>GTK4 and Libadwaita interface</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  
+  <content_rating type="oars-1.1"/>
+</component>

@@ -28,9 +28,6 @@ public class KeyMaker.CopyIdDialog : Adw.Dialog {
     private unowned Gtk.Button copy_button;
     
     [GtkChild]
-    private unowned Gtk.Button cancel_button;
-    
-    [GtkChild]
     private unowned Gtk.Box progress_box;
     
     [GtkChild]
@@ -58,10 +55,6 @@ public class KeyMaker.CopyIdDialog : Adw.Dialog {
         hostname_row.notify["text"].connect (validate_form);
         username_row.notify["text"].connect (validate_form);
         
-        // Connect button signals
-        cancel_button.clicked.connect (() => {
-            this.force_close ();
-        });
         
         // Set initial focus
         hostname_row.grab_focus ();

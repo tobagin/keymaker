@@ -42,8 +42,6 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
     [GtkChild]
     private unowned Gtk.Button create_button;
     
-    [GtkChild]
-    private unowned Gtk.Button cancel_button;
     
     
     [GtkChild]
@@ -204,9 +202,6 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
     
     private void setup_signals () {
         create_button.clicked.connect (on_create_backup);
-        cancel_button.clicked.connect (() => {
-            this.force_close ();
-        });
         
         name_entry.changed.connect (update_create_button);
         backup_type_combo.notify["selected"].connect (on_backup_type_changed);
@@ -264,17 +259,17 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
                 case SSHKeyType.ED25519:
                     // Green for ED25519 (most secure)
                     icon.add_css_class ("success");
-                    icon.icon_name = "security-high-symbolic";
+                    icon.icon_name = key.key_type.get_icon_name ();
                     break;
                 case SSHKeyType.RSA:
                     // Blue/accent for RSA (good compatibility)
                     icon.add_css_class ("accent");
-                    icon.icon_name = "security-medium-symbolic";
+                    icon.icon_name = key.key_type.get_icon_name ();
                     break;
                 case SSHKeyType.ECDSA:
                     // Yellow/warning for ECDSA (compatibility issues)
                     icon.add_css_class ("warning");
-                    icon.icon_name = "security-low-symbolic";
+                    icon.icon_name = key.key_type.get_icon_name ();
                     break;
             }
             

@@ -3,36 +3,24 @@ using Adw 1;
 
 template $KeyMakerSSHConfigDialog : Adw.Dialog {
   title: _("SSH Configuration");
+  content-width: 800;
+  content-height: 600;
 
-  child: Gtk.Box {
-    orientation: vertical;
-    
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
+
+    [top]
     Adw.HeaderBar {
       title-widget: Adw.WindowTitle {
         title: _("SSH Configuration");
         subtitle: _("Manage SSH client host configurations");
       };
+      show-end-title-buttons: true;
 
-      [start]
-      Button reload_button {
-        icon-name: "view-refresh-symbolic";
-        tooltip-text: _("Reload Configuration");
-      }
-
-      [end]
-      Button save_button {
-        label: _("Save Configuration");
-        styles ["suggested-action"]
-      }
-
-      [end]
-      Button add_host_button {
-        icon-name: "list-add-symbolic";
-        tooltip-text: _("Add New Host");
-      }
     }
 
-    Box {
+    content: Box {
       orientation: vertical;
       spacing: 0;
       
@@ -60,12 +48,12 @@ template $KeyMakerSSHConfigDialog : Adw.Dialog {
           child: ScrolledWindow hosts_page {
             
             Adw.Clamp {
-              maximum-size: 1000;
-              tightening-threshold: 600;
+              maximum-size: 800;
+              tightening-threshold: 400;
               
               Box {
                 orientation: vertical;
-                spacing: 12;
+                spacing: 24;
                 margin-top: 24;
                 margin-bottom: 24;
                 margin-start: 12;
@@ -74,6 +62,31 @@ template $KeyMakerSSHConfigDialog : Adw.Dialog {
                 Adw.PreferencesGroup {
                   title: _("SSH Hosts");
                   description: _("Configure SSH client host settings from ~/.ssh/config");
+                  
+                  header-suffix: Box {
+                    spacing: 6;
+                    
+                    Button add_host_button {
+                      icon-name: "tab-new-symbolic";
+                      tooltip-text: _("Add New Host");
+                      styles ["flat"]
+                      valign: center;
+                    }
+                    
+                    Button reload_button {
+                      icon-name: "view-refresh-symbolic";
+                      tooltip-text: _("Reload Configuration");
+                      styles ["flat"]
+                      valign: center;
+                    }
+                    
+                    Button remove_all_hosts_button {
+                      icon-name: "user-trash-symbolic";
+                      tooltip-text: _("Remove All Hosts");
+                      styles ["flat", "destructive-action"]
+                      valign: center;
+                    }
+                  };
                   
                   ListBox hosts_list {
                     selection-mode: none;
@@ -85,6 +98,6 @@ template $KeyMakerSSHConfigDialog : Adw.Dialog {
           };
         }
       }
-    }
+    };
   };
 }

@@ -2,225 +2,256 @@ using Gtk 4.0;
 using Adw 1;
 
 template $KeyMakerKeyRotationDialog : Adw.Dialog {
-  title: _("Key Rotation");
-  content-width: 700;
+  title: _("Smart Key Rotation Manager");
+  content-width: 800;
   content-height: 600;
 
-  child: Gtk.Box {
-    orientation: vertical;
-    
-    Adw.HeaderBar {
-      show-end-title-buttons: false;
-      title-widget: Adw.WindowTitle {
-        title: _("Smart Key Rotation");
-        subtitle: _("Automated SSH key rotation with verification");
-      };
-      
-      [start]
-      Button cancel_button {
-        label: _("Cancel");
-      }
-      
-      [end]
-      Button start_rotation_button {
-        label: _("Start Rotation");
-        sensitive: false;
-        styles ["suggested-action"]
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
+
+    [top]
+    Adw.HeaderBar header_bar {
+      [title]
+      Label {
+        label: _("Smart Key Rotation");
+        styles ["heading"]
       }
     }
-
-    Stack main_stack {
-      vexpand: true;
+    
+    content: Adw.ViewStack main_stack {
       
-      Box planning_page {
-        name: "planning";
-        orientation: vertical;
+      // Smart Key Rotation Status Tab
+      Adw.ViewStackPage {
+        name: "status";
+        title: _("Smart Rotation");
+        icon-name: "media-playlist-repeat-symbolic";
         
-        Adw.Clamp {
-          maximum-size: 800;
-          tightening-threshold: 600;
-          vexpand: true;
+        child: Adw.StatusPage rotation_status_page {
+          title: _("Smart Key Rotation System");
+          description: _("Automated SSH key rotation with rollback protection");
+          icon-name: "media-playlist-repeat-symbolic";
           
-          Box {
-            orientation: vertical;
-            spacing: 24;
-            margin-top: 24;
-            margin-bottom: 24;
-            margin-start: 12;
-            margin-end: 12;
-            
-            Adw.PreferencesGroup {
-              title: _("Rotation Settings");
-              
-              Adw.EntryRow reason_row {
-                title: _("Rotation Reason");
-                text: "Manual rotation";
-              }
-              
-              Adw.SwitchRow keep_old_key_row {
-                title: _("Keep Old Key");
-                subtitle: _("Backup old key instead of deleting it");
-                active: true;
-              }
-              
-              Adw.SwitchRow enable_rollback_row {
-                title: _("Enable Rollback");
-                subtitle: _("Automatically rollback on failure");
-                active: true;
-              }
-            }
-            
-            Adw.PreferencesGroup {
-              title: _("Deployment Targets");
-              description: _("Servers where the new key will be deployed");
-              
-              [header-suffix]
-              Button add_target_button {
-                icon-name: "list-add-symbolic";
-                tooltip-text: _("Add Target Server");
-                valign: center;
-                styles ["flat"]
-              }
-              
-              ListBox targets_list {
-                selection-mode: none;
-                styles ["boxed-list"]
-              }
-            }
-            
-          }
-        }
+          child: Button create_plan_status_button {
+            label: _("Create New Plan");
+            halign: center;
+            styles ["suggested-action", "pill"]
+          };
+        };
       }
       
-      Box progress_page {
-        name: "progress";
-        orientation: vertical;
-        spacing: 24;
-        margin-top: 24;
-        margin-bottom: 24;
-        margin-start: 24;
-        margin-end: 24;
+      // Plans Tab (Draft and Running)
+      Adw.ViewStackPage {
+        name: "plans";
+        title: _("Plans");
+        icon-name: "accessories-text-editor-symbolic";
         
-        Box {
-          orientation: vertical;
-          spacing: 12;
-          halign: center;
-          
-          Label current_stage_label {
-            label: _("Initializing...");
-            styles ["title-2"]
-          }
-          
-          ProgressBar progress_bar {
-            fraction: 0.0;
-            width-request: 300;
-          }
-          
-          Label progress_details {
-            label: _("Preparing key rotation...");
-            styles ["dim-label"]
-          }
-        }
-        
-        Adw.PreferencesGroup {
-          title: _("Rotation Log");
-          vexpand: true;
-          
-          ScrolledWindow log_scroll {
-            min-content-height: 200;
-            vexpand: true;
-            
-            TextView log_view {
-              editable: false;
-              cursor-visible: false;
-              monospace: true;
-              styles ["card"]
-            }
-          }
-        }
-        
-        Box {
-          orientation: horizontal;
-          spacing: 12;
-          halign: center;
-          
-          Button pause_button {
-            label: _("Pause");
-            visible: false;
-          }
-          
-          Button abort_button {
-            label: _("Abort");
-            styles ["destructive-action"]
-          }
-        }
-      }
-      
-      Box results_page {
-        name: "results";
-        orientation: vertical;
-        
-        Adw.Clamp {
-          maximum-size: 800;
-          tightening-threshold: 600;
-          vexpand: true;
-          
-          Box {
-            orientation: vertical;
-            spacing: 24;
-            margin-top: 24;
-            margin-bottom: 24;
-            margin-start: 12;
-            margin-end: 12;
+        child: ScrolledWindow {
+          Adw.Clamp {
+            maximum-size: 800;
+            tightening-threshold: 300;
             
             Box {
-              orientation: horizontal;
-              spacing: 12;
-              halign: center;
+              orientation: vertical;
+              spacing: 24;
+              margin-top: 24;
+              margin-bottom: 24;
+              margin-start: 12;
+              margin-end: 12;
               
-              Image result_icon {
-                icon-name: "emblem-ok-symbolic";
-                icon-size: large;
-              }
-              
-              Box {
-                orientation: vertical;
-                spacing: 6;
+              // Draft Plans Section
+              Adw.PreferencesGroup draft_plans_group {
+                title: _("Draft Plans");
+                description: _("Plans ready to be executed");
                 
-                Label result_title {
-                  label: _("Rotation Successful");
-                  styles ["title-1"]
+                [header-suffix]
+                Box {
+                  spacing: 6;
+                  
+                  Button create_plan_button {
+                    icon-name: "tab-new-symbolic";
+                    tooltip-text: _("Create new rotation plan");
+                    clicked => $on_create_plan_clicked();
+                    valign: center;
+                    styles ["flat"]
+                  }
+                  
+                  Button execute_all_button {
+                    icon-name: "io.github.tobagin.keysmith-execute-all-rotation-plan-symbolic";
+                    tooltip-text: _("Execute all");
+                    clicked => $on_execute_all_clicked();
+                    valign: center;
+                    styles ["flat"]
+                  }
                 }
                 
-                Label result_summary {
-                  label: _("Key rotated successfully to all targets");
-                  styles ["dim-label"]
+                ListBox draft_plans_list {
+                  selection-mode: none;
+                  styles ["boxed-list"]
+                  
+                  Adw.ActionRow draft_placeholder {
+                    title: _("No draft plans");
+                    subtitle: _("Create a new rotation plan to get started");
+                    
+                    [prefix]
+                    Image {
+                      icon-name: "accessories-text-editor-symbolic";
+                      styles ["dim-label"]
+                    }
+                  }
+                }
+              }
+              
+              // Running Plans Section
+              Adw.PreferencesGroup running_plans_group {
+                title: _("Running Plans");
+                description: _("Plans currently being executed");
+                
+                ListBox running_plans_list {
+                  selection-mode: none;
+                  styles ["boxed-list"]
+                  
+                  Adw.ActionRow running_placeholder {
+                    title: _("No plans running");
+                    subtitle: _("Execute a draft plan to see it here");
+                    visible: true;
+                    
+                    [prefix]
+                    Image {
+                      icon-name: "media-playback-start-symbolic";
+                      styles ["dim-label"]
+                    }
+                  }
                 }
               }
             }
-            
-            Adw.PreferencesGroup {
-              title: _("Rotation Results");
-              
-              ListBox results_list {
-                selection-mode: none;
-                styles ["boxed-list"]
-              }
-            }
+          }
+        };
+      }
+      
+      // Rollbacks Tab
+      Adw.ViewStackPage {
+        name: "rollbacks";
+        title: _("Rollbacks");
+        icon-name: "io.github.tobagin.keysmith-rollback-symbolic";
+        
+        child: ScrolledWindow {
+          Adw.Clamp {
+            maximum-size: 800;
+            tightening-threshold: 300;
             
             Box {
-              orientation: horizontal;
-              spacing: 12;
-              halign: end;
+              orientation: vertical;
+              spacing: 24;
+              margin-top: 24;
+              margin-bottom: 24;
+              margin-start: 12;
+              margin-end: 12;
               
-              Button close_button {
-                label: _("Close");
-                styles ["suggested-action"]
+              // Active Rollbacks Section
+              Adw.PreferencesGroup rollback_plans_group {
+                title: _("Active Rollback Period");
+                description: _("Recently completed rotations that can be rolled back");
+                
+                ListBox rollback_plans_list {
+                  selection-mode: none;
+                  styles ["boxed-list"]
+                  
+                  Adw.ActionRow rollback_placeholder {
+                    title: _("No rollbacks available");
+                    subtitle: _("Complete a rotation to enable rollback options");
+                    visible: true;
+                    
+                    [prefix]
+                    Image {
+                      icon-name: "accessories-text-editor-symbolic";
+                      styles ["dim-label"]
+                    }
+                  }
+                }
+              }
+              
+              // Rollback Settings
+              Adw.PreferencesGroup rollback_settings_group {
+                title: _("Rollback Settings");
+                description: _("Configure default rollback behavior for new plans");
+                
+                Adw.ComboRow default_rollback_period_row {
+                  title: _("Default Rollback Period");
+                  subtitle: _("How long rollbacks remain available");
+                }
+                
+                Adw.SwitchRow enable_rollback_by_default_row {
+                  title: _("Enable Rollback by Default");
+                  subtitle: _("Automatically enable rollback for new rotation plans");
+                  active: true;
+                }
               }
             }
           }
-        }
+        };
       }
+      
+      // History Tab
+      Adw.ViewStackPage {
+        name: "history";
+        title: _("History");
+        icon-name: "document-open-recent-symbolic";
+        
+        child: ScrolledWindow {
+          Adw.Clamp {
+            maximum-size: 800;
+            tightening-threshold: 300;
+            
+            Box {
+              orientation: vertical;
+              spacing: 24;
+              margin-top: 24;
+              margin-bottom: 24;
+              margin-start: 12;
+              margin-end: 12;
+              
+              // History Section
+              Adw.PreferencesGroup history_group {
+                title: _("Rotation History");
+                description: _("Completed rotations and their outcomes");
+                
+                [header-suffix]
+                Button clear_history_button {
+                  icon-name: "user-trash-symbolic";
+                  tooltip-text: _("Clear History");
+                  clicked => $on_clear_history_clicked();
+                  valign: center;
+                  styles ["flat"]
+                }
+                
+                ListBox history_list {
+                  selection-mode: none;
+                  styles ["boxed-list"]
+                  
+                  Adw.ActionRow history_placeholder {
+                    title: _("No rotation history");
+                    subtitle: _("Previous rotations will appear here");
+                    visible: true;
+                    
+                    [prefix]
+                    Image {
+                      icon-name: "document-open-recent-symbolic";
+                      styles ["dim-label"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        };
+      }
+    };
+    
+    [bottom]
+    Adw.ViewSwitcherBar view_switcher_bar {
+      stack: main_stack;
+      reveal: true;
     }
   };
 }

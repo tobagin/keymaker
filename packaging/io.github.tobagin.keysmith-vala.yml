@@ -12,9 +12,11 @@ finish-args:
   - --socket=ssh-auth
   - --device=dri
   - --filesystem=~/.ssh:create
-  - --filesystem=/run/user:ro
+  #- --filesystem=/run/user:ro
+  - --filesystem=xdg-download:rw
   - --talk-name=org.freedesktop.secrets
   - --talk-name=org.gnome.keyring
+  - --talk-name=org.freedesktop.Flatpak
 cleanup:
   - /include
   - /lib/pkgconfig
@@ -99,6 +101,27 @@ modules:
       - /include
       - /lib/pkgconfig
       - /share/man
+      - '*.la'
+      - '*.a'
+
+  - name: vte
+    buildsystem: meson
+    config-opts:
+      - -Ddocs=false
+      - -Dvapi=true
+      - -Dgtk4=true
+      - -Dgtk3=false
+      - -D_systemd=false
+    sources:
+      - type: git
+        url: https://gitlab.gnome.org/GNOME/vte.git
+        tag: 0.78.0
+    cleanup:
+      - /etc
+      - /include
+      - /lib/pkgconfig
+      - /share/gtk-doc
+      - /share/vala
       - '*.la'
       - '*.a'
 

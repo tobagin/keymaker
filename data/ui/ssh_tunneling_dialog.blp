@@ -4,7 +4,7 @@ using Adw 1;
 template $KeyMakerSSHTunnelingDialog : Adw.Dialog {
   title: _("SSH Tunneling");
   content-width: 800;
-  content-height: 650;
+  content-height: 600;
 
   child: Box {
     orientation: vertical;
@@ -17,7 +17,7 @@ template $KeyMakerSSHTunnelingDialog : Adw.Dialog {
       
       [end]
       Button add_tunnel_button {
-        icon-name: "list-add-symbolic";
+        icon-name: "tab-new-symbolic";
         tooltip-text: _("Create New Tunnel");
         styles ["suggested-action"]
       }

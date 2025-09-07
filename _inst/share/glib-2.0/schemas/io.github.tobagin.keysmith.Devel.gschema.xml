@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="keymaker">
+  <schema id="io.github.tobagin.keysmith.Devel" path="/io/github/tobagin/keysmith/Devel/">
+    <key name="window-width" type="i">
+      <default>800</default>
+      <summary>Default window width</summary>
+      <description>The default width of the main window</description>
+    </key>
+    
+    <key name="window-height" type="i">
+      <default>600</default>
+      <summary>Default window height</summary>
+      <description>The default height of the main window</description>
+    </key>
+    
+    <key name="window-maximized" type="b">
+      <default>false</default>
+      <summary>Window maximized state</summary>
+      <description>Whether the window is maximized</description>
+    </key>
+    
+    <key name="default-key-type" type="s">
+      <default>'ed25519'</default>
+      <summary>Default SSH key type</summary>
+      <description>The default SSH key type to use when generating new keys</description>
+    </key>
+    
+    <key name="default-rsa-bits" type="i">
+      <default>4096</default>
+      <summary>Default RSA key size</summary>
+      <description>The default bit size for RSA keys</description>
+    </key>
+    
+    <key name="default-comment" type="s">
+      <default>''</default>
+      <summary>Default key comment</summary>
+      <description>The default comment to use for new SSH keys</description>
+    </key>
+    
+    <key name="use-passphrase-by-default" type="b">
+      <default>true</default>
+      <summary>Use passphrase by default</summary>
+      <description>Whether to enable passphrase protection by default for new keys</description>
+    </key>
+    
+    <key name="auto-refresh-interval" type="i">
+      <default>30</default>
+      <summary>Auto refresh interval</summary>
+      <description>Interval in seconds for automatically refreshing the key list (0 to disable)</description>
+    </key>
+    
+    <key name="show-fingerprints" type="b">
+      <default>true</default>
+      <summary>Show fingerprints</summary>
+      <description>Whether to show key fingerprints in the key list</description>
+    </key>
+    
+    <key name="confirm-deletions" type="b">
+      <default>true</default>
+      <summary>Confirm key deletions</summary>
+      <description>Whether to show confirmation dialog before deleting keys</description>
+    </key>
+    
+    <key name="theme" type="s">
+      <default>'auto'</default>
+      <summary>Theme preference</summary>
+      <description>The theme to use: 'auto' (system), 'light', or 'dark'</description>
+    </key>
+    
+    <key name="last-version-shown" type="s">
+      <default>""</default>
+      <summary>Last version for which release notes were shown</summary>
+      <description>Tracks the last application version for which release notes were displayed to avoid showing them repeatedly</description>
+    </key>
+    
+    <key name="key-service-mappings" type="aa{sv}">
+      <default>[]</default>
+      <summary>SSH key service mappings</summary>
+      <description>Stores associations between SSH keys and services they are used for</description>
+    </key>
+    
+    <key name="rotation-plans" type="aa{sv}">
+      <default>[]</default>
+      <summary>SSH key rotation plans</summary>
+      <description>Stores rotation plan configurations for SSH keys including targets and settings</description>
+    </key>
+    
+    <key name="tunnel-configurations" type="aa{sv}">
+      <default>[]</default>
+      <summary>SSH tunnel configurations</summary>
+      <description>Stores saved SSH tunnel configurations</description>
+    </key>
+  </schema>
+  
+  <schema id="io.github.tobagin.keysmith.Devel.tunneling" path="/io/github/tobagin/keysmith/Devel/tunneling/">
+    <key name="configurations" type="aa{sv}">
+      <default>[]</default>
+      <summary>SSH tunnel configurations</summary>
+      <description>Stores saved SSH tunnel configurations</description>
+    </key>
+  </schema>
+</schemalist>

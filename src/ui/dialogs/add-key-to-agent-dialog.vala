@@ -185,17 +185,17 @@ public class KeyMaker.AddKeyToAgentDialog : Adw.Dialog {
         switch (key.key_type) {
             case SSHKeyType.ED25519:
                 // Green for ED25519 (most secure)
-                type_icon.icon_name = "security-high-symbolic";
+                type_icon.icon_name = key.key_type.get_icon_name ();
                 type_icon.add_css_class ("success");
                 break;
             case SSHKeyType.RSA:
                 // Blue/accent for RSA (good compatibility)
-                type_icon.icon_name = "security-medium-symbolic";
+                type_icon.icon_name = key.key_type.get_icon_name ();
                 type_icon.add_css_class ("accent");
                 break;
             case SSHKeyType.ECDSA:
                 // Yellow/warning for ECDSA (compatibility issues)
-                type_icon.icon_name = "security-low-symbolic";
+                type_icon.icon_name = key.key_type.get_icon_name ();
                 type_icon.add_css_class ("warning");
                 break;
         }

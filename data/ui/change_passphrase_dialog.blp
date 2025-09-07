@@ -6,30 +6,16 @@ template $KeyMakerChangePassphraseDialog : Adw.Dialog {
   content-width: 500;
   content-height: 425;
 
-  Box {
-    orientation: vertical;
-    
-    Adw.HeaderBar {
-      show-end-title-buttons: false;
-      title-widget: Adw.WindowTitle {
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle window_title {
         title: _("Change Passphrase");
         subtitle: _("Update your SSH key passphrase");
       };
-      
-      [start]
-      Button cancel_button {
-        label: _("Cancel");
-      }
-      
-      [end]
-      Button change_button {
-        label: _("Change");
-        sensitive: false;
-        styles ["suggested-action"]
-      }
     }
 
-    Adw.Clamp {
+    content: Adw.Clamp {
       maximum-size: 400;
       margin-top: 24;
       margin-bottom: 24;
@@ -40,7 +26,7 @@ template $KeyMakerChangePassphraseDialog : Adw.Dialog {
         orientation: vertical;
         spacing: 24;
 
-        Adw.PreferencesGroup {
+        Adw.PreferencesGroup current_passphrase_group {
           title: _("Current Passphrase");
           description: _("Enter the current passphrase for this key");
 
@@ -80,6 +66,15 @@ template $KeyMakerChangePassphraseDialog : Adw.Dialog {
           }
         }
       }
+    };
+
+    [bottom]
+    Adw.HeaderBar {
+      title-widget: Button change_button {
+        label: _("Change");
+        sensitive: false;
+        styles ["suggested-action"]
+      };
     }
-  }
+  };
 }

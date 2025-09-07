@@ -73,6 +73,9 @@ public class KeyMaker.KeyRowWidget : Adw.ActionRow {
         
         // Update display
         update_display ();
+        
+        // Update passphrase button asynchronously
+        update_passphrase_button.begin ();
     }
     
     private void update_display () {
@@ -125,25 +128,43 @@ public class KeyMaker.KeyRowWidget : Adw.ActionRow {
                 // Green for ED25519 (most secure)
                 key_type_label.add_css_class ("success");
                 key_icon.add_css_class ("success");
-                key_icon.icon_name = "security-high-symbolic";
+                key_icon.icon_name = ssh_key.key_type.get_icon_name ();
                 break;
             case SSHKeyType.RSA:
                 // Blue/accent for RSA (good compatibility)
                 key_type_label.add_css_class ("accent");
                 key_icon.add_css_class ("accent");
-                key_icon.icon_name = "security-medium-symbolic";
+                key_icon.icon_name = ssh_key.key_type.get_icon_name ();
                 break;
             case SSHKeyType.ECDSA:
                 // Yellow/warning for ECDSA (compatibility issues)
                 key_type_label.add_css_class ("warning");
                 key_icon.add_css_class ("warning");
-                key_icon.icon_name = "security-low-symbolic";
+                key_icon.icon_name = ssh_key.key_type.get_icon_name ();
                 break;
+        }
+    }
+    
+    private async void update_passphrase_button () {
+        try {
+            bool has_passphrase = yield SSHMetadata.has_passphrase (ssh_key);
+            
+            if (has_passphrase) {
+                change_passphrase_button.set_tooltip_text (_("Change Passphrase"));
+            } else {
+                change_passphrase_button.set_tooltip_text (_("Add Passphrase"));
+            }
+            
+        } catch (KeyMakerError e) {
+            // Default to "Change Passphrase" if detection fails
+            change_passphrase_button.set_tooltip_text (_("Change Passphrase"));
         }
     }
     
     public void refresh () {
         update_display ();
+        // Also update passphrase button when refreshing
+        update_passphrase_button.begin ();
     }
     
 }

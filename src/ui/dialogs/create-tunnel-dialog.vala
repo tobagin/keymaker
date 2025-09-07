@@ -241,48 +241,43 @@ public class KeyMaker.CreateTunnelDialog : Adw.Dialog {
     }
     
     private void on_select_ssh_key () {
-        var file_chooser = new Gtk.FileChooserDialog (
-            "Select SSH Private Key",
-            null,
-            Gtk.FileChooserAction.OPEN,
-            "_Cancel", Gtk.ResponseType.CANCEL,
-            "_Select", Gtk.ResponseType.ACCEPT
-        );
+        var file_dialog = new Gtk.FileDialog ();
+        file_dialog.title = "Select SSH Private Key";
         
         // Set initial directory to ~/.ssh
         var ssh_dir = File.new_for_path (Path.build_filename (Environment.get_home_dir (), ".ssh"));
         if (ssh_dir.query_exists ()) {
-            try {
-                file_chooser.set_current_folder (ssh_dir);
-            } catch (Error e) {
-                warning ("Could not set SSH directory: %s", e.message);
-            }
+            file_dialog.initial_folder = ssh_dir;
         }
         
         // Add file filters
+        var filters = new ListStore (typeof (Gtk.FileFilter));
+        
         var key_filter = new Gtk.FileFilter ();
         key_filter.name = "SSH Private Keys";
         key_filter.add_pattern ("id_*");
         key_filter.add_pattern ("*.pem");
-        file_chooser.add_filter (key_filter);
+        filters.append (key_filter);
         
         var all_filter = new Gtk.FileFilter ();
         all_filter.name = "All Files";
         all_filter.add_pattern ("*");
-        file_chooser.add_filter (all_filter);
+        filters.append (all_filter);
         
-        file_chooser.response.connect ((response) => {
-            if (response == Gtk.ResponseType.ACCEPT) {
-                var file = file_chooser.get_file ();
+        file_dialog.filters = filters;
+        file_dialog.default_filter = key_filter;
+        
+        file_dialog.open.begin ((Gtk.Window)this.get_root(), null, (obj, result) => {
+            try {
+                var file = file_dialog.open.end (result);
                 if (file != null) {
                     selected_key_path = file.get_path ();
                     ssh_key_button.label = Path.get_basename (selected_key_path);
                 }
+            } catch (Error e) {
+                // User cancelled or other error, do nothing
             }
-            file_chooser.destroy ();
         });
-        
-        file_chooser.present ();
     }
     
     private void update_save_button () {

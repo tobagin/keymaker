@@ -3,8 +3,8 @@ using Adw 1;
 
 template $KeyMakerConnectionTestDialog : Adw.Dialog {
   title: _("Connection Test");
-  content-width: 600;
-  content-height: 500;
+  content-width: 800;
+  content-height: 600;
 
   content: Gtk.Box {
     orientation: vertical;
@@ -89,7 +89,6 @@ template $KeyMakerConnectionTestDialog : Adw.Dialog {
               
               Adw.EntryRow proxy_jump_row {
                 title: _("Proxy Jump");
-                subtitle: _("Jump host for connection");
                 text: "";
               }
             }

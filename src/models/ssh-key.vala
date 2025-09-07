@@ -40,20 +40,23 @@ namespace KeyMaker {
         }
         
         construct {
+            debug ("SSHKey: construct start for %s", private_path.get_path ());
             validate_permissions ();
+            debug ("SSHKey: construct done for %s", private_path.get_path ());
         }
         
         /**
          * Validate that private key has secure permissions
          */
         private void validate_permissions () {
+            debug ("SSHKey: validating permissions for %s", private_path.get_path ());
             try {
                 var file_info = private_path.query_info (FileAttribute.UNIX_MODE, FileQueryInfoFlags.NONE);
                 var mode = file_info.get_attribute_uint32 (FileAttribute.UNIX_MODE);
                 var permissions = mode & 0x1FF; // Last 9 bits (permissions)
                 
                 // Check if permissions are not 0600 (owner read/write only)
-                if (permissions != 0x180) { // 0600 octal = 384 decimal = 0x180 hex
+                if (permissions != KeyMaker.Filesystem.PERM_FILE_PRIVATE) {
                     warning ("Private key %s does not have secure permissions (should be 0600)", 
                             private_path.get_path ());
                 }
@@ -74,8 +77,15 @@ namespace KeyMaker {
          */
         public string get_type_description () {
             var type_str = key_type.to_string ().up ();
-            if (key_type == SSHKeyType.RSA && bit_size > 0) {
-                return "%s %d".printf (type_str, bit_size);
+            if (bit_size > 0) {
+                switch (key_type) {
+                    case SSHKeyType.RSA:
+                        return "%s %d".printf (type_str, bit_size);
+                    case SSHKeyType.ECDSA:
+                        return "%s P-%d".printf (type_str, bit_size);
+                    default:
+                        break;
+                }
             }
             return type_str;
         }
@@ -100,6 +110,23 @@ namespace KeyMaker {
         public string? passphrase { get; set; default = null; }
         public string? comment { get; set; default = null; }
         public int rsa_bits { get; set; default = 4096; }
+        public int ecdsa_curve { get; set; default = 256; } // 256, 384, or 521
+        
+        // Computed property that returns the appropriate size for the key type
+        public int key_size { 
+            get {
+                switch (key_type) {
+                    case SSHKeyType.RSA:
+                        return rsa_bits;
+                    case SSHKeyType.ECDSA:
+                        return ecdsa_curve;
+                    case SSHKeyType.ED25519:
+                        return 256; // Ed25519 is always 256-bit equivalent
+                    default:
+                        return rsa_bits;
+                }
+            }
+        }
         
         public KeyGenerationRequest (string filename) {
             Object (filename: filename);
@@ -137,6 +164,13 @@ namespace KeyMaker {
                     throw new KeyMakerError.VALIDATION_FAILED ("RSA key size must be between 2048 and 8192 bits");
                 }
             }
+            
+            // Validate ECDSA curve if ECDSA key
+            if (key_type == SSHKeyType.ECDSA) {
+                if (ecdsa_curve != 256 && ecdsa_curve != 384 && ecdsa_curve != 521) {
+                    throw new KeyMakerError.VALIDATION_FAILED ("ECDSA curve must be 256, 384, or 521 bits");
+                }
+            }
         }
         
         private bool is_safe_filename (string name) {
@@ -154,8 +188,7 @@ namespace KeyMaker {
          * Get the full path where the key will be created
          */
         public File get_key_path () {
-            var ssh_dir = File.new_for_path (Path.build_filename (Environment.get_home_dir (), ".ssh"));
-            return ssh_dir.get_child (filename);
+            return KeyMaker.Filesystem.ssh_dir ().get_child (filename);
         }
     }
     
@@ -184,6 +217,10 @@ namespace KeyMaker {
         public SSHKey ssh_key { get; construct; }
         public string? current_passphrase { get; set; default = null; }
         public string? new_passphrase { get; set; default = null; }
+        // Compatibility aliases
+        public string key_path { owned get { return ssh_key.private_path.get_path(); } }
+        public string? old_passphrase { get { return current_passphrase; } set { current_passphrase = value; } }
+        public string? passphrase { get { return new_passphrase; } set { new_passphrase = value; } }
         
         public PassphraseChangeRequest (SSHKey ssh_key) {
             Object (ssh_key: ssh_key);

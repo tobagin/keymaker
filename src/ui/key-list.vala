@@ -27,6 +27,12 @@ public class KeyMaker.KeyListWidget : Gtk.Box {
     [GtkChild]
     private unowned Gtk.Label key_count_label;
     
+    [GtkChild]
+    private unowned Gtk.Button refresh_button;
+    
+    [GtkChild]
+    private unowned Gtk.MenuButton generate_button;
+    
     private GenericArray<KeyMaker.KeyRowWidget> key_rows;
     
     // Signals

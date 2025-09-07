@@ -141,7 +141,7 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
                 type_icon.icon_name = "package-x-generic-symbolic";
                 break;
             case BackupType.QR_CODE:
-                type_icon.icon_name = "qr-code-symbolic";
+                type_icon.icon_name = "io.github.tobagin.keysmith-qr-code-symbolic";
                 break;
             case BackupType.SHAMIR_SECRET_SHARING:
                 type_icon.icon_name = "view-app-grid-symbolic";
@@ -399,7 +399,7 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
             print ("RestoreBackupDialog: Triggering key list refresh\n");
             var app = (KeyMaker.Application) GLib.Application.get_default ();
             if (app.window != null) {
-                app.window.load_keys_simple ();
+                app.window.refresh_keys ();
             }
             
             if (restore_status_label != null) {

@@ -9,16 +9,9 @@
  * (at your option) any later version.
  */
 
-public class KeyMaker.HelpDialog : Adw.MessageDialog {
+public class KeyMaker.HelpDialog {
     
-    public HelpDialog (Gtk.Window parent) {
-        Object ();
-    }
-    
-    construct {
-        // Configure the help dialog
-        set_heading (_("Key Maker Help"));
-        
+    public static void show (Gtk.Window parent) {
         var help_text = _("""Key Maker is a modern SSH key management application.
 
 <b>Generating SSH Keys:</b>
@@ -38,12 +31,14 @@ public class KeyMaker.HelpDialog : Adw.MessageDialog {
 
 For more information, visit the project website.""");
         
-        set_body (help_text);
-        set_body_use_markup (true);
+        var dialog = new Adw.AlertDialog (_("Key Maker Help"), help_text);
+        dialog.set_body_use_markup (true);
         
         // Add response
-        add_response ("close", _("Close"));
-        set_default_response ("close");
-        set_close_response ("close");
+        dialog.add_response ("close", _("Close"));
+        dialog.set_default_response ("close");
+        dialog.set_close_response ("close");
+        
+        dialog.present (parent);
     }
 }

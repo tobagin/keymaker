@@ -16,7 +16,7 @@ template $KeyMakerKeyListWidget : Box {
       label: _("Generate SSH Key");
       halign: center;
       action-name: "win.generate-key";
-      styles ["pill", "suggested-action"]
+      styles ["suggested-action"]
     }
   }
 
@@ -37,20 +37,54 @@ template $KeyMakerKeyListWidget : Box {
         spacing: 0;
 
         Box list_header {
-          orientation: horizontal;
-          spacing: 12;
+          orientation: vertical;
+          spacing: 8;
           margin-bottom: 12;
 
-          Label {
-            label: _("SSH Keys");
-            styles ["title-4"]
-            halign: start;
-            hexpand: true;
-          }
+          Box title_box {
+            orientation: horizontal;
+            spacing: 12;
 
-          Label key_count_label {
-            styles ["caption", "dim-label"]
-            halign: end;
+            Box title_and_subtitle {
+              orientation: vertical;
+              spacing: 2;
+              halign: start;
+              hexpand: true;
+
+              Label {
+                label: _("SSH Keys");
+                styles ["title-4"]
+                halign: start;
+              }
+
+              Label {
+                label: _("Manage your SSH authentication keys");
+                styles ["caption", "dim-label"]
+                halign: start;
+              }
+            }
+
+            Label key_count_label {
+              styles ["caption", "dim-label"]
+              halign: end;
+              valign: start;
+            }
+
+            MenuButton generate_button {
+              icon-name: "tab-new-symbolic";
+              tooltip-text: _("SSH Key Actions");
+              menu-model: key_actions_menu;
+              valign: center;
+              styles ["flat"]
+            }
+
+            Button refresh_button {
+              icon-name: "view-refresh-symbolic";
+              tooltip-text: _("Refresh Key List");
+              action-name: "win.refresh";
+              valign: center;
+              styles ["flat"]
+            }
           }
         }
 
@@ -69,6 +103,19 @@ template $KeyMakerKeyListWidget : Box {
           }
         }
       }
+    }
+  }
+}
+
+menu key_actions_menu {
+  section {
+    item {
+      label: _("Generate New SSH Key");
+      action: "win.generate-key";
+    }
+    item {
+      label: _("Import Existing Key");
+      action: "win.add-existing-key";
     }
   }
 }

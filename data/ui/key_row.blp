@@ -12,7 +12,7 @@ template $KeyMakerKeyRowWidget : Adw.ActionRow {
 
     Image key_icon {
       icon-name: "dialog-password-symbolic";
-      pixel-size: 32;
+      icon-size: normal;
       styles ["accent"]
     }
   }
@@ -30,7 +30,7 @@ template $KeyMakerKeyRowWidget : Adw.ActionRow {
     }
 
     Button details_button {
-      icon-name: "dialog-information-symbolic";
+      icon-name: "view-reveal-symbolic";
       tooltip-text: _("View Details");
       valign: center;
       styles ["flat"]
@@ -51,14 +51,14 @@ template $KeyMakerKeyRowWidget : Adw.ActionRow {
     }
 
     Button change_passphrase_button {
-      icon-name: "dialog-password-symbolic";
+      icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
       tooltip-text: _("Change Passphrase");
       valign: center;
       styles ["flat"]
     }
 
     Button delete_button {
-      icon-name: "user-trash-symbolic";
+      icon-name: "io.github.tobagin.keysmith-remove-symbolic";
       tooltip-text: _("Delete Key");
       valign: center;
       styles ["flat", "destructive-action"]

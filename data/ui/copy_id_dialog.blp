@@ -6,30 +6,16 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
   content-width: 450;
   content-height: 350;
 
-  Box {
-    orientation: vertical;
-    
+  child: Adw.ToolbarView {
+    [top]
     Adw.HeaderBar {
-      show-end-title-buttons: false;
       title-widget: Adw.WindowTitle {
         title: _("Copy Key to Server");
         subtitle: _("Deploy your SSH public key");
       };
-      
-      [start]
-      Button cancel_button {
-        label: _("Cancel");
-      }
-      
-      [end]
-      Button copy_button {
-        label: _("Copy");
-        sensitive: false;
-        styles ["suggested-action"]
-      }
     }
 
-    Adw.Clamp {
+    content: Adw.Clamp {
       maximum-size: 450;
       margin-top: 24;
       margin-bottom: 24;
@@ -80,6 +66,15 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
           }
         }
       }
+    };
+
+    [bottom]
+    Adw.HeaderBar {
+      title-widget: Button copy_button {
+        label: _("Copy");
+        sensitive: false;
+        styles ["suggested-action"]
+      };
     }
-  }
+  };
 }

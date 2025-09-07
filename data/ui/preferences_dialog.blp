@@ -100,5 +100,33 @@ template $KeyMakerPreferencesDialog : Adw.PreferencesDialog {
         active: true;
       }
     }
+
+    Adw.PreferencesGroup {
+      title: _("SSH Connections");
+      description: _("Configure SSH connection behavior");
+
+      Adw.ComboRow preferred_terminal_row {
+        title: _("Preferred Terminal");
+        subtitle: _("Terminal emulator to use for SSH connections");
+        model: StringList {
+          strings [
+            _("Auto (Detect Automatically)"),
+            _("Alacritty"),
+            _("GNOME Console"),
+            _("GNOME Terminal"),
+            _("Kitty"),
+            _("Konsole"),
+            _("LXTerminal"),
+            _("MATE Terminal"),
+            _("Ptyxis"),
+            _("Terminator"),
+            _("Tilix"),
+            _("XFCE Terminal"),
+            _("XTerm")
+          ]
+        };
+        selected: 0;
+      }
+    }
   }
 }

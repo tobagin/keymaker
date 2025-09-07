@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="keymaker">
+<schemalist gettext-domain="keysmith">
   <schema id="@APP_ID@" path="/@APP_PATH@/">
     <key name="window-width" type="i">
       <default>800</default>
@@ -29,6 +29,12 @@
       <default>4096</default>
       <summary>Default RSA key size</summary>
       <description>The default bit size for RSA keys</description>
+    </key>
+    
+    <key name="default-ecdsa-curve" type="i">
+      <default>256</default>
+      <summary>Default ECDSA curve</summary>
+      <description>The default curve size for ECDSA keys (256, 384, or 521)</description>
     </key>
     
     <key name="default-comment" type="s">
@@ -89,6 +95,12 @@
       <default>[]</default>
       <summary>SSH tunnel configurations</summary>
       <description>Stores saved SSH tunnel configurations</description>
+    </key>
+    
+    <key name="preferred-terminal" type="s">
+      <default>'auto'</default>
+      <summary>Preferred terminal emulator</summary>
+      <description>The preferred terminal emulator to use for SSH connections: 'auto' (detect automatically) or specific terminal name</description>
     </key>
   </schema>
   

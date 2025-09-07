@@ -28,6 +28,7 @@ adw_dep = dependency('libadwaita-1', version: '>= 1.4')
 gio_dep = dependency('gio-2.0', version: '>= 2.76')
 gee_dep = dependency('gee-0.8')
 json_dep = dependency('json-glib-1.0')
+vte_dep = dependency('vte-2.91-gtk4', version: '>= 0.70')
 
 # Build configuration
 cc = meson.get_compiler('c')
@@ -80,6 +81,11 @@ set_variable('c_args', c_args)
 subdir('data')
 subdir('src')
 subdir('po')
+
+# Tests (disabled for now - will be added in next phase)
+# if get_option('profile') == 'development'
+#     subdir('tests')
+# endif
 
 # Print summary
 summary({

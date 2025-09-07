@@ -342,17 +342,17 @@ public class KeyMaker.SSHAgentDialog : Adw.Dialog {
                     switch (key_type) {
                         case SSHKeyType.ED25519:
                             // Green for ED25519 (most secure)
-                            key_icon.icon_name = "security-high-symbolic";
+                            key_icon.icon_name = key_type.get_icon_name ();
                             key_icon.add_css_class ("success");
                             break;
                         case SSHKeyType.RSA:
                             // Blue/accent for RSA (good compatibility)
-                            key_icon.icon_name = "security-medium-symbolic";
+                            key_icon.icon_name = key_type.get_icon_name ();
                             key_icon.add_css_class ("accent");
                             break;
                         case SSHKeyType.ECDSA:
                             // Yellow/warning for ECDSA (compatibility issues)
-                            key_icon.icon_name = "security-low-symbolic";
+                            key_icon.icon_name = key_type.get_icon_name ();
                             key_icon.add_css_class ("warning");
                             break;
                     }

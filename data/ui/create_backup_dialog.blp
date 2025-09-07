@@ -3,32 +3,29 @@ using Adw 1;
 
 template $KeyMakerCreateBackupDialog : Adw.Dialog {
   title: _("Create Emergency Backup");
-  content-width: 600;
-  content-height: 700;
+  content-width: 800;
+  content-height: 600;
 
-  child: Box {
-    orientation: vertical;
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
     
+    [top]
     Adw.HeaderBar header_bar {
+    }
+    
+    [bottom]
+    Adw.HeaderBar bottom_header_bar {
       show-end-title-buttons: false;
-      title-widget: Adw.WindowTitle {
-        title: _("Create Emergency Backup");
-        subtitle: _("Secure your SSH keys");
-      };
       
-      [start]
-      Button cancel_button {
-        label: _("Cancel");
-      }
-      
-      [end]
+      [title]
       Button create_button {
         label: _("Create Backup");
         styles ["suggested-action"]
       }
     }
 
-    Stack main_stack {
+    content: Stack main_stack {
       vexpand: true;
       
       ScrolledWindow {
@@ -157,6 +154,6 @@ template $KeyMakerCreateBackupDialog : Adw.Dialog {
           }
         }
       }
-    }
+    };
   };
 }

@@ -1,0 +1,141 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerDiagnosticResultsViewDialog : Adw.Dialog {
+  title: _("Diagnostic Results");
+  content-width: 800;
+  content-height: 600;
+
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle results_title {
+        title: _("Diagnostic Results");
+      };
+    }
+    
+    content: ScrolledWindow {
+      Adw.Clamp {
+        maximum-size: 600;
+        tightening-threshold: 400;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 24;
+        margin-end: 24;
+        
+        Box {
+          orientation: vertical;
+          spacing: 24;
+          
+          // Test Information
+          Adw.PreferencesGroup info_group {
+            title: _("Test Information");
+            
+            Adw.ActionRow hostname_row {
+              title: _("Target Host");
+              
+              [prefix]
+              Image {
+                icon-name: "network-server-symbolic";
+              }
+            }
+            
+            Adw.ActionRow timestamp_row {
+              title: _("Test Date");
+              
+              [prefix]
+              Image {
+                icon-name: "x-office-calendar-symbolic";
+              }
+            }
+            
+            Adw.ActionRow auth_method_row {
+              title: _("Authentication");
+              
+              [prefix]
+              Image {
+                icon-name: "dialog-password-symbolic";
+              }
+            }
+            
+            Adw.ActionRow execution_time_row {
+              title: _("Execution Time");
+              
+              [prefix]
+              Image {
+                icon-name: "preferences-system-time-symbolic";
+              }
+            }
+          }
+          
+          // Test Results
+          Adw.PreferencesGroup results_group {
+            title: _("Test Results");
+            description: _("Individual test outcomes based on overall statistics");
+            
+            ListBox results_list {
+              selection-mode: none;
+              styles ["boxed-list"]
+              
+              Adw.ActionRow results_placeholder {
+                title: _("No tests were executed");
+                subtitle: _("This diagnostic run did not include any tests");
+                
+                [prefix]
+                Image {
+                  icon-name: "folder-documents-symbolic";
+                  styles ["dim-label"]
+                }
+              }
+            }
+          }
+          
+          // Summary
+          Adw.PreferencesGroup summary_group {
+            title: _("Summary");
+            
+            Adw.ActionRow total_tests_row {
+              title: _("Total Tests");
+              
+              [prefix]
+              Image {
+                icon-name: "view-list-symbolic";
+              }
+            }
+            
+            Adw.ActionRow passed_tests_row {
+              title: _("Passed Tests");
+              
+              [prefix]
+              Image {
+                icon-name: "emblem-ok-symbolic";
+                styles ["success"]
+              }
+            }
+            
+            Adw.ActionRow failed_tests_row {
+              title: _("Failed Tests");
+              
+              [prefix]
+              Image {
+                icon-name: "dialog-error-symbolic";
+                styles ["error"]
+              }
+            }
+            
+            Adw.ActionRow overall_status_row {
+              title: _("Overall Status");
+              
+              [prefix]
+              Image overall_status_icon {
+                icon-name: "dialog-question-symbolic";
+              }
+            }
+          }
+        }
+      }
+    };
+  };
+}

@@ -1,0 +1,103 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerTerminalDialog : Adw.Dialog {
+  title: _("Terminal");
+  content-width: 800;
+  content-height: 600;
+
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+
+    [top]
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle window_title {
+        title: _("SSH Terminal");
+        subtitle: _("Connected to server");
+      };
+      show-end-title-buttons: true;
+
+      [start]
+      Button copy_button {
+        icon-name: "edit-copy-symbolic";
+        tooltip-text: _("Copy");
+        sensitive: false;
+      }
+
+      [end]
+      MenuButton {
+        icon-name: "open-menu-symbolic";
+        tooltip-text: _("Terminal Options");
+        menu-model: terminal_menu;
+      }
+    }
+
+    content: Box {
+      orientation: vertical;
+      
+      ScrolledWindow terminal_scroll {
+        vexpand: true;
+        hscrollbar-policy: automatic;
+        vscrollbar-policy: automatic;
+        
+        /* VTE terminal widget will be added programmatically */
+        Box terminal_container {
+          orientation: vertical;
+        }
+      }
+      
+      Box status_bar {
+        orientation: horizontal;
+        spacing: 6;
+        margin-start: 12;
+        margin-end: 12;
+        margin-top: 6;
+        margin-bottom: 6;
+        styles ["dim-label"]
+        
+        Label status_label {
+          label: _("Ready");
+          halign: start;
+          hexpand: true;
+        }
+        
+        Label connection_status {
+          label: _("Connected");
+          halign: end;
+          styles ["success"]
+        }
+      }
+    };
+  };
+}
+
+menu terminal_menu {
+  section {
+    item {
+      label: _("Copy");
+      action: "terminal.copy";
+    }
+    item {
+      label: _("Paste");
+      action: "terminal.paste";
+    }
+  }
+  
+  section {
+    item {
+      label: _("Select All");
+      action: "terminal.select-all";
+    }
+    item {
+      label: _("Clear");
+      action: "terminal.clear";
+    }
+  }
+  
+  section {
+    item {
+      label: _("Reset");
+      action: "terminal.reset";
+    }
+  }
+}

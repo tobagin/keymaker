@@ -6,73 +6,103 @@ template $KeyMakerEmergencyVaultDialog : Adw.Dialog {
   content-width: 800;
   content-height: 600;
 
-  child: Box {
-    orientation: vertical;
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
     
+    [top]
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle {
         title: _("Emergency Access Vault");
         subtitle: _("Secure backup and recovery system");
       };
-      
-      [start]
-      Button create_backup_button {
-        icon-name: "list-add-symbolic";
-        tooltip-text: _("Create New Backup");
-        styles ["suggested-action"]
-      }
+    }
+    
+    [bottom]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Adw.ViewSwitcher view_switcher {
+        stack: main_view_stack;
+      };
     }
 
-    Stack main_stack {
-      vexpand: true;
-      margin-top: 12;
-      margin-bottom: 12;
-      margin-start: 12;
-      margin-end: 12;
+    content: Adw.ViewStack main_view_stack {
       
-      Adw.StatusPage vault_status_page {
+      Adw.ViewStackPage {
         name: "status";
-        margin-top: 12;
-        margin-bottom: 12;
-        margin-start: 12;
-        margin-end: 12;
+        title: _("Emergency Vault");
+        icon-name: "io.github.tobagin.keysmith-emergency-vault-symbolic";
         
-        Box {
-          orientation: vertical;
-          spacing: 12;
-          halign: center;
+        child: Adw.StatusPage vault_status_page {
+          title: _("Emergency Access Vault");
+          description: _("Secure backup and recovery system for your SSH keys");
+          icon-name: "checkmark-symbolic";
           
-          Image vault_status_icon {
-            icon-name: "folder-symbolic";
-            icon-size: large;
-          }
-          
-          Label vault_status_label {
-            label: _("Vault Status");
-            styles ["title-2"]
-          }
-        }
+          child: Button create_backup_status_button {
+            label: _("Create New Backup");
+            halign: center;
+            styles ["suggested-action", "pill"]
+          };
+        };
       }
       
-      Box backups_page {
-        name: "backups_page";
-        orientation: vertical;
-        spacing: 12;
-        margin-top: 12;
-        margin-bottom: 12;
-        margin-start: 12;
-        margin-end: 12;
+      Adw.ViewStackPage {
+        name: "backups";
+        title: _("Backups");
+        icon-name: "package-x-generic-symbolic";
         
-        Adw.PreferencesGroup {
-          title: _("Emergency Backups");
-          description: _("Encrypted backups of your SSH keys for emergency recovery");
+        child: ScrolledWindow {
+          Adw.Clamp {
+            maximum-size: 800;
+            tightening-threshold: 600;
+            
+            Box {
+              orientation: vertical;
+              spacing: 24;
+              margin-top: 24;
+              margin-bottom: 24;
+              margin-start: 12;
+              margin-end: 12;
           
-          ListBox backups_list {
-            selection-mode: none;
-            styles ["boxed-list"]
+              Adw.PreferencesGroup {
+                title: _("Emergency Backups");
+                description: _("Encrypted backups of your SSH keys for emergency recovery");
+                
+                [header-suffix]
+                Box {
+                  spacing: 6;
+                  
+                  Button create_backup_button_header {
+                    icon-name: "tab-new-symbolic";
+                    tooltip-text: _("Create New Backup");
+                    valign: center;
+                    styles ["flat"]
+                  }
+                  
+                  Button refresh_backups_button {
+                    icon-name: "view-refresh-symbolic";
+                    tooltip-text: _("Refresh Backups");
+                    valign: center;
+                    styles ["flat"]
+                  }
+                  
+                  Button remove_all_backups_button {
+                    icon-name: "user-trash-symbolic";
+                    tooltip-text: _("Remove All Backups");
+                    valign: center;
+                    styles ["flat"]
+                  }
+                }
+                
+                ListBox backups_list {
+                  selection-mode: none;
+                  styles ["boxed-list"]
+                }
+              }
+            }
           }
-        }
+        };
       }
-    }
+    };
   };
 }

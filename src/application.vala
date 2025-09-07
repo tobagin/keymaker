@@ -41,6 +41,15 @@ namespace KeyMaker {
             // Initialize Adwaita
             Adw.init ();
             
+            // Optional: allow disabling forwarded SSH agent inside Flatpak to avoid
+            // sandbox socket issues (e.g. "Connection reset by peer" from ssh-auth).
+            // Enable by launching with KEYMAKER_IGNORE_SSH_AGENT=1
+            var ignore_agent = Environment.get_variable ("KEYMAKER_IGNORE_SSH_AGENT");
+            if (ignore_agent != null && ignore_agent.strip () == "1") {
+                debug ("Application: ignoring SSH agent per KEYMAKER_IGNORE_SSH_AGENT=1");
+                try { Environment.unset_variable ("SSH_AUTH_SOCK"); } catch (Error e) { }
+            }
+
             
             // Setup GSettings and apply theme
             setup_settings ();
@@ -98,6 +107,11 @@ namespace KeyMaker {
                 window = new KeyMaker.Window (this);
             }
             window.present ();
+            // Trigger initial key refresh after window is shown unless deferred via env
+            var defer_scan = Environment.get_variable ("KEYMAKER_DEFER_SCAN");
+            if (defer_scan == null || defer_scan.strip () == "" || defer_scan == "0") {
+                Idle.add (() => { window.refresh_keys (); return false; });
+            }
             
             // Check if this is a new version and show release notes automatically
             if (should_show_release_notes ()) {
@@ -372,27 +386,8 @@ namespace KeyMaker {
 
         private void on_key_rotation_action () {
             if (window != null) {
-                // Key rotation needs a specific key - create temporary placeholder files
-                try {
-                    var temp_dir = DirUtils.make_tmp ("keymaker_XXXXXX");
-                    var private_path = Path.build_filename (temp_dir, "placeholder");
-                    var public_path = Path.build_filename (temp_dir, "placeholder.pub");
-                    
-                    // Create empty placeholder files
-                    FileUtils.set_contents (private_path, "");
-                    FileUtils.set_contents (public_path, "");
-                    
-                    // Set secure permissions on private key
-                    Posix.chmod (private_path, 0x180); // 0600
-                    
-                    var private_file = File.new_for_path (private_path);
-                    var public_file = File.new_for_path (public_path);
-                    var placeholder_key = new KeyMaker.SSHKey (private_file, public_file, KeyMaker.SSHKeyType.RSA, "placeholder", null, new DateTime.now_local (), 2048);
-                    var dialog = new KeyMaker.KeyRotationDialog (window, placeholder_key);
-                    dialog.present (window);
-                } catch (Error e) {
-                    warning ("Failed to create placeholder files for key rotation: %s", e.message);
-                }
+                var dialog = new KeyMaker.KeyRotationDialog (window);
+                dialog.present (window);
             }
         }
 

@@ -16,6 +16,9 @@
 #endif
 public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     [GtkChild]
+    private unowned Adw.PreferencesGroup template_group;
+    
+    [GtkChild]
     private unowned Adw.EntryRow host_name_row;
     
     [GtkChild]
@@ -31,10 +34,13 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     private unowned Adw.ComboRow template_row;
     
     [GtkChild]
-    private unowned Adw.ActionRow identity_file_row;
+    private unowned Adw.SwitchRow multiple_identity_files_row;
     
     [GtkChild]
-    private unowned Gtk.Label identity_file_label;
+    private unowned Adw.ComboRow identity_file_row;
+    
+    [GtkChild]
+    private unowned Adw.ExpanderRow identity_files_expander;
     
     [GtkChild]
     private unowned Adw.EntryRow proxy_jump_row;
@@ -48,13 +54,12 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     [GtkChild]
     private unowned Gtk.Button save_button;
     
-    [GtkChild]
-    private unowned Gtk.Button cancel_button;
-    
     public SSHConfigHost? existing_host { get; construct; }
     
     private SSHConfig ssh_config;
     private string? selected_identity_file = null;
+    private GenericArray<SSHKey>? available_keys = null;
+    private GenericArray<Adw.SwitchRow>? key_switch_rows = null;
     
     public signal void host_saved (SSHConfigHost host);
     
@@ -68,11 +73,17 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         ssh_config = new SSHConfig ();
         
         setup_templates ();
+        setup_identity_files ();
+        setup_multiple_identity_toggle ();
         setup_signals ();
         
         if (existing_host != null) {
+            // Hide template section when editing existing host
+            template_group.visible = false;
             populate_from_existing ();
         } else {
+            // Show template section when creating new host
+            template_group.visible = true;
             set_defaults ();
         }
         
@@ -93,12 +104,86 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         template_row.selected = 0; // Basic Server
     }
     
+    private void setup_identity_files () {
+        if (identity_file_row == null) return;
+        
+        try {
+            // Get all SSH keys in the ~/.ssh directory
+            KeyScanner.scan_ssh_directory.begin (null, (obj, res) => {
+                try {
+                    var keys = KeyScanner.scan_ssh_directory.end (res);
+                    
+                    // Store keys for later reference
+                    available_keys = new GenericArray<SSHKey> ();
+                    key_switch_rows = new GenericArray<Adw.SwitchRow> ();
+                    
+                    var model = new Gtk.StringList (null);
+                    // Add default option
+                    model.append (_("None (use default)"));
+                    
+                    // Add each SSH key as an option and create switch rows
+                    keys.foreach ((key) => {
+                        available_keys.add (key);
+                        var display_name = key.get_display_name ();
+                        if (key.comment != null && key.comment.strip () != "") {
+                            display_name += @" ($(key.comment))";
+                        }
+                        
+                        // Add to ComboRow model
+                        model.append (display_name);
+                        
+                        // Create switch row for multiple selection
+                        var switch_row = new Adw.SwitchRow ();
+                        switch_row.set_title (display_name);
+                        switch_row.set_subtitle (key.private_path.get_path ());
+                        identity_files_expander.add_row (switch_row);
+                        key_switch_rows.add (switch_row);
+                    });
+                    
+                    identity_file_row.model = model;
+                    identity_file_row.selected = 0; // Default to "None"
+                    
+                    // If editing an existing host, try to select the current identity file(s)
+                    if (existing_host != null && existing_host.identity_file != null) {
+                        select_existing_identity_files (existing_host.identity_file);
+                    }
+                    
+                } catch (Error e) {
+                    warning ("Failed to load SSH keys: %s", e.message);
+                    
+                    // Fallback: just show the default option
+                    var model = new Gtk.StringList (null);
+                    model.append (_("None (use default)"));
+                    identity_file_row.model = model;
+                    identity_file_row.selected = 0;
+                }
+            });
+            
+        } catch (Error e) {
+            warning ("Failed to initialize key scanner: %s", e.message);
+            
+            // Fallback: just show the default option
+            var model = new Gtk.StringList (null);
+            model.append (_("None (use default)"));
+            identity_file_row.model = model;
+            identity_file_row.selected = 0;
+        }
+    }
+    
+    private void setup_multiple_identity_toggle () {
+        if (multiple_identity_files_row == null) return;
+        
+        // Connect signal to toggle between single and multiple selection modes
+        multiple_identity_files_row.notify["active"].connect (() => {
+            bool multiple_mode = multiple_identity_files_row.active;
+            identity_file_row.visible = !multiple_mode;
+            identity_files_expander.visible = multiple_mode;
+        });
+    }
+    
     private void setup_signals () {
         if (save_button != null) {
             save_button.clicked.connect (on_save_clicked);
-        }
-        if (cancel_button != null) {
-            cancel_button.clicked.connect (on_cancel_clicked);
         }
         
         // Update UI state when fields change
@@ -110,9 +195,7 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         }
         
         // Identity file selection
-        if (identity_file_row != null) {
-            identity_file_row.activated.connect (on_select_identity_file);
-        }
+        // Note: ComboRow selection is handled automatically
         
         // Port validation
         if (port_row != null) {
@@ -143,9 +226,9 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
             strict_host_key_checking_row.active = existing_host.strict_host_key_checking ?? true;
         }
         
-        if (existing_host.identity_file != null && identity_file_label != null) {
+        if (existing_host.identity_file != null) {
             selected_identity_file = existing_host.identity_file;
-            identity_file_label.label = Path.get_basename (selected_identity_file);
+            // Note: Actual selection happens in setup_identity_files() after keys are loaded
         }
     }
     
@@ -204,36 +287,132 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         }
     }
     
-    private void on_select_identity_file () {
-        var dialog = new Gtk.FileDialog ();
-        dialog.title = "Select SSH Identity File";
-        dialog.modal = true;
+    private string? get_selected_identity_file () {
+        if (multiple_identity_files_row != null && multiple_identity_files_row.active) {
+            // Multiple selection mode
+            return get_selected_identity_files_multiple ();
+        } else {
+            // Single selection mode
+            return get_selected_identity_file_single ();
+        }
+    }
+    
+    private string? get_selected_identity_file_single () {
+        if (identity_file_row == null || available_keys == null) {
+            return null;
+        }
         
-        // Set initial folder to ~/.ssh
-        var ssh_dir = File.new_for_path (Path.build_filename (Environment.get_home_dir (), ".ssh"));
-        dialog.set_initial_folder (ssh_dir);
+        var selected_index = identity_file_row.selected;
         
-        // Add filter for SSH keys
-        var filter = new Gtk.FileFilter ();
-        filter.name = "SSH Keys";
-        filter.add_pattern ("id_*");
-        filter.add_pattern ("*_rsa");
-        filter.add_pattern ("*_ed25519");
-        filter.add_pattern ("*_ecdsa");
+        // Index 0 is "None (use default)"
+        if (selected_index == 0) {
+            return null;
+        }
         
-        var filter_list = new GLib.ListStore (typeof (Gtk.FileFilter));
-        filter_list.append (filter);
-        dialog.set_filters (filter_list);
+        // Convert to key array index (subtract 1 for "None" option)
+        var key_index = selected_index - 1;
         
-        dialog.open.begin ((Gtk.Window?) this.get_root (), null, (obj, res) => {
-            try {
-                var file = dialog.open.end (res);
-                selected_identity_file = file.get_path ();
-                identity_file_label.label = Path.get_basename (selected_identity_file);
-            } catch (Error e) {
-                // User cancelled or error occurred
+        if (key_index >= 0 && key_index < available_keys.length) {
+            var key = available_keys[key_index];
+            return key.private_path.get_path ();
+        }
+        
+        return null;
+    }
+    
+    private string? get_selected_identity_files_multiple () {
+        if (available_keys == null || key_switch_rows == null) {
+            return null;
+        }
+        
+        var selected_paths = new GenericArray<string> ();
+        
+        // Check which switch rows are active
+        for (uint i = 0; i < key_switch_rows.length && i < available_keys.length; i++) {
+            if (key_switch_rows[i].active) {
+                selected_paths.add (available_keys[i].private_path.get_path ());
             }
-        });
+        }
+        
+        if (selected_paths.length == 0) {
+            return null;
+        } else if (selected_paths.length == 1) {
+            return selected_paths[0];
+        } else {
+            // Join multiple paths with space (SSH config format)
+            var result = new StringBuilder ();
+            for (uint i = 0; i < selected_paths.length; i++) {
+                if (i > 0) result.append (" ");
+                result.append (selected_paths[i]);
+            }
+            return result.str;
+        }
+    }
+    
+    private void select_existing_identity_files (string identity_files_config) {
+        if (available_keys == null || key_switch_rows == null) {
+            return;
+        }
+        
+        // SSH config can have multiple identity files separated by whitespace or multiple lines
+        // For now, we'll handle single files and determine if we need to switch to multiple mode
+        var identity_paths = identity_files_config.strip ().split (" ");
+        
+        if (identity_paths.length > 1) {
+            // Multiple identity files - switch to multiple mode
+            multiple_identity_files_row.active = true;
+            
+            // Select the appropriate switch rows
+            foreach (string path in identity_paths) {
+                var trimmed_path = path.strip ();
+                if (trimmed_path.length == 0) continue;
+                
+                select_switch_for_path (trimmed_path);
+            }
+        } else {
+            // Single identity file - use combo row
+            multiple_identity_files_row.active = false;
+            
+            var single_path = identity_paths[0].strip ();
+            select_combo_for_path (single_path);
+        }
+    }
+    
+    private void select_combo_for_path (string identity_file_path) {
+        if (identity_file_row == null || available_keys == null) {
+            return;
+        }
+        
+        // Try to find the matching key in the available keys
+        for (uint i = 0; i < available_keys.length; i++) {
+            var key = available_keys[i];
+            if (key.private_path.get_path () == identity_file_path) {
+                identity_file_row.selected = i + 1; // +1 because index 0 is "None"
+                return;
+            }
+        }
+        
+        // If we couldn't find the key, it might not be in the ~/.ssh directory
+        warning ("Identity file %s not found in available keys", identity_file_path);
+    }
+    
+    private void select_switch_for_path (string identity_file_path) {
+        if (available_keys == null || key_switch_rows == null) {
+            return;
+        }
+        
+        // Find and activate the switch for this path
+        for (uint i = 0; i < available_keys.length; i++) {
+            var key = available_keys[i];
+            if (key.private_path.get_path () == identity_file_path) {
+                if (i < key_switch_rows.length) {
+                    key_switch_rows[i].active = true;
+                }
+                return;
+            }
+        }
+        
+        warning ("Identity file %s not found in available keys", identity_file_path);
     }
     
     private void update_ui_state () {
@@ -268,7 +447,7 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         host.user = user_row.text.strip () != "" ? user_row.text.strip () : null;
         int port_val = (int) port_row.value;
         host.port = (port_val != 22) ? (int?) port_val : null;
-        host.identity_file = selected_identity_file;
+        host.identity_file = get_selected_identity_file ();
         host.proxy_jump = proxy_jump_row.text.strip () != "" ? proxy_jump_row.text.strip () : null;
         host.forward_agent = forward_agent_row.active;
         host.strict_host_key_checking = strict_host_key_checking_row.active;

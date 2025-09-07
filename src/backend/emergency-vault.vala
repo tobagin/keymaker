@@ -13,122 +13,6 @@
 
 namespace KeyMaker {
     
-    public enum BackupType {
-        ENCRYPTED_ARCHIVE,
-        QR_CODE,
-        SHAMIR_SECRET_SHARING,
-        TIME_LOCKED;
-        
-        public string to_string () {
-            switch (this) {
-                case ENCRYPTED_ARCHIVE: return "Encrypted Archive";
-                case QR_CODE: return "QR Code";
-                case SHAMIR_SECRET_SHARING: return "Secret Sharing";
-                case TIME_LOCKED: return "Time-Locked";
-                default: return "Unknown";
-            }
-        }
-    }
-    
-    public enum VaultStatus {
-        HEALTHY,
-        WARNING,
-        CRITICAL,
-        CORRUPTED;
-        
-        public string to_string () {
-            switch (this) {
-                case HEALTHY: return "Healthy";
-                case WARNING: return "Warning";
-                case CRITICAL: return "Critical";
-                case CORRUPTED: return "Corrupted";
-                default: return "Unknown";
-            }
-        }
-        
-        public string get_icon_name () {
-            switch (this) {
-                case HEALTHY: return "emblem-ok-symbolic";
-                case WARNING: return "dialog-warning-symbolic";
-                case CRITICAL: return "dialog-error-symbolic";
-                case CORRUPTED: return "emblem-unreadable-symbolic";
-                default: return "help-about-symbolic";
-            }
-        }
-    }
-    
-    public class BackupEntry : GLib.Object {
-        public string id { get; set; }
-        public string name { get; set; }
-        public BackupType backup_type { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime? expires_at { get; set; }
-        public File backup_file { get; set; }
-        public GenericArray<string> key_fingerprints { get; set; }
-        public bool is_encrypted { get; set; default = true; }
-        public string? description { get; set; }
-        public int64 file_size { get; set; }
-        public string checksum { get; set; default = ""; }
-        
-        // Shamir's Secret Sharing fields
-        public int shamir_total_shares { get; set; default = 0; }
-        public int shamir_threshold { get; set; default = 0; }
-        
-        construct {
-            key_fingerprints = new GenericArray<string> ();
-            created_at = new DateTime.now_local ();
-        }
-        
-        public BackupEntry (string backup_name, BackupType type) {
-            id = generate_backup_id ();
-            name = backup_name;
-            backup_type = type;
-        }
-        
-        private string generate_backup_id () {
-            var timestamp = new DateTime.now_local ().format ("%Y%m%d_%H%M%S");
-            var random = Random.int_range (1000, 9999);
-            return @"backup_$(timestamp)_$(random)";
-        }
-        
-        public bool is_expired () {
-            if (expires_at == null) return false;
-            return new DateTime.now_local ().compare (expires_at) > 0;
-        }
-        
-        public string get_display_size () {
-            if (file_size < 1024) {
-                return @"$(file_size) B";
-            } else if (file_size < 1024 * 1024) {
-                return @"$(file_size / 1024) KB";
-            } else {
-                return @"$(file_size / (1024 * 1024)) MB";
-            }
-        }
-    }
-    
-    public class ShamirShare : GLib.Object {
-        public int share_number { get; set; }
-        public int total_shares { get; set; }
-        public int threshold { get; set; }
-        public string share_data { get; set; }
-        public string qr_code_data { get; set; }
-        
-        public ShamirShare (int number, int total, int min_shares, string data) {
-            share_number = number;
-            total_shares = total;
-            threshold = min_shares;
-            share_data = data;
-            qr_code_data = encode_for_qr ();
-        }
-        
-        private string encode_for_qr () {
-            // Encode share data for QR code (base64 with metadata)
-            var metadata = @"KMVAULT:$(share_number):$(total_shares):$(threshold)";
-            var encoded_data = Base64.encode (share_data.data);
-            return @"$(metadata):$(encoded_data)";
-        }
-    }
     
     public class EmergencyVault : GLib.Object {
         private File vault_directory;
@@ -153,9 +37,9 @@ namespace KeyMaker {
             try {
                 if (!vault_directory.query_exists ()) {
                     vault_directory.make_directory_with_parents ();
-                    // Set restrictive permissions
-                    Posix.chmod (vault_directory.get_path (), 0x1C0); // 0700
                 }
+                // Set restrictive permissions 
+                KeyMaker.Filesystem.ensure_directory_with_perms (vault_directory);
                 
                 load_existing_backups ();
             } catch (Error e) {
@@ -595,8 +479,8 @@ namespace KeyMaker {
                 yield temp_public.replace_contents_async (public_content, null, false, FileCreateFlags.NONE, null, null);
                 
                 // Set proper permissions for SSH keys
-                Posix.chmod (temp_private.get_path (), 0600);  // Private key: owner read/write only
-                Posix.chmod (temp_public.get_path (), 0644);   // Public key: owner read/write, group/other read
+                KeyMaker.Filesystem.chmod_private (temp_private);  // Private key: owner read/write only
+                KeyMaker.Filesystem.chmod_public (temp_public);    // Public key: owner read/write, group/other read
                 
                 // Create SSH key object with proper constructor
                 var now = new DateTime.now_local ();
@@ -617,27 +501,12 @@ namespace KeyMaker {
                 print ("  Public: %s\n", temp_public.get_path ());
                 
                 // Now we need to move the keys to the actual ~/.ssh directory
-                var ssh_dir = File.new_for_path (Path.build_filename (Environment.get_home_dir (), ".ssh"));
-                if (!ssh_dir.query_exists ()) {
-                    ssh_dir.make_directory ();
-                    Posix.chmod (ssh_dir.get_path (), 0700);
-                }
+                var ssh_dir = KeyMaker.Filesystem.ssh_dir ();
+                KeyMaker.Filesystem.ensure_ssh_dir ();
                 
                 // Generate final key names using original display name (sanitize for filesystem)
-                var base_name = display_name;
-                
-                // Only use generic name if display name is empty or suspicious
-                if (display_name.length == 0 || display_name == fingerprint) {
-                    base_name = "restored_key";
-                } else {
-                    // Sanitize the display name for filesystem use
-                    base_name = display_name.replace (" ", "_").replace ("@", "_").replace ("/", "_").replace ("\\", "_").replace (":", "_");
-                }
-                
-                // Ensure it's not too long
-                if (base_name.length > 50) {
-                    base_name = base_name.substring (0, 50);
-                }
+                string base_name_input = (display_name.length == 0 || display_name == fingerprint) ? "restored_key" : display_name;
+                var base_name = KeyMaker.Filesystem.safe_base_filename (base_name_input, "restored_key", 50);
                 print ("EmergencyVault: Sanitized key name: %s\n", base_name);
                 
                 // Make sure we don't overwrite existing keys - add counter if needed
@@ -680,8 +549,8 @@ namespace KeyMaker {
                     print ("EmergencyVault: Both key files verified to exist\n");
                     
                     // Set proper permissions again
-                    Posix.chmod (private_dest.get_path (), 0600);
-                    Posix.chmod (public_dest.get_path (), 0644);
+                    KeyMaker.Filesystem.chmod_private (private_dest);
+                    KeyMaker.Filesystem.chmod_public (public_dest);
                     
                     print ("EmergencyVault: File permissions set successfully\n");
                 } catch (Error copy_error) {
@@ -817,30 +686,28 @@ namespace KeyMaker {
                 print ("EmergencyVault: Restoring key: %s\n", key_name);
                 
                 // Write the key content to the SSH directory
-                var ssh_dir = File.new_for_path (Path.build_filename (Environment.get_home_dir (), ".ssh"));
-                
-                // Ensure the SSH directory exists
-                if (!ssh_dir.query_exists ()) {
-                    ssh_dir.make_directory_with_parents ();
-                }
-                
-                var key_file = ssh_dir.get_child (key_name);
+                var ssh_dir = KeyMaker.Filesystem.ssh_dir ();
+                KeyMaker.Filesystem.ensure_ssh_dir ();
+
+                // Ensure the provided name is treated as a safe base filename
+                var safe_name = KeyMaker.Filesystem.safe_base_filename (key_name);
+                var key_file = ssh_dir.get_child (safe_name);
                 
                 yield key_file.replace_contents_async (
                     content.data,
                     null, false, FileCreateFlags.NONE, null, null
                 );
                 
-                // Set proper permissions for private keys
-                if (!key_name.has_suffix (".pub")) {
-                    Posix.chmod (key_file.get_path (), 0600);
+                // Set proper permissions
+                if (!safe_name.has_suffix (".pub")) {
+                    KeyMaker.Filesystem.chmod_private (key_file);
                 } else {
-                    Posix.chmod (key_file.get_path (), 0644);
+                    KeyMaker.Filesystem.chmod_public (key_file);
                 }
                 
                 // If this is a private key, try to create an SSHKey object
-                if (!key_name.has_suffix (".pub")) {
-                    var public_key_file = ssh_dir.get_child (key_name + ".pub");
+                if (!safe_name.has_suffix (".pub")) {
+                    var public_key_file = ssh_dir.get_child (safe_name + ".pub");
                     
                     // Check if the corresponding public key exists
                     if (public_key_file.query_exists ()) {
@@ -871,12 +738,12 @@ namespace KeyMaker {
                             print ("EmergencyVault: Successfully restored key: %s\n", ssh_key.get_display_name ());
                             return ssh_key;
                         } catch (Error e) {
-                            warning ("EmergencyVault: Could not create SSHKey object for %s: %s", key_name, e.message);
+                            warning ("EmergencyVault: Could not create SSHKey object for %s: %s", safe_name, e.message);
                         }
                     }
                 }
                 
-                print ("EmergencyVault: Key file restored: %s\n", key_name);
+                print ("EmergencyVault: Key file restored: %s\n", safe_name);
                 return null;
                 
             } catch (Error e) {
@@ -1360,7 +1227,7 @@ namespace KeyMaker {
                 return VaultStatus.CORRUPTED;
             } else if (expired_count > backups.length / 2) {
                 return VaultStatus.CRITICAL;
-            } else if (expired_count > 0 || backups.length == 0) {
+            } else if (backups.length == 0) {
                 return VaultStatus.WARNING;
             } else {
                 return VaultStatus.HEALTHY;

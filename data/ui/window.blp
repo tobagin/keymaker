@@ -17,12 +17,6 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
         subtitle: "GUI for SSH key management tasks";
       };
 
-      [start]
-      Button generate_button {
-        icon-name: "list-add-symbolic";
-        tooltip-text: _("Generate New SSH Key");
-        action-name: "win.generate-key";
-      }
 
       [end]
       MenuButton menu_button {
@@ -31,12 +25,6 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
         menu-model: main_menu;
       }
 
-      [end]
-      Button refresh_button {
-        icon-name: "view-refresh-symbolic";
-        tooltip-text: _("Refresh Key List");
-        action-name: "win.refresh";
-      }
     }
 
     Adw.ToastOverlay toast_overlay {
@@ -72,7 +60,7 @@ menu main_menu {
       action: "app.connection-diagnostics";
     }
     item {
-      label: _("Key _Rotation");
+      label: _("Smart Key _Rotation");
       action: "app.key-rotation";
     }
     item {

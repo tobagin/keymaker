@@ -131,14 +131,15 @@ namespace KeyMaker {
                 debug ("KeyScanner: Directory exists, enumerating files...");
                 // Find all potential private key files
                 var private_keys = new GenericArray<File> ();
-                
-                var enumerator = yield target_dir.enumerate_children_async (
+
+                // Use synchronous enumeration to avoid async enumerator pitfalls
+                var enumerator = target_dir.enumerate_children (
                     FileAttribute.STANDARD_NAME + "," + FileAttribute.STANDARD_TYPE,
                     FileQueryInfoFlags.NONE
                 );
                 debug ("KeyScanner: Got enumerator, reading files...");
-                
-                FileInfo info;
+
+                FileInfo? info;
                 while ((info = enumerator.next_file (null)) != null) {
                     if (info.get_file_type () == FileType.REGULAR) {
                         var filename = info.get_name ();
@@ -266,6 +267,8 @@ namespace KeyMaker {
                     }
                 }
                 
+                // Ensure non-null bit size for constructor (-1 for non-RSA or unknown)
+                int bit_size_final = bit_size ?? -1;
                 debug ("KeyScanner: Creating SSHKey object...");
                 return new SSHKey (
                     private_path,
@@ -274,7 +277,7 @@ namespace KeyMaker {
                     fingerprint,
                     comment,
                     last_modified,
-                    bit_size
+                    bit_size_final
                 );
                 
             } catch (KeyMakerError e) {
@@ -302,34 +305,77 @@ namespace KeyMaker {
                     throw new IOError.CANCELLED ("Operation was cancelled");
                 }
                 
-                debug ("KeyScanner: Getting key type...");
-                // Get key type with timeout protection
-                SSHKeyType key_type;
+                // Quick parse from public key to avoid subprocess on startup
+                SSHKeyType key_type_quick = SSHKeyType.RSA;
+                string? comment_quick = null;
+                int bit_size_quick = -1;
+                string fingerprint_quick = "";
                 try {
-                    key_type = yield SSHOperations.get_key_type_with_cancellable (private_path, cancellable);
-                    debug ("KeyScanner: Key type: %s", key_type.to_string ());
-                } catch (IOError.CANCELLED e) {
-                    throw e;
+                    uint8[] pub_contents;
+                    public_path.load_contents (null, out pub_contents, null);
+                    var line = ((string) pub_contents).strip ().split ("\n")[0];
+                    var parts = line.split (" ");
+                    if (parts.length >= 2) {
+                        switch (parts[0]) {
+                            case "ssh-rsa": key_type_quick = SSHKeyType.RSA; break;
+                            case "ssh-ed25519": key_type_quick = SSHKeyType.ED25519; break;
+                            case "ecdsa-sha2-nistp256": key_type_quick = SSHKeyType.ECDSA; break;
+                            case "ecdsa-sha2-nistp384": key_type_quick = SSHKeyType.ECDSA; break;
+                            case "ecdsa-sha2-nistp521": key_type_quick = SSHKeyType.ECDSA; break;
+                            default: key_type_quick = SSHKeyType.RSA; break;
+                        }
+                        if (parts.length > 2) {
+                            comment_quick = string.joinv (" ", parts[2:parts.length]);
+                        }
+                        if (key_type_quick == SSHKeyType.RSA) {
+                            var key_data = parts[1];
+                            if (key_data.length > 700) bit_size_quick = 4096;
+                            else if (key_data.length > 350) bit_size_quick = 2048;
+                            else bit_size_quick = 1024;
+                        }
+                        var quick_src = line;
+                        var quick_hash = Checksum.compute_for_string (ChecksumType.SHA256, quick_src);
+                        fingerprint_quick = quick_hash.substring (0, int.min (16, quick_hash.length));
+                    }
                 } catch (Error e) {
-                    debug ("KeyScanner: Failed to get key type: %s", e.message);
-                    return null;
+                    debug ("KeyScanner: quick parse failed: %s", e.message);
                 }
-                
-                if (cancellable != null && cancellable.is_cancelled ()) {
-                    throw new IOError.CANCELLED ("Operation was cancelled");
+
+                // Allow fast scan mode to avoid spawning subprocesses on startup
+                bool fast_scan = false;
+                var fast_env = Environment.get_variable ("KEYMAKER_FAST_SCAN");
+                if (fast_env != null && (fast_env == "1" || fast_env.down () == "true")) {
+                    fast_scan = true;
+                    debug ("KeyScanner: Fast scan enabled; skipping subprocess refinement");
                 }
-                
-                debug ("KeyScanner: Getting fingerprint...");
-                // Get fingerprint with timeout protection
-                string fingerprint;
-                try {
-                    fingerprint = yield SSHOperations.get_fingerprint_with_cancellable (private_path, cancellable);
-                    debug ("KeyScanner: Got fingerprint");
-                } catch (IOError.CANCELLED e) {
-                    throw e;
-                } catch (Error e) {
-                    debug ("KeyScanner: Failed to get fingerprint: %s", e.message);
-                    return null;
+
+                // Try to refine with ssh-keygen but do not fail the whole build if it errors
+                SSHKeyType key_type = key_type_quick;
+                string fingerprint = fingerprint_quick;
+                if (!fast_scan) {
+                    try {
+                        if (cancellable != null && cancellable.is_cancelled ()) {
+                            throw new IOError.CANCELLED ("Operation was cancelled");
+                        }
+                        key_type = yield SSHOperations.get_key_type_with_cancellable (private_path, cancellable);
+                        debug ("KeyScanner: Key type: %s", key_type.to_string ());
+                    } catch (IOError.CANCELLED e) {
+                        throw e;
+                    } catch (Error e) {
+                        debug ("KeyScanner: Using quick key type fallback: %s", e.message);
+                    }
+
+                    if (cancellable != null && cancellable.is_cancelled ()) {
+                        throw new IOError.CANCELLED ("Operation was cancelled");
+                    }
+
+                    try {
+                        fingerprint = yield SSHOperations.get_fingerprint_with_cancellable (private_path, cancellable);
+                    } catch (IOError.CANCELLED e) {
+                        throw e;
+                    } catch (Error e) {
+                        debug ("KeyScanner: Using quick fingerprint fallback: %s", e.message);
+                    }
                 }
                 
                 debug ("KeyScanner: Getting file info...");
@@ -351,7 +397,10 @@ namespace KeyMaker {
                 debug ("KeyScanner: Getting bit size...");
                 // Extract bit size for RSA keys
                 int? bit_size = null;
-                if (key_type == SSHKeyType.RSA) {
+                if (key_type == SSHKeyType.RSA && bit_size_quick > 0) {
+                    bit_size = bit_size_quick;
+                }
+                if (!fast_scan && bit_size == null && key_type == SSHKeyType.RSA) {
                     try {
                         bit_size = yield SSHOperations.extract_bit_size_with_cancellable (private_path, cancellable);
                     } catch (GLib.IOError.CANCELLED e) {
@@ -362,15 +411,17 @@ namespace KeyMaker {
                     }
                 }
                 
+                // Ensure non-null bit size for constructor (-1 for non-RSA or unknown)
+                int bit_size_final = bit_size ?? -1;
                 debug ("KeyScanner: Creating SSHKey object...");
                 return new SSHKey (
                     private_path,
                     public_path,
                     key_type,
                     fingerprint,
-                    comment,
+                    comment ?? comment_quick,
                     last_modified,
-                    bit_size
+                    bit_size_final
                 );
                 
             } catch (KeyMakerError e) {

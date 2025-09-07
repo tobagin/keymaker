@@ -1,0 +1,164 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerPlanDetailsDialog : Adw.Dialog {
+  content-width: 800;
+  content-height: 600;
+
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+
+    [top]
+    Adw.HeaderBar header_bar {
+      [title]
+      Label {
+        label: _("Plan Details");
+        styles ["heading"]
+      }
+    }
+
+    content: ScrolledWindow {
+      vexpand: true;
+      
+      Adw.Clamp {
+        maximum-size: 800;
+        tightening-threshold: 600;
+
+        child: Box {
+          orientation: vertical;
+          spacing: 24;
+          margin-top: 24;
+          margin-bottom: 24;
+          margin-start: 12;
+          margin-end: 12;
+
+          // Plan Information Group
+          Adw.PreferencesGroup info_group {
+
+            Adw.ActionRow name_row {
+              title: _("Name");
+
+              [prefix]
+              Image {
+                icon-name: "format-text-plaintext-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow status_row {
+              title: _("Status");
+
+              [prefix]
+              Image status_image {
+                icon-name: "dialog-information-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow description_row {
+              title: _("Description");
+              visible: false;
+
+              [prefix]
+              Image {
+                icon-name: "font-x-generic-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow reason_row {
+              title: _("Rotation Reason");
+
+              [prefix]
+              Image {
+                icon-name: "dialog-question-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow old_key_row {
+              title: _("Old Key");
+
+              [prefix]
+              Image old_key_icon {
+                icon-name: "security-high-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow new_key_row {
+              title: _("New Key");
+
+              [prefix]
+              Image new_key_icon {
+                icon-name: "security-high-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow rollback_enabled_row {
+              title: _("Rollback Enabled");
+
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-rollback-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow rollback_period_row {
+              title: _("Rollback Period");
+              visible: false;
+
+              [prefix]
+              Image {
+                icon-name: "preferences-system-time-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow keep_old_key_row {
+              title: _("Keep Old Key");
+
+              [prefix]
+              Image {
+                icon-name: "document-save-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ExpanderRow targets_expander {
+              title: _("Target Servers");
+
+              [prefix]
+              Image {
+                icon-name: "network-server-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow created_row {
+              title: _("Created");
+
+              [prefix]
+              Image {
+                icon-name: "x-office-calendar-symbolic";
+                styles ["dim-label"]
+              }
+            }
+
+            Adw.ActionRow last_update_row {
+              title: _("Last Update");
+
+              [prefix]
+              Image {
+                icon-name: "x-office-calendar-symbolic";
+                styles ["dim-label"]
+              }
+            }
+          }
+        };
+      }
+    };
+  };
+}

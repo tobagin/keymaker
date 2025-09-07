@@ -15,12 +15,19 @@
     <file>key_service_mapping_dialog.ui</file>
     <file>ssh_config_dialog.ui</file>
     <file>ssh_host_edit_dialog.ui</file>
+    <file>terminal_dialog.ui</file>
+    <file>connection_test_dialog.ui</file>
     <file>connection_diagnostics_dialog.ui</file>
+    <file>connection_diagnostics_runner_dialog.ui</file>
     <file>key_rotation_dialog.ui</file>
+    <file>rotation_plan_editor_dialog.ui</file>
+    <file>add_target_dialog.ui</file>
+    <file>plan_details_dialog.ui</file>
     <file>emergency_vault_dialog.ui</file>
     <file>create_backup_dialog.ui</file>
     <file>restore_backup_dialog.ui</file>
     <file>ssh_tunneling_dialog.ui</file>
     <file>create_tunnel_dialog.ui</file>
+    <file>diagnostic_results_view_dialog.ui</file>
   </gresource>
 </gresources>

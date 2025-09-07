@@ -9,44 +9,41 @@
  * (at your option) any later version.
  */
 
-public class KeyMaker.DeleteKeyDialog : Adw.MessageDialog {
+public class KeyMaker.DeleteKeyDialog : GLib.Object {
     public SSHKey ssh_key { get; construct; }
     
     // Signals
     public signal void key_deleted (SSHKey ssh_key);
     
+    private Gtk.Window parent_window;
+    
     public DeleteKeyDialog (Gtk.Window parent, SSHKey ssh_key) {
-        Object (
-            ssh_key: ssh_key,
-            transient_for: parent,
-            modal: true
-        );
+        Object (ssh_key: ssh_key);
+        parent_window = parent;
     }
     
-    construct {
-        // Configure the message dialog
-        set_heading (_("Delete SSH Key?"));
-        set_body (_("This will permanently delete the key pair '%s'.\n\nThis action cannot be undone.").printf (ssh_key.get_display_name ()));
+    public async void show () {
+        var dialog = new Adw.AlertDialog (
+            _("Delete SSH Key?"),
+            _("This will permanently delete the key pair '%s'.\n\nThis action cannot be undone.").printf (ssh_key.get_display_name ())
+        );
         
         // Add responses
-        add_response ("cancel", _("Cancel"));
-        add_response ("delete", _("Delete"));
+        dialog.add_response ("cancel", _("Cancel"));
+        dialog.add_response ("delete", _("Delete"));
         
-        set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
-        set_default_response ("cancel");
-        set_close_response ("cancel");
+        dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
+        dialog.set_default_response ("cancel");
+        dialog.set_close_response ("cancel");
         
-        // Connect response signal
-        response.connect (on_response);
-    }
-    
-    private void on_response (string response_id) {
-        if (response_id == "delete") {
-            delete_key_async.begin ();
+        var response = yield dialog.choose (parent_window, null);
+        
+        if (response == "delete") {
+            yield delete_key();
         }
     }
     
-    private async void delete_key_async () {
+    private async void delete_key () {
         try {
             // Delete the key pair
             yield SSHOperations.delete_key_pair (ssh_key);
@@ -56,15 +53,14 @@ public class KeyMaker.DeleteKeyDialog : Adw.MessageDialog {
             
         } catch (KeyMakerError e) {
             // Show error dialog
-            var error_dialog = new Adw.MessageDialog (
-                get_transient_for (),
+            var error_dialog = new Adw.AlertDialog (
                 _("Delete Failed"),
                 _("Failed to delete SSH key: %s").printf (e.message)
             );
             error_dialog.add_response ("ok", _("OK"));
             error_dialog.set_default_response ("ok");
             error_dialog.set_close_response ("ok");
-            error_dialog.present ();
+            error_dialog.present (parent_window);
             
             warning ("Failed to delete SSH key: %s", e.message);
         }

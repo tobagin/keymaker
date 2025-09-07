@@ -118,8 +118,9 @@ namespace KeyMaker {
                 var ssh_dir = config_file.get_parent ();
                 if (!ssh_dir.query_exists ()) {
                     ssh_dir.make_directory_with_parents ();
-                    Posix.chmod (ssh_dir.get_path (), 0x1C0); // 0700
                 }
+                // Ensure proper permissions
+                KeyMaker.Filesystem.ensure_directory_with_perms (ssh_dir);
                 
                 // Write config file
                 yield config_file.replace_contents_async (
@@ -132,7 +133,7 @@ namespace KeyMaker {
                 );
                 
                 // Set proper permissions
-                Posix.chmod (config_file.get_path (), 0x180); // 0600
+                KeyMaker.Filesystem.chmod_private (config_file);
                 
                 config_changed ();
                 

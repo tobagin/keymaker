@@ -3,39 +3,23 @@ using Adw 1;
 
 template $KeyMakerSSHAgentDialog : Adw.Dialog {
   title: _("SSH Agent Manager");
+  content-width: 800;
+  content-height: 600;
 
-  child: Gtk.Box {
-    orientation: vertical;
-    
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+
+    [top]
     Adw.HeaderBar header_bar {
-      title-widget: Adw.WindowTitle {
-        title: _("SSH Agent Manager");
-        subtitle: _("Manage keys loaded in SSH agent");
-      };
-
-      [start]
-      Button refresh_button {
-        icon-name: "view-refresh-symbolic";
-        tooltip-text: _("Refresh Agent Keys");
+      [title]
+      Label {
+        label: _("SSH Agent Manager");
+        styles ["heading"]
       }
 
-      [end]
-      Button add_key_button {
-        icon-name: "list-add-symbolic";
-        tooltip-text: _("Add Key to Agent");
-        sensitive: false;
-      }
-
-      [end]
-      Button remove_all_button {
-        icon-name: "user-trash-symbolic";
-        tooltip-text: _("Remove All Keys");
-        sensitive: false;
-        styles ["destructive-action"]
-      }
     }
 
-    Stack main_stack {
+    content: Stack main_stack {
       Adw.StatusPage status_page {
         name: "status_page";
         title: _("Loading...");
@@ -52,7 +36,7 @@ template $KeyMakerSSHAgentDialog : Adw.Dialog {
           
           Box {
             orientation: vertical;
-            spacing: 12;
+            spacing: 24;
             margin-top: 24;
             margin-bottom: 24;
             margin-start: 12;
@@ -62,6 +46,33 @@ template $KeyMakerSSHAgentDialog : Adw.Dialog {
               title: _("Keys Loaded in Agent");
               description: _("These keys are currently available for SSH authentication");
               
+              header-suffix: Box {
+                spacing: 6;
+                
+                Button add_key_button {
+                  icon-name: "tab-new-symbolic";
+                  tooltip-text: _("Add Key to Agent");
+                  sensitive: false;
+                  styles ["flat"]
+                  valign: center;
+                }
+                
+                Button refresh_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Refresh Agent Keys");
+                  styles ["flat"]
+                  valign: center;
+                }
+                
+                Button remove_all_button {
+                  icon-name: "edit-clear-all-symbolic";
+                  tooltip-text: _("Remove All Keys");
+                  sensitive: false;
+                  styles ["flat", "destructive-action"]
+                  valign: center;
+                }
+              };
+              
               ListBox agent_keys_list {
                 selection-mode: none;
                 styles ["boxed-list"]
@@ -70,6 +81,6 @@ template $KeyMakerSSHAgentDialog : Adw.Dialog {
           }
         }
       }
-    }
+    };
   };
 }

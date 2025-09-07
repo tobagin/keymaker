@@ -19,25 +19,29 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
     private unowned Adw.HeaderBar header_bar;
     
     [GtkChild]
-    private unowned Gtk.Button create_backup_button;
+    private unowned Gtk.Button create_backup_button_header;
+    
+    [GtkChild]
+    private unowned Gtk.Button refresh_backups_button;
+    
+    [GtkChild]
+    private unowned Gtk.Button remove_all_backups_button;
     
     [GtkChild]
     private unowned Adw.StatusPage vault_status_page;
     
     [GtkChild]
-    private unowned Gtk.Stack main_stack;
+    private unowned Adw.ViewStack main_view_stack;
     
     [GtkChild]
-    private unowned Gtk.Box backups_page;
+    private unowned Adw.ViewSwitcher view_switcher;
     
+    [GtkChild]
+    private unowned Gtk.Button create_backup_status_button;
+
     [GtkChild]
     private unowned Gtk.ListBox backups_list;
     
-    [GtkChild]
-    private unowned Gtk.Label vault_status_label;
-    
-    [GtkChild]
-    private unowned Gtk.Image vault_status_icon;
     
     private EmergencyVault vault;
     private GenericArray<SSHKey> available_keys;
@@ -54,6 +58,10 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
         
         // Delay initialization until the template is loaded
         Idle.add (() => {
+            // Set default tab to Emergency Vault status page
+            if (main_view_stack != null) {
+                main_view_stack.set_visible_child_name ("status");
+            }
             setup_signals ();
             refresh_vault_status ();
             populate_backups_list ();
@@ -62,8 +70,20 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
     }
     
     private void setup_signals () {
-        if (create_backup_button != null) {
-            create_backup_button.clicked.connect (on_create_backup);
+        if (create_backup_button_header != null) {
+            create_backup_button_header.clicked.connect (on_create_backup);
+        }
+        
+        if (refresh_backups_button != null) {
+            refresh_backups_button.clicked.connect (on_refresh_backups);
+        }
+        
+        if (remove_all_backups_button != null) {
+            remove_all_backups_button.clicked.connect (on_remove_all_backups);
+        }
+        
+        if (create_backup_status_button != null) {
+            create_backup_status_button.clicked.connect (on_create_backup);
         }
         
         if (vault != null) {
@@ -76,53 +96,34 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
     // Keys will be loaded on-demand when creating backups
     
     private void refresh_vault_status () {
-        if (vault_status_label == null || vault_status_icon == null || vault_status_page == null) {
-            return;
-        }
-        
         var status = vault.get_vault_status ();
         
-        vault_status_label.label = status.to_string ();
-        vault_status_icon.icon_name = status.get_icon_name ();
-        
-        // Update status page styling
-        vault_status_icon.remove_css_class ("success");
-        vault_status_icon.remove_css_class ("warning");
-        vault_status_icon.remove_css_class ("error");
-        
-        vault_status_label.remove_css_class ("success");
-        vault_status_label.remove_css_class ("warning");
-        vault_status_label.remove_css_class ("error");
-        
+        // Update status page with different icons based on vault health
         switch (status) {
             case VaultStatus.HEALTHY:
-                vault_status_icon.add_css_class ("success");
-                vault_status_label.add_css_class ("success");
-                vault_status_page.description = "Emergency vault is functioning properly";
+                vault_status_page.icon_name = "checkmark-symbolic";
+                vault_status_page.description = _("Emergency vault is functioning properly");
                 break;
                 
             case VaultStatus.WARNING:
-                vault_status_icon.add_css_class ("warning");
-                vault_status_label.add_css_class ("warning");
-                vault_status_page.description = "Some backups may need attention";
+                vault_status_page.icon_name = "dialog-warning-symbolic";
+                vault_status_page.description = _("Some backups may need attention");
                 break;
                 
             case VaultStatus.CRITICAL:
-                vault_status_icon.add_css_class ("error");
-                vault_status_label.add_css_class ("error");
-                vault_status_page.description = "Multiple backup issues detected";
+                vault_status_page.icon_name = "dialog-error-symbolic";
+                vault_status_page.description = _("Multiple backup issues detected");
                 break;
                 
             case VaultStatus.CORRUPTED:
-                vault_status_icon.add_css_class ("error");
-                vault_status_label.add_css_class ("error");
-                vault_status_page.description = "Vault corruption detected - immediate action required";
+                vault_status_page.icon_name = "dialog-error-symbolic";
+                vault_status_page.description = _("Vault corruption detected - immediate action required");
                 break;
         }
     }
     
     private void populate_backups_list () {
-        if (vault_status_page == null || main_stack == null || backups_list == null) {
+        if (main_view_stack == null || backups_list == null) {
             return;
         }
         
@@ -130,16 +131,8 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
         
         var backups = vault.get_all_backups ();
         
-        if (backups.length == 0) {
-            vault_status_page.title = "No Emergency Backups";
-            vault_status_page.description = "Create encrypted backups to protect against key loss";
-            vault_status_page.icon_name = "folder-symbolic";
-            main_stack.visible_child = vault_status_page;
-        } else {
-            for (int i = 0; i < backups.length; i++) {
-                add_backup_row (backups[i]);
-            }
-            main_stack.visible_child = backups_page;
+        for (int i = 0; i < backups.length; i++) {
+            add_backup_row (backups[i]);
         }
     }
     
@@ -169,22 +162,34 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
                 icon_name = "package-x-generic-symbolic"; // Archive icon
                 break;
             case BackupType.QR_CODE:
-                icon_name = "qr-code-symbolic";
+                icon_name = "io.github.tobagin.keysmith-qr-code-symbolic";
                 break;
             case BackupType.SHAMIR_SECRET_SHARING:
                 icon_name = "view-app-grid-symbolic"; // More common grid icon
                 break;
             case BackupType.TIME_LOCKED:
-                icon_name = "appointment-soon-symbolic"; // More common time icon
+                icon_name = "appointment-soon-symbolic"; // Regular time icon for type
                 break;
         }
         type_icon.icon_name = icon_name;
+        
+        
         debug ("EmergencyVaultDialog: Setting backup icon to: %s", icon_name);
         row.add_prefix (type_icon);
         
         // Add status indicator
         var status_icon = new Gtk.Image ();
-        if (backup.is_expired ()) {
+        if (backup.backup_type == BackupType.TIME_LOCKED) {
+            if (backup.is_expired()) {
+                status_icon.icon_name = "io.github.tobagin.keysmith-time-unlocked-symbolic";
+                status_icon.add_css_class ("success"); // Green unlocked
+                status_icon.tooltip_text = "Time lock has expired - backup is available";
+            } else {
+                status_icon.icon_name = "io.github.tobagin.keysmith-time-locked-symbolic";
+                status_icon.add_css_class ("error"); // Red locked
+                status_icon.tooltip_text = "Backup is time-locked and not yet available";
+            }
+        } else if (backup.is_expired ()) {
             status_icon.icon_name = "dialog-warning-symbolic";
             status_icon.add_css_class ("warning");
             status_icon.tooltip_text = "Backup has expired";
@@ -248,11 +253,19 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
         
         var restore_row = new Adw.ActionRow ();
         restore_row.title = "Restore Backup";
-        restore_row.subtitle = "Restore keys from this backup";
-        restore_row.activatable = true;
-        restore_row.activated.connect (() => {
-            restore_specific_backup (backup);
-        });
+        
+        // Check if backup is time-locked and not yet expired
+        if (backup.backup_type == BackupType.TIME_LOCKED && !backup.is_expired()) {
+            restore_row.subtitle = "Backup is time-locked and not yet available";
+            restore_row.activatable = false;
+            restore_row.add_css_class("dim-label");
+        } else {
+            restore_row.subtitle = "Restore keys from this backup";
+            restore_row.activatable = true;
+            restore_row.activated.connect (() => {
+                restore_specific_backup (backup);
+            });
+        }
         
         var restore_icon = new Gtk.Image ();
         restore_icon.icon_name = "document-revert-symbolic";
@@ -398,6 +411,67 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
     
     private void on_vault_status_changed (VaultStatus status) {
         refresh_vault_status ();
+    }
+    
+    private void on_refresh_backups () {
+        populate_backups_list ();
+        refresh_vault_status ();
+    }
+    
+    private void on_remove_all_backups () {
+        var backups = vault.get_all_backups ();
+        
+        if (backups.length == 0) {
+            show_error ("No Backups", "There are no backups to remove.");
+            return;
+        }
+        
+        var confirm_dialog = new Adw.AlertDialog (
+            "Remove All Backups?",
+            @"This will permanently delete all $(backups.length) backup files. This action cannot be undone."
+        );
+        
+        confirm_dialog.add_response ("cancel", "Cancel");
+        confirm_dialog.add_response ("remove_all", "Remove All Backups");
+        confirm_dialog.set_response_appearance ("remove_all", Adw.ResponseAppearance.DESTRUCTIVE);
+        confirm_dialog.set_default_response ("cancel");
+        confirm_dialog.set_close_response ("cancel");
+        
+        confirm_dialog.response.connect ((response) => {
+            if (response == "remove_all") {
+                perform_remove_all_backups ();
+            }
+        });
+        
+        confirm_dialog.present (this);
+    }
+    
+    private void perform_remove_all_backups () {
+        var backups = vault.get_all_backups ();
+        int deleted_count = 0;
+        int failed_count = 0;
+        
+        for (int i = 0; i < backups.length; i++) {
+            try {
+                if (backups[i].backup_file.query_exists ()) {
+                    backups[i].backup_file.delete ();
+                }
+                
+                vault.remove_backup (backups[i]);
+                deleted_count++;
+                
+            } catch (Error e) {
+                warning ("Failed to delete backup %s: %s", backups[i].name, e.message);
+                failed_count++;
+            }
+        }
+        
+        populate_backups_list ();
+        refresh_vault_status ();
+        
+        if (failed_count > 0) {
+            show_error ("Partial Deletion", @"$(deleted_count) backups removed successfully, but $(failed_count) failed to delete.");
+        }
     }
     
     private void show_error (string title, string message) {

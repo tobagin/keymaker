@@ -40,14 +40,8 @@ namespace KeyMaker {
             string[] cmd = {"ssh-add", "-l"};
             
             try {
-                var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
-                var subprocess = launcher.spawnv (cmd);
-                
-                yield subprocess.wait_async ();
-                
-                var exit_status = subprocess.get_exit_status ();
-                agent_available = (exit_status == 0 || exit_status == 1); // 0 = has keys, 1 = no keys but agent running
-                
+                var result = yield KeyMaker.Command.run_capture (cmd);
+                agent_available = (result.status == 0 || result.status == 1); // 0 = has keys, 1 = no keys but agent running
                 return agent_available;
                 
             } catch (Error e) {
@@ -72,25 +66,20 @@ namespace KeyMaker {
             string[] cmd = {"ssh-add", "-l"};
             
             try {
-                var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
-                var subprocess = launcher.spawnv (cmd);
+                var result = yield KeyMaker.Command.run_capture (cmd);
                 
-                yield subprocess.wait_async ();
-                
-                if (subprocess.get_exit_status () == 1) {
+                if (result.status == 1) {
                     // No keys loaded
                     return agent_keys;
                 }
                 
-                if (subprocess.get_exit_status () != 0) {
+                if (result.status != 0) {
                     throw new KeyMakerError.SUBPROCESS_FAILED ("ssh-add failed");
                 }
                 
-                var stdout_stream = subprocess.get_stdout_pipe ();
-                var stdout_reader = new DataInputStream (stdout_stream);
-                
-                string? line;
-                while ((line = yield stdout_reader.read_line_async ()) != null) {
+                var lines = result.stdout.split ("\n");
+                foreach (var line in lines) {
+                    if (line.strip () == "") continue;
                     var agent_key = parse_agent_key_line (line);
                     if (agent_key != null) {
                         agent_keys.add (agent_key);
@@ -133,16 +122,10 @@ namespace KeyMaker {
             cmd[cmd_list.length] = null;
             
             try {
-                var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
-                var subprocess = launcher.spawnv (cmd);
+                var result = yield KeyMaker.Command.run_capture(cmd);
                 
-                yield subprocess.wait_async ();
-                
-                if (subprocess.get_exit_status () != 0) {
-                    var stderr_stream = subprocess.get_stderr_pipe ();
-                    var stderr_reader = new DataInputStream (stderr_stream);
-                    var error_message = yield stderr_reader.read_line_async ();
-                    throw new KeyMakerError.SUBPROCESS_FAILED ("Failed to add key to agent: %s", error_message ?? "Unknown error");
+                if (result.status != 0) {
+                    throw new KeyMakerError.SUBPROCESS_FAILED ("Failed to add key to agent: %s", result.stderr);
                 }
                 
                 // Refresh key list
@@ -180,16 +163,10 @@ namespace KeyMaker {
             string[] cmd = {"ssh-add", "-d", key_to_remove.get_path ()};
             
             try {
-                var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
-                var subprocess = launcher.spawnv (cmd);
+                var result = yield KeyMaker.Command.run_capture(cmd);
                 
-                yield subprocess.wait_async ();
-                
-                if (subprocess.get_exit_status () != 0) {
-                    var stderr_stream = subprocess.get_stderr_pipe ();
-                    var stderr_reader = new DataInputStream (stderr_stream);
-                    var error_message = yield stderr_reader.read_line_async ();
-                    throw new KeyMakerError.SUBPROCESS_FAILED ("Failed to remove key from agent: %s", error_message ?? "Unknown error");
+                if (result.status != 0) {
+                    throw new KeyMakerError.SUBPROCESS_FAILED ("Failed to remove key from agent: %s", result.stderr);
                 }
                 
                 // Refresh key list
@@ -211,16 +188,10 @@ namespace KeyMaker {
             string[] cmd = {"ssh-add", "-D"};
             
             try {
-                var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
-                var subprocess = launcher.spawnv (cmd);
+                var result = yield KeyMaker.Command.run_capture(cmd);
                 
-                yield subprocess.wait_async ();
-                
-                if (subprocess.get_exit_status () != 0) {
-                    var stderr_stream = subprocess.get_stderr_pipe ();
-                    var stderr_reader = new DataInputStream (stderr_stream);
-                    var error_message = yield stderr_reader.read_line_async ();
-                    throw new KeyMakerError.SUBPROCESS_FAILED ("Failed to remove all keys: %s", error_message ?? "Unknown error");
+                if (result.status != 0) {
+                    throw new KeyMakerError.SUBPROCESS_FAILED ("Failed to remove all keys: %s", result.stderr);
                 }
                 
                 // Clear local key list

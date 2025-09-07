@@ -39,10 +39,14 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
     [GtkChild]
     private unowned Adw.SwitchRow show_fingerprints_row;
     
+    [GtkChild]
+    private unowned Adw.ComboRow preferred_terminal_row;
+    
     private Settings settings;
     private Gtk.StringList theme_model;
     private Gtk.StringList key_type_model;
     private Gtk.StringList rsa_bits_model;
+    private Gtk.StringList terminal_model;
     
     
     public PreferencesDialog (Gtk.Window parent) {
@@ -79,6 +83,23 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         rsa_bits_model.append ("8192");
         default_rsa_bits_row.set_model (rsa_bits_model);
         
+        // Setup terminal model
+        terminal_model = new Gtk.StringList (null);
+        terminal_model.append (_("Auto (Detect Automatically)"));
+        terminal_model.append ("Alacritty");
+        terminal_model.append ("GNOME Console");
+        terminal_model.append ("GNOME Terminal");
+        terminal_model.append ("Kitty");
+        terminal_model.append ("Konsole");
+        terminal_model.append ("LXTerminal");
+        terminal_model.append ("MATE Terminal");
+        terminal_model.append ("Ptyxis");
+        terminal_model.append ("Terminator");
+        terminal_model.append ("Tilix");
+        terminal_model.append ("XFCE Terminal");
+        terminal_model.append ("XTerm");
+        preferred_terminal_row.set_model (terminal_model);
+        
         // Load current settings
         load_settings ();
         
@@ -91,6 +112,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         auto_refresh_interval_row.notify["value"].connect (on_auto_refresh_interval_changed);
         confirm_deletions_row.notify["active"].connect (on_confirm_deletions_changed);
         show_fingerprints_row.notify["active"].connect (on_show_fingerprints_changed);
+        preferred_terminal_row.notify["selected"].connect (on_preferred_terminal_changed);
     }
     
     private void load_settings () {
@@ -161,6 +183,52 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         // Load show fingerprints
         var show_fingerprints = settings.get_boolean ("show-fingerprints");
         show_fingerprints_row.set_active (show_fingerprints);
+        
+        // Load preferred terminal
+        var preferred_terminal = settings.get_string ("preferred-terminal");
+        var terminal_index = 0; // Default to "Auto"
+        switch (preferred_terminal) {
+            case "alacritty":
+                terminal_index = 1;
+                break;
+            case "gnome-console":
+                terminal_index = 2;
+                break;
+            case "gnome-terminal":
+                terminal_index = 3;
+                break;
+            case "kitty":
+                terminal_index = 4;
+                break;
+            case "konsole":
+                terminal_index = 5;
+                break;
+            case "lxterminal":
+                terminal_index = 6;
+                break;
+            case "mate-terminal":
+                terminal_index = 7;
+                break;
+            case "ptyxis":
+                terminal_index = 8;
+                break;
+            case "terminator":
+                terminal_index = 9;
+                break;
+            case "tilix":
+                terminal_index = 10;
+                break;
+            case "xfce4-terminal":
+                terminal_index = 11;
+                break;
+            case "xterm":
+                terminal_index = 12;
+                break;
+            default: // "auto"
+                terminal_index = 0;
+                break;
+        }
+        preferred_terminal_row.set_selected (terminal_index);
     }
     
     private void on_theme_changed () {
@@ -244,8 +312,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
     }
     
     private async void show_deletion_warning () {
-        var warning_dialog = new Adw.MessageDialog (
-            (Gtk.Window) get_root (),
+        var warning_dialog = new Adw.AlertDialog (
             _("Disable Delete Confirmations?"),
             _("Disabling delete confirmations is not recommended. SSH keys that are deleted cannot be restored.\n\nAre you sure you want to continue?")
         );
@@ -256,7 +323,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         warning_dialog.set_default_response ("cancel");
         warning_dialog.set_close_response ("cancel");
         
-        var response = yield warning_dialog.choose (null);
+        var response = yield warning_dialog.choose ((Gtk.Window) get_root(), null);
         
         if (response == "disable") {
             // User confirmed, disable confirmations
@@ -270,5 +337,51 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
     private void on_show_fingerprints_changed () {
         var active = show_fingerprints_row.get_active ();
         settings.set_boolean ("show-fingerprints", active);
+    }
+    
+    private void on_preferred_terminal_changed () {
+        string terminal;
+        switch (preferred_terminal_row.get_selected ()) {
+            case 1:
+                terminal = "alacritty";
+                break;
+            case 2:
+                terminal = "gnome-console";
+                break;
+            case 3:
+                terminal = "gnome-terminal";
+                break;
+            case 4:
+                terminal = "kitty";
+                break;
+            case 5:
+                terminal = "konsole";
+                break;
+            case 6:
+                terminal = "lxterminal";
+                break;
+            case 7:
+                terminal = "mate-terminal";
+                break;
+            case 8:
+                terminal = "ptyxis";
+                break;
+            case 9:
+                terminal = "terminator";
+                break;
+            case 10:
+                terminal = "tilix";
+                break;
+            case 11:
+                terminal = "xfce4-terminal";
+                break;
+            case 12:
+                terminal = "xterm";
+                break;
+            default: // "auto"
+                terminal = "auto";
+                break;
+        }
+        settings.set_string ("preferred-terminal", terminal);
     }
 }

@@ -3,14 +3,18 @@ using Adw 1;
 
 template $KeyMakerAddKeyToAgentDialog : Adw.Dialog {
   title: _("Add Key to Agent");
+  content-width: 800;
+  content-height: 600;
 
   child: Gtk.Box {
     orientation: vertical;
     
     Adw.HeaderBar {
-      title-widget: Adw.WindowTitle {
-        title: _("Add Key to Agent");
-      };
+      [title]
+      Label {
+        label: _("Add Key to Agent");
+        styles ["heading"]
+      }
     }
 
     Adw.Clamp {

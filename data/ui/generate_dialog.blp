@@ -3,8 +3,8 @@ using Adw 1;
 
 template $KeyMakerGenerateKeyDialog: Adw.Dialog {
   title: _("Generate SSH Key");
-  content-width: 500;
-  content-height: 700;
+  content-width: 800;
+  content-height: 600;
 
   Box {
     orientation: vertical;
@@ -77,6 +77,22 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
               };
 
               selected: 2;
+            }
+
+            Adw.ComboRow ecdsa_curve_row {
+              title: _("ECDSA Curve");
+              subtitle: _("P-256 is most widely supported");
+              visible: false;
+
+              model: StringList {
+                strings [
+                  _("P-256 (256 bits)"),
+                  _("P-384 (384 bits)"),
+                  _("P-521 (521 bits)"),
+                ]
+              };
+
+              selected: 0;
             }
           }
 

@@ -1,0 +1,107 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerAddTargetDialog : Adw.Dialog {
+  title: _("Add Target Server");
+  content-width: 450;
+  content-height: 400;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+
+      [start]
+      Button cancel_button {
+        label: _("Cancel");
+        clicked => $on_cancel_clicked();
+      }
+
+      [end]
+      Button add_button {
+        label: _("Add Target");
+        styles ["suggested-action"]
+        clicked => $on_add_clicked();
+      }
+    }
+
+    content: Adw.Clamp {
+      maximum-size: 450;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 12;
+      margin-end: 12;
+
+      Box {
+        orientation: vertical;
+        spacing: 24;
+
+        // Target Selection Group
+        Adw.PreferencesGroup {
+          title: _("Target Selection");
+
+          Adw.ComboRow selection_mode_row {
+            title: _("Selection Mode");
+            subtitle: _("Choose how to specify the target server");
+
+            model: StringList {
+              strings [
+                _("From SSH Configuration"),
+                _("Manual Entry")
+              ]
+            };
+
+            selected: 0;
+          }
+
+          Adw.ComboRow ssh_hosts_row {
+            title: _("SSH Host");
+            subtitle: _("Select from configured SSH hosts");
+          }
+        }
+
+        // Manual Entry Group
+        Adw.PreferencesGroup manual_group {
+          title: _("Server Details");
+          visible: false;
+
+          Adw.EntryRow hostname_row {
+            title: _("Hostname");
+
+            [prefix]
+            Image {
+              icon-name: "network-server-symbolic";
+              styles ["dim-label"]
+            }
+          }
+
+          Adw.EntryRow username_row {
+            title: _("Username");
+
+            [prefix]
+            Image {
+              icon-name: "system-users-symbolic";
+              styles ["dim-label"]
+            }
+          }
+
+          Adw.SpinRow port_row {
+            title: _("Port");
+            adjustment: Adjustment {
+              lower: 1;
+              upper: 65535;
+              step-increment: 1;
+              value: 22;
+            };
+
+            [prefix]
+            Image {
+              icon-name: "network-wired-symbolic";
+              styles ["dim-label"]
+            }
+          }
+        }
+      }
+    };
+  }
+}

@@ -6,151 +6,108 @@ template $KeyMakerConnectionDiagnosticsDialog : Adw.Dialog {
   content-width: 800;
   content-height: 600;
 
-  child: Box {
-    orientation: vertical;
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
     
+    [top]
     Adw.HeaderBar {
       title-widget: Adw.WindowTitle {
         title: _("SSH Connection Diagnostics");
         subtitle: _("Test and troubleshoot SSH connections");
       };
-      
-      [end]
-      Button run_diagnostics_button {
-        icon-name: "media-playback-start-symbolic";
-        tooltip-text: _("Run Diagnostics");
-        styles ["suggested-action"]
-      }
     }
-
-    Stack main_stack {
-      vexpand: true;
-      visible-child-name: "setup_page";
+    
+    [bottom]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Adw.ViewSwitcher view_switcher {
+        stack: main_stack;
+      };
+    }
+    
+    content: Adw.ViewStack main_stack {
       
-      ScrolledWindow {
-        name: "setup_page";
+      Adw.ViewStackPage {
+        name: "diagnostics";
+        title: _("Diagnostics");
+        icon-name: "network-wired-symbolic";
         
-        Adw.Clamp {
-          maximum-size: 600;
-          tightening-threshold: 500;
+        child: Adw.StatusPage {
+          title: _("SSH Connection Diagnostics");
+          description: _("Test and troubleshoot SSH connections with comprehensive diagnostic tools");
+          icon-name: "network-wired-symbolic";
           
-          Box {
-            orientation: vertical;
-            spacing: 24;
+          child: Button launch_diagnostics_button {
+            label: _("Run New Diagnostic");
+            halign: center;
+            styles ["suggested-action", "pill"]
+          };
+        };
+      }
+      
+      Adw.ViewStackPage {
+        name: "history";
+        title: _("History");
+        icon-name: "document-open-recent-symbolic";
+        
+        child: ScrolledWindow {
+          Adw.Clamp {
+            maximum-size: 600;
+            tightening-threshold: 400;
             margin-top: 24;
             margin-bottom: 24;
-            margin-start: 12;
-            margin-end: 12;
+            margin-start: 24;
+            margin-end: 24;
             
-            Adw.PreferencesGroup {
-              title: _("Connection Settings");
+            Box {
+              orientation: vertical;
+              spacing: 24;
               
-              Adw.EntryRow hostname_entry {
-                title: _("Hostname");
-              }
-              
-              Adw.EntryRow username_entry {
-                title: _("Username");
-              }
-              
-              Adw.SpinRow port_row {
-                title: _("Port");
-                adjustment: Adjustment {
-                  lower: 1;
-                  upper: 65535;
-                  step-increment: 1;
-                  value: 22;
+              Adw.PreferencesGroup {
+                title: _("Recent Tests");
+                description: _("View previous connection test results and rerun configurations");
+                
+                header-suffix: Box {
+                  orientation: horizontal;
+                  spacing: 6;
+                  
+                  Button refresh_history_button {
+                    icon-name: "view-refresh-symbolic";
+                    tooltip-text: _("Refresh History");
+                    styles ["flat"]
+                    valign: center;
+                  }
+                  
+                  Button clear_history_button {
+                    icon-name: "user-trash-symbolic";
+                    tooltip-text: _("Clear All History");
+                    styles ["flat", "destructive-action"]
+                    valign: center;
+                  }
                 };
+                
+                ListBox history_list {
+                  selection-mode: none;
+                  styles ["boxed-list"]
+                  
+                  Adw.ActionRow history_placeholder {
+                    title: _("No diagnostic history");
+                    subtitle: _("Run your first connection diagnostic to see results here");
+                    
+                    [prefix]
+                    Image {
+                      icon-name: "folder-documents-symbolic";
+                      styles ["dim-label"]
+                    }
+                  }
+                }
               }
-            }
-            
-            Adw.PreferencesGroup {
-              title: _("Test Options");
               
-              Adw.SwitchRow test_basic_row {
-                title: _("Basic Connection Test");
-                subtitle: _("Test SSH connection and authentication");
-                active: true;
-              }
-              
-              Adw.SwitchRow test_performance_row {
-                title: _("Performance Test");
-                subtitle: _("Measure connection speed and latency");
-              }
-              
-              Adw.SwitchRow test_tunnels_row {
-                title: _("Tunnel Capabilities");
-                subtitle: _("Test port forwarding support");
-              }
             }
           }
-        }
+        };
       }
-      
-      Box {
-        name: "results_page";
-        orientation: vertical;
-        spacing: 12;
-        margin-top: 12;
-        margin-bottom: 12;
-        margin-start: 12;
-        margin-end: 12;
-        
-        Adw.PreferencesGroup {
-          title: _("Diagnostic Results");
-          
-          ScrolledWindow results_scroll {
-            min-content-height: 400;
-            vexpand: true;
-            
-            ListBox results_list {
-              selection-mode: none;
-              styles ["boxed-list"]
-            }
-          }
-        }
-        
-        Box {
-          orientation: horizontal;
-          spacing: 12;
-          halign: end;
-          
-          Button {
-            label: _("Export Report");
-            icon-name: "document-save-symbolic";
-          }
-          
-          Button {
-            label: _("Run Again");
-            styles ["suggested-action"]
-          }
-        }
-      }
-      
-      Box {
-        name: "progress_page";
-        orientation: vertical;
-        spacing: 24;
-        margin-top: 48;
-        margin-bottom: 48;
-        halign: center;
-        valign: center;
-        
-        Spinner {
-          width-request: 48;
-          height-request: 48;
-          spinning: true;
-        }
-        
-        Label progress_label {
-          label: _("Running diagnostics...");
-          styles ["title-2"]
-        }
-        
-        ProgressBar progress_bar {
-          width-request: 300;
-        }
-      }
-    }
+    };
   };
 }

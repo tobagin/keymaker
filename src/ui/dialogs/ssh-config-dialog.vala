@@ -25,10 +25,10 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     private unowned Gtk.Button add_host_button;
     
     [GtkChild]
-    private unowned Gtk.Button save_button;
+    private unowned Gtk.Button reload_button;
     
     [GtkChild]
-    private unowned Gtk.Button reload_button;
+    private unowned Gtk.Button remove_all_hosts_button;
     
     [GtkChild]
     private unowned Adw.StatusPage empty_state;
@@ -38,6 +38,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     
     private SSHConfig ssh_config;
     private GenericArray<SSHConfigHost> filtered_hosts;
+    private bool has_unsaved_changes = false;
     
     public SSHConfigDialog (Gtk.Window parent) {
         Object ();
@@ -66,11 +67,11 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         if (add_host_button != null) {
             add_host_button.clicked.connect (on_add_host_clicked);
         }
-        if (save_button != null) {
-            save_button.clicked.connect (on_save_clicked);
-        }
         if (reload_button != null) {
             reload_button.clicked.connect (on_reload_clicked);
+        }
+        if (remove_all_hosts_button != null) {
+            remove_all_hosts_button.clicked.connect (on_remove_all_hosts_clicked);
         }
         if (hosts_list != null) {
             hosts_list.row_activated.connect (on_host_row_activated);
@@ -79,6 +80,13 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         if (ssh_config != null) {
             ssh_config.config_changed.connect (on_config_changed);
         }
+        
+        // Handle close attempts with unsaved changes
+        close_attempt.connect(() => {
+            if (has_unsaved_changes) {
+                show_unsaved_changes_dialog();
+            }
+        });
     }
     
     private async void load_config () {
@@ -177,6 +185,19 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         }
         row.add_prefix (type_icon);
         
+        // Add connect button (only for saved hosts with hostname/IP)
+        if (host.line_number > -1 && host.hostname != null && host.hostname.strip () != "") {
+            var connect_button = new Gtk.Button ();
+            connect_button.icon_name = "utilities-terminal-symbolic";
+            connect_button.tooltip_text = "Connect via SSH";
+            connect_button.add_css_class ("flat");
+            connect_button.valign = Gtk.Align.CENTER;
+            connect_button.clicked.connect (() => {
+                connect_to_host (host);
+            });
+            row.add_suffix (connect_button);
+        }
+        
         // Add edit button
         var edit_button = new Gtk.Button ();
         edit_button.icon_name = "document-edit-symbolic";
@@ -190,7 +211,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         
         // Add delete button
         var delete_button = new Gtk.Button ();
-        delete_button.icon_name = "user-trash-symbolic";
+        delete_button.icon_name = "io.github.tobagin.keysmith-remove-symbolic";
         delete_button.tooltip_text = "Delete Host";
         delete_button.add_css_class ("flat");
         delete_button.add_css_class ("destructive-action");
@@ -214,7 +235,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         var dialog = new SSHHostEditDialog ((Gtk.Window) this.get_root (), null);
         dialog.host_saved.connect ((host) => {
             ssh_config.add_host (host);
-            save_config_async.begin ();
+            has_unsaved_changes = true;
             refresh_hosts_list ();
         });
         dialog.present (this);
@@ -223,7 +244,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     private void edit_host (SSHConfigHost host) {
         var dialog = new SSHHostEditDialog ((Gtk.Window) this.get_root (), host);
         dialog.host_saved.connect ((updated_host) => {
-            save_config_async.begin ();
+            has_unsaved_changes = true;
             refresh_hosts_list ();
         });
         dialog.present (this);
@@ -243,7 +264,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         dialog.response.connect ((response) => {
             if (response == "delete") {
                 ssh_config.remove_host (host.name);
-                save_config_async.begin ();
+                has_unsaved_changes = true;
                 refresh_hosts_list ();
             }
         });
@@ -251,40 +272,108 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         dialog.present (this);
     }
     
-    private async void save_config_async () {
-        try {
-            yield ssh_config.save_config ();
-        } catch (KeyMakerError e) {
-            warning ("Failed to save SSH config automatically: %s", e.message);
-        }
-    }
     
-    private async void on_save_clicked () {
+    private async void save_config_async () throws Error {
         if (!ssh_config.validate_config ()) {
-            show_error ("Invalid Configuration", "Please check your SSH host configurations for errors.");
-            return;
+            throw new KeyMakerError.VALIDATION_FAILED ("Please check your SSH host configurations for errors.");
         }
         
-        save_button.sensitive = false;
-        save_button.child = new Gtk.Spinner () { spinning = true };
-        
-        try {
-            yield ssh_config.save_config ();
-            
-            // Show success message
-            var toast = new Adw.Toast ("SSH configuration saved successfully");
-            // Note: Would need to access toast overlay from parent window
-            
-        } catch (KeyMakerError e) {
-            show_error ("Failed to Save", e.message);
-        } finally {
-            save_button.sensitive = true;
-            save_button.child = new Gtk.Label ("Save Configuration");
-        }
+        yield ssh_config.save_config ();
+        has_unsaved_changes = false;
     }
     
     private void on_reload_clicked () {
-        load_config.begin ();
+        if (has_unsaved_changes) {
+            show_unsaved_changes_dialog ();
+        } else {
+            reload_config ();
+        }
+    }
+    
+    private void on_remove_all_hosts_clicked () {
+        var hosts = ssh_config.get_hosts ();
+        if (hosts.length == 0) {
+            show_error ("No Hosts to Remove", "There are no SSH hosts to remove.");
+            return;
+        }
+        
+        var dialog = new Adw.AlertDialog (
+            @"Remove All $(hosts.length) SSH Hosts?",
+            "This will permanently remove all SSH host configurations from your ~/.ssh/config file. This action cannot be undone."
+        );
+        
+        dialog.add_response ("cancel", _("Cancel"));
+        dialog.add_response ("remove", _("Remove All"));
+        dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
+        dialog.set_default_response ("cancel");
+        dialog.set_close_response ("cancel");
+        
+        dialog.response.connect ((response) => {
+            if (response == "remove") {
+                // Remove all hosts by iterating through the list
+                var hosts_to_remove = ssh_config.get_hosts ();
+                for (int i = 0; i < hosts_to_remove.length; i++) {
+                    ssh_config.remove_host (hosts_to_remove[i].name);
+                }
+                has_unsaved_changes = true;
+                refresh_hosts_list ();
+            }
+        });
+        
+        dialog.present (this);
+    }
+    
+    
+    private void reload_config () {
+        load_config.begin ((obj, res) => {
+            try {
+                load_config.end (res);
+                has_unsaved_changes = false;
+            } catch (Error e) {
+                warning ("Failed to reload SSH config: %s", e.message);
+                show_error ("Failed to reload SSH config", e.message);
+            }
+        });
+    }
+    
+    
+    private void show_unsaved_changes_dialog () {
+        var dialog = new Adw.AlertDialog (
+            "Unsaved Changes",
+            "You have unsaved changes to your SSH configuration. What would you like to do?"
+        );
+        dialog.add_response ("discard", "Discard Changes");
+        dialog.add_response ("save", "Save Changes");
+        dialog.add_response ("cancel", "Cancel");
+        dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
+        dialog.set_response_appearance ("save", Adw.ResponseAppearance.SUGGESTED);
+        dialog.set_default_response ("save");
+        dialog.set_close_response ("cancel");
+        
+        dialog.response.connect ((response) => {
+            switch (response) {
+                case "discard":
+                    has_unsaved_changes = false;
+                    this.close ();
+                    break;
+                case "save":
+                    save_config_async.begin ((obj, res) => {
+                        try {
+                            save_config_async.end (res);
+                            this.close ();
+                        } catch (Error e) {
+                            warning ("Failed to save SSH config: %s", e.message);
+                            show_error ("Failed to Save", e.message);
+                        }
+                    });
+                    break;
+                case "cancel":
+                default:
+                    break;
+            }
+        });
+        
+        dialog.present (this);
     }
     
     private void on_host_row_activated (Gtk.ListBoxRow row) {
@@ -295,8 +384,17 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     }
     
     private void on_config_changed () {
+        has_unsaved_changes = true;
         refresh_hosts_list ();
     }
+    
+    private void connect_to_host (SSHConfigHost host) {
+        // Create and show terminal dialog instead of external terminal
+        var root_window = (Gtk.Window) this.get_root ();
+        var terminal_dialog = new TerminalDialog (root_window, host.name, host.name);
+        terminal_dialog.present (this);
+    }
+    
     
     private void show_error (string title, string message) {
         var dialog = new Adw.AlertDialog (title, message);
