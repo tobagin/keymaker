@@ -66,3 +66,44 @@ install_data(
   'hicolor/scalable/actions/io.github.tobagin.keysmith-time-unlocked-symbolic.svg',
   install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
 )
+
+# OTP/TOTP backup icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-otp-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# Backup Center icons
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-backup-center-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-overview-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# SSH Port icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-port-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# Username icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-username-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# GitHub icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-github-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# GitLab icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-gitlab-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)

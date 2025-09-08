@@ -24,6 +24,7 @@
     <file>add_target_dialog.ui</file>
     <file>plan_details_dialog.ui</file>
     <file>emergency_vault_dialog.ui</file>
+    <file>backup_center_dialog.ui</file>
     <file>create_backup_dialog.ui</file>
     <file>restore_backup_dialog.ui</file>
     <file>ssh_tunneling_dialog.ui</file>

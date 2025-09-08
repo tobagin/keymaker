@@ -7,6 +7,9 @@ template $KeyMakerChangePassphraseDialog : Adw.Dialog {
   content-height: 425;
 
   child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
+
     [top]
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle window_title {
@@ -33,6 +36,13 @@ template $KeyMakerChangePassphraseDialog : Adw.Dialog {
           Adw.PasswordEntryRow current_passphrase_row {
             title: _("Current Passphrase");
             show-apply-button: false;
+
+            [prefix]
+            Image {
+              icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
+              icon-size: large;
+              styles ["dim-label"]
+            }
           }
         }
 
@@ -43,11 +53,25 @@ template $KeyMakerChangePassphraseDialog : Adw.Dialog {
           Adw.PasswordEntryRow new_passphrase_row {
             title: _("New Passphrase");
             show-apply-button: false;
+
+            [prefix]
+            Image {
+              icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
+              icon-size: large;
+              styles ["dim-label"]
+            }
           }
 
           Adw.PasswordEntryRow confirm_passphrase_row {
             title: _("Confirm New Passphrase");
             show-apply-button: false;
+
+            [prefix]
+            Image {
+              icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
+              icon-size: large;
+              styles ["dim-label"]
+            }
           }
         }
 
@@ -70,6 +94,7 @@ template $KeyMakerChangePassphraseDialog : Adw.Dialog {
 
     [bottom]
     Adw.HeaderBar {
+      show-end-title-buttons: false;
       title-widget: Button change_button {
         label: _("Change");
         sensitive: false;

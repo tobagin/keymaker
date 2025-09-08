@@ -29,8 +29,8 @@ template $KeyMakerSSHHostEditDialog : Adw.Dialog {
           spacing: 24;
           margin-top: 24;
           margin-bottom: 24;
-          margin-start: 12;
-          margin-end: 12;
+          margin-start: 24;
+          margin-end: 24;
         
           Adw.PreferencesGroup template_group {
             title: _("Template");
@@ -39,6 +39,13 @@ template $KeyMakerSSHHostEditDialog : Adw.Dialog {
             Adw.ComboRow template_row {
               title: _("Host Template");
               subtitle: _("Pre-configured settings for common services");
+              
+              [prefix]
+              Image {
+                icon-name: "text-x-generic-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
           }
           
@@ -48,11 +55,25 @@ template $KeyMakerSSHHostEditDialog : Adw.Dialog {
             Adw.EntryRow host_name_row {
               title: _("Name");
               text: "";
+              
+              [prefix]
+              Image {
+                icon-name: "format-text-plaintext-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
             
             Adw.EntryRow hostname_row {
               title: _("Hostname or IP");
               text: "";
+              
+              [prefix]
+              Image {
+                icon-name: "network-server-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
           }
         
@@ -62,6 +83,13 @@ template $KeyMakerSSHHostEditDialog : Adw.Dialog {
             Adw.EntryRow user_row {
               title: _("Username");
               text: "";
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-username-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
             
             Adw.SpinRow port_row {
@@ -74,6 +102,13 @@ template $KeyMakerSSHHostEditDialog : Adw.Dialog {
                 step-increment: 1;
                 page-increment: 100;
               };
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-port-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
           }
         
@@ -83,37 +118,79 @@ template $KeyMakerSSHHostEditDialog : Adw.Dialog {
             Adw.SwitchRow multiple_identity_files_row {
               title: _("Multiple Identity Files");
               subtitle: _("Enable selection of multiple SSH keys for this host");
+              
+              [prefix]
+              Image {
+                icon-name: "view-list-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
             
             Adw.ComboRow identity_file_row {
               title: _("Identity File");
               subtitle: _("SSH private key for authentication");
+              
+              [prefix]
+              Image {
+                icon-name: "dialog-password-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
             
             Adw.ExpanderRow identity_files_expander {
               title: _("Identity Files");
               subtitle: _("Select multiple SSH private keys for authentication");
               visible: false;
+              
+              [prefix]
+              Image {
+                icon-name: "security-high-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
           }
         
           Adw.PreferencesGroup {
             title: _("Advanced Options");
             
-            Adw.EntryRow proxy_jump_row {
+            Adw.ComboRow proxy_jump_row {
               title: _("Proxy Jump");
-              text: "";
+              subtitle: _("Select a host to use as proxy");
+              
+              [prefix]
+              Image {
+                icon-name: "network-vpn-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
             
             Adw.SwitchRow forward_agent_row {
               title: _("Forward SSH Agent");
               subtitle: _("Forward authentication agent connections");
+              
+              [prefix]
+              Image {
+                icon-name: "go-next-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
           
             Adw.SwitchRow strict_host_key_checking_row {
               title: _("Strict Host Key Checking");
               subtitle: _("Verify host keys for security");
               active: true;
+              
+              [prefix]
+              Image {
+                icon-name: "security-medium-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
           }
         }

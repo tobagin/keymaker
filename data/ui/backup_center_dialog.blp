@@ -1,0 +1,304 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerBackupCenterDialog : Adw.Dialog {
+  title: _("Backup & Recovery Center");
+  content-width: 800;
+  content-height: 600;
+
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
+    
+    [top]
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: _("Backup & Recovery Center");
+        subtitle: _("Manage your SSH key backups and emergency recovery options");
+      };
+    }
+    
+    [bottom]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Adw.ViewSwitcher view_switcher {
+        stack: main_view_stack;
+      };
+    }
+    
+    content: Adw.ViewStack main_view_stack {
+        // Overview Page - Dashboard
+        Adw.ViewStackPage {
+          name: "overview";
+          title: _("Overview");
+          icon-name: "io.github.tobagin.keysmith-overview-symbolic";
+          
+          child: ScrolledWindow {
+            Adw.Clamp {
+              maximum-size: 800;
+              tightening-threshold: 600;
+              
+              Box {
+                orientation: vertical;
+                spacing: 24;
+                margin-top: 24;
+                margin-bottom: 24;
+                margin-start: 12;
+                margin-end: 12;
+                
+                Adw.StatusPage overview_status_page {
+                  title: _("Backup & Recovery Center");
+                  description: _("Manage your SSH key backups and emergency recovery options");
+                  icon-name: "io.github.tobagin.keysmith-backup-center-symbolic";
+                }
+                
+                // Quick Stats Cards
+                Box stats_box {
+                  orientation: horizontal;
+                  spacing: 12;
+                  homogeneous: true;
+                  
+                  // Regular Backups Card
+                  Adw.PreferencesGroup {
+                    title: _("Regular Backups");
+                    description: _("Day-to-day backup operations");
+                    
+                    Adw.ActionRow regular_stats_row {
+                      title: _("0 backups");
+                      subtitle: _("Last backup: Never");
+                      
+                      [prefix]
+                      Image {
+                        icon-name: "package-x-generic-symbolic";
+                        icon-size: large;
+                        styles ["accent"]
+                      }
+                      
+                      [suffix]
+                      Button create_regular_backup_button {
+                        icon-name: "tab-new-symbolic";
+                        tooltip-text: _("Create Regular Backup");
+                        valign: center;
+                        styles ["flat"]
+                      }
+                    }
+                  }
+                  
+                  // Emergency Vault Card  
+                  Adw.PreferencesGroup {
+                    title: _("Emergency Vault");
+                    description: _("Disaster recovery backups");
+                    
+                    Adw.ActionRow emergency_stats_row {
+                      title: _("0 emergency backups");
+                      subtitle: _("Vault status: Empty");
+                      
+                      [prefix]
+                      Image vault_status_icon {
+                        icon-name: "io.github.tobagin.keysmith-emergency-vault-symbolic";
+                        icon-size: large;
+                        styles ["warning"]
+                      }
+                      
+                      [suffix]
+                      Button create_emergency_backup_button {
+                        icon-name: "tab-new-symbolic";
+                        tooltip-text: _("Create Emergency Backup");
+                        valign: center;
+                        styles ["flat"]
+                      }
+                    }
+                  }
+                }
+                
+              }
+            }
+          };
+        }
+        
+        // Regular Backups Page
+        Adw.ViewStackPage {
+          name: "regular";
+          title: _("Backups");
+          icon-name: "package-x-generic-symbolic";
+          
+          child: ScrolledWindow {
+            Adw.Clamp {
+              maximum-size: 800;
+              tightening-threshold: 600;
+              
+              Box {
+                orientation: vertical;
+                spacing: 24;
+                margin-top: 24;
+                margin-bottom: 24;
+                margin-start: 12;
+                margin-end: 12;
+            
+                Adw.PreferencesGroup {
+                  title: _("Regular Backups");
+                  description: _("Day-to-day backup operations for routine key management");
+                  
+                  [header-suffix]
+                  Box {
+                    spacing: 6;
+                    
+                    Button create_regular_backup_button_header {
+                      icon-name: "tab-new-symbolic";
+                      tooltip-text: _("Create New Backup");
+                      valign: center;
+                      styles ["flat"]
+                    }
+                    
+                    Button refresh_regular_button {
+                      icon-name: "view-refresh-symbolic";
+                      tooltip-text: _("Refresh Backups");
+                      valign: center;
+                      styles ["flat"]
+                    }
+                    
+                    Button remove_all_regular_backups_button {
+                      icon-name: "user-trash-symbolic";
+                      tooltip-text: _("Remove All Backups");
+                      valign: center;
+                      styles ["flat"]
+                    }
+                  }
+                  
+                  ListBox regular_backups_list {
+                    selection-mode: none;
+                    styles ["boxed-list"]
+                    
+                    // Placeholder when no backups
+                    Adw.ActionRow {
+                      visible: true;
+                      title: _("No regular backups");
+                      subtitle: _("Create your first backup to get started");
+                      
+                      [prefix]
+                      Image {
+                        icon-name: "folder-symbolic";
+                        icon-size: large;
+                      }
+                      
+                      [suffix]
+                      Button {
+                        label: _("Create Backup");
+                        styles ["suggested-action"]
+                        action-name: "backup.create-regular";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          };
+        }
+        
+        // Emergency Vault Page
+        Adw.ViewStackPage {
+          name: "emergency";
+          title: _("Emergency Vault");
+          icon-name: "io.github.tobagin.keysmith-emergency-vault-symbolic";
+          
+          child: ScrolledWindow {
+            Adw.Clamp {
+              maximum-size: 800;
+              tightening-threshold: 600;
+              
+              Box {
+                orientation: vertical;
+                spacing: 24;
+                margin-top: 24;
+                margin-bottom: 24;
+                margin-start: 12;
+                margin-end: 12;
+            
+                Adw.PreferencesGroup {
+                  title: _("Emergency Backups");
+                  description: _("Encrypted backups of your SSH keys for emergency recovery");
+                  
+                  [header-suffix]
+                  Box {
+                    spacing: 6;
+                    
+                    Button create_emergency_backup_button_header {
+                      icon-name: "tab-new-symbolic";
+                      tooltip-text: _("Create New Emergency Backup");
+                      valign: center;
+                      styles ["flat"]
+                    }
+                    
+                    Button refresh_emergency_button {
+                      icon-name: "view-refresh-symbolic";
+                      tooltip-text: _("Refresh Backups");
+                      valign: center;
+                      styles ["flat"]
+                    }
+                    
+                    Button remove_all_emergency_backups_button {
+                      icon-name: "user-trash-symbolic";
+                      tooltip-text: _("Remove All Emergency Backups");
+                      valign: center;
+                      styles ["flat"]
+                    }
+                  }
+                  
+                  ListBox emergency_backups_list {
+                    selection-mode: none;
+                    styles ["boxed-list"]
+                    
+                    // Placeholder when no emergency backups
+                    Adw.ActionRow {
+                      visible: true;
+                      title: _("No emergency backups");
+                      subtitle: _("Create emergency backups for disaster recovery");
+                      
+                      [prefix]
+                      Image {
+                        icon-name: "io.github.tobagin.keysmith-emergency-vault-symbolic";
+                        icon-size: large;
+                      }
+                      
+                      [suffix]
+                      Button {
+                        label: _("Setup Emergency Vault");
+                        styles ["suggested-action"]
+                        action-name: "emergency.create-time-locked";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          };
+        }
+      };
+    };
+  }
+
+menu backup_menu {
+  section {
+    item {
+      label: _("Import Backup...");
+      action: "backup.import";
+    }
+    
+    item {
+      label: _("Export All...");
+      action: "backup.export-all";
+    }
+  }
+  
+  section {
+    item {
+      label: _("Settings");
+      action: "backup.settings";
+    }
+    
+    item {
+      label: _("Help");
+      action: "backup.help";
+    }
+  }
+}

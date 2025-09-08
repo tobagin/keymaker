@@ -214,18 +214,22 @@ public class KeyMaker.SSHAgentDialog : Adw.Dialog {
         switch (key.key_type) {
             case "Ed25519":
                 type_icon.icon_name = "emblem-verified-symbolic";
+                type_icon.icon_size = LARGE;
                 type_icon.add_css_class ("success");
                 break;
             case "RSA":
                 type_icon.icon_name = "emblem-important-symbolic";
+                type_icon.icon_size = LARGE;
                 type_icon.add_css_class ("warning");
                 break;
             case "ECDSA":
                 type_icon.icon_name = "emblem-unreadable-symbolic";
+                type_icon.icon_size = LARGE;
                 type_icon.add_css_class ("error");
                 break;
             default:
                 type_icon.icon_name = "emblem-system-symbolic";
+                type_icon.icon_size = LARGE;
                 break;
         }
         row.add_prefix (type_icon);
@@ -343,16 +347,19 @@ public class KeyMaker.SSHAgentDialog : Adw.Dialog {
                         case SSHKeyType.ED25519:
                             // Green for ED25519 (most secure)
                             key_icon.icon_name = key_type.get_icon_name ();
+                            key_icon.icon_size = LARGE;
                             key_icon.add_css_class ("success");
                             break;
                         case SSHKeyType.RSA:
                             // Blue/accent for RSA (good compatibility)
                             key_icon.icon_name = key_type.get_icon_name ();
+                            key_icon.icon_size = LARGE;
                             key_icon.add_css_class ("accent");
                             break;
                         case SSHKeyType.ECDSA:
                             // Yellow/warning for ECDSA (compatibility issues)
                             key_icon.icon_name = key_type.get_icon_name ();
+                            key_icon.icon_size = LARGE;
                             key_icon.add_css_class ("warning");
                             break;
                     }

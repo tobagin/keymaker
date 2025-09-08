@@ -87,8 +87,15 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
         }
         
         if (vault != null) {
-            vault.backup_created.connect (on_backup_created);
-            vault.backup_restored.connect (on_backup_restored);
+            // Use adapter methods to handle new signal types
+            vault.backup_created.connect ((emergency_backup) => {
+                var legacy_backup = convert_to_legacy_backup (emergency_backup);
+                on_backup_created (legacy_backup);
+            });
+            vault.backup_restored.connect ((emergency_backup) => {
+                var legacy_backup = convert_to_legacy_backup (emergency_backup);
+                on_backup_restored (legacy_backup);
+            });
             vault.vault_status_changed.connect (on_vault_status_changed);
         }
     }
@@ -129,7 +136,7 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
         
         clear_backups_list ();
         
-        var backups = vault.get_all_backups ();
+        var backups = vault.get_all_backups_legacy ();
         
         for (int i = 0; i < backups.length; i++) {
             add_backup_row (backups[i]);
@@ -379,7 +386,7 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
             }
             
             // Remove from vault
-            vault.remove_backup (backup);
+            vault.remove_backup_legacy (backup);
             
             populate_backups_list ();
             refresh_vault_status ();
@@ -447,7 +454,7 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
     }
     
     private void perform_remove_all_backups () {
-        var backups = vault.get_all_backups ();
+        var backups = vault.get_all_backups_legacy ();
         int deleted_count = 0;
         int failed_count = 0;
         
@@ -457,7 +464,7 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
                     backups[i].backup_file.delete ();
                 }
                 
-                vault.remove_backup (backups[i]);
+                vault.remove_backup_legacy (backups[i]);
                 deleted_count++;
                 
             } catch (Error e) {
@@ -479,5 +486,40 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
         error_dialog.add_response ("ok", "OK");
         error_dialog.set_default_response ("ok");
         error_dialog.present (this);
+    }
+    
+    private BackupEntry convert_to_legacy_backup (EmergencyBackupEntry emergency_backup) {
+        // Convert emergency backup type to legacy type
+        BackupType legacy_type;
+        switch (emergency_backup.backup_type) {
+            case EmergencyBackupType.TIME_LOCKED:
+                legacy_type = BackupType.TIME_LOCKED;
+                break;
+            case EmergencyBackupType.QR_CODE:
+                legacy_type = BackupType.QR_CODE;
+                break;
+            case EmergencyBackupType.SHAMIR_SECRET_SHARING:
+                legacy_type = BackupType.SHAMIR_SECRET_SHARING;
+                break;
+            default:
+                // Map new types to time-locked for legacy compatibility
+                legacy_type = BackupType.TIME_LOCKED;
+                break;
+        }
+        
+        var legacy_backup = new BackupEntry (emergency_backup.name, legacy_type);
+        legacy_backup.id = emergency_backup.id;
+        legacy_backup.created_at = emergency_backup.created_at;
+        legacy_backup.expires_at = emergency_backup.expires_at;
+        legacy_backup.backup_file = emergency_backup.backup_file;
+        legacy_backup.key_fingerprints = emergency_backup.key_fingerprints;
+        legacy_backup.is_encrypted = emergency_backup.is_encrypted;
+        legacy_backup.description = emergency_backup.description;
+        legacy_backup.file_size = emergency_backup.file_size;
+        legacy_backup.checksum = emergency_backup.checksum;
+        legacy_backup.shamir_total_shares = emergency_backup.shamir_total_shares;
+        legacy_backup.shamir_threshold = emergency_backup.shamir_threshold;
+        
+        return legacy_backup;
     }
 }

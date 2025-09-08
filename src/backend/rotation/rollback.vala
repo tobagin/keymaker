@@ -97,7 +97,7 @@ namespace KeyMaker {
                 
                 // Find the backup created during rotation
                 var vault = new EmergencyVault();
-                var backups = vault.get_all_backups();
+                var backups = vault.get_all_backups_legacy();
                 
                 BackupEntry? rotation_backup = null;
                 for (int i = 0; i < backups.length; i++) {
@@ -113,7 +113,7 @@ namespace KeyMaker {
                 }
                 
                 // Restore the backup
-                var restored_keys = yield vault.restore_backup(rotation_backup, "");
+                var restored_keys = yield vault.restore_backup_legacy(rotation_backup, "");
                 
                 if (restored_keys.length > 0) {
                     KeyMaker.Log.info(KeyMaker.Log.Categories.ROTATION, 

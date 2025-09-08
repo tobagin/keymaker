@@ -6,29 +6,32 @@ template $KeyMakerAddKeyToAgentDialog : Adw.Dialog {
   content-width: 800;
   content-height: 600;
 
-  child: Gtk.Box {
-    orientation: vertical;
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
     
+    [top]
     Adw.HeaderBar {
-      [title]
-      Label {
-        label: _("Add Key to Agent");
-        styles ["heading"]
-      }
+      title-widget: Adw.WindowTitle {
+        title: _("Add Key to Agent");
+        subtitle: _("Add SSH keys to the authentication agent");
+      };
     }
 
-    Adw.Clamp {
-      maximum-size: 600;
-      tightening-threshold: 400;
+    content: ScrolledWindow {
       vexpand: true;
+      
+      Adw.Clamp {
+        maximum-size: 800;
+        tightening-threshold: 600;
       
       Box {
         orientation: vertical;
         spacing: 24;
         margin-top: 24;
         margin-bottom: 24;
-        margin-start: 12;
-        margin-end: 12;
+        margin-start: 24;
+        margin-end: 24;
         
         Adw.PreferencesGroup {
           title: _("Select Key");
@@ -51,6 +54,13 @@ template $KeyMakerAddKeyToAgentDialog : Adw.Dialog {
           Adw.SwitchRow enable_timeout_row {
             title: _("Auto-remove after timeout");
             subtitle: _("Automatically remove key from agent after specified time");
+            
+            [prefix]
+            Image {
+              icon-name: "preferences-system-time-symbolic";
+              icon-size: large;
+              styles ["dim-label"]
+            }
           }
           
           Adw.SpinRow timeout_row {
@@ -64,14 +74,22 @@ template $KeyMakerAddKeyToAgentDialog : Adw.Dialog {
               step-increment: 1;
               page-increment: 60;
             };
+            
+            [prefix]
+            Image {
+              icon-name: "alarm-symbolic";
+              icon-size: large;
+              styles ["dim-label"]
+            }
           }
         }
         
         // Action buttons moved to bottom headerbar
+        }
       }
-    }
+    };
     
-    // Bottom headerbar with Add to Agent button
+    [bottom]
     Adw.HeaderBar {
       show-end-title-buttons: false;
       title-widget: Button add_button {

@@ -101,7 +101,7 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
         }
         
         // Use the same method as EmergencyVaultDialog
-        var backups = vault.get_all_backups ();
+        var backups = vault.get_all_backups_legacy ();
         
         print ("RestoreBackupDialog: Found %u backups\n", backups.length);
         
@@ -391,9 +391,9 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
                 print ("RestoreBackupDialog: Progress set to 0.8\n");
             }
             
-            print ("RestoreBackupDialog: Calling vault.restore_backup\n");
-            yield vault.restore_backup (selected_backup, restore_params.passphrase);
-            print ("RestoreBackupDialog: vault.restore_backup completed successfully\n");
+            print ("RestoreBackupDialog: Calling vault.restore_backup_legacy\n");
+            yield vault.restore_backup_legacy (selected_backup, restore_params.passphrase);
+            print ("RestoreBackupDialog: vault.restore_backup_legacy completed successfully\n");
             
             // Trigger a key refresh in the main application
             print ("RestoreBackupDialog: Triggering key list refresh\n");

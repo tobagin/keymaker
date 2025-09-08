@@ -67,6 +67,7 @@ ui_files = [
   'add_target_dialog.blp',
   'plan_details_dialog.blp',
   'emergency_vault_dialog.blp',
+  'backup_center_dialog.blp',
   'create_backup_dialog.blp',
   'restore_backup_dialog.blp',
   'ssh_tunneling_dialog.blp',

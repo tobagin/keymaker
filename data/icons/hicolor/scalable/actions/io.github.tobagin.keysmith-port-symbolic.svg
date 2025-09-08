@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="400"
+   height="400"
+   version="1.0"
+   id="svg1"
+   sodipodi:docname="Colon.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.91125"
+     inkscape:cx="286.41975"
+     inkscape:cy="201.37174"
+     inkscape:window-width="1268"
+     inkscape:window-height="924"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <g
+     style="line-height:0%;text-align:start"
+     transform="translate(-256.6798 -531.7963)"
+     id="g1">
+    <path
+       d="M451.94208 655.99268q8.98437 0 15.23437 6.44531 6.44532 6.25 6.44532 15.23437 0 8.98438-6.44532 15.42969-6.25 6.25-15.23437 6.25-8.98438 0-15.42969-6.25-6.25-6.44531-6.25-15.42969 0-8.98437 6.25-15.23437 6.44531-6.44531 15.42969-6.44531zm-.39063 146.28906q9.17969 0 15.42969 6.44531 6.44531 6.44531 6.44531 15.42969 0 8.98437-6.44531 15.42969-6.44531 6.25-15.42969 6.25-8.98437 0-15.42968-6.25-6.25-6.44532-6.25-15.42969 0-8.98438 6.25-15.42969 6.44531-6.44531 15.42968-6.44531z"
+       aria-label=":"
+       font-family="Times New Roman"
+       font-size="400"
+       font-weight="400"
+       style="line-height:1.25;text-align:center"
+       text-anchor="middle"
+       id="path1" />
+  </g>
+  <path
+     d="m 252.25854,118.08673 c 0,28.91175 -23.3468,52.25853 -52.25855,52.25853 -28.91175,0 -52.25853,-23.34678 -52.25853,-52.25853 0,-28.91175 23.34678,-52.258194 52.25853,-52.258194 28.91175,0 52.25855,23.346444 52.25855,52.258194 z m 0,0"
+     id="path4"
+     style="stroke-width:34.7485" />
+  <path
+     d="m 252.25854,297.49824 c 0,28.91175 -23.3468,52.25853 -52.25855,52.25853 -28.91175,0 -52.25853,-23.34678 -52.25853,-52.25853 0,-28.91174 23.34678,-52.25818 52.25853,-52.25818 28.91175,0 52.25855,23.34644 52.25855,52.25818 z m 0,0"
+     id="path4-8"
+     style="stroke-width:34.7485" />
+</svg>

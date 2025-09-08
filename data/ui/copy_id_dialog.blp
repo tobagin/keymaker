@@ -7,6 +7,9 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
   content-height: 350;
 
   child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
+
     [top]
     Adw.HeaderBar {
       title-widget: Adw.WindowTitle {
@@ -32,10 +35,24 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
 
           Adw.EntryRow hostname_row {
             title: _("Hostname or IP");
+
+            [prefix]
+            Image {
+              icon-name: "network-server-symbolic";
+              icon-size: large;
+              styles ["dim-label"]
+            }
           }
 
           Adw.EntryRow username_row {
             title: _("Username");
+
+            [prefix]
+            Image {
+              icon-name: "io.github.tobagin.keysmith-username-symbolic";
+              icon-size: large;
+              styles ["dim-label"]
+            }
           }
 
           Adw.SpinRow port_row {
@@ -48,6 +65,13 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
               step-increment: 1;
               page-increment: 10;
             };
+            
+            [prefix]
+            Image {
+              icon-name: "io.github.tobagin.keysmith-port-symbolic";
+              icon-size: large;
+              styles ["dim-label"]
+            }
           }
         }
 
@@ -70,6 +94,7 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
 
     [bottom]
     Adw.HeaderBar {
+      show-end-title-buttons: false;
       title-widget: Button copy_button {
         label: _("Copy");
         sensitive: false;

@@ -96,6 +96,7 @@ template $KeyMakerKeyRotationDialog : Adw.Dialog {
                     [prefix]
                     Image {
                       icon-name: "accessories-text-editor-symbolic";
+                      icon-size: large;
                       styles ["dim-label"]
                     }
                   }
@@ -119,6 +120,7 @@ template $KeyMakerKeyRotationDialog : Adw.Dialog {
                     [prefix]
                     Image {
                       icon-name: "media-playback-start-symbolic";
+                      icon-size: large;
                       styles ["dim-label"]
                     }
                   }
@@ -165,6 +167,7 @@ template $KeyMakerKeyRotationDialog : Adw.Dialog {
                     [prefix]
                     Image {
                       icon-name: "accessories-text-editor-symbolic";
+                      icon-size: large;
                       styles ["dim-label"]
                     }
                   }
@@ -179,12 +182,26 @@ template $KeyMakerKeyRotationDialog : Adw.Dialog {
                 Adw.ComboRow default_rollback_period_row {
                   title: _("Default Rollback Period");
                   subtitle: _("How long rollbacks remain available");
+                  
+                  [prefix]
+                  Image {
+                    icon-name: "io.github.tobagin.keysmith-rollback-symbolic";
+                    icon-size: large;
+                    styles ["dim-label"]
+                  }
                 }
                 
                 Adw.SwitchRow enable_rollback_by_default_row {
                   title: _("Enable Rollback by Default");
                   subtitle: _("Automatically enable rollback for new rotation plans");
                   active: true;
+
+                  [prefix]
+                  Image {
+                    icon-name: "io.github.tobagin.keysmith-backup-center-symbolic";
+                    icon-size: large;
+                    styles ["dim-label"]
+                  }
                 }
               }
             }
@@ -237,6 +254,7 @@ template $KeyMakerKeyRotationDialog : Adw.Dialog {
                     [prefix]
                     Image {
                       icon-name: "document-open-recent-symbolic";
+                      icon-size: large;
                       styles ["dim-label"]
                     }
                   }

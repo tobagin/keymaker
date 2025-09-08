@@ -130,6 +130,7 @@ namespace KeyMaker {
         VALIDATION_FAILED,
         SUBPROCESS_FAILED,
         INVALID_INPUT,
-        OPERATION_CANCELLED
+        OPERATION_CANCELLED,
+        ACCESS_DENIED
     }
 }

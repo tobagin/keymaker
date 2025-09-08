@@ -43,7 +43,7 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     private unowned Adw.ExpanderRow identity_files_expander;
     
     [GtkChild]
-    private unowned Adw.EntryRow proxy_jump_row;
+    private unowned Adw.ComboRow proxy_jump_row;
     
     [GtkChild]
     private unowned Adw.SwitchRow forward_agent_row;
@@ -75,6 +75,7 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         setup_templates ();
         setup_identity_files ();
         setup_multiple_identity_toggle ();
+        setup_proxy_jump_hosts ();
         setup_signals ();
         
         if (existing_host != null) {
@@ -181,6 +182,78 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         });
     }
     
+    private void setup_proxy_jump_hosts () {
+        if (proxy_jump_row == null) return;
+        
+        try {
+            ssh_config.load_config.begin ((obj, res) => {
+                try {
+                    ssh_config.load_config.end (res);
+                    populate_proxy_jump_hosts ();
+                } catch (Error e) {
+                    warning ("Failed to load SSH config for proxy jump hosts: %s", e.message);
+                }
+            });
+        } catch (Error e) {
+            warning ("Error setting up proxy jump hosts: %s", e.message);
+        }
+    }
+    
+    private void populate_proxy_jump_hosts () {
+        if (proxy_jump_row == null) return;
+        
+        var model = new Gtk.StringList (null);
+        
+        // Add "None" option first
+        model.append (_("None"));
+        
+        // Add available SSH hosts
+        var hosts = ssh_config.get_hosts ();
+        for (int i = 0; i < hosts.length; i++) {
+            var host = hosts[i];
+            // Don't include the current host being edited as a proxy option
+            if (existing_host == null || host.name != existing_host.name) {
+                model.append (host.name);
+            }
+        }
+        
+        proxy_jump_row.model = model;
+        proxy_jump_row.selected = 0; // Default to "None"
+    }
+    
+    private void set_selected_proxy_jump (string? proxy_jump) {
+        if (proxy_jump_row == null || proxy_jump_row.model == null) return;
+        
+        if (proxy_jump == null || proxy_jump.strip () == "") {
+            proxy_jump_row.selected = 0; // "None"
+            return;
+        }
+        
+        var model = (Gtk.StringList) proxy_jump_row.model;
+        for (uint i = 1; i < model.get_n_items (); i++) { // Start from 1 to skip "None"
+            var item = model.get_string (i);
+            if (item == proxy_jump.strip ()) {
+                proxy_jump_row.selected = (int) i;
+                return;
+            }
+        }
+        
+        // If not found, default to "None"
+        proxy_jump_row.selected = 0;
+    }
+    
+    private string? get_selected_proxy_jump () {
+        if (proxy_jump_row == null || proxy_jump_row.model == null) return null;
+        
+        if (proxy_jump_row.selected == 0) {
+            return null; // "None" selected
+        }
+        
+        var model = (Gtk.StringList) proxy_jump_row.model;
+        var selected_item = model.get_string ((uint) proxy_jump_row.selected);
+        return selected_item;
+    }
+    
     private void setup_signals () {
         if (save_button != null) {
             save_button.clicked.connect (on_save_clicked);
@@ -217,7 +290,7 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
             port_row.value = existing_host.port ?? 22;
         }
         if (proxy_jump_row != null) {
-            proxy_jump_row.text = existing_host.proxy_jump ?? "";
+            set_selected_proxy_jump (existing_host.proxy_jump);
         }
         if (forward_agent_row != null) {
             forward_agent_row.active = existing_host.forward_agent ?? false;
@@ -448,7 +521,7 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         int port_val = (int) port_row.value;
         host.port = (port_val != 22) ? (int?) port_val : null;
         host.identity_file = get_selected_identity_file ();
-        host.proxy_jump = proxy_jump_row.text.strip () != "" ? proxy_jump_row.text.strip () : null;
+        host.proxy_jump = get_selected_proxy_jump ();
         host.forward_agent = forward_agent_row.active;
         host.strict_host_key_checking = strict_host_key_checking_row.active;
         

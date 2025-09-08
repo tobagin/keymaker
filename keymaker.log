@@ -1,10 +1,8 @@
 MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:947: FINISHME: support YUV colorspace with DRM format modifiers
 MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:979: FINISHME: support more multi-planar formats with DRM modifiers
-EmergencyVault: Looking for metadata file at: /home/tobagin/.ssh/emergency_vault/backups.json
-EmergencyVault: Loaded backup: Emergency Backup
-EmergencyVault: Loaded backup: Emergency Backup
-EmergencyVault: Loaded backup: Emergency Backup
-EmergencyVault: Loaded backup: Emergency Backup
-EmergencyVault: Loaded backup: Emergency Backup
-EmergencyVault: Loaded backup: rotation_backup_rotation_20250903_141210_1348
-EmergencyVault: Loaded 6 existing backups
+BackupCenterDialog: Starting legacy backup migration...
+BackupCenterDialog: Found 0 legacy backups to migrate
+BackupCenterDialog: Migration completed
+BackupCenterDialog: Starting legacy backup migration...
+BackupCenterDialog: Found 0 legacy backups to migrate
+BackupCenterDialog: Migration completed

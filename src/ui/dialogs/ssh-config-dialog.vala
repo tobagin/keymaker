@@ -36,6 +36,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     [GtkChild]
     private unowned Gtk.Stack main_stack;
     
+    
     private SSHConfig ssh_config;
     private GenericArray<SSHConfigHost> filtered_hosts;
     private bool has_unsaved_changes = false;
@@ -153,8 +154,10 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     }
     
     private Gtk.Widget create_host_row (SSHConfigHost host) {
+        debug ("Creating row for host: %s", host.name);
         var row = new Adw.ActionRow ();
         row.title = host.get_display_name ();
+        row.activatable = false; // Prevent row activation from interfering with button clicks
         
         // Build subtitle with key details
         var subtitle_parts = new GenericArray<string> ();
@@ -175,15 +178,24 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         // Add connection type icon
         var type_icon = new Gtk.Image ();
         if (host.hostname != null && "github.com" in host.hostname) {
-            type_icon.icon_name = "github-symbolic";
+            type_icon.icon_name = "io.github.tobagin.keysmith-github-symbolic";
+            type_icon.icon_size = LARGE;
         } else if (host.hostname != null && ("gitlab.com" in host.hostname || "gitlab" in host.hostname)) {
-            type_icon.icon_name = "gitlab-symbolic";
+            type_icon.icon_name = "io.github.tobagin.keysmith-gitlab-symbolic";
+            type_icon.icon_size = LARGE;
         } else if (host.has_jump_host ()) {
             type_icon.icon_name = "network-vpn-symbolic";
+            type_icon.icon_size = LARGE;
         } else {
             type_icon.icon_name = "network-server-symbolic";
+            type_icon.icon_size = LARGE;
         }
+        type_icon.add_css_class ("dim-label");
         row.add_prefix (type_icon);
+        
+        // Create a button box to hold all buttons
+        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        button_box.valign = Gtk.Align.CENTER;
         
         // Add connect button (only for saved hosts with hostname/IP)
         if (host.line_number > -1 && host.hostname != null && host.hostname.strip () != "") {
@@ -193,9 +205,10 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
             connect_button.add_css_class ("flat");
             connect_button.valign = Gtk.Align.CENTER;
             connect_button.clicked.connect (() => {
+                debug ("Connect button clicked for host: %s", host.name);
                 connect_to_host (host);
             });
-            row.add_suffix (connect_button);
+            button_box.append (connect_button);
         }
         
         // Add edit button
@@ -204,10 +217,12 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         edit_button.tooltip_text = "Edit Host Configuration";
         edit_button.add_css_class ("flat");
         edit_button.valign = Gtk.Align.CENTER;
+        edit_button.sensitive = true;
         edit_button.clicked.connect (() => {
+            debug ("Edit button clicked for host: %s", host.name);
             edit_host (host);
         });
-        row.add_suffix (edit_button);
+        button_box.append (edit_button);
         
         // Add delete button
         var delete_button = new Gtk.Button ();
@@ -216,13 +231,22 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         delete_button.add_css_class ("flat");
         delete_button.add_css_class ("destructive-action");
         delete_button.valign = Gtk.Align.CENTER;
+        delete_button.sensitive = true;
         delete_button.clicked.connect (() => {
+            debug ("Delete button clicked for host: %s", host.name);
             delete_host (host);
         });
-        row.add_suffix (delete_button);
+        
+        button_box.append (delete_button);
+        row.add_suffix (button_box);
         
         // Store host reference
         row.set_data ("ssh-host", host);
+        
+        // Force show all widgets
+        button_box.show ();
+        
+        debug ("Row created for host %s with buttons", host.name);
         
         return row;
     }
@@ -237,6 +261,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
             ssh_config.add_host (host);
             has_unsaved_changes = true;
             refresh_hosts_list ();
+            auto_save ();
         });
         dialog.present (this);
     }
@@ -246,6 +271,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         dialog.host_saved.connect ((updated_host) => {
             has_unsaved_changes = true;
             refresh_hosts_list ();
+            auto_save ();
         });
         dialog.present (this);
     }
@@ -266,6 +292,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
                 ssh_config.remove_host (host.name);
                 has_unsaved_changes = true;
                 refresh_hosts_list ();
+                auto_save ();
             }
         });
         
@@ -317,6 +344,7 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
                 }
                 has_unsaved_changes = true;
                 refresh_hosts_list ();
+                auto_save ();
             }
         });
         
@@ -376,8 +404,12 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
         dialog.present (this);
     }
     
-    private void on_host_row_activated (Gtk.ListBoxRow row) {
-        var host = (SSHConfigHost?) row.get_data<SSHConfigHost> ("ssh-host");
+    private void on_host_row_activated (Gtk.ListBoxRow listbox_row) {
+        // Get the ActionRow child from the ListBoxRow
+        var action_row = listbox_row.get_child () as Adw.ActionRow;
+        if (action_row == null) return;
+        
+        var host = (SSHConfigHost?) action_row.get_data<SSHConfigHost> ("ssh-host");
         if (host != null) {
             edit_host (host);
         }
@@ -386,6 +418,21 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
     private void on_config_changed () {
         has_unsaved_changes = true;
         refresh_hosts_list ();
+        auto_save ();
+    }
+    
+    private void auto_save () {
+        if (!has_unsaved_changes) return;
+        
+        save_config_async.begin ((obj, res) => {
+            try {
+                save_config_async.end (res);
+                has_unsaved_changes = false;
+            } catch (Error e) {
+                warning ("Failed to auto-save SSH config: %s", e.message);
+                // Don't show error dialog for auto-save failures to avoid interrupting user
+            }
+        });
     }
     
     private void connect_to_host (SSHConfigHost host) {

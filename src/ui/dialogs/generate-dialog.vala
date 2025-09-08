@@ -40,13 +40,14 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
     private unowned Adw.PasswordEntryRow passphrase_confirm_row;
     
     [GtkChild]
-    private unowned Gtk.Label error_label;
+    private unowned Gtk.Label passphrase_validation_label;
+    
+    [GtkChild]
+    private unowned Gtk.Label confirm_validation_label;
+    
     
     [GtkChild]
     private unowned Gtk.Button generate_button;
-    
-    [GtkChild]
-    private unowned Gtk.Button cancel_button;
     
     [GtkChild]
     private unowned Gtk.Box progress_box;
@@ -109,9 +110,6 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
         passphrase_confirm_row.notify["text"].connect (validate_form);
         passphrase_switch.notify["active"].connect (on_passphrase_switch_changed);
         generate_button.clicked.connect (() => generate_key_async.begin ());
-        cancel_button.clicked.connect (() => {
-            this.force_close ();
-        });
         
         // Load settings defaults
         load_settings_defaults ();
@@ -254,34 +252,48 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
             }
         }
         
-        // Validate passphrase confirmation only if passphrase is enabled
+        // Separate validation for passphrase fields
+        bool passphrase_empty = false;
+        bool passphrases_mismatch = false;
+        
         if (passphrase_switch.get_active ()) {
             var passphrase = passphrase_row.get_text ();
             var confirm_passphrase = passphrase_confirm_row.get_text ();
             
-            // Require non-empty passphrases when protection is enabled
-            if (passphrase.strip () == "" || confirm_passphrase.strip () == "") {
+            // Check if passphrase is empty
+            if (passphrase.strip () == "") {
+                passphrase_empty = true;
                 is_valid = false;
-                if (error_message == "") {
-                    error_message = _("Passphrase cannot be empty");
-                }
-            } else if (passphrase != confirm_passphrase) {
+            }
+            
+            // Check if passphrases match (only if both are not empty)
+            if (!passphrase_empty && confirm_passphrase.strip () != "" && passphrase != confirm_passphrase) {
+                passphrases_mismatch = true;
                 is_valid = false;
-                if (error_message == "") {
-                    error_message = _("Passphrases do not match");
-                }
             }
         }
         
         // Update UI
         generate_button.set_sensitive (is_valid);
         
-        // Show or hide error message
-        if (!is_valid && error_message != "") {
-            error_label.set_text (error_message);
-            error_label.set_visible (true);
+        // Show passphrase validation feedback
+        if (passphrase_empty) {
+            passphrase_validation_label.set_text (_("Passphrase cannot be empty"));
+            passphrase_validation_label.set_visible (true);
+            passphrase_row.add_css_class ("error");
         } else {
-            error_label.set_visible (false);
+            passphrase_validation_label.set_visible (false);
+            passphrase_row.remove_css_class ("error");
+        }
+        
+        // Show confirm passphrase validation feedback
+        if (passphrases_mismatch) {
+            confirm_validation_label.set_text (_("Passphrases do not match"));
+            confirm_validation_label.set_visible (true);
+            passphrase_confirm_row.add_css_class ("error");
+        } else {
+            confirm_validation_label.set_visible (false);
+            passphrase_confirm_row.remove_css_class ("error");
         }
     }
     

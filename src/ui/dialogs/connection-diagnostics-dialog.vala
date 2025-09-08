@@ -205,10 +205,12 @@ public class ConnectionDiagnosticsDialog : Adw.Dialog {
         if (entry.passed_tests == entry.total_tests && entry.total_tests > 0) {
             // All tests passed
             status_icon.icon_name = "network-transmit-receive-symbolic";
+            status_icon.icon_size = LARGE;
             status_icon.add_css_class ("success");
         } else {
             // Some or all tests failed
             status_icon.icon_name = "network-offline-symbolic";
+            status_icon.icon_size = LARGE;
             status_icon.add_css_class ("error");
         }
         row.add_prefix (status_icon);

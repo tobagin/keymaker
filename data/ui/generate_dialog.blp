@@ -6,34 +6,24 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
   content-width: 800;
   content-height: 600;
 
-  Box {
-    orientation: vertical;
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
     
+    [top]
     Adw.HeaderBar {
-      show-end-title-buttons: false;
       title-widget: Adw.WindowTitle {
         title: _("Generate SSH Key");
         subtitle: _("Create a new SSH key pair");
       };
-      
-      [start]
-      Button cancel_button {
-        label: _("Cancel");
-      }
-      
-      [end]
-      Button generate_button {
-        label: _("Generate");
-        sensitive: false;
-        styles ["suggested-action"]
-      }
     }
 
-    Gtk.ScrolledWindow {
+    content: ScrolledWindow {
       vexpand: true;
-
-      child: Adw.Clamp {
-        maximum-size: 500;
+      
+      Adw.Clamp {
+        maximum-size: 800;
+        tightening-threshold: 600;
         margin-top: 24;
         margin-bottom: 24;
         margin-start: 24;
@@ -50,6 +40,13 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
             Adw.ComboRow key_type_row {
               title: _("Algorithm");
               subtitle: _("Ed25519 is recommended for new keys");
+              
+              [prefix]
+              Image {
+                icon-name: "security-high-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
 
               model: StringList {
                 strings [
@@ -66,6 +63,13 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
               title: _("RSA Key Size");
               subtitle: _("Higher bit sizes are more secure but slower");
               visible: false;
+              
+              [prefix]
+              Image {
+                icon-name: "applications-utilities-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
 
               model: StringList {
                 strings [
@@ -83,6 +87,13 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
               title: _("ECDSA Curve");
               subtitle: _("P-256 is most widely supported");
               visible: false;
+              
+              [prefix]
+              Image {
+                icon-name: "security-medium-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
 
               model: StringList {
                 strings [
@@ -103,10 +114,24 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
             Adw.EntryRow filename_row {
               title: _("Filename");
               text: "id_ed25519";
+              
+              [prefix]
+              Image {
+                icon-name: "document-new-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
 
             Adw.EntryRow comment_row {
               title: _("Comment");
+              
+              [prefix]
+              Image {
+                icon-name: "text-x-generic-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
           }
 
@@ -118,28 +143,51 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
               title: _("Protect with Passphrase");
               subtitle: _("Recommended for enhanced security");
               active: true;
+              
+              [prefix]
+              Image {
+                icon-name: "system-lock-screen-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
             }
 
             Adw.PasswordEntryRow passphrase_row {
               title: _("Passphrase");
               show-apply-button: false;
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
+              
+              [suffix]
+              Label passphrase_validation_label {
+                visible: false;
+                margin-end: 6;
+                styles ["caption", "error"]
+              }
             }
 
             Adw.PasswordEntryRow passphrase_confirm_row {
               title: _("Confirm Passphrase");
               show-apply-button: false;
-            }
-
-            Label error_label {
-              visible: false;
-              wrap: true;
-              halign: center;
-              margin-top: 12;
-
-              styles [
-                "error",
-                "caption"
-              ]
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
+                icon-size: large;
+                styles ["dim-label"]
+              }
+              
+              [suffix]
+              Label confirm_validation_label {
+                visible: false;
+                margin-end: 6;
+                styles ["caption", "error"]
+              }
             }
           }
 
@@ -160,7 +208,20 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
             }
           }
         }
-      };
+      }
+    };
+
+
+    [bottom]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      
+      [title]
+      Button generate_button {
+        label: _("Generate");
+        sensitive: false;
+        styles ["suggested-action"]
+      }
     }
-  }
+  };
 }

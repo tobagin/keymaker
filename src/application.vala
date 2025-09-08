@@ -213,10 +213,10 @@ namespace KeyMaker {
             key_rotation_action.activate.connect (on_key_rotation_action);
             add_action (key_rotation_action);
 
-            // Emergency Vault action
-            var emergency_vault_action = new SimpleAction ("emergency-vault", null);
-            emergency_vault_action.activate.connect (on_emergency_vault_action);
-            add_action (emergency_vault_action);
+            // Backup Center action
+            var backup_center_action = new SimpleAction ("backup-center", null);
+            backup_center_action.activate.connect (on_backup_center_action);
+            add_action (backup_center_action);
 
             // SSH Tunneling action
             var ssh_tunneling_action = new SimpleAction ("ssh-tunneling", null);
@@ -391,9 +391,9 @@ namespace KeyMaker {
             }
         }
 
-        private void on_emergency_vault_action () {
+        private void on_backup_center_action () {
             if (window != null) {
-                var dialog = new KeyMaker.EmergencyVaultDialog (window);
+                var dialog = new KeyMaker.BackupCenterDialog (window);
                 dialog.present (window);
             }
         }
