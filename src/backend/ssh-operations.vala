@@ -30,7 +30,11 @@ namespace KeyMaker {
         }
         
         public static async string get_fingerprint_with_cancellable (File key_path, Cancellable? cancellable) throws KeyMakerError {
-            return yield SSHMetadata.get_fingerprint_with_cancellable(key_path, cancellable);
+            try {
+                return yield SSHMetadata.get_fingerprint_with_cancellable(key_path, cancellable);
+            } catch (IOError.CANCELLED e) {
+                throw new KeyMakerError.OPERATION_CANCELLED ("Operation was cancelled");
+            }
         }
         
         public static async SSHKeyType get_key_type (File key_path) throws KeyMakerError {
@@ -42,7 +46,11 @@ namespace KeyMaker {
         }
         
         public static async SSHKeyType get_key_type_with_cancellable (File key_path, Cancellable? cancellable) throws KeyMakerError {
-            return yield SSHMetadata.get_key_type_with_cancellable(key_path, cancellable);
+            try {
+                return yield SSHMetadata.get_key_type_with_cancellable(key_path, cancellable);
+            } catch (IOError.CANCELLED e) {
+                throw new KeyMakerError.OPERATION_CANCELLED ("Operation was cancelled");
+            }
         }
         
         public static async int? extract_bit_size (File key_path) throws KeyMakerError {

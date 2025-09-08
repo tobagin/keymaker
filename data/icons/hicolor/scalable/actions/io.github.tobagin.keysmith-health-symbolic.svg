@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="io.github.tobagin.keysmith-health-symbolic.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.5325"
+     inkscape:cx="400"
+     inkscape:cy="400"
+     inkscape:window-width="1078"
+     inkscape:window-height="1231"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <title
+     id="title1">health-filled</title>
+  <g
+     id="Page-1"
+     stroke="none"
+     stroke-width="1"
+     fill="none"
+     fill-rule="evenodd"
+     transform="matrix(1.2627461,0,0,1.2627461,-67.263002,-80.732291)">
+    <g
+       id="add"
+       fill="#000000"
+       transform="translate(64,64)">
+      <path
+         d="m 128,154.368 64,128.00145 34.51733,-69.03612 130.21856,-7.7e-4 C 326.67777,271.15988 271.76581,335.16014 192,405.33333 112.23419,335.16014 57.322227,271.15988 27.264108,213.33256 l 71.25395,7.7e-4 z M 268.8,0 C 332.4232,0 384,51.576797 384,115.2 c 0,17.72409 -3.07836,36.21275 -9.23507,55.46599 L 247.85067,170.66667 224,122.96388 192,186.944 128,58.963883 72.128,170.66667 9.2350709,170.66599 C 3.078357,151.41275 0,132.92409 0,115.2 0,51.576797 51.576797,0 115.2,0 144.71286,0 171.63364,11.098031 192.01668,29.348444 212.38327,11.091061 239.29641,0 268.8,0 Z"
+         id="Combined-Shape" />
+    </g>
+  </g>
+</svg>

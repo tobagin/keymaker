@@ -73,6 +73,12 @@ ui_files = [
   'ssh_tunneling_dialog.blp',
   'create_tunnel_dialog.blp',
   'diagnostic_results_view_dialog.blp',
+  'keys_page.blp',
+  'hosts_page.blp',
+  'backup_page.blp',
+  'rotation_page.blp',
+  'tunnels_page.blp',
+  'diagnostics_page.blp',
 ]
 
 foreach ui_file : ui_files

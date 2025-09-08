@@ -74,7 +74,6 @@ namespace KeyMaker {
                 target_row.subtitle = @"Port $(target.port)";
                 
                 var server_image = new Gtk.Image.from_icon_name("network-wired-symbolic");
-                server_image.add_css_class("dim-label");
                 target_row.add_prefix(server_image);
                 
                 targets_expander.add_row(target_row);

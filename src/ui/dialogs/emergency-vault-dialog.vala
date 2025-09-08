@@ -197,15 +197,15 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
                 status_icon.tooltip_text = "Backup is time-locked and not yet available";
             }
         } else if (backup.is_expired ()) {
-            status_icon.icon_name = "dialog-warning-symbolic";
+            status_icon.icon_name = "io.github.tobagin.keysmith-health-symbolic";
             status_icon.add_css_class ("warning");
             status_icon.tooltip_text = "Backup has expired";
         } else if (!backup.backup_file.query_exists ()) {
-            status_icon.icon_name = "dialog-error-symbolic";
+            status_icon.icon_name = "io.github.tobagin.keysmith-health-symbolic";
             status_icon.add_css_class ("error");
             status_icon.tooltip_text = "Backup file missing";
         } else {
-            status_icon.icon_name = "checkmark-symbolic";
+            status_icon.icon_name = "io.github.tobagin.keysmith-health-symbolic";
             status_icon.add_css_class ("success");
             status_icon.tooltip_text = "Backup is healthy";
         }
@@ -310,8 +310,28 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
     
     
     private void restore_specific_backup (BackupEntry backup) {
+        // Convert legacy BackupType to EmergencyBackupType
+        EmergencyBackupType emergency_type;
+        switch (backup.backup_type) {
+            case BackupType.ENCRYPTED_ARCHIVE:
+                emergency_type = EmergencyBackupType.ENCRYPTED_ARCHIVE;
+                break;
+            case BackupType.TIME_LOCKED:
+                emergency_type = EmergencyBackupType.TIME_LOCKED;
+                break;
+            case BackupType.QR_CODE:
+                emergency_type = EmergencyBackupType.QR_CODE;
+                break;
+            case BackupType.SHAMIR_SECRET_SHARING:
+                emergency_type = EmergencyBackupType.SHAMIR_SECRET_SHARING;
+                break;
+            default:
+                emergency_type = EmergencyBackupType.ENCRYPTED_ARCHIVE;
+                break;
+        }
+        
         // Check if backup is time-locked
-        if (backup.backup_type == BackupType.TIME_LOCKED && backup.expires_at != null) {
+        if (emergency_type == EmergencyBackupType.TIME_LOCKED && backup.expires_at != null) {
             var now = new DateTime.now_local ();
             if (now.compare (backup.expires_at) < 0) {
                 // Backup is still locked
@@ -320,7 +340,20 @@ public class KeyMaker.EmergencyVaultDialog : Adw.Dialog {
             }
         }
         
-        var dialog = new RestoreBackupDialog ((Gtk.Window) this.get_root (), vault, backup);
+        // Convert BackupEntry to EmergencyBackupEntry
+        var emergency_backup = new EmergencyBackupEntry (backup.name, emergency_type);
+        emergency_backup.created_at = backup.created_at;
+        emergency_backup.expires_at = backup.expires_at;
+        emergency_backup.backup_file = backup.backup_file;
+        emergency_backup.key_fingerprints = backup.key_fingerprints;
+        emergency_backup.is_encrypted = backup.is_encrypted;
+        emergency_backup.description = backup.description;
+        emergency_backup.file_size = backup.file_size;
+        emergency_backup.checksum = backup.checksum;
+        emergency_backup.shamir_total_shares = backup.shamir_total_shares;
+        emergency_backup.shamir_threshold = backup.shamir_threshold;
+        
+        var dialog = new RestoreBackupDialog ((Gtk.Window) this.get_root (), vault, emergency_backup);
         dialog.present (this);
     }
     

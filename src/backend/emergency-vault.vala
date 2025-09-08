@@ -1007,12 +1007,14 @@ namespace KeyMaker {
         // Metadata and management methods
         
         private void load_existing_backups () {
-            var metadata_file = vault_directory.get_child ("emergency_backups.json");
+            var metadata_file = vault_directory.get_child ("backups.json");
+            
             
             if (!metadata_file.query_exists ()) {
                 debug ("EmergencyVault: No existing backups metadata file found");
                 return;
             }
+            
             
             try {
                 uint8[] contents;
@@ -1028,7 +1030,35 @@ namespace KeyMaker {
                 for (int i = 0; i < backups_array.get_length (); i++) {
                     var backup_object = backups_array.get_object_element (i);
                     
-                    var backup_type = (EmergencyBackupType) backup_object.get_int_member ("backup_type");
+                    // Detect backup type from actual file that exists rather than trusting JSON
+                    var json_backup_type = backup_object.get_int_member ("backup_type");
+                    var backup_id = backup_object.get_string_member ("id");
+                    
+                    EmergencyBackupType backup_type;
+                    // Check which file actually exists to determine real backup type
+                    var enc_file = vault_directory.get_child (@"$(backup_id).enc");
+                    var qr_dir = vault_directory.get_child (@"$(backup_id)_qr");
+                    var shares_dir = vault_directory.get_child (@"$(backup_id)_shares");
+                    var locked_file = vault_directory.get_child (@"$(backup_id).locked");
+                    
+                    if (enc_file.query_exists ()) {
+                        backup_type = EmergencyBackupType.ENCRYPTED_ARCHIVE;
+                    } else if (qr_dir.query_exists ()) {
+                        backup_type = EmergencyBackupType.QR_CODE;
+                    } else if (shares_dir.query_exists ()) {
+                        backup_type = EmergencyBackupType.SHAMIR_SECRET_SHARING;
+                    } else if (locked_file.query_exists ()) {
+                        backup_type = EmergencyBackupType.TIME_LOCKED;
+                    } else {
+                        // Fallback to JSON type if no file found
+                        switch (json_backup_type) {
+                            case 0: backup_type = EmergencyBackupType.ENCRYPTED_ARCHIVE; break;
+                            case 1: backup_type = EmergencyBackupType.SHAMIR_SECRET_SHARING; break;
+                            case 2: backup_type = EmergencyBackupType.QR_CODE; break;
+                            case 3: backup_type = EmergencyBackupType.TIME_LOCKED; break;
+                            default: backup_type = EmergencyBackupType.TIME_LOCKED; break;
+                        }
+                    }
                     var backup_entry = new EmergencyBackupEntry (
                         backup_object.get_string_member ("name"),
                         backup_type
@@ -1040,30 +1070,63 @@ namespace KeyMaker {
                         backup_object.get_string_member ("created_at"), null
                     );
                     
-                    // Load backup type specific properties...
+                    // Load expires_at if present
+                    if (backup_object.has_member ("expires_at") && !backup_object.get_null_member ("expires_at")) {
+                        backup_entry.expires_at = new DateTime.from_iso8601 (
+                            backup_object.get_string_member ("expires_at"), null
+                        );
+                    }
                     
-                    // Set backup file path based on backup type
+                    // Load backup type specific properties
+                    if (backup_type == EmergencyBackupType.SHAMIR_SECRET_SHARING) {
+                        // Set default Shamir values if not present in JSON
+                        if (backup_object.has_member ("shamir_total_shares")) {
+                            backup_entry.shamir_total_shares = (int) backup_object.get_int_member ("shamir_total_shares");
+                        } else {
+                            backup_entry.shamir_total_shares = 5; // Default value
+                        }
+                        
+                        if (backup_object.has_member ("shamir_threshold")) {
+                            backup_entry.shamir_threshold = (int) backup_object.get_int_member ("shamir_threshold");
+                        } else {
+                            backup_entry.shamir_threshold = 3; // Default value
+                        }
+                    }
+                    
+                    // Set backup file path based on detected backup type
                     switch (backup_type) {
-                        case EmergencyBackupType.TIME_LOCKED:
-                            backup_entry.backup_file = vault_directory.get_child (@"$(backup_entry.id).locked");
+                        case EmergencyBackupType.ENCRYPTED_ARCHIVE:
+                            backup_entry.backup_file = enc_file;
                             break;
                         case EmergencyBackupType.QR_CODE:
-                            backup_entry.backup_file = vault_directory.get_child (@"$(backup_entry.id)_qr");
+                            backup_entry.backup_file = qr_dir;
                             break;
                         case EmergencyBackupType.SHAMIR_SECRET_SHARING:
-                            backup_entry.backup_file = vault_directory.get_child (@"$(backup_entry.id)_shares");
+                            backup_entry.backup_file = shares_dir;
                             break;
-                        case EmergencyBackupType.TOTP_PROTECTED:
-                            backup_entry.backup_file = vault_directory.get_child (@"$(backup_entry.id)_totp.protected");
+                        case EmergencyBackupType.TIME_LOCKED:
+                            backup_entry.backup_file = locked_file;
                             break;
-                        case EmergencyBackupType.MULTI_FACTOR:
-                            backup_entry.backup_file = vault_directory.get_child (@"$(backup_entry.id)_multifactor.protected");
+                        default:
+                            // Fallback - try to find any existing file
+                            if (enc_file.query_exists ()) {
+                                backup_entry.backup_file = enc_file;
+                            } else if (locked_file.query_exists ()) {
+                                backup_entry.backup_file = locked_file;
+                            } else if (qr_dir.query_exists ()) {
+                                backup_entry.backup_file = qr_dir;
+                            } else if (shares_dir.query_exists ()) {
+                                backup_entry.backup_file = shares_dir;
+                            } else {
+                                backup_entry.backup_file = enc_file; // Default fallback
+                            }
                             break;
                     }
                     
                     if (backup_entry.backup_file.query_exists ()) {
                         backups.add (backup_entry);
                         debug ("EmergencyVault: Loaded backup: %s", backup_entry.name);
+                    } else {
                     }
                 }
                 
@@ -1075,7 +1138,7 @@ namespace KeyMaker {
         }
         
         private void save_backup_metadata () {
-            var metadata_file = vault_directory.get_child ("emergency_backups.json");
+            var metadata_file = vault_directory.get_child ("backups.json");
             
             try {
                 var builder = new Json.Builder ();
@@ -1284,6 +1347,8 @@ namespace KeyMaker {
         
         private BackupType convert_emergency_to_legacy_type (EmergencyBackupType emergency_type) {
             switch (emergency_type) {
+                case EmergencyBackupType.ENCRYPTED_ARCHIVE:
+                    return BackupType.ENCRYPTED_ARCHIVE;
                 case EmergencyBackupType.TIME_LOCKED:
                     return BackupType.TIME_LOCKED;
                 case EmergencyBackupType.QR_CODE:

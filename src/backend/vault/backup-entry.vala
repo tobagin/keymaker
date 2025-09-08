@@ -40,6 +40,7 @@ namespace KeyMaker {
     }
     
     public enum EmergencyBackupType {
+        ENCRYPTED_ARCHIVE,
         TIME_LOCKED,
         SHAMIR_SECRET_SHARING,
         QR_CODE,
@@ -48,6 +49,7 @@ namespace KeyMaker {
         
         public string to_string () {
             switch (this) {
+                case ENCRYPTED_ARCHIVE: return "Encrypted Archive";
                 case TIME_LOCKED: return "Time-Locked";
                 case SHAMIR_SECRET_SHARING: return "Secret Sharing";
                 case QR_CODE: return "QR Emergency Cards";
@@ -59,6 +61,7 @@ namespace KeyMaker {
         
         public string get_description () {
             switch (this) {
+                case ENCRYPTED_ARCHIVE: return "Password-protected emergency backup";
                 case TIME_LOCKED: return "Unlocks automatically at specified future date";
                 case SHAMIR_SECRET_SHARING: return "Requires multiple shares to reconstruct keys";
                 case QR_CODE: return "Physical QR cards for offline recovery";
@@ -70,6 +73,7 @@ namespace KeyMaker {
         
         public string get_icon_name () {
             switch (this) {
+                case ENCRYPTED_ARCHIVE: return "package-x-generic-symbolic";
                 case TIME_LOCKED: return "io.github.tobagin.keysmith-time-locked-symbolic";
                 case SHAMIR_SECRET_SHARING: return "view-app-grid-symbolic";
                 case QR_CODE: return "io.github.tobagin.keysmith-qr-code-symbolic";

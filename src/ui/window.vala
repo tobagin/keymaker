@@ -27,12 +27,30 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     private unowned Adw.ToastOverlay toast_overlay;
     
     [GtkChild]
-    private unowned Gtk.Box main_box;
+    private unowned Adw.ViewStack main_stack;
     
-    private KeyMaker.KeyListWidget key_list;
-    private GenericArray<SSHKey> ssh_keys;
+    [GtkChild]
+    private unowned Adw.ViewSwitcherBar view_switcher_bar;
+    
+    [GtkChild]
+    private unowned KeyMaker.KeysPage keys_page;
+    
+    [GtkChild]
+    private unowned KeyMaker.HostsPage hosts_page;
+    
+    [GtkChild]
+    private unowned KeyMaker.BackupPage backup_page;
+    
+    [GtkChild]
+    private unowned KeyMaker.RotationPage rotation_page;
+    
+    [GtkChild]
+    private unowned KeyMaker.TunnelsPage tunnels_page;
+    
+    [GtkChild]
+    private unowned KeyMaker.DiagnosticsPage diagnostics_page;
+    
     private Settings settings;
-    private Cancellable? refresh_cancellable;
     
     
     construct {
@@ -43,16 +61,9 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         settings = new Settings ("io.github.tobagin.keysmith");
 #endif
         
-        // Initialize key list
-        ssh_keys = new GenericArray<SSHKey> ();
-        
-        // Create key list widget and add to main box
-        key_list = new KeyMaker.KeyListWidget ();
-        main_box.append (key_list);
-        
         // Setup actions and signals
         setup_actions ();
-        setup_signals ();
+        setup_page_signals ();
         
         // Initial refresh is scheduled by Application after presenting the window
     }
@@ -83,13 +94,29 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         add_action (help_action);
     }
     
-    private void setup_signals () {
-        // Key list signals
-        key_list.key_copy_requested.connect (on_key_copy_requested);
-        key_list.key_delete_requested.connect (on_key_delete_requested);
-        key_list.key_details_requested.connect (on_key_details_requested);
-        key_list.key_passphrase_change_requested.connect (on_key_passphrase_change_requested);
-        key_list.key_copy_id_requested.connect (on_key_copy_id_requested);
+    private void setup_page_signals () {
+        // Keys page signals
+        keys_page.key_copy_requested.connect (on_key_copy_requested);
+        keys_page.key_delete_requested.connect (on_key_delete_requested);
+        keys_page.key_details_requested.connect (on_key_details_requested);
+        keys_page.key_passphrase_change_requested.connect (on_key_passphrase_change_requested);
+        keys_page.key_copy_id_requested.connect (on_key_copy_id_requested);
+        keys_page.show_toast_requested.connect (show_toast);
+        
+        // Hosts page signals
+        hosts_page.show_toast_requested.connect (show_toast);
+        
+        // Backup page signals
+        backup_page.show_toast_requested.connect (show_toast);
+        
+        // Rotation page signals
+        rotation_page.show_toast_requested.connect (show_toast);
+        
+        // Tunnels page signals
+        tunnels_page.show_toast_requested.connect (show_toast);
+        
+        // Diagnostics page signals
+        diagnostics_page.show_toast_requested.connect (show_toast);
     }
     
     public void on_generate_key_action () {
@@ -175,57 +202,20 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     
     private void on_key_generated (SSHKey new_key) {
         // Refresh the key list to ensure everything is properly updated
-        // This handles any filesystem changes that might have occurred
-        refresh_keys ();
+        keys_page.on_key_generated (new_key);
         
         show_toast (_("SSH key '%s' generated successfully").printf (new_key.get_display_name ()));
     }
     
     public GenericArray<SSHKey> get_ssh_keys () {
-        return ssh_keys;
+        return keys_page.get_ssh_keys ();
     }
 
     // Public entry to trigger an async refresh from other components
     public void refresh_keys () {
-        refresh_key_list_async.begin ();
+        keys_page.refresh_keys ();
     }
 
-    private async void refresh_key_list_async () {
-        // Cancel any in-flight scan
-        if (refresh_cancellable != null) {
-            try { refresh_cancellable.cancel (); } catch (Error e) { }
-        }
-        refresh_cancellable = new Cancellable ();
-
-        debug ("Window: starting async key scan");
-        try {
-            var keys = yield KeyMaker.KeyScanner.scan_ssh_directory_with_cancellable (null, refresh_cancellable);
-
-            // Replace current list
-            ssh_keys.remove_range (0, ssh_keys.length);
-            key_list.clear ();
-            for (int i = 0; i < keys.length; i++) {
-                ssh_keys.add (keys[i]);
-                key_list.add_key (keys[i]);
-            }
-
-            if (keys.length == 0) {
-                key_list.show_empty_state ();
-            }
-
-            debug ("Window: async key scan complete: %d keys", keys.length);
-        } catch (IOError.CANCELLED e) {
-            debug ("Window: key scan cancelled");
-        } catch (KeyMakerError e) {
-            show_toast (_("Failed to scan SSH keys: %s").printf (e.message));
-            key_list.clear ();
-            key_list.show_empty_state ();
-        } catch (Error e) {
-            show_toast (_("Failed to scan SSH keys: %s").printf (e.message));
-            key_list.clear ();
-            key_list.show_empty_state ();
-        }
-    }
     
     private async void delete_key_directly (SSHKey ssh_key) {
         try {
@@ -242,21 +232,12 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     }
     
     private void on_key_deleted (SSHKey deleted_key) {
-        // Remove the key from our list
-        for (int i = 0; i < ssh_keys.length; i++) {
-            if (ssh_keys[i] == deleted_key) {
-                ssh_keys.remove_index (i);
-                break;
-            }
-        }
-        
-        key_list.remove_key (deleted_key);
+        keys_page.on_key_deleted (deleted_key);
         show_toast (_("SSH key '%s' deleted successfully").printf (deleted_key.get_display_name ()));
     }
     
     private void on_passphrase_changed (SSHKey updated_key) {
-        // Refresh the key list to update button tooltips and UI state
-        key_list.refresh_key (updated_key);
+        keys_page.on_passphrase_changed (updated_key);
         show_toast (_("Passphrase changed for key '%s'").printf (updated_key.get_display_name ()));
     }
     

@@ -89,6 +89,10 @@ namespace KeyMaker {
                 
                 throw new KeyMakerError.OPERATION_FAILED ("Unable to parse fingerprint from output: %s", result.stdout);
                 
+            } catch (IOError.CANCELLED e) {
+                throw new KeyMakerError.OPERATION_CANCELLED ("Operation was cancelled");
+            } catch (KeyMakerError.OPERATION_CANCELLED e) {
+                throw e;
             } catch (KeyMakerError e) {
                 throw e;
             } catch (Error e) {
@@ -158,6 +162,10 @@ namespace KeyMaker {
                 // Default fallback
                 return SSHKeyType.RSA; // Default assumption
                 
+            } catch (IOError.CANCELLED e) {
+                throw new KeyMakerError.OPERATION_CANCELLED ("Operation was cancelled");
+            } catch (KeyMakerError.OPERATION_CANCELLED e) {
+                throw e;
             } catch (KeyMakerError e) {
                 throw e;
             } catch (Error e) {
@@ -220,6 +228,8 @@ namespace KeyMaker {
                 
                 return null;
                 
+            } catch (KeyMakerError.OPERATION_CANCELLED e) {
+                throw e;
             } catch (KeyMakerError e) {
                 throw e;
             } catch (Error e) {

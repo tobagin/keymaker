@@ -359,8 +359,8 @@ namespace KeyMaker {
                         }
                         key_type = yield SSHOperations.get_key_type_with_cancellable (private_path, cancellable);
                         debug ("KeyScanner: Key type: %s", key_type.to_string ());
-                    } catch (IOError.CANCELLED e) {
-                        throw e;
+                    } catch (KeyMakerError.OPERATION_CANCELLED e) {
+                        throw new IOError.CANCELLED ("Operation was cancelled");
                     } catch (Error e) {
                         debug ("KeyScanner: Using quick key type fallback: %s", e.message);
                     }
@@ -371,8 +371,8 @@ namespace KeyMaker {
 
                     try {
                         fingerprint = yield SSHOperations.get_fingerprint_with_cancellable (private_path, cancellable);
-                    } catch (IOError.CANCELLED e) {
-                        throw e;
+                    } catch (KeyMakerError.OPERATION_CANCELLED e) {
+                        throw new IOError.CANCELLED ("Operation was cancelled");
                     } catch (Error e) {
                         debug ("KeyScanner: Using quick fingerprint fallback: %s", e.message);
                     }

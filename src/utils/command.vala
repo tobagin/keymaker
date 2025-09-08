@@ -60,7 +60,8 @@ namespace KeyMaker {
 
                 return new Result (status, out_buf.str, err_buf.str);
             } catch (IOError.CANCELLED e) {
-                throw e;
+                // Handle cancellation gracefully - don't re-throw as unhandled error
+                throw new KeyMakerError.OPERATION_CANCELLED ("Command was cancelled");
             } catch (Error e) {
                 throw new KeyMakerError.OPERATION_FAILED ("Failed to run command: %s", e.message);
             }
@@ -120,7 +121,8 @@ namespace KeyMaker {
                 
                 return new Result (status, out_buf.str, err_buf.str);
             } catch (IOError.CANCELLED e) {
-                throw e;
+                // Handle cancellation gracefully - don't re-throw as unhandled error
+                throw new KeyMakerError.OPERATION_CANCELLED ("Command was cancelled");
             } catch (Error e) {
                 throw new KeyMakerError.OPERATION_FAILED ("Failed to run command: %s", e.message);
             }

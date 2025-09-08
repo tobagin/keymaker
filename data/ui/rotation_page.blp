@@ -1,0 +1,53 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerRotationPage : Adw.Bin {
+  
+  child: Adw.Clamp {
+    maximum-size: 1200;
+    tightening-threshold: 600;
+    
+    child: Gtk.Box {
+      orientation: vertical;
+      spacing: 0;
+      vexpand: true;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+      
+      Adw.HeaderBar {
+        show-title: false;
+        
+        [start]
+        Gtk.Label {
+          label: _("Smart Key Rotation");
+          styles ["title-1"]
+        }
+        
+        [end]
+        Gtk.Button create_plan_button {
+          icon-name: "list-add-symbolic";
+          tooltip-text: _("Create Rotation Plan");
+          styles ["suggested-action"]
+        }
+      }
+      
+      Gtk.ScrolledWindow {
+        vexpand: true;
+        
+        child: Adw.PreferencesPage {
+          Adw.PreferencesGroup active_plans_group {
+            title: _("Active Rotation Plans");
+            description: _("Scheduled and ongoing key rotations");
+          }
+          
+          Adw.PreferencesGroup rollback_group {
+            title: _("Rollback Options");
+            description: _("Emergency rollback and recovery procedures");
+          }
+        };
+      }
+    };
+  };
+}

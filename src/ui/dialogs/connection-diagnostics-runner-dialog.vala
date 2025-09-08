@@ -445,7 +445,6 @@ public class ConnectionDiagnosticsRunnerDialog : Adw.Dialog {
             case TestStatus.SKIPPED:
                 status_icon.icon_name = "minus-symbolic";
             status_icon.icon_size = LARGE;
-                status_icon.add_css_class ("dim-label");
                 break;
         }
         row.add_prefix (status_icon);

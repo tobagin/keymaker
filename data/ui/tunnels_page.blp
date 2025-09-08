@@ -1,0 +1,53 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerTunnelsPage : Adw.Bin {
+  
+  child: Adw.Clamp {
+    maximum-size: 1200;
+    tightening-threshold: 600;
+    
+    child: Gtk.Box {
+      orientation: vertical;
+      spacing: 0;
+      vexpand: true;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+      
+      Adw.HeaderBar {
+        show-title: false;
+        
+        [start]
+        Gtk.Label {
+          label: _("SSH Tunneling");
+          styles ["title-1"]
+        }
+        
+        [end]
+        Gtk.Button create_tunnel_button {
+          icon-name: "list-add-symbolic";
+          tooltip-text: _("Create New Tunnel");
+          styles ["suggested-action"]
+        }
+      }
+      
+      Gtk.ScrolledWindow {
+        vexpand: true;
+        
+        child: Adw.PreferencesPage {
+          Adw.PreferencesGroup active_tunnels_group {
+            title: _("Active Tunnels");
+            description: _("Currently running SSH tunnels");
+          }
+          
+          Adw.PreferencesGroup saved_tunnels_group {
+            title: _("Saved Tunnel Configurations");
+            description: _("Reusable tunnel setups");
+          }
+        };
+      }
+    };
+  };
+}

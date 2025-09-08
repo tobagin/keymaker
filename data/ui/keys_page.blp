@@ -1,0 +1,111 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerKeysPage : Adw.Bin {
+  
+  child: Adw.Clamp {
+    maximum-size: 1500;
+    tightening-threshold: 600;
+    
+    child: Gtk.Box child_box {
+      orientation: vertical;
+      spacing: 24;
+      vexpand: true;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+      
+      ScrolledWindow {
+        hscrollbar-policy: never;
+        vexpand: true;
+        margin-top: 18;
+        margin-bottom: 18;
+        margin-start: 9;
+        margin-end: 9;
+
+        Adw.Clamp {
+          maximum-size: 900;
+          tightening-threshold: 500;
+
+          Box {
+            orientation: vertical;
+            spacing: 24;
+
+            // SSH Keys section
+            Adw.PreferencesGroup {
+              title: _("SSH Keys");
+              description: _("Manage your SSH authentication keys");
+              
+              header-suffix: Box {
+                spacing: 6;
+
+                MenuButton generate_button {
+                  icon-name: "tab-new-symbolic";
+                  tooltip-text: _("SSH Key Actions");
+                  menu-model: key_actions_menu;
+                  valign: center;
+                  styles ["flat"]
+                }
+
+                Button refresh_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Refresh Key List");
+                  valign: center;
+                  styles ["flat"]
+                }
+              };
+
+              ListBox key_list_box {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+            }
+
+            // SSH Agent section
+            Adw.PreferencesGroup {
+              title: _("SSH Agent");
+              description: _("Manage keys loaded in the SSH authentication agent");
+              
+              header-suffix: Box {
+                spacing: 6;
+
+                Button add_key_to_agent_button {
+                  icon-name: "tab-new-symbolic";
+                  tooltip-text: _("Add Key to Agent");
+                  styles ["flat"]
+                  valign: center;
+                }
+
+                Button refresh_agent_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Refresh Agent Status");
+                  styles ["flat"]
+                  valign: center;
+                }
+              };
+
+              ListBox agent_keys_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+            }
+          }
+        }
+      }
+    };
+  };
+}
+
+menu key_actions_menu {
+  section {
+    item {
+      label: _("Generate New SSH Key");
+      action: "win.generate-key";
+    }
+    item {
+      label: _("Import Existing Key");
+      action: "win.add-existing-key";
+    }
+  }
+}

@@ -49,11 +49,23 @@ template $KeyMakerCreateBackupDialog : Adw.Dialog {
               Adw.EntryRow name_entry {
                 title: _("Backup Name");
                 text: "Emergency Backup";
+                
+                [prefix]
+                Image {
+                  icon-name: "format-text-plaintext-symbolic";
+                  icon-size: large;
+                }
               }
               
               Adw.EntryRow description_entry {
                 title: _("Description");
                 text: "Secure backup of SSH keys";
+                
+                [prefix]
+                Image {
+                  icon-name: "format-text-plaintext-symbolic";
+                  icon-size: large;
+                }
               }
             }
             
@@ -63,15 +75,33 @@ template $KeyMakerCreateBackupDialog : Adw.Dialog {
               Adw.ComboRow backup_type_combo {
                 title: _("Type");
                 subtitle: _("Choose backup format");
+                
+                [prefix]
+                Image backup_type_icon {
+                  icon-name: "package-x-generic-symbolic";
+                  icon-size: large;
+                }
               }
               
               Adw.SwitchRow set_expiry_row {
                 title: _("Set Expiration");
                 subtitle: _("Backup will expire after specified date");
+                
+                [prefix]
+                Image {
+                  icon-name: "alarm-symbolic";
+                  icon-size: large;
+                }
               }
               
               Adw.ActionRow expiry_row {
                 title: _("Expires On");
+                
+                [prefix]
+                Image {
+                  icon-name: "x-office-calendar-symbolic";
+                  icon-size: large;
+                }
                 
                 [suffix]
                 Button expiry_button {
@@ -90,6 +120,12 @@ template $KeyMakerCreateBackupDialog : Adw.Dialog {
                   step-increment: 1;
                   value: 5;
                 };
+                
+                [prefix]
+                Image {
+                  icon-name: "view-app-grid-symbolic";
+                  icon-size: large;
+                }
               }
               
               Adw.SpinRow threshold_row {
@@ -101,6 +137,12 @@ template $KeyMakerCreateBackupDialog : Adw.Dialog {
                   step-increment: 1;
                   value: 3;
                 };
+                
+                [prefix]
+                Image {
+                  icon-name: "security-high-symbolic";
+                  icon-size: large;
+                }
               }
             }
             
@@ -112,10 +154,22 @@ template $KeyMakerCreateBackupDialog : Adw.Dialog {
                 selection-mode: none;
                 styles ["boxed-list"]
               }
+            }
+            
+            Adw.PreferencesGroup single_key_group {
+              title: _("SSH Key to Backup");
+              description: _("Select a single key for QR code backup");
+              visible: false;
               
               Adw.ComboRow single_key_combo {
                 title: _("SSH Key");
                 subtitle: _("Select a single key for QR code backup");
+                
+                [prefix]
+                Image single_key_icon {
+                  icon-name: "security-medium-symbolic";
+                  icon-size: large;
+                }
               }
             }
             

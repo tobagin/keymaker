@@ -3,8 +3,8 @@ using Adw 1;
 
 template $KeyMakerCopyIdDialog : Adw.Dialog {
   title: _("Copy Key to Server");
-  content-width: 450;
-  content-height: 350;
+  content-width: 600;
+  content-height: 400;
 
   child: Adw.ToolbarView {
     top-bar-style: raised;
@@ -40,7 +40,6 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
             Image {
               icon-name: "network-server-symbolic";
               icon-size: large;
-              styles ["dim-label"]
             }
           }
 
@@ -51,7 +50,6 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
             Image {
               icon-name: "io.github.tobagin.keysmith-username-symbolic";
               icon-size: large;
-              styles ["dim-label"]
             }
           }
 
@@ -70,7 +68,6 @@ template $KeyMakerCopyIdDialog : Adw.Dialog {
             Image {
               icon-name: "io.github.tobagin.keysmith-port-symbolic";
               icon-size: large;
-              styles ["dim-label"]
             }
           }
         }

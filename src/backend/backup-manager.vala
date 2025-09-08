@@ -679,12 +679,12 @@ namespace KeyMaker {
         }
         
         private void load_existing_backups () {
-            var metadata_file = backup_directory.get_child ("regular_backups.json");
+            var metadata_file = backup_directory.get_child ("backups.json");
             
             if (!metadata_file.query_exists ()) {
-                debug ("BackupManager: No existing backups metadata file found");
                 return;
             }
+            
             
             try {
                 uint8[] contents;
@@ -762,7 +762,7 @@ namespace KeyMaker {
                     // Only add if backup file exists (for non-cloud) or cloud backup exists
                     if (backup_type == RegularBackupType.CLOUD_SYNC || backup_entry.backup_file.query_exists ()) {
                         backups.add (backup_entry);
-                        debug ("BackupManager: Loaded backup: %s", backup_entry.name);
+                    } else {
                     }
                 }
                 
@@ -774,7 +774,7 @@ namespace KeyMaker {
         }
         
         private void save_backup_metadata () {
-            var metadata_file = backup_directory.get_child ("regular_backups.json");
+            var metadata_file = backup_directory.get_child ("backups.json");
             
             try {
                 var builder = new Json.Builder ();

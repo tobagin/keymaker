@@ -334,7 +334,6 @@ public class DiagnosticResultsViewDialog : Adw.Dialog {
                 break;
             case TestStatus.SKIPPED:
                 status_icon.icon_name = "minus-symbolic";
-                status_icon.add_css_class ("dim-label");
                 break;
         }
         

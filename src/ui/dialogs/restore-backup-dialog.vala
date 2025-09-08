@@ -54,9 +54,9 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
     private unowned Gtk.Label restore_status_label;
     
     private EmergencyVault vault;
-    private BackupEntry? selected_backup;
+    private EmergencyBackupEntry? selected_backup;
     
-    public RestoreBackupDialog (Gtk.Window parent, EmergencyVault? vault = null, BackupEntry? specific_backup = null) {
+    public RestoreBackupDialog (Gtk.Window parent, EmergencyVault? vault = null, EmergencyBackupEntry? specific_backup = null) {
         Object ();
         this.selected_backup = specific_backup;
     }
@@ -101,7 +101,7 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
         }
         
         // Use the same method as EmergencyVaultDialog
-        var backups = vault.get_all_backups_legacy ();
+        var backups = vault.get_all_backups ();
         
         print ("RestoreBackupDialog: Found %u backups\n", backups.length);
         
@@ -129,7 +129,7 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
         }
     }
     
-    private void add_backup_row (BackupEntry backup) {
+    private void add_backup_row (EmergencyBackupEntry backup) {
         var row = new Adw.ActionRow ();
         row.title = backup.name;
         row.subtitle = @"$(backup.backup_type.to_string ()) • $(backup.created_at.format ("%Y-%m-%d %H:%M"))";
@@ -137,16 +137,16 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
         // Add type icon
         var type_icon = new Gtk.Image ();
         switch (backup.backup_type) {
-            case BackupType.ENCRYPTED_ARCHIVE:
+            case EmergencyBackupType.ENCRYPTED_ARCHIVE:
                 type_icon.icon_name = "package-x-generic-symbolic";
                 break;
-            case BackupType.QR_CODE:
+            case EmergencyBackupType.QR_CODE:
                 type_icon.icon_name = "io.github.tobagin.keysmith-qr-code-symbolic";
                 break;
-            case BackupType.SHAMIR_SECRET_SHARING:
+            case EmergencyBackupType.SHAMIR_SECRET_SHARING:
                 type_icon.icon_name = "view-app-grid-symbolic";
                 break;
-            case BackupType.TIME_LOCKED:
+            case EmergencyBackupType.TIME_LOCKED:
                 type_icon.icon_name = "appointment-soon-symbolic";
                 break;
         }
@@ -193,7 +193,7 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
             return;
         }
         
-        selected_backup = (BackupEntry?) row.get_data<BackupEntry> ("backup");
+        selected_backup = (EmergencyBackupEntry?) row.get_data<EmergencyBackupEntry> ("backup");
         if (selected_backup == null) {
             return;
         }
@@ -210,23 +210,23 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
         if (selected_backup == null) return;
         
         switch (selected_backup.backup_type) {
-            case BackupType.ENCRYPTED_ARCHIVE:
+            case EmergencyBackupType.ENCRYPTED_ARCHIVE:
                 // Note: Current implementation doesn't actually encrypt, so passphrase not needed
                 passphrase_entry.visible = false;
                 break;
                 
-            case BackupType.TIME_LOCKED:
+            case EmergencyBackupType.TIME_LOCKED:
                 passphrase_entry.visible = true;
                 passphrase_entry.title = "Backup Passphrase";
                 break;
                 
-            case BackupType.QR_CODE:
+            case EmergencyBackupType.QR_CODE:
                 // QR codes might be encrypted too
                 passphrase_entry.visible = true;
                 passphrase_entry.title = "QR Code Passphrase (if encrypted)";
                 break;
                 
-            case BackupType.SHAMIR_SECRET_SHARING:
+            case EmergencyBackupType.SHAMIR_SECRET_SHARING:
                 shares_view.visible = true;
                 var buffer = shares_view.buffer;
                 buffer.text = @"Enter $(selected_backup.shamir_threshold) of $(selected_backup.shamir_total_shares) secret shares (one per line):";
@@ -240,20 +240,20 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
         
         if (can_restore && selected_backup != null) {
             switch (selected_backup.backup_type) {
-                case BackupType.ENCRYPTED_ARCHIVE:
+                case EmergencyBackupType.ENCRYPTED_ARCHIVE:
                     // Current implementation doesn't actually encrypt, so no passphrase needed
                     can_restore = true;
                     break;
                     
-                case BackupType.TIME_LOCKED:
+                case EmergencyBackupType.TIME_LOCKED:
                     can_restore = passphrase_entry.text.length > 0;
                     break;
                     
-                case BackupType.SHAMIR_SECRET_SHARING:
+                case EmergencyBackupType.SHAMIR_SECRET_SHARING:
                     can_restore = count_shamir_shares () >= selected_backup.shamir_threshold;
                     break;
                     
-                case BackupType.QR_CODE:
+                case EmergencyBackupType.QR_CODE:
                     // QR codes can be restored without passphrase if not encrypted
                     can_restore = true;
                     break;
@@ -358,13 +358,13 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
             
             print ("RestoreBackupDialog: Selected backup type: %s\n", selected_backup.backup_type.to_string());
             switch (selected_backup.backup_type) {
-                case BackupType.ENCRYPTED_ARCHIVE:
-                case BackupType.TIME_LOCKED:
+                case EmergencyBackupType.ENCRYPTED_ARCHIVE:
+                case EmergencyBackupType.TIME_LOCKED:
                     restore_params.passphrase = passphrase_entry.text;
                     print ("RestoreBackupDialog: Using passphrase for encrypted/time-locked backup\n");
                     break;
                     
-                case BackupType.QR_CODE:
+                case EmergencyBackupType.QR_CODE:
                     if (passphrase_entry.text.length > 0) {
                         restore_params.passphrase = passphrase_entry.text;
                         print ("RestoreBackupDialog: Using passphrase for QR backup: %s\n", restore_params.passphrase);
@@ -374,7 +374,7 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
                     }
                     break;
                     
-                case BackupType.SHAMIR_SECRET_SHARING:
+                case EmergencyBackupType.SHAMIR_SECRET_SHARING:
                     restore_params.shamir_shares = get_shamir_shares ();
                     print ("RestoreBackupDialog: Using Shamir secret shares\n");
                     break;
@@ -391,9 +391,16 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
                 print ("RestoreBackupDialog: Progress set to 0.8\n");
             }
             
-            print ("RestoreBackupDialog: Calling vault.restore_backup_legacy\n");
-            yield vault.restore_backup_legacy (selected_backup, restore_params.passphrase);
-            print ("RestoreBackupDialog: vault.restore_backup_legacy completed successfully\n");
+            print ("RestoreBackupDialog: Calling vault.restore_backup\n");
+            switch (selected_backup.backup_type) {
+                case EmergencyBackupType.SHAMIR_SECRET_SHARING:
+                    yield vault.restore_backup (selected_backup, null, null, restore_params.shamir_shares);
+                    break;
+                default:
+                    yield vault.restore_backup (selected_backup, restore_params.passphrase);
+                    break;
+            }
+            print ("RestoreBackupDialog: vault.restore_backup completed successfully\n");
             
             // Trigger a key refresh in the main application
             print ("RestoreBackupDialog: Triggering key list refresh\n");

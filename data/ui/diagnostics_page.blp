@@ -1,0 +1,58 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerDiagnosticsPage : Adw.Bin {
+  
+  child: Adw.Clamp {
+    maximum-size: 1200;
+    tightening-threshold: 600;
+    
+    child: Gtk.Box {
+      orientation: vertical;
+      spacing: 0;
+      vexpand: true;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+      
+      Adw.HeaderBar {
+        show-title: false;
+        
+        [start]
+        Gtk.Label {
+          label: _("Connection Diagnostics");
+          styles ["title-1"]
+        }
+        
+        [end]
+        Gtk.Button run_diagnostics_button {
+          icon-name: "applications-system-symbolic";
+          tooltip-text: _("Run Diagnostics");
+          styles ["suggested-action"]
+        }
+      }
+      
+      Gtk.ScrolledWindow {
+        vexpand: true;
+        
+        child: Adw.PreferencesPage {
+          Adw.PreferencesGroup quick_tests_group {
+            title: _("Quick Tests");
+            description: _("Basic connectivity and authentication checks");
+          }
+          
+          Adw.PreferencesGroup detailed_diagnostics_group {
+            title: _("Detailed Diagnostics");
+            description: _("Comprehensive analysis and troubleshooting");
+          }
+          
+          Adw.PreferencesGroup test_history_group {
+            title: _("Test History");
+            description: _("Previous diagnostic results");
+          }
+        };
+      }
+    };
+  };
+}

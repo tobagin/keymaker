@@ -30,7 +30,6 @@ namespace KeyMaker {
             var plan_image = new Gtk.Image();
             plan_image.icon_name = "accessories-text-editor-symbolic";
             plan_image.icon_size = LARGE;
-            plan_image.add_css_class("dim-label");
             add_prefix(plan_image);
         }
         

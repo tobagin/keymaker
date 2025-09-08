@@ -104,6 +104,8 @@ namespace KeyMaker {
                 
                 return ssh_key;
                 
+            } catch (KeyMakerError.OPERATION_CANCELLED e) {
+                throw e;
             } catch (KeyMakerError e) {
                 throw e;
             } catch (Error e) {

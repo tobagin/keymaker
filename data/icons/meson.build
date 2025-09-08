@@ -107,3 +107,9 @@ install_data(
   'hicolor/scalable/actions/io.github.tobagin.keysmith-gitlab-symbolic.svg',
   install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
 )
+
+# Health status icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-health-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)

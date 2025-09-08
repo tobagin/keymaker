@@ -31,13 +31,22 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
     private unowned Adw.ComboRow backup_type_combo;
     
     [GtkChild]
+    private unowned Gtk.Image backup_type_icon;
+    
+    [GtkChild]
     private unowned Adw.PreferencesGroup keys_group;
     
     [GtkChild]
     private unowned Gtk.ListBox keys_list;
     
     [GtkChild]
+    private unowned Adw.PreferencesGroup single_key_group;
+    
+    [GtkChild]
     private unowned Adw.ComboRow single_key_combo;
+    
+    [GtkChild]
+    private unowned Gtk.Image single_key_icon;
     
     [GtkChild]
     private unowned Gtk.Button create_button;
@@ -72,13 +81,12 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
     construct {
         // Create key manager first
         this.key_manager = new KeySelectionManager ();
-        print ("CONSTRUCTOR: Created KeySelectionManager\n");
         
         setup_backup_types ();
         setup_signals ();
         setup_key_manager_signals ();
         
-        load_ssh_keys_sync ();
+        load_ssh_keys_async.begin ();
         // Don't call populate_keys_list here - it will be called by keys_changed signal
         // This prevents showing placeholder when keys are about to be loaded
         populate_single_key_combo ();
@@ -99,8 +107,7 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
         });
     }
     
-    private void load_ssh_keys_sync () {
-        debug ("CreateBackupDialog: Starting load_ssh_keys_sync");
+    private async void load_ssh_keys_async () {
         
         try {
             key_manager.clear_available_keys ();
@@ -109,11 +116,8 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
             var ssh_dir = File.new_for_path (Path.build_filename (Environment.get_home_dir (), ".ssh"));
             
             if (!ssh_dir.query_exists ()) {
-                debug ("CreateBackupDialog: SSH directory does not exist");
                 return;
             }
-            
-            debug ("CreateBackupDialog: Scanning SSH directory: %s", ssh_dir.get_path ());
             
             var enumerator = ssh_dir.enumerate_children (FileAttribute.STANDARD_NAME, FileQueryInfoFlags.NONE);
             var key_count = 0;
@@ -129,18 +133,21 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
                     
                     // Check if both private and public key exist
                     if (private_path.query_exists () && public_path.query_exists ()) {
-                        debug ("CreateBackupDialog: Found SSH key pair: %s", filename);
+                        print ("CreateBackupDialog: Found SSH key pair: %s\n", filename);
                         
                         try {
+                            print ("CreateBackupDialog: Processing key %s\n", filename);
                             // Get file modification time
                             var file_info = private_path.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
                             var timestamp = file_info.get_attribute_uint64 (FileAttribute.TIME_MODIFIED);
                             var last_modified = new DateTime.from_unix_local ((int64) timestamp);
                             
-                            // Detect key type and other properties - same as main window
-                            var key_type = SSHOperations.get_key_type_sync (private_path);
-                            var fingerprint = SSHOperations.get_fingerprint_sync (private_path);
-                            var bit_size = SSHOperations.extract_bit_size_sync (private_path);
+                            print ("CreateBackupDialog: Getting key properties for %s\n", filename);
+                            // Detect key type and other properties - using async versions
+                            var key_type = yield SSHOperations.get_key_type (private_path);
+                            var fingerprint = yield SSHOperations.get_fingerprint (private_path);
+                            var bit_size = yield SSHOperations.extract_bit_size (private_path);
+                            print ("CreateBackupDialog: Got properties - type=%d, fingerprint=%s\n", (int)key_type, fingerprint);
                             
                             // Extract comment from public key file if available
                             string? comment = null;
@@ -153,9 +160,10 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
                                     comment = parts[2]; // Third part is usually the comment
                                 }
                             } catch (Error e) {
-                                debug ("Could not read comment from public key: %s", e.message);
+                                print ("CreateBackupDialog: Could not read comment from public key: %s\n", e.message);
                             }
                             
+                            print ("CreateBackupDialog: Creating SSH key object for %s\n", filename);
                             // Create SSH key object with real data - same as main window
                             var ssh_key = new SSHKey (
                                 private_path,
@@ -167,11 +175,13 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
                                 bit_size ?? -1
                             );
                             
+                            print ("CreateBackupDialog: Adding key to manager: %s\n", filename);
                             key_manager.add_available_key (ssh_key);
                             key_count++;
+                            print ("CreateBackupDialog: Successfully added key %s, count now: %d\n", filename, key_count);
                             
                         } catch (Error key_error) {
-                            debug ("Failed to create SSH key object for %s: %s", filename, key_error.message);
+                            print ("CreateBackupDialog: Failed to create SSH key object for %s: %s\n", filename, key_error.message);
                             continue;
                         }
                     }
@@ -179,9 +189,9 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
             }
             
             if (key_count == 0) {
-                debug ("CreateBackupDialog: No SSH key pairs found");
+                print ("CreateBackupDialog: No SSH key pairs found\n");
             } else {
-                debug ("CreateBackupDialog: Successfully loaded %d SSH key pairs", key_count);
+                print ("CreateBackupDialog: Successfully loaded %d SSH key pairs\n", key_count);
             }
             
         } catch (Error enum_error) {
@@ -207,6 +217,7 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
         backup_type_combo.notify["selected"].connect (on_backup_type_changed);
         single_key_combo.notify["selected"].connect (() => {
             debug ("CreateBackupDialog: single_key_combo selection changed to %u", single_key_combo.selected);
+            update_single_key_icon ();
             update_create_button ();
         });
         set_expiry_row.notify["active"].connect (on_expiry_toggle);
@@ -215,28 +226,36 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
     
     private void populate_keys_list () {
         var available_keys = key_manager.get_available_keys ();
-        print ("POPULATE_KEYS_LIST: START - available_keys.length=%u\n", available_keys.length);
         debug ("CreateBackupDialog: populate_keys_list() called");
         clear_keys_list ();
+        
+        // Hide the ListBox when there are no keys to prevent empty boxed-list placeholder
+        if (available_keys.length == 0) {
+            keys_list.visible = false;
+            return;
+        }
+        
+        // Show the ListBox when we have keys
+        keys_list.visible = true;
         
         // Clear current selection when repopulating
         key_manager.clear_selection ();
         
         print ("CreateBackupDialog: Populating %u keys\n", available_keys.length);
         
-        if (available_keys.length == 0) {
-            // Show a placeholder row indicating keys will be scanned when creating backup
-            var placeholder_row = new Adw.ActionRow ();
-            placeholder_row.title = "SSH keys will be detected automatically";
-            placeholder_row.subtitle = "Your SSH keys will be scanned when you create the backup";
+        //  if (available_keys.length == 0) {
+        //      // Show a placeholder row indicating keys will be scanned when creating backup
+        //      var placeholder_row = new Adw.ActionRow ();
+        //      placeholder_row.title = "SSH keys will be detected automatically";
+        //      placeholder_row.subtitle = "Your SSH keys will be scanned when you create the backup";
             
-            var icon = new Gtk.Image.from_icon_name ("folder-symbolic");
-            icon.icon_size = Gtk.IconSize.NORMAL;
-            placeholder_row.add_prefix (icon);
+        //      var icon = new Gtk.Image.from_icon_name ("folder-symbolic");
+        //      icon.icon_size = Gtk.IconSize.NORMAL;
+        //      placeholder_row.add_prefix (icon);
             
-            keys_list.append (placeholder_row);
-            return;
-        }
+        //      keys_list.append (placeholder_row);
+        //      return;
+        //  }
         
         for (int i = 0; i < available_keys.length; i++) {
             var key = available_keys[i];
@@ -252,7 +271,7 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
             
             // Add icon to match main key list with proper styling
             var icon = new Gtk.Image ();
-            icon.icon_size = Gtk.IconSize.NORMAL;
+            icon.icon_size = Gtk.IconSize.LARGE;
             
             // Apply consistent security-level icons with colors
             switch (key.key_type) {
@@ -286,21 +305,15 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
             
             keys_list.append (row);
         }
-        
-        print ("POPULATE_KEYS_LIST: END\n");
     }
     
     private void clear_keys_list () {
-        print ("CLEAR_KEYS_LIST: Clearing all children from keys_list\n");
         Gtk.Widget? child = keys_list.get_first_child ();
-        int removed_count = 0;
         while (child != null) {
             var next = child.get_next_sibling ();
             keys_list.remove (child);
-            removed_count++;
             child = next;
         }
-        print ("CLEAR_KEYS_LIST: Removed %d children\n", removed_count);
     }
     
     private void setup_expiry_controls () {
@@ -330,21 +343,61 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
             single_key_combo.selected = -1;
             print ("Set single_key_combo.selected = -1 (no keys)\n");
         }
+        
+        // Update the icon based on the selection
+        update_single_key_icon ();
     }
     
     private void update_keys_ui_for_backup_type () {
         var selected_type = (BackupType) backup_type_combo.selected;
         
         if (selected_type == BackupType.QR_CODE) {
-            // Show single key ComboBox for QR code
-            keys_list.visible = false;
-            single_key_combo.visible = true;
-            keys_group.description = "Select a single key for QR code backup";
+            // Show single key selector for QR code
+            keys_group.visible = false;
+            single_key_group.visible = true;
         } else {
             // Show multiple key selection list for other types
-            keys_list.visible = true;
-            single_key_combo.visible = false;
-            keys_group.description = "Select which keys to include in the backup";
+            keys_group.visible = true;
+            single_key_group.visible = false;
+        }
+    }
+    
+    private void update_single_key_icon () {
+        var available_keys = key_manager.get_available_keys ();
+        var selected_index = (int) single_key_combo.selected;
+        
+        if (selected_index >= 0 && selected_index < available_keys.length) {
+            var key = available_keys[selected_index];
+            
+            // Clear existing CSS classes
+            single_key_icon.remove_css_class ("success");
+            single_key_icon.remove_css_class ("accent");
+            single_key_icon.remove_css_class ("warning");
+            
+            // Set icon and color based on key type, matching the pattern used elsewhere
+            switch (key.key_type) {
+                case SSHKeyType.ED25519:
+                    // Green for ED25519 (most secure)
+                    single_key_icon.add_css_class ("success");
+                    single_key_icon.icon_name = key.key_type.get_icon_name ();
+                    break;
+                case SSHKeyType.RSA:
+                    // Blue/accent for RSA (good compatibility)
+                    single_key_icon.add_css_class ("accent");
+                    single_key_icon.icon_name = key.key_type.get_icon_name ();
+                    break;
+                case SSHKeyType.ECDSA:
+                    // Yellow/warning for ECDSA (compatibility issues)
+                    single_key_icon.add_css_class ("warning");
+                    single_key_icon.icon_name = key.key_type.get_icon_name ();
+                    break;
+            }
+        } else {
+            // No selection or invalid selection - use default
+            single_key_icon.remove_css_class ("success");
+            single_key_icon.remove_css_class ("accent");
+            single_key_icon.remove_css_class ("warning");
+            single_key_icon.icon_name = "security-medium-symbolic";
         }
     }
     
@@ -353,6 +406,9 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
         print ("BACKUP_TYPE_CHANGE_START: available_keys.length=%u\n", available_keys.length);
         var selected_type = (BackupType) backup_type_combo.selected;
         print ("BACKUP_TYPE_CHANGED: %s, available_keys.length=%u\n", selected_type.to_string(), available_keys.length);
+        
+        // Update backup type icon based on selection
+        update_backup_type_icon (selected_type);
         
         // Show/hide controls based on backup type
         shares_count_row.visible = (selected_type == BackupType.SHAMIR_SECRET_SHARING);
@@ -507,6 +563,25 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
         dialog.present (this);
     }
     
+    private void update_backup_type_icon (BackupType backup_type) {
+        switch (backup_type) {
+            case BackupType.ENCRYPTED_ARCHIVE:
+                backup_type_icon.icon_name = "package-x-generic-symbolic";
+                break;
+            case BackupType.QR_CODE:
+                backup_type_icon.icon_name = "io.github.tobagin.keysmith-qr-code-symbolic";
+                break;
+            case BackupType.TIME_LOCKED:
+                backup_type_icon.icon_name = "appointment-soon-symbolic";
+                break;
+            case BackupType.SHAMIR_SECRET_SHARING:
+                backup_type_icon.icon_name = "view-app-grid-symbolic";
+                break;
+            default:
+                backup_type_icon.icon_name = "package-x-generic-symbolic";
+                break;
+        }
+    }
     
     private void update_create_button () {
         var selected_type = (BackupType) backup_type_combo.selected;

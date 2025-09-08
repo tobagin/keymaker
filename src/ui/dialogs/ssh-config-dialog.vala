@@ -190,7 +190,6 @@ public class KeyMaker.SSHConfigDialog : Adw.Dialog {
             type_icon.icon_name = "network-server-symbolic";
             type_icon.icon_size = LARGE;
         }
-        type_icon.add_css_class ("dim-label");
         row.add_prefix (type_icon);
         
         // Create a button box to hold all buttons

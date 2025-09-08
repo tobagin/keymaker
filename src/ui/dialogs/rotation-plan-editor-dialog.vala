@@ -540,7 +540,6 @@ namespace KeyMaker {
             
             // Add server icon
             var server_icon = new Gtk.Image.from_icon_name("network-server-symbolic");
-            server_icon.add_css_class("dim-label");
             row.add_prefix(server_icon);
             
             var remove_button = new Gtk.Button();

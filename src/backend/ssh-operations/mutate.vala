@@ -45,6 +45,8 @@ namespace KeyMaker {
                 
                 KeyMaker.Log.info(KeyMaker.Log.Categories.SSH_OPS, "Successfully changed passphrase for key");
                 
+            } catch (KeyMakerError.OPERATION_CANCELLED e) {
+                throw e;
             } catch (KeyMakerError e) {
                 throw e;
             } catch (Error e) {
@@ -104,6 +106,8 @@ namespace KeyMaker {
                 
                 KeyMaker.Log.info(KeyMaker.Log.Categories.SSH_OPS, "Successfully deleted key pair");
                 
+            } catch (KeyMakerError.OPERATION_CANCELLED e) {
+                throw e;
             } catch (KeyMakerError e) {
                 throw e;
             } catch (Error e) {

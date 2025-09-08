@@ -8,15 +8,16 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
   width-request: 400;
   height-request: 300;
 
-  content: Gtk.Box {
-    orientation: vertical;
+  content: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
     
+    [top]
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle {
         title: "Key Maker";
         subtitle: "GUI for SSH key management tasks";
       };
-
 
       [end]
       MenuButton menu_button {
@@ -24,24 +25,65 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
         tooltip-text: _("Main Menu");
         menu-model: main_menu;
       }
-
     }
 
-    Adw.ToastOverlay toast_overlay {
-      vexpand: true;
+    [bottom]
+    Adw.HeaderBar bottom_header_bar {
+      show-end-title-buttons: false;
       
-      Adw.Clamp {
-        maximum-size: 1200;
-        tightening-threshold: 600;
-        
-        Box main_box {
-          orientation: vertical;
-          spacing: 0;
-          vexpand: true;
-          // Key list will be added programmatically
-        }
-      }
+      title-widget: Adw.ViewSwitcherBar view_switcher_bar {
+        stack: main_stack;
+        reveal: true;
+      };
     }
+
+    content: Adw.ToastOverlay toast_overlay {
+      child: Adw.ViewStack main_stack {
+        vexpand: true;
+        
+        Adw.ViewStackPage {
+          name: "keys";
+          title: _("SSH");
+          icon-name: "dialog-password-symbolic";
+          child: $KeyMakerKeysPage keys_page {};
+        }
+        
+        Adw.ViewStackPage {
+          name: "hosts";
+          title: _("Hosts");
+          icon-name: "network-server-symbolic";
+          child: $KeyMakerHostsPage hosts_page {};
+        }
+        
+        Adw.ViewStackPage {
+          name: "backup";
+          title: _("Backup");
+          icon-name: "io.github.tobagin.keysmith-backup-center-symbolic";
+          child: $KeyMakerBackupPage backup_page {};
+        }
+        
+        Adw.ViewStackPage {
+          name: "rotation";
+          title: _("Rotation");
+          icon-name: "view-refresh-symbolic";
+          child: $KeyMakerRotationPage rotation_page {};
+        }
+        
+        Adw.ViewStackPage {
+          name: "tunnels";
+          title: _("Tunnels");
+          icon-name: "network-vpn-symbolic";
+          child: $KeyMakerTunnelsPage tunnels_page {};
+        }
+        
+        Adw.ViewStackPage {
+          name: "diagnostics";
+          title: _("Diagnostics");
+          icon-name: "applications-system-symbolic";
+          child: $KeyMakerDiagnosticsPage diagnostics_page {};
+        }
+      };
+    };
   };
 }
 
@@ -50,26 +92,6 @@ menu main_menu {
     item {
       label: _("SSH _Agent Manager");
       action: "app.ssh-agent";
-    }
-    item {
-      label: _("SSH _Configuration");
-      action: "app.ssh-config";
-    }
-    item {
-      label: _("Connection _Diagnostics");
-      action: "app.connection-diagnostics";
-    }
-    item {
-      label: _("Smart Key _Rotation");
-      action: "app.key-rotation";
-    }
-    item {
-      label: _("_Backup Center");
-      action: "app.backup-center";
-    }
-    item {
-      label: _("SSH _Tunneling");
-      action: "app.ssh-tunneling";
     }
   }
   section {

@@ -30,5 +30,11 @@
     <file>ssh_tunneling_dialog.ui</file>
     <file>create_tunnel_dialog.ui</file>
     <file>diagnostic_results_view_dialog.ui</file>
+    <file>keys_page.ui</file>
+    <file>hosts_page.ui</file>
+    <file>backup_page.ui</file>
+    <file>rotation_page.ui</file>
+    <file>tunnels_page.ui</file>
+    <file>diagnostics_page.ui</file>
   </gresource>
 </gresources>
