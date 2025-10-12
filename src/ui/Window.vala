@@ -49,22 +49,13 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     
     [GtkChild]
     private unowned KeyMaker.DiagnosticsPage diagnostics_page;
-    
-    private Settings settings;
-    
-    
+
+
     construct {
-        // Initialize settings
-#if DEVELOPMENT
-        settings = new Settings ("io.github.tobagin.keysmith.Devel");
-#else
-        settings = new Settings ("io.github.tobagin.keysmith");
-#endif
-        
         // Setup actions and signals
         setup_actions ();
         setup_page_signals ();
-        
+
         // Initial refresh is scheduled by Application after presenting the window
     }
     
@@ -172,7 +163,7 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     }
     
     private void on_key_delete_requested (SSHKey ssh_key) {
-        var confirm_deletions = settings.get_boolean ("confirm-deletions");
+        var confirm_deletions = SettingsManager.confirm_deletions;
         
         if (confirm_deletions) {
             // Show confirmation dialog

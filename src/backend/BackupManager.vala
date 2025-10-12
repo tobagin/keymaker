@@ -35,7 +35,6 @@ namespace KeyMaker {
     public class BackupManager : GLib.Object {
         private File backup_directory;
         private GenericArray<RegularBackupEntry> backups;
-        private Settings settings;
         
         public signal void backup_created (RegularBackupEntry backup);
         public signal void backup_restored (RegularBackupEntry backup);
@@ -46,9 +45,7 @@ namespace KeyMaker {
             var home_dir = Environment.get_home_dir ();
             backup_directory = File.new_for_path (Path.build_filename (home_dir, ".ssh", "backups"));
             backups = new GenericArray<RegularBackupEntry> ();
-            
-            settings = new Settings (Config.APP_ID);
-            
+
             initialize_backup_directory ();
         }
         

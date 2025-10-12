@@ -16,10 +16,6 @@
 #endif
 public class KeyMaker.HostsPage : Adw.Bin {
     [GtkChild]
-    private unowned Gtk.Stack main_stack;
-    [GtkChild]
-    private unowned Adw.StatusPage empty_state;
-    [GtkChild]
     private unowned Gtk.Button add_host_button;
     [GtkChild]
     private unowned Gtk.Button reload_button;
@@ -30,19 +26,11 @@ public class KeyMaker.HostsPage : Adw.Bin {
     
     private GenericArray<SSHConfigHost> hosts;
     private GenericArray<SSHConfigHost> filtered_hosts;
-    private Settings settings;
-    
+
     // Signals for window integration
     public signal void show_toast_requested (string message);
-    
+
     construct {
-        // Initialize settings
-#if DEVELOPMENT
-        settings = new Settings ("io.github.tobagin.keysmith.Devel");
-#else
-        settings = new Settings ("io.github.tobagin.keysmith");
-#endif
-        
         // Initialize hosts lists
         hosts = new GenericArray<SSHConfigHost> ();
         filtered_hosts = new GenericArray<SSHConfigHost> ();
@@ -70,23 +58,42 @@ public class KeyMaker.HostsPage : Adw.Bin {
     }
     
     private void on_host_saved (SSHConfigHost host) {
-        // Add or update host in the list
-        bool found = false;
-        for (int i = 0; i < hosts.length; i++) {
-            if (hosts[i].name == host.name) {
-                hosts[i] = host;
-                found = true;
-                break;
+        save_host_async.begin (host);
+    }
+
+    private async void save_host_async (SSHConfigHost host) {
+        try {
+            var ssh_config = new KeyMaker.SSHConfig ();
+            yield ssh_config.load_config ();
+
+            // Add or update host
+            ssh_config.add_host (host);
+
+            // Save to file
+            yield ssh_config.save_config ();
+
+            // Update in-memory list
+            bool found = false;
+            for (int i = 0; i < hosts.length; i++) {
+                if (hosts[i].name == host.name) {
+                    hosts[i] = host;
+                    found = true;
+                    break;
+                }
             }
+
+            if (!found) {
+                hosts.add (host);
+            }
+
+            // Refresh the UI
+            refresh_hosts_display ();
+            show_toast_requested (_("Host '%s' saved successfully").printf (host.name));
+
+        } catch (Error e) {
+            warning ("Failed to save host: %s", e.message);
+            show_toast_requested (_("Failed to save host: %s").printf (e.message));
         }
-        
-        if (!found) {
-            hosts.add (host);
-        }
-        
-        // Refresh the UI
-        refresh_hosts_display ();
-        show_toast_requested (_("Host '%s' saved successfully").printf (host.name));
     }
     
     private void load_hosts () {
@@ -127,26 +134,23 @@ public class KeyMaker.HostsPage : Adw.Bin {
             hosts_list.remove (child);
             child = next;
         }
-        
-        // Check if we should show empty state
+
+        // If no hosts, show empty state row
         if (filtered_hosts.length == 0) {
-            if (hosts.length == 0) {
-                main_stack.visible_child_name = "empty_state";
-            } else {
-                main_stack.visible_child_name = "hosts_page";
-                // Show "no results" message in the list
-                var no_results_row = new Adw.ActionRow ();
-                no_results_row.title = _("No matching hosts");
-                no_results_row.subtitle = _("Try a different search term");
-                no_results_row.sensitive = false;
-                hosts_list.append (no_results_row);
-            }
+            var empty_row = new Adw.ActionRow ();
+            empty_row.title = _("No SSH Hosts");
+            empty_row.subtitle = _("Click the + button above to add your first SSH host configuration");
+            empty_row.sensitive = false;
+
+            var icon = new Gtk.Image ();
+            icon.icon_name = "network-server-symbolic";
+            icon.opacity = 0.5;
+            empty_row.add_prefix (icon);
+
+            hosts_list.append (empty_row);
             return;
         }
-        
-        // Show hosts page
-        main_stack.visible_child_name = "hosts_page";
-        
+
         // Add hosts to display
         for (int i = 0; i < filtered_hosts.length; i++) {
             var host = filtered_hosts[i];
@@ -246,7 +250,7 @@ public class KeyMaker.HostsPage : Adw.Bin {
             connect_button.add_css_class ("flat");
             connect_button.valign = Gtk.Align.CENTER;
             connect_button.clicked.connect (() => {
-                debug ("Connect button clicked for host: %s", host.name);
+                print ("🖱️ Connect button clicked for host: %s\n", host.name);
                 connect_to_host (host);
             });
             button_box.append (connect_button);
@@ -274,7 +278,7 @@ public class KeyMaker.HostsPage : Adw.Bin {
         delete_button.valign = Gtk.Align.CENTER;
         delete_button.sensitive = true;
         delete_button.clicked.connect (() => {
-            debug ("Delete button clicked for host: %s", host.name);
+            print ("🗑️  Delete button clicked for host: %s\n", host.name);
             delete_host (host);
         });
         
@@ -326,57 +330,92 @@ public class KeyMaker.HostsPage : Adw.Bin {
     }
     
     private void connect_to_host (SSHConfigHost host) {
+        print ("🔌 connect_to_host called for: %s\n", host.name);
+
         // Create and show terminal dialog instead of external terminal
         var root_window = get_root () as Gtk.Window;
-        var terminal_dialog = new KeyMaker.TerminalDialog (root_window, host.name, host.name);
-        terminal_dialog.present (root_window);
+
+        if (root_window == null) {
+            print ("❌ Root window is null, cannot present terminal dialog\n");
+            show_toast_requested (_("Failed to open terminal: No parent window"));
+            return;
+        }
+
+        print ("✅ Root window found, creating TerminalDialog for host: %s\n", host.name);
+        try {
+            var terminal_dialog = new KeyMaker.TerminalDialog (root_window, host.name, host.name);
+            print ("📦 TerminalDialog created, now presenting...\n");
+            terminal_dialog.present (root_window);
+            print ("✨ Terminal dialog presented successfully\n");
+        } catch (Error e) {
+            print ("❌ Failed to create or present terminal dialog: %s\n", e.message);
+            show_toast_requested (_("Failed to open terminal: %s").printf (e.message));
+        }
     }
     
     private void edit_host (SSHConfigHost host) {
         var dialog = new KeyMaker.SSHHostEditDialog (get_root () as Gtk.Window, host);
-        dialog.host_saved.connect ((updated_host) => {
-            refresh_hosts_display ();
-            show_toast_requested (_("Host '%s' updated successfully").printf (updated_host.name));
-        });
+        dialog.host_saved.connect (on_host_saved);
         dialog.present (get_root () as Gtk.Window);
     }
     
     private void delete_host (SSHConfigHost host) {
+        print ("🚨 delete_host() called for: %s\n", host.name);
         var dialog = new Adw.AlertDialog (
             @"Delete SSH Host \"$(host.name)\"?",
             "This will remove the host configuration from your SSH config file."
         );
+        print ("📝 AlertDialog created\n");
         dialog.add_response ("cancel", "Cancel");
         dialog.add_response ("delete", "Delete");
         dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
         dialog.set_default_response ("cancel");
         dialog.set_close_response ("cancel");
-        
+
         dialog.response.connect ((response) => {
+            print ("📤 Dialog response: %s\n", response);
             if (response == "delete") {
-                try {
-                    var ssh_config = new KeyMaker.SSHConfig ();
-                    ssh_config.remove_host (host.name);
-                    ssh_config.save_config.begin ();
-                    
-                    // Remove from local list
-                    for (int i = 0; i < hosts.length; i++) {
-                        if (hosts[i].name == host.name) {
-                            hosts.remove_index (i);
-                            break;
-                        }
-                    }
-                    
-                    refresh_hosts_display ();
-                    show_toast_requested (_("Host '%s' deleted successfully").printf (host.name));
-                    
-                } catch (Error e) {
-                    warning ("Failed to delete host: %s", e.message);
-                    show_toast_requested (_("Failed to delete host: %s").printf (e.message));
-                }
+                print ("✅ User confirmed delete, calling delete_host_async\n");
+                delete_host_async.begin (host);
             }
         });
-        
+
+        print ("🎭 Presenting AlertDialog\n");
         dialog.present (get_root () as Gtk.Window);
+        print ("✨ AlertDialog presented\n");
+    }
+
+    private async void delete_host_async (SSHConfigHost host) {
+        print ("🔧 delete_host_async() started for: %s\n", host.name);
+        try {
+            var ssh_config = new KeyMaker.SSHConfig ();
+            print ("📂 Loading SSH config...\n");
+            yield ssh_config.load_config ();  // Load existing config first!
+            print ("✅ SSH config loaded\n");
+
+            print ("🗑️  Removing host: %s\n", host.name);
+            ssh_config.remove_host (host.name);
+            print ("💾 Saving SSH config...\n");
+            yield ssh_config.save_config ();  // Now save
+            print ("✅ SSH config saved\n");
+
+            // Remove from local list
+            for (int i = 0; i < hosts.length; i++) {
+                if (hosts[i].name == host.name) {
+                    hosts.remove_index (i);
+                    print ("✅ Host removed from local list\n");
+                    break;
+                }
+            }
+
+            refresh_hosts_display ();
+            show_toast_requested (_("Host '%s' deleted successfully").printf (host.name));
+            print ("🎉 Delete operation completed successfully\n");
+
+        } catch (Error e) {
+            print ("❌ Delete failed: %s\n", e.message);
+            warning ("Failed to delete host: %s", e.message);
+            show_toast_requested (_("Failed to delete host: %s").printf (e.message));
+        }
     }
 }

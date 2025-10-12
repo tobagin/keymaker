@@ -71,49 +71,126 @@ namespace KeyMaker {
             public const string DEFAULT_SSH_PORT = "default-ssh-port";
         }
         
+        // Window state properties
+        public static int window_width {
+            get { return app.get_int("window-width"); }
+            set { app.set_int("window-width", value); }
+        }
+
+        public static int window_height {
+            get { return app.get_int("window-height"); }
+            set { app.set_int("window-height", value); }
+        }
+
+        public static bool window_maximized {
+            get { return app.get_boolean("window-maximized"); }
+            set { app.set_boolean("window-maximized", value); }
+        }
+
+        // Key generation default properties
+        public static owned string default_key_type {
+            owned get { return app.get_string("default-key-type"); }
+            set { app.set_string("default-key-type", value); }
+        }
+
+        public static int default_rsa_bits {
+            get { return app.get_int("default-rsa-bits"); }
+            set { app.set_int("default-rsa-bits", value); }
+        }
+
+        public static int default_ecdsa_curve {
+            get { return app.get_int("default-ecdsa-curve"); }
+            set { app.set_int("default-ecdsa-curve", value); }
+        }
+
+        public static owned string default_comment {
+            owned get { return app.get_string("default-comment"); }
+            set { app.set_string("default-comment", value); }
+        }
+
+        public static bool use_passphrase_by_default {
+            get { return app.get_boolean("use-passphrase-by-default"); }
+            set { app.set_boolean("use-passphrase-by-default", value); }
+        }
+
+        // UI preference properties
+        public static int auto_refresh_interval {
+            get { return app.get_int("auto-refresh-interval"); }
+            set { app.set_int("auto-refresh-interval", value); }
+        }
+
+        public static bool show_fingerprints {
+            get { return app.get_boolean("show-fingerprints"); }
+            set { app.set_boolean("show-fingerprints", value); }
+        }
+
+        public static bool confirm_deletions {
+            get { return app.get_boolean("confirm-deletions"); }
+            set { app.set_boolean("confirm-deletions", value); }
+        }
+
+        public static owned string theme {
+            owned get { return app.get_string("theme"); }
+            set { app.set_string("theme", value); }
+        }
+
+        public static owned string preferred_terminal {
+            owned get { return app.get_string("preferred-terminal"); }
+            set { app.set_string("preferred-terminal", value); }
+        }
+
+        public static owned string last_version_shown {
+            owned get { return app.get_string("last-version-shown"); }
+            set { app.set_string("last-version-shown", value); }
+        }
+
+        // Diagnostics settings properties
+        public static bool auto_run_diagnostics {
+            get { return app.get_boolean("auto-run-diagnostics"); }
+            set { app.set_boolean("auto-run-diagnostics", value); }
+        }
+
+        public static int diagnostics_retention_days {
+            get { return app.get_int("diagnostics-retention-days"); }
+            set { app.set_int("diagnostics-retention-days", value); }
+        }
+
         // Convenience methods for common operations
         public static void save_window_state(int width, int height, bool maximized) {
-            app.set_int(Keys.WINDOW_WIDTH, width);
-            app.set_int(Keys.WINDOW_HEIGHT, height);
-            app.set_boolean(Keys.WINDOW_MAXIMIZED, maximized);
+            window_width = width;
+            window_height = height;
+            window_maximized = maximized;
         }
-        
+
         public static void get_window_state(out int width, out int height, out bool maximized) {
-            width = app.get_int(Keys.WINDOW_WIDTH);
-            height = app.get_int(Keys.WINDOW_HEIGHT);
-            maximized = app.get_boolean(Keys.WINDOW_MAXIMIZED);
+            width = window_width;
+            height = window_height;
+            maximized = window_maximized;
         }
         
-        public static string get_theme_preference() {
-            return app.get_string(Keys.THEME_PREFERENCE);
+        // Complex variant type convenience methods
+        public static Variant get_rotation_plans() {
+            return app.get_value("rotation-plans");
         }
-        
-        public static void set_theme_preference(string theme) {
-            app.set_string(Keys.THEME_PREFERENCE, theme);
+
+        public static void set_rotation_plans(Variant plans) {
+            app.set_value("rotation-plans", plans);
         }
-        
-        public static bool get_auto_add_keys_to_agent() {
-            return app.get_boolean(Keys.AUTO_ADD_KEYS_TO_AGENT);
+
+        public static Variant get_key_service_mappings() {
+            return app.get_value("key-service-mappings");
         }
-        
-        public static void set_auto_add_keys_to_agent(bool enabled) {
-            app.set_boolean(Keys.AUTO_ADD_KEYS_TO_AGENT, enabled);
+
+        public static void set_key_service_mappings(Variant mappings) {
+            app.set_value("key-service-mappings", mappings);
         }
-        
-        public static bool get_auto_run_diagnostics() {
-            return app.get_boolean(Keys.AUTO_RUN_DIAGNOSTICS);
+
+        public static Variant get_tunnel_configurations() {
+            return app.get_value("tunnel-configurations");
         }
-        
-        public static void set_auto_run_diagnostics(bool enabled) {
-            app.set_boolean(Keys.AUTO_RUN_DIAGNOSTICS, enabled);
-        }
-        
-        public static int get_diagnostics_retention_days() {
-            return app.get_int(Keys.DIAGNOSTICS_RETENTION_DAYS);
-        }
-        
-        public static void set_diagnostics_retention_days(int days) {
-            app.set_int(Keys.DIAGNOSTICS_RETENTION_DAYS, days);
+
+        public static void set_tunnel_configurations(Variant configs) {
+            app.set_value("tunnel-configurations", configs);
         }
         
         // Tunneling convenience methods
@@ -132,16 +209,7 @@ namespace KeyMaker {
         public static void set_auto_start_tunnels(bool enabled) {
             tunneling.set_boolean(TunnelingKeys.AUTO_START_TUNNELS, enabled);
         }
-        
-        // Rotation plans storage
-        public static Variant get_rotation_plans() {
-            return app.get_value("rotation-plans");
-        }
-        
-        public static void set_rotation_plans(Variant plans) {
-            app.set_value("rotation-plans", plans);
-        }
-        
+
         // Utility methods
         public static void reset_to_defaults() {
             KeyMaker.Log.info(KeyMaker.Log.Categories.CONFIG, "Resetting all settings to defaults");

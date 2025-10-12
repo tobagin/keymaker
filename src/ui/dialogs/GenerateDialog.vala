@@ -60,7 +60,6 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
     private Gtk.StringList key_type_model;
     private Gtk.StringList rsa_bits_model;
     private Gtk.StringList ecdsa_curve_model;
-    private Settings settings;
     
     // Signals
     public signal void key_generated (SSHKey ssh_key);
@@ -73,13 +72,6 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
     }
     
     construct {
-        // Get settings
-#if DEVELOPMENT
-        settings = new Settings ("io.github.tobagin.keysmith.Devel");
-#else
-        settings = new Settings ("io.github.tobagin.keysmith");
-#endif
-        
         // Setup key type model
         key_type_model = new Gtk.StringList (null);
         key_type_model.append (_("Ed25519 (Recommended)"));
@@ -127,7 +119,7 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
     
     private void load_settings_defaults () {
         // Load default key type
-        var default_key_type = settings.get_string ("default-key-type");
+        var default_key_type = SettingsManager.default_key_type;
         switch (default_key_type) {
             case "rsa":
                 key_type_row.set_selected (1);
@@ -141,7 +133,7 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
         }
         
         // Load default RSA bits
-        var default_rsa_bits = settings.get_int ("default-rsa-bits");
+        var default_rsa_bits = SettingsManager.default_rsa_bits;
         switch (default_rsa_bits) {
             case 2048:
                 rsa_bits_row.set_selected (0);
@@ -161,7 +153,7 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
         }
         
         // Load default ECDSA curve
-        var default_ecdsa_curve = settings.get_int ("default-ecdsa-curve");
+        var default_ecdsa_curve = SettingsManager.default_ecdsa_curve;
         switch (default_ecdsa_curve) {
             case 256:
                 ecdsa_curve_row.set_selected (0);
@@ -178,11 +170,11 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
         }
         
         // Load default comment
-        var default_comment = settings.get_string ("default-comment");
+        var default_comment = SettingsManager.default_comment;
         comment_row.set_text (default_comment);
         
         // Load use passphrase by default
-        var use_passphrase_by_default = settings.get_boolean ("use-passphrase-by-default");
+        var use_passphrase_by_default = SettingsManager.use_passphrase_by_default;
         passphrase_switch.set_active (use_passphrase_by_default);
     }
     

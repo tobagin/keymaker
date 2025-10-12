@@ -21,7 +21,6 @@ namespace KeyMaker {
     public class EmergencyVault : GLib.Object {
         private File vault_directory;
         private GenericArray<EmergencyBackupEntry> backups;
-        private Settings settings;
         private TOTPManager totp_manager;
         
         public signal void backup_created (EmergencyBackupEntry backup);
@@ -38,10 +37,9 @@ namespace KeyMaker {
             var home_dir = Environment.get_home_dir ();
             vault_directory = File.new_for_path (Path.build_filename (home_dir, ".ssh", "emergency_vault"));
             backups = new GenericArray<EmergencyBackupEntry> ();
-            
-            settings = new Settings (Config.APP_ID);
+
             totp_manager = new TOTPManager ();
-            
+
             initialize_vault ();
         }
         

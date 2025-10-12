@@ -490,10 +490,24 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     
     private void update_ui_state () {
         if (host_name_row == null || save_button == null) return;
-        
+
         var host_name = (host_name_row.text != null) ? host_name_row.text.strip () : "";
-        save_button.sensitive = (host_name.length > 0);
-        
+
+        // Check if name contains spaces or invalid characters
+        bool has_spaces = " " in host_name;
+        bool is_valid = host_name.length > 0 && !has_spaces;
+
+        save_button.sensitive = is_valid;
+
+        // Show error state if there are spaces
+        if (has_spaces && host_name.length > 0) {
+            host_name_row.add_css_class ("error");
+            host_name_row.title = _("Host Name (no spaces allowed)");
+        } else {
+            host_name_row.remove_css_class ("error");
+            host_name_row.title = _("Host Name");
+        }
+
         // Show/hide template row for new hosts only
         if (template_row != null) {
             template_row.visible = (existing_host == null);
@@ -502,11 +516,23 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     
     private void on_save_clicked () {
         var host_name = host_name_row.text.strip ();
-        
+
         if (host_name.length == 0) {
             return;
         }
-        
+
+        // Validate: no spaces allowed in host name
+        if (" " in host_name) {
+            var error_dialog = new Adw.AlertDialog (
+                _("Invalid Host Name"),
+                _("Host name cannot contain spaces. Please use a single name like 'myserver' or 'web-server'.")
+            );
+            error_dialog.add_response ("ok", _("OK"));
+            error_dialog.set_default_response ("ok");
+            error_dialog.present (this);
+            return;
+        }
+
         SSHConfigHost host;
         if (existing_host != null) {
             host = existing_host;

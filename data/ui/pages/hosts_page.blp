@@ -2,11 +2,11 @@ using Gtk 4.0;
 using Adw 1;
 
 template $KeyMakerHostsPage : Adw.Bin {
-  
+
   child: Adw.Clamp {
     maximum-size: 1500;
     tightening-threshold: 600;
-    
+
     child: Box {
       orientation: vertical;
       spacing: 24;
@@ -15,6 +15,7 @@ template $KeyMakerHostsPage : Adw.Bin {
       margin-bottom: 24;
       margin-start: 24;
       margin-end: 24;
+
       ScrolledWindow {
         hscrollbar-policy: never;
         vexpand: true;
@@ -31,52 +32,38 @@ template $KeyMakerHostsPage : Adw.Bin {
             orientation: vertical;
             spacing: 24;
 
-            Stack main_stack {
-              StackPage {
-                name: "empty_state";
-                child: Adw.StatusPage empty_state {
-                  title: _("No SSH Hosts");
-                  description: _("Add SSH host configurations to manage your connections");
-                  icon-name: "network-server-symbolic";
-                };
-              }
+            Adw.PreferencesGroup {
+              title: _("SSH Hosts");
+              description: _("Configure SSH client host settings from ~/.ssh/config");
 
-              StackPage {
-                name: "hosts_page";
-                child: Adw.PreferencesGroup {
-                  title: _("SSH Hosts");
-                  description: _("Configure SSH client host settings from ~/.ssh/config");
-                  
-                  header-suffix: Box {
-                    spacing: 6;
+              header-suffix: Box {
+                spacing: 6;
 
-                    Button add_host_button {
-                      icon-name: "tab-new-symbolic";
-                      tooltip-text: _("Add New Host");
-                      styles ["flat"]
-                      valign: center;
-                    }
-                    
-                    Button reload_button {
-                      icon-name: "view-refresh-symbolic";
-                      tooltip-text: _("Reload Configuration");
-                      styles ["flat"]
-                      valign: center;
-                    }
-                    
-                    Button remove_all_hosts_button {
-                      icon-name: "user-trash-symbolic";
-                      tooltip-text: _("Remove All Hosts");
-                      styles ["flat", "destructive-action"]
-                      valign: center;
-                    }
-                  };
+                Button add_host_button {
+                  icon-name: "tab-new-symbolic";
+                  tooltip-text: _("Add New Host");
+                  styles ["flat"]
+                  valign: center;
+                }
 
-                  ListBox hosts_list {
-                    selection-mode: none;
-                    styles ["boxed-list"]
-                  }
-                };
+                Button reload_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Reload Configuration");
+                  styles ["flat"]
+                  valign: center;
+                }
+
+                Button remove_all_hosts_button {
+                  icon-name: "user-trash-symbolic";
+                  tooltip-text: _("Remove All Hosts");
+                  styles ["flat", "destructive-action"]
+                  valign: center;
+                }
+              };
+
+              ListBox hosts_list {
+                selection-mode: none;
+                styles ["boxed-list"]
               }
             }
           }

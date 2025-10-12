@@ -1,4 +1,157 @@
-MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:949: FINISHME: support YUV colorspace with DRM format modifiers
 MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:981: FINISHME: support more multi-planar formats with DRM modifiers
+MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:949: FINISHME: support YUV colorspace with DRM format modifiers
 
-(io.github.tobagin.keysmith.Devel:2): GLib-GIO-ERROR **: 21:52:31.799: Settings schema 'io.github.tobagin.keysmith.Devel.tunneling' does not contain a key named 'saved-tunnels'
+(io.github.tobagin.keysmith.Devel:2): GLib-CRITICAL **: 23:11:19.443: Source ID 4860 was not found when attempting to remove it
+KeySelectionManager: Clearing available keys
+populate_single_key_combo: available_keys.length=0
+has_any_key_selected: selected_count=0, available_count=0
+has_any_key_selected: returning false
+has_any_key_selected: selected_count=0, available_count=0
+has_any_key_selected: returning false
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=false, can_create=false
+Set single_key_combo.selected = -1 (no keys)
+has_any_key_selected: selected_count=0, available_count=0
+has_any_key_selected: returning false
+has_any_key_selected: selected_count=0, available_count=0
+has_any_key_selected: returning false
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=false, can_create=false
+CreateBackupDialog: Found SSH key pair: id_ed25519
+CreateBackupDialog: Processing key id_ed25519
+CreateBackupDialog: Getting key properties for id_ed25519
+populate_single_key_combo: available_keys.length=0
+has_any_key_selected: selected_count=0, available_count=0
+has_any_key_selected: returning false
+has_any_key_selected: selected_count=0, available_count=0
+has_any_key_selected: returning false
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=false, can_create=false
+Set single_key_combo.selected = -1 (no keys)
+has_any_key_selected: selected_count=0, available_count=0
+has_any_key_selected: returning false
+has_any_key_selected: selected_count=0, available_count=0
+has_any_key_selected: returning false
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=false, can_create=false
+CreateBackupDialog: Got properties - type=0, fingerprint=SHA256:5og0WHosJU7BCDGHDOB9zbONgKQ8sg8Dinrpw5tjyfI
+CreateBackupDialog: Creating SSH key object for id_ed25519
+CreateBackupDialog: Adding key to manager: id_ed25519
+KeySelectionManager: Adding available key: id_ed25519
+KeySelectionManager: Clearing selection
+has_any_key_selected: selected_count=0, available_count=1
+has_any_key_selected: returning false
+has_any_key_selected: selected_count=0, available_count=1
+has_any_key_selected: returning false
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=false, can_create=false
+CreateBackupDialog: Populating 1 keys
+KeySelectionManager: Selecting key: id_ed25519
+has_any_key_selected: selected_count=1, available_count=1
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=1, available_count=1
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+populate_single_key_combo: available_keys.length=1
+Added key to combo: id_ed25519 (ed25519)
+has_any_key_selected: selected_count=1, available_count=1
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=1, available_count=1
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+Set single_key_combo.selected = 0
+has_any_key_selected: selected_count=1, available_count=1
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=1, available_count=1
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+CreateBackupDialog: Successfully added key id_ed25519, count now: 1
+CreateBackupDialog: Found SSH key pair: id_rsa_20250903_140556
+CreateBackupDialog: Processing key id_rsa_20250903_140556
+CreateBackupDialog: Getting key properties for id_rsa_20250903_140556
+CreateBackupDialog: Got properties - type=1, fingerprint=SHA256:fTTqcoWB0b6iO98O9arCEdT+niHMc1iReLvmJ5waDc4
+CreateBackupDialog: Creating SSH key object for id_rsa_20250903_140556
+CreateBackupDialog: Adding key to manager: id_rsa_20250903_140556
+KeySelectionManager: Adding available key: id_rsa_20250903_140556
+KeySelectionManager: Clearing selection
+has_any_key_selected: selected_count=0, available_count=2
+has_any_key_selected: returning false
+has_any_key_selected: selected_count=0, available_count=2
+has_any_key_selected: returning false
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=false, can_create=false
+CreateBackupDialog: Populating 2 keys
+KeySelectionManager: Selecting key: id_ed25519
+has_any_key_selected: selected_count=1, available_count=2
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=1, available_count=2
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+KeySelectionManager: Selecting key: id_rsa_20250903_140556
+has_any_key_selected: selected_count=2, available_count=2
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=2, available_count=2
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+populate_single_key_combo: available_keys.length=2
+Added key to combo: id_ed25519 (ed25519)
+Added key to combo: id_rsa_20250903_140556 (rsa)
+has_any_key_selected: selected_count=2, available_count=2
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=2, available_count=2
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+Set single_key_combo.selected = 0
+has_any_key_selected: selected_count=2, available_count=2
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=2, available_count=2
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+CreateBackupDialog: Successfully added key id_rsa_20250903_140556, count now: 2
+CreateBackupDialog: Found SSH key pair: id_ecdsa_521_20250908_161701
+CreateBackupDialog: Processing key id_ecdsa_521_20250908_161701
+CreateBackupDialog: Getting key properties for id_ecdsa_521_20250908_161701
+CreateBackupDialog: Got properties - type=2, fingerprint=SHA256:AZQCT9Uyx4A+/zgeFI0Dkuoj+GP3Q9swbeJ3WLKyeWg
+CreateBackupDialog: Creating SSH key object for id_ecdsa_521_20250908_161701
+CreateBackupDialog: Adding key to manager: id_ecdsa_521_20250908_161701
+KeySelectionManager: Adding available key: id_ecdsa_521_20250908_161701
+KeySelectionManager: Clearing selection
+has_any_key_selected: selected_count=0, available_count=3
+has_any_key_selected: returning false
+has_any_key_selected: selected_count=0, available_count=3
+has_any_key_selected: returning false
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=false, can_create=false
+CreateBackupDialog: Populating 3 keys
+KeySelectionManager: Selecting key: id_ed25519
+has_any_key_selected: selected_count=1, available_count=3
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=1, available_count=3
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+KeySelectionManager: Selecting key: id_rsa_20250903_140556
+has_any_key_selected: selected_count=2, available_count=3
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=2, available_count=3
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+KeySelectionManager: Selecting key: id_ecdsa_521_20250908_161701
+has_any_key_selected: selected_count=3, available_count=3
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=3, available_count=3
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+populate_single_key_combo: available_keys.length=3
+Added key to combo: id_ed25519 (ed25519)
+Added key to combo: id_rsa_20250903_140556 (rsa)
+Added key to combo: id_ecdsa_521_20250908_161701 (ecdsa)
+has_any_key_selected: selected_count=3, available_count=3
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=3, available_count=3
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+Set single_key_combo.selected = 0
+has_any_key_selected: selected_count=3, available_count=3
+has_any_key_selected: returning true
+has_any_key_selected: selected_count=3, available_count=3
+has_any_key_selected: returning true
+ENCRYPTED_ARCHIVE: has_name=true, has_keys=true, can_create=true
+CreateBackupDialog: Successfully added key id_ecdsa_521_20250908_161701, count now: 3
+CreateBackupDialog: Successfully loaded 3 SSH key pairs
+BACKUP_TYPE_CHANGE_START: available_keys.length=3
+BACKUP_TYPE_CHANGED: Secret Sharing, available_keys.length=3
+has_any_key_selected: selected_count=3, available_count=3
+has_any_key_selected: returning true

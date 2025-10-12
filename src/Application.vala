@@ -13,7 +13,6 @@ namespace KeyMaker {
     public class Application : Adw.Application {
         
         public KeyMaker.Window? window = null;
-        private Settings settings;
 
         public Application () {
             Object (
@@ -59,16 +58,13 @@ namespace KeyMaker {
         }
         
         private void setup_settings () {
-            // Get GSettings
-            settings = new Settings (Config.APP_ID);
-            
             // Apply initial theme
-            var theme = settings.get_string ("theme");
+            var theme = SettingsManager.theme;
             apply_theme (theme);
-            
+
             // Listen for theme changes
-            settings.changed["theme"].connect ((key) => {
-                var new_theme = settings.get_string (key);
+            SettingsManager.app.changed["theme"].connect ((key) => {
+                var new_theme = SettingsManager.app.get_string (key);
                 apply_theme (new_theme);
             });
         }
@@ -90,12 +86,12 @@ namespace KeyMaker {
         }
         
         private bool should_show_release_notes () {
-            var last_version = settings.get_string ("last-version-shown");
+            var last_version = SettingsManager.last_version_shown;
             var current_version = Config.VERSION;
 
             // Show if this is the first run (empty last version) or version has changed
             if (last_version == "" || last_version != current_version) {
-                settings.set_string ("last-version-shown", current_version);
+                SettingsManager.last_version_shown = current_version;
                 return true;
             }
             return false;

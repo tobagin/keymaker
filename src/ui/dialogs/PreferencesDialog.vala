@@ -41,8 +41,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
     
     [GtkChild]
     private unowned Adw.ComboRow preferred_terminal_row;
-    
-    private Settings settings;
+
     private Gtk.StringList theme_model;
     private Gtk.StringList key_type_model;
     private Gtk.StringList rsa_bits_model;
@@ -54,13 +53,6 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
     }
     
     construct {
-        // Get settings
-#if DEVELOPMENT
-        settings = new Settings ("io.github.tobagin.keysmith.Devel");
-#else
-        settings = new Settings ("io.github.tobagin.keysmith");
-#endif
-        
         // Setup theme model
         theme_model = new Gtk.StringList (null);
         theme_model.append (_("Follow System"));
@@ -117,7 +109,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
     
     private void load_settings () {
         // Load theme setting
-        var theme = settings.get_string ("theme");
+        var theme = SettingsManager.theme;
         switch (theme) {
             case "light":
                 theme_row.set_selected (1);
@@ -131,7 +123,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         }
         
         // Load default key type
-        var default_key_type = settings.get_string ("default-key-type");
+        var default_key_type = SettingsManager.default_key_type;
         switch (default_key_type) {
             case "rsa":
                 default_key_type_row.set_selected (1);
@@ -145,7 +137,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         }
         
         // Load default RSA bits
-        var default_rsa_bits = settings.get_int ("default-rsa-bits");
+        var default_rsa_bits = SettingsManager.default_rsa_bits;
         switch (default_rsa_bits) {
             case 2048:
                 default_rsa_bits_row.set_selected (0);
@@ -165,27 +157,27 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         }
         
         // Load default comment
-        var default_comment = settings.get_string ("default-comment");
+        var default_comment = SettingsManager.default_comment;
         default_comment_row.set_text (default_comment);
         
         // Load use passphrase by default
-        var use_passphrase_by_default = settings.get_boolean ("use-passphrase-by-default");
+        var use_passphrase_by_default = SettingsManager.use_passphrase_by_default;
         use_passphrase_by_default_row.set_active (use_passphrase_by_default);
         
         // Load auto refresh interval
-        var auto_refresh_interval = settings.get_int ("auto-refresh-interval");
+        var auto_refresh_interval = SettingsManager.auto_refresh_interval;
         auto_refresh_interval_row.set_value (auto_refresh_interval);
         
         // Load confirm deletions
-        var confirm_deletions = settings.get_boolean ("confirm-deletions");
+        var confirm_deletions = SettingsManager.confirm_deletions;
         confirm_deletions_row.set_active (confirm_deletions);
         
         // Load show fingerprints
-        var show_fingerprints = settings.get_boolean ("show-fingerprints");
+        var show_fingerprints = SettingsManager.show_fingerprints;
         show_fingerprints_row.set_active (show_fingerprints);
         
         // Load preferred terminal
-        var preferred_terminal = settings.get_string ("preferred-terminal");
+        var preferred_terminal = SettingsManager.preferred_terminal;
         var terminal_index = 0; // Default to "Auto"
         switch (preferred_terminal) {
             case "alacritty":
@@ -244,7 +236,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
                 theme = "auto";
                 break;
         }
-        settings.set_string ("theme", theme);
+        SettingsManager.theme = theme;
     }
     
     private void on_default_key_type_changed () {
@@ -260,7 +252,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
                 key_type = "ed25519";
                 break;
         }
-        settings.set_string ("default-key-type", key_type);
+        SettingsManager.default_key_type = key_type;
     }
     
     private void on_default_rsa_bits_changed () {
@@ -282,22 +274,22 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
                 rsa_bits = 4096;
                 break;
         }
-        settings.set_int ("default-rsa-bits", rsa_bits);
+        SettingsManager.default_rsa_bits = rsa_bits;
     }
     
     private void on_default_comment_changed () {
         var comment = default_comment_row.get_text ();
-        settings.set_string ("default-comment", comment);
+        SettingsManager.default_comment = comment;
     }
     
     private void on_use_passphrase_by_default_changed () {
         var active = use_passphrase_by_default_row.get_active ();
-        settings.set_boolean ("use-passphrase-by-default", active);
+        SettingsManager.use_passphrase_by_default = active;
     }
     
     private void on_auto_refresh_interval_changed () {
         var value = (int) auto_refresh_interval_row.get_value ();
-        settings.set_int ("auto-refresh-interval", value);
+        SettingsManager.auto_refresh_interval = value;
     }
     
     private void on_confirm_deletions_changed () {
@@ -307,7 +299,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
             // Warn user about disabling delete confirmations
             show_deletion_warning.begin ();
         } else {
-            settings.set_boolean ("confirm-deletions", active);
+            SettingsManager.confirm_deletions = active;
         }
     }
     
@@ -327,7 +319,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         
         if (response == "disable") {
             // User confirmed, disable confirmations
-            settings.set_boolean ("confirm-deletions", false);
+            SettingsManager.confirm_deletions = false;
         } else {
             // User canceled, restore the switch to on
             confirm_deletions_row.set_active (true);
@@ -336,7 +328,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
     
     private void on_show_fingerprints_changed () {
         var active = show_fingerprints_row.get_active ();
-        settings.set_boolean ("show-fingerprints", active);
+        SettingsManager.show_fingerprints = active;
     }
     
     private void on_preferred_terminal_changed () {
@@ -382,6 +374,6 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
                 terminal = "auto";
                 break;
         }
-        settings.set_string ("preferred-terminal", terminal);
+        SettingsManager.preferred_terminal = terminal;
     }
 }

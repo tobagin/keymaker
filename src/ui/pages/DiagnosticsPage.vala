@@ -73,7 +73,7 @@ public class KeyMaker.DiagnosticsPage : Adw.Bin {
             var entry = new DiagnosticEntry(config);
             active_diagnostics.add(entry);
             save_diagnostics_data();
-            if (auto_run || SettingsManager.get_auto_run_diagnostics()) {
+            if (auto_run || SettingsManager.auto_run_diagnostics) {
                 start_diagnostic(entry);
             }
             refresh_displays();
@@ -680,7 +680,7 @@ public class KeyMaker.DiagnosticsPage : Adw.Bin {
         var new_entry = new DiagnosticEntry(history_entry.config);
         active_diagnostics.add(new_entry);
         
-        if (SettingsManager.get_auto_run_diagnostics()) {
+        if (SettingsManager.auto_run_diagnostics) {
             start_diagnostic(new_entry);
         }
         

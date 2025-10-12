@@ -32,7 +32,6 @@ public class KeyMaker.KeysPage : Adw.Bin {
     
     private GenericArray<KeyMaker.KeyRowWidget> key_rows;
     private GenericArray<SSHKey> ssh_keys;
-    private Settings settings;
     private Cancellable? refresh_cancellable;
     private KeyMaker.SSHAgent? ssh_agent;
     
@@ -47,13 +46,6 @@ public class KeyMaker.KeysPage : Adw.Bin {
     public signal void show_toast_requested (string message);
     
     construct {
-        // Initialize settings
-#if DEVELOPMENT
-        settings = new Settings ("io.github.tobagin.keysmith.Devel");
-#else
-        settings = new Settings ("io.github.tobagin.keysmith");
-#endif
-        
         // Initialize arrays
         ssh_keys = new GenericArray<SSHKey> ();
         key_rows = new GenericArray<KeyMaker.KeyRowWidget> ();

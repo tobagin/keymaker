@@ -109,17 +109,11 @@ namespace KeyMaker {
     
     public class KeyServiceMappingManager : GLib.Object {
         private GenericArray<KeyServiceMapping> mappings;
-        private Settings settings;
         private string settings_key = "key-service-mappings";
-        
+
         public signal void mappings_changed ();
-        
+
         construct {
-#if DEVELOPMENT
-            settings = new Settings ("io.github.tobagin.keysmith.Devel");
-#else
-            settings = new Settings ("io.github.tobagin.keysmith");
-#endif
             mappings = new GenericArray<KeyServiceMapping> ();
             load_mappings ();
         }
@@ -256,7 +250,7 @@ namespace KeyMaker {
         
         private void load_mappings () {
             try {
-                var variant = settings.get_value (settings_key);
+                var variant = SettingsManager.get_key_service_mappings ();
                 if (variant.get_type_string () == "aa{sv}") {
                     var n_children = (int) variant.n_children ();
                     
@@ -296,7 +290,7 @@ namespace KeyMaker {
                 }
                 
                 var variant = new Variant ("aa{sv}", builder);
-                settings.set_value (settings_key, variant);
+                SettingsManager.set_key_service_mappings (variant);
                 
             } catch (Error e) {
                 warning ("Failed to save key-service mappings: %s", e.message);

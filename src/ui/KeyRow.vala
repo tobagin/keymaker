@@ -37,8 +37,7 @@ public class KeyMaker.KeyRowWidget : Adw.ActionRow {
     private unowned Gtk.Button delete_button;
     
     public SSHKey ssh_key { get; construct; }
-    private Settings settings;
-    
+
     // Signals
     public signal void copy_requested (SSHKey ssh_key);
     public signal void delete_requested (SSHKey ssh_key);
@@ -52,15 +51,8 @@ public class KeyMaker.KeyRowWidget : Adw.ActionRow {
     }
     
     construct {
-        // Get settings
-#if DEVELOPMENT
-        settings = new Settings ("io.github.tobagin.keysmith.Devel");
-#else
-        settings = new Settings ("io.github.tobagin.keysmith");
-#endif
-        
         // Listen for settings changes
-        settings.changed["show-fingerprints"].connect (() => {
+        SettingsManager.app.changed["show-fingerprints"].connect (() => {
             update_display ();
         });
         
@@ -83,7 +75,7 @@ public class KeyMaker.KeyRowWidget : Adw.ActionRow {
         set_title (ssh_key.get_display_name ());
         
         // Build subtitle based on settings
-        var show_fingerprints = settings.get_boolean ("show-fingerprints");
+        var show_fingerprints = SettingsManager.show_fingerprints;
         var subtitle_parts = new GenericArray<string> ();
         
         if (show_fingerprints) {

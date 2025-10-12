@@ -189,7 +189,7 @@ public class KeyMaker.DiagnosticConfigurationDialog : Adw.Dialog {
         custom_hostname_entry.notify["text"].connect(validate_form);
         
         // Setup auto-run switch from settings
-        auto_run_switch.active = SettingsManager.get_auto_run_diagnostics();
+        auto_run_switch.active = SettingsManager.auto_run_diagnostics;
         
         // Initialize form with type-specific defaults
         setup_form_for_type();

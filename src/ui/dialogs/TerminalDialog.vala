@@ -38,27 +38,36 @@ public class KeyMaker.TerminalDialog : Adw.Dialog {
     public signal void terminal_closed ();
     
     public TerminalDialog (Gtk.Window parent, string host_name, string ssh_command) {
+        print ("🏗️ TerminalDialog constructor called for host: %s\n", host_name ?? "null");
         Object ();
-        
+
         this.host_name = host_name ?? "unknown";
         this.ssh_command = ssh_command ?? "ssh";
-        
+
+        print ("📝 TerminalDialog properties set: host_name=%s, ssh_command=%s\n", this.host_name, this.ssh_command);
+
         // Schedule the connection start and UI setup for after construction completes
         Idle.add (() => {
+            print ("⏰ Idle callback executing post_construction_setup\n");
             post_construction_setup ();
             return false;
         });
+        print ("✅ TerminalDialog constructor completed\n");
     }
-    
+
     construct {
+        print ("🔧 TerminalDialog construct block started\n");
         setup_terminal ();
         setup_actions ();
         setup_signals ();
+        print ("✅ TerminalDialog construct block completed\n");
     }
     
     private void setup_terminal () {
+        print ("🖥️  setup_terminal() started\n");
         // Create VTE terminal
         terminal = new Vte.Terminal ();
+        print ("✅ VTE Terminal created\n");
         
         // Configure terminal appearance
         terminal.set_size_request (800, 600);
@@ -79,8 +88,10 @@ public class KeyMaker.TerminalDialog : Adw.Dialog {
         terminal.set_allow_hyperlink (true);
         
         // Add terminal to container
+        print ("📦 Adding terminal to container\n");
         terminal_container.append (terminal);
-        
+        print ("✅ Terminal added to container\n");
+
         // Watch for theme changes
         var style_manager = Adw.StyleManager.get_default ();
         style_manager.notify["dark"].connect (() => {
@@ -162,33 +173,45 @@ public class KeyMaker.TerminalDialog : Adw.Dialog {
     }
     
     private void post_construction_setup () {
+        print ("🎯 post_construction_setup() started\n");
+
         // Update window title now that we have the hostname
         var safe_host = host_name ?? "Unknown Host";
-        window_title.title = "SSH Terminal - " + safe_host;
-        
+        if (window_title != null) {
+            print ("📝 Setting window title to: SSH Terminal - %s\n", safe_host);
+            window_title.title = "SSH Terminal - " + safe_host;
+        } else {
+            print ("⚠️  window_title is null!\n");
+        }
+
         // Start SSH connection now that everything is properly initialized
+        print ("🚀 Calling start_ssh_connection()\n");
         start_ssh_connection ();
+        print ("✅ post_construction_setup() completed\n");
     }
-    
+
     private void start_ssh_connection () {
+        print ("🔌 start_ssh_connection() started for host: %s\n", host_name);
         try {
             status_label.label = "Connecting...";
             connection_status.label = "Connecting";
             connection_status.remove_css_class ("success");
             connection_status.remove_css_class ("error");
             connection_status.add_css_class ("warning");
-            
+
             // Ensure host_name is not null or empty
             if (host_name == null || host_name.strip () == "") {
+                print ("❌ Invalid hostname: '%s'\n", host_name ?? "(null)");
                 show_connection_error ("Invalid hostname provided: '" + (host_name ?? "(null)") + "'");
                 return;
             }
-            
+
             var argv = new string[] { "ssh", host_name };
             var env = Environ.get ();
-            
+
             var spawn_flags = GLib.SpawnFlags.SEARCH_PATH;
-            
+
+            print ("📡 Spawning SSH process: ssh %s\n", host_name);
             // Try synchronous spawn for better error handling
             try {
                 terminal.spawn_sync (
@@ -200,14 +223,16 @@ public class KeyMaker.TerminalDialog : Adw.Dialog {
                     null, // child setup
                     null  // cancellable
                 );
-                
+
+                print ("✅ SSH spawn succeeded!\n");
                 // If we get here, spawn was successful
                 status_label.label = "SSH terminal started for " + (host_name ?? "unknown host");
                 connection_status.label = "Connected";
                 connection_status.remove_css_class ("warning");
                 connection_status.add_css_class ("success");
-                
+
             } catch (Error spawn_error) {
+                print ("❌ SSH spawn failed: %s\n", spawn_error.message);
                 var error_msg = spawn_error.message ?? "Failed to start SSH process";
                 status_label.label = "Failed to connect: " + error_msg;
                 connection_status.label = "Failed";
@@ -216,8 +241,9 @@ public class KeyMaker.TerminalDialog : Adw.Dialog {
                 show_connection_error (error_msg);
                 return;
             }
-            
+
         } catch (Error e) {
+            print ("❌ Outer exception in start_ssh_connection: %s\n", e.message);
             var error_msg = e.message ?? "Unknown error";
             status_label.label = "Failed to start terminal: " + error_msg;
             connection_status.label = "Error";

@@ -21,12 +21,6 @@ namespace KeyMaker {
         private const int DEFAULT_DIGITS = 6;  // 6 digit codes
         private const int WINDOW_SIZE = 1;      // Allow 1 step before/after current time
         
-        private Settings settings;
-        
-        construct {
-            settings = new Settings (Config.APP_ID);
-        }
-        
         /**
          * Generate a new TOTP secret for a backup
          */
