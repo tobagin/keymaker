@@ -381,8 +381,7 @@ public class KeyMaker.BackupPage : Adw.Bin {
         
         alert.response.connect ((response) => {
             if (response == "remove") {
-                // TODO: Implement remove all regular backups
-                show_toast_requested ("Remove all regular backups");
+                remove_all_regular_backups.begin ();
             }
         });
         
@@ -400,8 +399,7 @@ public class KeyMaker.BackupPage : Adw.Bin {
         
         alert.response.connect ((response) => {
             if (response == "remove") {
-                // TODO: Implement remove all emergency backups with authentication
-                show_toast_requested ("Remove all emergency backups");
+                show_emergency_auth_and_delete_all ();
             }
         });
         
@@ -424,8 +422,18 @@ public class KeyMaker.BackupPage : Adw.Bin {
     
     // Action methods
     private void show_regular_backup_details (RegularBackupEntry backup) {
-        // TODO: Implement backup details dialog
-        show_toast_requested (@"Show regular backup details: $(backup.name)");
+        var window = get_root () as Gtk.Window;
+        var dialog = new BackupDetailsDialog (backup, backup_manager);
+
+        dialog.restore_requested.connect ((b) => {
+            restore_regular_backup (b);
+        });
+
+        dialog.delete_requested.connect ((b) => {
+            delete_regular_backup (b);
+        });
+
+        dialog.present (window);
     }
     
     private void restore_regular_backup (RegularBackupEntry backup) {
@@ -459,8 +467,18 @@ public class KeyMaker.BackupPage : Adw.Bin {
     }
     
     private void show_emergency_backup_details (EmergencyBackupEntry backup) {
-        // TODO: Implement emergency backup details dialog
-        show_toast_requested (@"Show emergency backup details: $(backup.name)");
+        var window = get_root () as Gtk.Window;
+        var dialog = new EmergencyBackupDetailsDialog (backup, emergency_vault);
+
+        dialog.restore_requested.connect ((b) => {
+            restore_emergency_backup (b);
+        });
+
+        dialog.delete_requested.connect ((b) => {
+            delete_emergency_backup (b);
+        });
+
+        dialog.present (window);
     }
     
     private void restore_emergency_backup (EmergencyBackupEntry backup) {
@@ -481,8 +499,7 @@ public class KeyMaker.BackupPage : Adw.Bin {
         
         alert.response.connect ((response) => {
             if (response == "continue") {
-                // TODO: Implement authentication dialog for emergency backup deletion
-                show_toast_requested (@"Delete emergency backup with authentication: $(backup.name)");
+                show_emergency_auth_and_delete_single (backup);
             }
         });
         
@@ -496,5 +513,86 @@ public class KeyMaker.BackupPage : Adw.Bin {
         error_dialog.add_response ("ok", "OK");
         error_dialog.set_default_response ("ok");
         error_dialog.present (window);
+    }
+
+    // New bulk deletion methods
+    private async void remove_all_regular_backups () {
+        var result = yield backup_manager.remove_all_regular_backups ();
+
+        populate_regular_backups_list ();
+
+        var window = get_root () as Gtk.Window;
+        BackupHelpers.show_bulk_delete_result (window, result, "regular backups");
+
+        if (result.all_succeeded ()) {
+            show_toast_requested (@"Deleted all $(result.success_count) regular backups");
+        }
+    }
+
+    private void show_emergency_auth_and_delete_all () {
+        var window = get_root () as Gtk.Window;
+        var auth_dialog = new EmergencyBackupAuthDialog ("Delete All Emergency Backups", "All emergency backups");
+
+        auth_dialog.authentication_result.connect ((success, password) => {
+            if (success && password != null) {
+                // Attempt deletion with password
+                remove_all_emergency_backups.begin (password, auth_dialog);
+            }
+        });
+
+        auth_dialog.present (window);
+    }
+
+    private async void remove_all_emergency_backups (string password, EmergencyBackupAuthDialog auth_dialog) {
+        try {
+            var result = yield emergency_vault.remove_all_emergency_backups (password);
+
+            auth_dialog.handle_auth_result (result.success_count > 0);
+
+            if (result.success_count > 0) {
+                populate_emergency_backups_list ();
+
+                var window = get_root () as Gtk.Window;
+                BackupHelpers.show_bulk_delete_result (window, result, "emergency backups");
+
+                if (result.all_succeeded ()) {
+                    show_toast_requested (@"Deleted all $(result.success_count) emergency backups");
+                }
+            }
+
+        } catch (Error e) {
+            auth_dialog.handle_auth_result (false);
+            show_error ("Deletion Failed", e.message);
+        }
+    }
+
+    private void show_emergency_auth_and_delete_single (EmergencyBackupEntry backup) {
+        var window = get_root () as Gtk.Window;
+        var auth_dialog = new EmergencyBackupAuthDialog ("Delete Emergency Backup", backup.name);
+
+        auth_dialog.authentication_result.connect ((success, password) => {
+            if (success && password != null) {
+                delete_emergency_backup_with_auth.begin (backup, password, auth_dialog);
+            }
+        });
+
+        auth_dialog.present (window);
+    }
+
+    private async void delete_emergency_backup_with_auth (EmergencyBackupEntry backup, string password, EmergencyBackupAuthDialog auth_dialog) {
+        try {
+            bool deleted = yield emergency_vault.delete_backup (backup, password);
+
+            auth_dialog.handle_auth_result (deleted);
+
+            if (deleted) {
+                populate_emergency_backups_list ();
+                show_toast_requested (@"Emergency backup '$(backup.name)' deleted");
+            }
+
+        } catch (Error e) {
+            auth_dialog.handle_auth_result (false);
+            show_error ("Deletion Failed", e.message);
+        }
     }
 }

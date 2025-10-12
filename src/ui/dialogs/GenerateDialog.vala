@@ -65,6 +65,7 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
     // Signals
     public signal void key_generated (SSHKey ssh_key);
     public signal void key_list_needs_refresh ();
+    public signal void show_toast_requested (string message);
     
     
     public GenerateKeyDialog (Gtk.Window parent) {
@@ -400,10 +401,8 @@ public class KeyMaker.GenerateKeyDialog : Adw.Dialog {
     }
     
     private void show_toast (string message) {
-        var toast = new Adw.Toast (message) {
-            timeout = 5
-        };
-        // toast_overlay.add_toast (toast); // TODO: Fix toast implementation
+        // Emit signal to parent window to show toast
+        show_toast_requested (message);
     }
     
     private async void show_name_conflict_dialog_async (string filename) {

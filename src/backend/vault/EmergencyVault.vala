@@ -726,17 +726,28 @@ namespace KeyMaker {
                 "qrencode",
                 "-o", qr_file.get_path(),
                 "-s", "10",
-                "-m", "2", 
+                "-m", "2",
                 "-l", "H",
                 "-t", "PNG",
                 data
             };
-            
-            var subprocess = new Subprocess.newv (cmd, SubprocessFlags.STDERR_PIPE);
-            yield subprocess.wait_async ();
-            
-            if (subprocess.get_exit_status () != 0) {
-                throw new Error (Quark.from_string ("QRError"), 0, "Failed to generate QR code");
+
+            try {
+                // Use Command utility with 15 second timeout for QR code processing
+                var result = yield KeyMaker.Command.run_capture_with_timeout (
+                    cmd,
+                    15000,  // 15 second timeout
+                    null
+                );
+
+                if (result.status != 0) {
+                    throw new KeyMakerError.OPERATION_FAILED (
+                        "Failed to generate QR code: %s",
+                        result.stderr.strip ()
+                    );
+                }
+            } catch (KeyMakerError e) {
+                throw new Error (Quark.from_string ("QRError"), 0, e.message);
             }
             
             return qr_file;
@@ -744,20 +755,31 @@ namespace KeyMaker {
         
         private async void generate_qr_code_to_file (string data, File output_file) throws Error {
             string[] cmd = {
-                "qrencode", 
+                "qrencode",
                 "-o", output_file.get_path(),
                 "-s", "8",
                 "-m", "2",
-                "-l", "H", 
+                "-l", "H",
                 "-t", "PNG",
                 data
             };
-            
-            var subprocess = new Subprocess.newv (cmd, SubprocessFlags.STDERR_PIPE);
-            yield subprocess.wait_async ();
-            
-            if (subprocess.get_exit_status () != 0) {
-                throw new Error (Quark.from_string ("QRError"), 0, "Failed to generate QR code");
+
+            try {
+                // Use Command utility with 15 second timeout for QR code processing
+                var result = yield KeyMaker.Command.run_capture_with_timeout (
+                    cmd,
+                    15000,  // 15 second timeout
+                    null
+                );
+
+                if (result.status != 0) {
+                    throw new KeyMakerError.OPERATION_FAILED (
+                        "Failed to generate QR code: %s",
+                        result.stderr.strip ()
+                    );
+                }
+            } catch (KeyMakerError e) {
+                throw new Error (Quark.from_string ("QRError"), 0, e.message);
             }
         }
         
@@ -1317,7 +1339,53 @@ namespace KeyMaker {
             }
             return false;
         }
-        
+
+        /**
+         * Remove all emergency backups with authentication
+         * Requires authentication with same method as restore
+         * Returns number of successfully deleted backups and array of errors
+         */
+        public async BulkDeleteResult remove_all_emergency_backups (string? password = null,
+                                                                     GenericArray<string>? totp_codes = null,
+                                                                     GenericArray<string>? shamir_shares = null) throws KeyMakerError {
+            var result = new BulkDeleteResult ();
+            var errors = new GenericArray<string> ();
+
+            // Copy backup list to avoid modification during iteration
+            var backups_to_delete = new GenericArray<EmergencyBackupEntry> ();
+            for (int i = 0; i < backups.length; i++) {
+                backups_to_delete.add (backups[i]);
+            }
+
+            result.total_count = backups_to_delete.length;
+
+            for (int i = 0; i < backups_to_delete.length; i++) {
+                var backup = backups_to_delete[i];
+
+                try {
+                    // Attempt to delete with authentication
+                    bool deleted = yield delete_backup (backup, password, totp_codes, shamir_shares);
+
+                    if (deleted) {
+                        result.success_count++;
+                    } else {
+                        result.error_count++;
+                        errors.add (@"Failed to delete '$(backup.name)': Authentication failed");
+                    }
+
+                } catch (Error e) {
+                    result.error_count++;
+                    errors.add (@"Failed to delete '$(backup.name)': $(e.message)");
+                    warning ("Failed to delete emergency backup '%s': %s", backup.name, e.message);
+                }
+            }
+
+            result.errors = errors;
+            vault_status_changed (get_vault_status ());
+
+            return result;
+        }
+
         // Legacy compatibility - convert EmergencyBackupEntry to BackupEntry for UI
         public GenericArray<BackupEntry> get_all_backups_legacy () {
             var legacy_backups = new GenericArray<BackupEntry> ();

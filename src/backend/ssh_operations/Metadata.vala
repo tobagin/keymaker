@@ -239,28 +239,32 @@ namespace KeyMaker {
         
         /**
          * Check if SSH key has a passphrase
+         *
+         * NOTE: This method uses direct Subprocess instead of Command utility because
+         * it requires stdin interaction (sending empty passphrase to ssh-keygen).
+         * This is an approved exception until Command utility supports stdin.
          */
         public static async bool has_passphrase (SSHKey ssh_key) throws KeyMakerError {
             try {
                 string[] cmd = {"ssh-keygen", "-y", "-f", ssh_key.private_path.get_path()};
-                
+
                 var subprocess = new Subprocess.newv (
                     cmd,
                     SubprocessFlags.STDIN_PIPE | SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE
                 );
-                
+
                 // Send empty passphrase
                 var stdin_stream = subprocess.get_stdin_pipe ();
                 var stdin_writer = new DataOutputStream (stdin_stream);
                 yield stdin_writer.write_async ("\n".data);
                 yield stdin_writer.close_async ();
-                
+
                 yield subprocess.wait_async ();
-                
+
                 // If exit status is 0, key has no passphrase
                 // If exit status != 0, key likely has a passphrase
                 return subprocess.get_exit_status () != 0;
-                
+
             } catch (Error e) {
                 // If there's an error running ssh-keygen, assume key has passphrase for safety
                 return true;

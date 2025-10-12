@@ -142,16 +142,19 @@ namespace KeyMaker {
         
         private async void start_tunnel_process () throws KeyMakerError {
             yield update_status(TunnelStatus.CONNECTING);
-            
+
             try {
                 var ssh_args = config.get_ssh_arguments();
                 string[] cmd = new string[ssh_args.length];
                 for (int i = 0; i < ssh_args.length; i++) {
                     cmd[i] = ssh_args[i];
                 }
-                
+
                 KeyMaker.Log.debug(KeyMaker.Log.Categories.TUNNELING, "SSH command: %s", string.joinv(" ", cmd));
-                
+
+                // NOTE: This uses direct Subprocess instead of Command utility because SSH tunnels
+                // run indefinitely as long-running background processes that need to be monitored.
+                // This is an approved exception until Command utility supports background processes.
                 process = new Subprocess.newv (cmd, SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
                 process_id = (int)process.get_identifier();
                 

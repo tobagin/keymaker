@@ -13,7 +13,25 @@
  */
 
 namespace KeyMaker {
-    
+
+    /**
+     * Result of bulk deletion operation
+     */
+    public class BulkDeleteResult : GLib.Object {
+        public int total_count { get; set; default = 0; }
+        public int success_count { get; set; default = 0; }
+        public int error_count { get; set; default = 0; }
+        public GenericArray<string> errors { get; set; default = new GenericArray<string> (); }
+
+        public bool has_errors () {
+            return error_count > 0;
+        }
+
+        public bool all_succeeded () {
+            return total_count > 0 && error_count == 0;
+        }
+    }
+
     public class BackupManager : GLib.Object {
         private File backup_directory;
         private GenericArray<RegularBackupEntry> backups;
@@ -925,7 +943,49 @@ namespace KeyMaker {
             }
             return false;
         }
-        
+
+        /**
+         * Remove all regular backups
+         * Returns number of successfully deleted backups and array of errors
+         */
+        public async BulkDeleteResult remove_all_regular_backups () {
+            var result = new BulkDeleteResult ();
+            var errors = new GenericArray<string> ();
+
+            // Copy backup list to avoid modification during iteration
+            var backups_to_delete = new GenericArray<RegularBackupEntry> ();
+            for (int i = 0; i < backups.length; i++) {
+                backups_to_delete.add (backups[i]);
+            }
+
+            result.total_count = backups_to_delete.length;
+
+            for (int i = 0; i < backups_to_delete.length; i++) {
+                var backup = backups_to_delete[i];
+
+                try {
+                    // Try to delete backup file
+                    if (backup.backup_file.query_exists ()) {
+                        backup.backup_file.delete ();
+                    }
+
+                    // Remove from list
+                    remove_backup (backup);
+                    result.success_count++;
+
+                } catch (Error e) {
+                    result.error_count++;
+                    errors.add (@"Failed to delete '$(backup.name)': $(e.message)");
+                    warning ("Failed to delete backup '%s': %s", backup.name, e.message);
+                }
+            }
+
+            result.errors = errors;
+            backup_manager_status_changed (get_status ());
+
+            return result;
+        }
+
         public void add_backup (RegularBackupEntry backup) {
             backups.add (backup);
             save_backup_metadata ();

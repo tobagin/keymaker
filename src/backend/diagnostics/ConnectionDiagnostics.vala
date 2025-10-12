@@ -796,12 +796,16 @@ namespace KeyMaker {
             }
             
             try {
-                var subprocess = new Subprocess.newv (cmd_list.data, SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
-                yield subprocess.wait_async (null);
-                
+                // Use Command utility with 10 second timeout for network operations
+                var result = yield KeyMaker.Command.run_capture_with_timeout (
+                    cmd_list.data,
+                    10000,  // 10 second timeout
+                    null
+                );
+
                 // If command succeeds (exit code 0), port forwarding is supported
-                return subprocess.get_exit_status () == 0;
-            } catch (Error e) {
+                return result.status == 0;
+            } catch (KeyMakerError e) {
                 return false;
             }
         }
@@ -846,17 +850,21 @@ namespace KeyMaker {
             
             // Test basic commands: whoami and pwd
             cmd_list.add ("whoami && pwd && ls -la ~/ > /dev/null");
-            
+
             try {
-                var subprocess = new Subprocess.newv (cmd_list.data, SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
-                yield subprocess.wait_async (null);
-                
-                if (subprocess.get_exit_status () == 0) {
+                // Use Command utility with 10 second timeout for network operations
+                var result = yield KeyMaker.Command.run_capture_with_timeout (
+                    cmd_list.data,
+                    10000,  // 10 second timeout
+                    null
+                );
+
+                if (result.status == 0) {
                     return new PermissionResult(true, "User permissions verified - can execute basic commands");
                 } else {
                     return new PermissionResult(false, "Limited permissions - some basic commands failed");
                 }
-            } catch (Error e) {
+            } catch (KeyMakerError e) {
                 return new PermissionResult(false, @"Permission test failed: $(e.message)");
             }
         }

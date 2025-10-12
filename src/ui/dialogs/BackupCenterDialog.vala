@@ -433,8 +433,7 @@ public class KeyMaker.BackupCenterDialog : Adw.Dialog {
         
         alert.response.connect ((response) => {
             if (response == "remove") {
-                // TODO: Implement remove all regular backups
-                print ("Remove all regular backups\n");
+                remove_all_regular_backups.begin ();
             }
         });
         
@@ -451,8 +450,7 @@ public class KeyMaker.BackupCenterDialog : Adw.Dialog {
         
         alert.response.connect ((response) => {
             if (response == "remove") {
-                // TODO: Implement remove all emergency backups with authentication
-                print ("Remove all emergency backups\n");
+                show_emergency_auth_and_delete_all ();
             }
         });
         
@@ -475,8 +473,17 @@ public class KeyMaker.BackupCenterDialog : Adw.Dialog {
     
     // Action methods
     private void show_regular_backup_details (RegularBackupEntry backup) {
-        // TODO: Implement backup details dialog
-        print ("Show regular backup details: %s\n", backup.name);
+        var dialog = new BackupDetailsDialog (backup, backup_manager);
+
+        dialog.restore_requested.connect ((b) => {
+            restore_regular_backup (b);
+        });
+
+        dialog.delete_requested.connect ((b) => {
+            delete_regular_backup (b);
+        });
+
+        dialog.present (this);
     }
     
     private void restore_regular_backup (RegularBackupEntry backup) {
@@ -508,8 +515,20 @@ public class KeyMaker.BackupCenterDialog : Adw.Dialog {
     }
     
     private void show_emergency_backup_details (BackupEntry backup) {
-        // TODO: Implement emergency backup details dialog
-        print ("Show emergency backup details: %s\n", backup.name);
+        // Convert legacy BackupEntry to EmergencyBackupEntry
+        var emergency_backup = convert_to_emergency_backup_entry (backup);
+
+        var dialog = new EmergencyBackupDetailsDialog (emergency_backup, emergency_vault);
+
+        dialog.restore_requested.connect ((b) => {
+            restore_emergency_backup (backup);
+        });
+
+        dialog.delete_requested.connect ((b) => {
+            delete_emergency_backup (backup);
+        });
+
+        dialog.present (this);
     }
     
     private void restore_emergency_backup (BackupEntry backup) {
@@ -541,8 +560,7 @@ public class KeyMaker.BackupCenterDialog : Adw.Dialog {
         
         alert.response.connect ((response) => {
             if (response == "continue") {
-                // TODO: Implement authentication dialog for emergency backup deletion
-                print ("Delete emergency backup with authentication: %s\n", backup.name);
+                show_emergency_auth_and_delete_single (backup);
             }
         });
         
@@ -616,6 +634,96 @@ public class KeyMaker.BackupCenterDialog : Adw.Dialog {
         error_dialog.add_response ("ok", "OK");
         error_dialog.set_default_response ("ok");
         error_dialog.present (this);
+    }
+
+    // New bulk deletion and helper methods
+    private async void remove_all_regular_backups () {
+        var result = yield backup_manager.remove_all_regular_backups ();
+
+        populate_regular_backups_list ();
+        update_regular_backup_stats ();
+        update_vault_health_indicator ();
+
+        BackupHelpers.show_bulk_delete_result (this.parent_window, result, "regular backups");
+    }
+
+    private void show_emergency_auth_and_delete_all () {
+        var auth_dialog = new EmergencyBackupAuthDialog ("Delete All Emergency Backups", "All emergency backups");
+
+        auth_dialog.authentication_result.connect ((success, password) => {
+            if (success && password != null) {
+                remove_all_emergency_backups.begin (password, auth_dialog);
+            }
+        });
+
+        auth_dialog.present (this);
+    }
+
+    private async void remove_all_emergency_backups (string password, EmergencyBackupAuthDialog auth_dialog) {
+        try {
+            var result = yield emergency_vault.remove_all_emergency_backups (password);
+
+            auth_dialog.handle_auth_result (result.success_count > 0);
+
+            if (result.success_count > 0) {
+                populate_emergency_backups_list ();
+                update_emergency_backup_stats ();
+                update_vault_health_indicator ();
+
+                BackupHelpers.show_bulk_delete_result (this.parent_window, result, "emergency backups");
+            }
+
+        } catch (Error e) {
+            auth_dialog.handle_auth_result (false);
+            show_error ("Deletion Failed", e.message);
+        }
+    }
+
+    private void show_emergency_auth_and_delete_single (BackupEntry backup) {
+        var auth_dialog = new EmergencyBackupAuthDialog ("Delete Emergency Backup", backup.name);
+
+        auth_dialog.authentication_result.connect ((success, password) => {
+            if (success && password != null) {
+                delete_emergency_backup_with_auth.begin (backup, password, auth_dialog);
+            }
+        });
+
+        auth_dialog.present (this);
+    }
+
+    private async void delete_emergency_backup_with_auth (BackupEntry backup, string password, EmergencyBackupAuthDialog auth_dialog) {
+        try {
+            // Convert to EmergencyBackupEntry for deletion
+            var emergency_backup = convert_to_emergency_backup_entry (backup);
+            bool deleted = yield emergency_vault.delete_backup (emergency_backup, password);
+
+            auth_dialog.handle_auth_result (deleted);
+
+            if (deleted) {
+                populate_emergency_backups_list ();
+                update_emergency_backup_stats ();
+                update_vault_health_indicator ();
+            }
+
+        } catch (Error e) {
+            auth_dialog.handle_auth_result (false);
+            show_error ("Deletion Failed", e.message);
+        }
+    }
+
+    private EmergencyBackupEntry convert_to_emergency_backup_entry (BackupEntry backup) {
+        var emergency_backup = new EmergencyBackupEntry (backup.name, EmergencyBackupType.ENCRYPTED_ARCHIVE);
+        emergency_backup.created_at = backup.created_at;
+        emergency_backup.expires_at = backup.expires_at;
+        emergency_backup.backup_file = backup.backup_file;
+        emergency_backup.key_fingerprints = backup.key_fingerprints;
+        emergency_backup.is_encrypted = backup.is_encrypted;
+        emergency_backup.description = backup.description;
+        emergency_backup.file_size = backup.file_size;
+        emergency_backup.checksum = backup.checksum;
+        emergency_backup.shamir_total_shares = backup.shamir_total_shares;
+        emergency_backup.shamir_threshold = backup.shamir_threshold;
+        return emergency_backup;
     }
 }
 

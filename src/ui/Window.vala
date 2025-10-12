@@ -123,6 +123,7 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         var dialog = new KeyMaker.GenerateKeyDialog (this);
         dialog.key_generated.connect (on_key_generated);
         dialog.key_list_needs_refresh.connect (on_key_list_refresh_needed);
+        dialog.show_toast_requested.connect (show_toast);
         dialog.present (this);
     }
     
