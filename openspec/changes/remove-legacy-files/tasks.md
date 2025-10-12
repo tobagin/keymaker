@@ -24,9 +24,9 @@
 - [x] 4.3 Update executive summary showing reduced technical debt
 
 ## 5. Git Commit
-- [ ] 5.1 Stage deleted files: `git add src/backend/EmergencyVaultOld.vala src/ui/dialogs/KeyRotationDialogOld.vala`
-- [ ] 5.2 Create commit with message: "chore: Remove legacy -old.vala files"
-- [ ] 5.3 Verify commit shows files as deleted (not modified)
+- [x] 5.1 Stage deleted files: `git add src/backend/EmergencyVaultOld.vala src/ui/dialogs/KeyRotationDialogOld.vala`
+- [x] 5.2 Create commit with message: "chore: Remove legacy -old.vala files"
+- [x] 5.3 Verify commit shows files as deleted (not modified)
 
 ## Summary
 
@@ -45,5 +45,7 @@
 - [x] Files deleted from filesystem
 - [x] Build succeeds
 - [x] No broken imports
-- [ ] Git commit created
+- [x] Git commit created (3df3fe6)
 - [x] Documentation updated
+
+**Implementation Complete:** All 18 tasks completed successfully.
