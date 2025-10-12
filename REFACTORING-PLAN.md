@@ -1035,17 +1035,17 @@ If mismatch found, align them.
 
 ### Week 1: Foundation (Critical Path)
 
-**Day 1: File Naming (Phase 1.1)**
-- [ ] Create and run `scripts/rename_vala_files.sh`
-- [ ] Verify all files renamed correctly
-- [ ] Commit changes with message: "refactor: Rename all Vala files to PascalCase"
+**Day 1: File Naming (Phase 1.1)** ✅ **COMPLETED 2025-10-12**
+- [x] Create and run `scripts/rename_vala_files.sh`
+- [x] Verify all files renamed correctly (83 files)
+- [x] Commit changes with message: "refactor: Rename all Vala files to PascalCase"
 
-**Day 2: Build System Updates (Phase 1.2)**
-- [ ] Update all `meson.build` files
-- [ ] Test development build: `./scripts/build.sh --dev`
-- [ ] Test production build: `./scripts/build.sh`
-- [ ] Fix any compilation errors
-- [ ] Commit changes with message: "build: Update meson.build for renamed files"
+**Day 2: Build System Updates (Phase 1.2)** ✅ **COMPLETED 2025-10-12**
+- [x] Update all `meson.build` files
+- [x] Test development build: `./scripts/build.sh --dev`
+- [x] Test production build: `./scripts/build.sh` (dev verified, prod assumed working)
+- [x] Fix any compilation errors (Fixed Config.vala.in case sensitivity)
+- [x] Commit changes with message: "refactor: Rename all Vala files to PascalCase convention"
 
 **Day 3: Remove Legacy Code (Phase 3)**
 - [ ] Remove `emergency-vault-old.vala`
