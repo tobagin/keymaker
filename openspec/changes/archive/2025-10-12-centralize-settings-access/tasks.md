@@ -98,8 +98,8 @@
 ## 7. Documentation and Commit
 - [x] 7.1 Add code comments to SettingsManager documenting property usage
 - [x] 7.2 Update any relevant documentation mentioning Settings access patterns
-- [ ] 7.3 Commit changes with message: "refactor: Centralize settings access through SettingsManager"
-- [ ] 7.4 Verify git history shows file modifications (not renames)
+- [x] 7.3 Commit changes with message: "refactor: Centralize settings access through SettingsManager"
+- [x] 7.4 Verify git history shows file modifications (not renames)
 
 ## Notes
 
