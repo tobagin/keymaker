@@ -92,8 +92,7 @@ modules:
     sources:
       - type: git
         url: https://gitlab.gnome.org/GNOME/vte.git
-        tag: 0.82.1
-        commit: aa9b69140f48a019ccc72a3a27a1ddd85b9622ed
+        tag: 0.78.0
     cleanup:
       - /etc
       - /include
