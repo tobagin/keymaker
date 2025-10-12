@@ -429,22 +429,18 @@ public class ConnectionDiagnosticsRunnerDialog : Adw.Dialog {
         switch (result.status) {
             case TestStatus.PASSED:
                 status_icon.icon_name = "checkmark-symbolic";
-            status_icon.icon_size = LARGE;
                 status_icon.add_css_class ("success");
                 break;
             case TestStatus.FAILED:
                 status_icon.icon_name = "cross-symbolic";
-            status_icon.icon_size = LARGE;
                 status_icon.add_css_class ("error");
                 break;
             case TestStatus.WARNING:
                 status_icon.icon_name = "warning-symbolic";
-            status_icon.icon_size = LARGE;
                 status_icon.add_css_class ("warning");
                 break;
             case TestStatus.SKIPPED:
                 status_icon.icon_name = "minus-symbolic";
-            status_icon.icon_size = LARGE;
                 break;
         }
         row.add_prefix (status_icon);

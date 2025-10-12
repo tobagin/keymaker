@@ -73,6 +73,8 @@ ui_files = [
   'ssh_tunneling_dialog.blp',
   'create_tunnel_dialog.blp',
   'diagnostic_results_view_dialog.blp',
+  'diagnostic_configuration_dialog.blp',
+  'diagnostic_html_report_dialog.blp',
   'keys_page.blp',
   'hosts_page.blp',
   'backup_page.blp',

@@ -118,6 +118,39 @@ namespace KeyMaker {
         }
         
         /**
+         * Remove all draft plans
+         */
+        public void remove_all_draft_plans () {
+            var draft_plans = plan_manager.get_draft_plans();
+            if (draft_plans.length == 0) {
+                show_toast("No draft plans to remove");
+                return;
+            }
+            
+            var dialog = new Adw.AlertDialog(
+                @"Remove $(draft_plans.length) Draft Plans?",
+                "This will permanently remove all draft plans. This action cannot be undone."
+            );
+            
+            dialog.add_response("cancel", _("Cancel"));
+            dialog.add_response("remove", _("Remove All"));
+            dialog.set_response_appearance("remove", Adw.ResponseAppearance.DESTRUCTIVE);
+            dialog.set_default_response("cancel");
+            
+            dialog.response.connect((response) => {
+                if (response == "remove") {
+                    for (int i = 0; i < draft_plans.length; i++) {
+                        plan_manager.remove_plan(draft_plans[i]);
+                    }
+                    show_toast(@"Removed $(draft_plans.length) draft plans");
+                    plans_changed();
+                }
+            });
+            
+            dialog.present(parent_window);
+        }
+        
+        /**
          * Clear all historical plans
          */
         public void clear_history () {

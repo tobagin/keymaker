@@ -128,5 +128,28 @@ template $KeyMakerPreferencesDialog : Adw.PreferencesDialog {
         selected: 0;
       }
     }
+
+    Adw.PreferencesGroup {
+      title: _("Diagnostics");
+      description: _("Configure diagnostic testing behavior");
+
+      Adw.SwitchRow auto_run_diagnostics_row {
+        title: _("Auto-run Diagnostics");
+        subtitle: _("Automatically start diagnostic tests when created");
+        active: false;
+      }
+
+      Adw.SpinRow diagnostics_retention_days_row {
+        title: _("History Retention");
+        subtitle: _("Number of days to keep diagnostic history");
+        adjustment: Adjustment {
+          lower: 1;
+          upper: 365;
+          value: 30;
+          step-increment: 1;
+          page-increment: 7;
+        };
+      }
+    }
   }
 }

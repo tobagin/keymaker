@@ -1,0 +1,308 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerDiagnosticConfigurationDialog : Adw.Dialog {
+  title: _("Configure Diagnostic");
+  content-width: 800;
+  content-height: 600;
+
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+    bottom-bar-style: raised;
+    
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle window_title {
+        title: _("Configure Diagnostic");
+        subtitle: _("Set parameters for your diagnostic test");
+      };
+      
+    }
+    
+    [bottom]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      title-widget: Button create_button {
+        label: _("Create Diagnostic");
+        styles ["suggested-action"]
+        sensitive: false;
+        halign: center;
+      };
+    }
+    
+    content: ScrolledWindow {
+      Adw.Clamp {
+        maximum-size: 700;
+        tightening-threshold: 500;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 24;
+        margin-end: 24;
+        
+        Box {
+          orientation: vertical;
+          spacing: 24;
+          
+          // Template Selection
+          Adw.PreferencesGroup {
+            title: _("Diagnostic Template");
+            description: _("Choose a preset template for your diagnostic test");
+            
+            Adw.ComboRow template_selection_row {
+              title: _("Template");
+              subtitle: _("Pre-configured test settings");
+              
+              [prefix]
+              Image {
+                icon-name: "applications-utilities-symbolic";
+              }
+              model: StringList {
+                strings [
+                  _("Connection Test"),
+                  _("Performance Analysis"),
+                  _("Security Audit"),
+                  _("Protocol Analysis"),
+                  _("Tunnel Capabilities"),
+                  _("Permission Check"),
+                  _("Custom")
+                ]
+              };
+              selected: 0;
+            }
+          }
+          
+          // Basic Information
+          Adw.PreferencesGroup {
+            title: _("Diagnostic Information");
+            description: _("Basic information about this diagnostic");
+            
+            Adw.EntryRow name_entry {
+              title: _("Name");
+              text: "";
+              
+              [prefix]
+              Image {
+                icon-name: "text-x-generic-symbolic";
+              }
+            }
+            
+            Adw.EntryRow description_entry {
+              title: _("Description");
+              text: "";
+              
+              [prefix]
+              Image {
+                icon-name: "format-text-plaintext-symbolic";
+              }
+            }
+            
+            Adw.SwitchRow auto_run_switch {
+              title: _("Auto-run");
+              subtitle: _("Start diagnostic immediately after creation");
+              
+              [prefix]
+              Image {
+                icon-name: "media-playback-start-symbolic";
+              }
+            }
+          }
+          
+          // Connection Settings
+          Adw.PreferencesGroup connection_group {
+            title: _("Connection Settings");
+            description: _("Configure SSH connection parameters");
+            
+            Adw.ComboRow hostname_combo {
+              title: _("Hostname");
+              subtitle: _("Choose a configured host or enter custom");
+              
+              [prefix]
+              Image {
+                icon-name: "network-server-symbolic";
+              }
+            }
+            
+            Adw.EntryRow custom_hostname_entry {
+              title: _("Custom Hostname");
+              text: "";
+              visible: false;
+              
+              [prefix]
+              Image {
+                icon-name: "network-server-symbolic";
+              }
+            }
+            
+            Adw.EntryRow username_entry {
+              title: _("Username");
+              text: "";
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-username-symbolic";
+              }
+            }
+            
+            Adw.SpinRow port_row {
+              title: _("Port");
+              subtitle: _("SSH port number");
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-port-symbolic";
+              }
+              adjustment: Adjustment {
+                lower: 1;
+                upper: 65535;
+                step-increment: 1;
+                page-increment: 100;
+                value: 22;
+              };
+            }
+            
+            Adw.ComboRow auth_method_row {
+              title: _("Authentication Method");
+              subtitle: _("Choose authentication method");
+              
+              [prefix]
+              Image {
+                icon-name: "security-high-symbolic";
+              }
+            }
+            
+            Adw.ComboRow ssh_key_combo {
+              title: _("SSH Key");
+              subtitle: _("Choose SSH key for authentication");
+              visible: true;
+              
+              [prefix]
+              Image {
+                icon-name: "dialog-password-symbolic";
+              }
+            }
+            
+            Adw.ComboRow ssh_agent_combo {
+              title: _("SSH Agent Keys");
+              subtitle: _("Keys available in SSH agent");
+              visible: false;
+              
+              [prefix]
+              Image {
+                icon-name: "security-medium-symbolic";
+              }
+            }
+            
+            Adw.PasswordEntryRow password_entry {
+              title: _("Password");
+              visible: false;
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
+              }
+            }
+            
+            Adw.SpinRow timeout_row {
+              title: _("Timeout");
+              subtitle: _("Connection timeout in seconds");
+              
+              [prefix]
+              Image {
+                icon-name: "preferences-system-time-symbolic";
+              }
+              adjustment: Adjustment {
+                lower: 5;
+                upper: 300;
+                step-increment: 5;
+                page-increment: 30;
+                value: 30;
+              };
+            }
+            
+            Adw.EntryRow proxy_jump_entry {
+              title: _("Proxy Jump");
+              text: "";
+              
+              [prefix]
+              Image {
+                icon-name: "network-vpn-symbolic";
+              }
+            }
+          }
+          
+          // Test Options
+          Adw.PreferencesGroup test_options_group {
+            title: _("Test Options");
+            description: _("Select which tests to include in this diagnostic");
+            
+            Adw.SwitchRow test_basic_connection_switch {
+              title: _("Basic Connection Test");
+              subtitle: _("Test SSH connection and authentication");
+              active: true;
+              
+              [prefix]
+              Image {
+                icon-name: "network-wired-symbolic";
+              }
+            }
+            
+            Adw.SwitchRow test_dns_resolution_switch {
+              title: _("DNS Resolution Test");
+              subtitle: _("Verify hostname resolves correctly");
+              active: true;
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-dns-symbolic";
+              }
+            }
+            
+            Adw.SwitchRow test_protocol_detection_switch {
+              title: _("Protocol Detection");
+              subtitle: _("Detect SSH protocol version and features");
+              active: false;
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-protocol-symbolic";
+              }
+            }
+            
+            Adw.SwitchRow test_performance_switch {
+              title: _("Performance Test");
+              subtitle: _("Measure connection latency and throughput");
+              active: false;
+              
+              [prefix]
+              Image {
+                icon-name: "io.github.tobagin.keysmith-performance-symbolic";
+              }
+            }
+            
+            Adw.SwitchRow test_tunnel_capabilities_switch {
+              title: _("Tunnel Capabilities Test");
+              subtitle: _("Test port forwarding and tunneling support");
+              active: false;
+              
+              [prefix]
+              Image {
+                icon-name: "network-vpn-symbolic";
+              }
+            }
+            
+            Adw.SwitchRow test_permissions_switch {
+              title: _("Permission Verification");
+              subtitle: _("Check user permissions and file system access");
+              active: false;
+              
+              [prefix]
+              Image {
+                icon-name: "system-file-manager-symbolic";
+              }
+            }
+          }
+        }
+      }
+    };
+  };
+}

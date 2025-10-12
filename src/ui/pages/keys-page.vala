@@ -238,7 +238,6 @@ public class KeyMaker.KeysPage : Adw.Bin {
         }
         
         type_icon.icon_name = key_type.get_icon_name ();
-        type_icon.icon_size = LARGE;
         
         switch (key_type) {
             case SSHKeyType.ED25519:

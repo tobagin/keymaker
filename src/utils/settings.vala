@@ -49,6 +49,10 @@ namespace KeyMaker {
             public const string AUTO_ADD_KEYS_TO_AGENT = "auto-add-keys-to-agent";
             public const string AGENT_LIFETIME = "agent-lifetime";
             
+            // Diagnostics settings
+            public const string AUTO_RUN_DIAGNOSTICS = "auto-run-diagnostics";
+            public const string DIAGNOSTICS_RETENTION_DAYS = "diagnostics-retention-days";
+            
             // Key management
             public const string DEFAULT_KEY_TYPE = "default-key-type";
             public const string DEFAULT_KEY_SIZE = "default-key-size";
@@ -61,7 +65,7 @@ namespace KeyMaker {
         
         // Tunneling settings keys
         public class TunnelingKeys {
-            public const string SAVED_TUNNELS = "saved-tunnels";
+            public const string SAVED_TUNNELS = "configurations";
             public const string AUTO_START_TUNNELS = "auto-start-tunnels";
             public const string TUNNEL_TIMEOUT = "tunnel-timeout";
             public const string DEFAULT_SSH_PORT = "default-ssh-port";
@@ -94,6 +98,22 @@ namespace KeyMaker {
         
         public static void set_auto_add_keys_to_agent(bool enabled) {
             app.set_boolean(Keys.AUTO_ADD_KEYS_TO_AGENT, enabled);
+        }
+        
+        public static bool get_auto_run_diagnostics() {
+            return app.get_boolean(Keys.AUTO_RUN_DIAGNOSTICS);
+        }
+        
+        public static void set_auto_run_diagnostics(bool enabled) {
+            app.set_boolean(Keys.AUTO_RUN_DIAGNOSTICS, enabled);
+        }
+        
+        public static int get_diagnostics_retention_days() {
+            return app.get_int(Keys.DIAGNOSTICS_RETENTION_DAYS);
+        }
+        
+        public static void set_diagnostics_retention_days(int days) {
+            app.set_int(Keys.DIAGNOSTICS_RETENTION_DAYS, days);
         }
         
         // Tunneling convenience methods

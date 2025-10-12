@@ -43,11 +43,21 @@ template $KeyMakerConnectionTestDialog : Adw.Dialog {
               Adw.EntryRow hostname_row {
                 title: _("Hostname");
                 text: "";
+                
+                [prefix]
+                Image {
+                  icon-name: "network-server-symbolic";
+                }
               }
               
               Adw.EntryRow username_row {
                 title: _("Username");
                 text: "";
+                
+                [prefix]
+                Image {
+                  icon-name: "io.github.tobagin.keysmith-username-symbolic";
+                }
               }
               
               Adw.SpinRow port_row {
@@ -60,6 +70,11 @@ template $KeyMakerConnectionTestDialog : Adw.Dialog {
                   step-increment: 1;
                   page-increment: 100;
                 };
+                
+                [prefix]
+                Image {
+                  icon-name: "io.github.tobagin.keysmith-port-symbolic";
+                }
               }
             }
             
@@ -70,6 +85,11 @@ template $KeyMakerConnectionTestDialog : Adw.Dialog {
                 title: _("Identity File");
                 subtitle: _("SSH private key file");
                 activatable: true;
+                
+                [prefix]
+                Image {
+                  icon-name: "dialog-password-symbolic";
+                }
                 
                 [suffix]
                 Box {
@@ -82,7 +102,6 @@ template $KeyMakerConnectionTestDialog : Adw.Dialog {
                   
                   Image {
                     icon-name: "go-next-symbolic";
-                    icon-size: large;
                   }
                 }
               }
@@ -90,6 +109,11 @@ template $KeyMakerConnectionTestDialog : Adw.Dialog {
               Adw.EntryRow proxy_jump_row {
                 title: _("Proxy Jump");
                 text: "";
+                
+                [prefix]
+                Image {
+                  icon-name: "network-vpn-symbolic";
+                }
               }
             }
             
@@ -106,6 +130,11 @@ template $KeyMakerConnectionTestDialog : Adw.Dialog {
                   step-increment: 1;
                   page-increment: 10;
                 };
+                
+                [prefix]
+                Image {
+                  icon-name: "preferences-system-time-symbolic";
+                }
               }
             }
             
@@ -177,7 +206,6 @@ template $KeyMakerConnectionTestDialog : Adw.Dialog {
                 [prefix]
                 Image result_icon {
                   icon-name: "emblem-ok-symbolic";
-                  icon-size: large;
                 }
                 
                 [suffix]

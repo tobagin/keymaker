@@ -225,16 +225,12 @@ public class KeyMaker.HostsPage : Adw.Bin {
         var type_icon = new Gtk.Image ();
         if (host.hostname != null && "github.com" in host.hostname) {
             type_icon.icon_name = "io.github.tobagin.keysmith-github-symbolic";
-            type_icon.icon_size = LARGE;
         } else if (host.hostname != null && ("gitlab.com" in host.hostname || "gitlab" in host.hostname)) {
             type_icon.icon_name = "io.github.tobagin.keysmith-gitlab-symbolic";
-            type_icon.icon_size = LARGE;
         } else if (host.has_jump_host ()) {
             type_icon.icon_name = "network-vpn-symbolic";
-            type_icon.icon_size = LARGE;
         } else {
             type_icon.icon_name = "network-server-symbolic";
-            type_icon.icon_size = LARGE;
         }
         row.add_prefix (type_icon);
         

@@ -113,3 +113,33 @@ install_data(
   'hicolor/scalable/actions/io.github.tobagin.keysmith-health-symbolic.svg',
   install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
 )
+
+# Diagnostics icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-diagnostics-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# Rerun icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-rerun-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# DNS Resolution Test icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-dns-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# Protocol Detection icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-protocol-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)
+
+# Performance Test icon
+install_data(
+  'hicolor/scalable/actions/io.github.tobagin.keysmith-performance-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'actions'
+)

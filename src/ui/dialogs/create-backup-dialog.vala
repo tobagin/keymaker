@@ -271,7 +271,6 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
             
             // Add icon to match main key list with proper styling
             var icon = new Gtk.Image ();
-            icon.icon_size = Gtk.IconSize.LARGE;
             
             // Apply consistent security-level icons with colors
             switch (key.key_type) {

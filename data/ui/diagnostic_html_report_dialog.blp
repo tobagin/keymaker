@@ -1,0 +1,45 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerDiagnosticHtmlReportDialog : Adw.Dialog {
+  content-width: 800;
+  content-height: 600;
+  
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle report_title {
+      };
+      
+      [end]
+      Box {
+        spacing: 6;
+        
+        Button print_report_button {
+          icon-name: "printer-symbolic";
+          tooltip-text: _("Print Report");
+          visible: false;
+          styles ["flat"]
+        }
+        
+        Button save_report_button {
+          icon-name: "document-save-symbolic";
+          tooltip-text: _("Save Report");
+          visible: false;
+          styles ["flat"]
+        }
+      }
+    }
+    
+    content: Gtk.ScrolledWindow webview_container {
+      hexpand: true;
+      vexpand: true;
+      hscrollbar-policy: automatic;
+      vscrollbar-policy: automatic;
+      propagate-natural-width: false;
+      propagate-natural-height: false;
+    };
+  };
+}

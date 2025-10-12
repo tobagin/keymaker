@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="io.github.tobagin.keysmith-protocol-symbolic.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.455625"
+     inkscape:cx="373.11385"
+     inkscape:cy="490.53498"
+     inkscape:window-width="1268"
+     inkscape:window-height="924"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M 15.582196,19.761425 A 1.1940654,1.1940654 0 0 0 14.388131,18.56736 h -1.194065 v -1.194066 h 3.582195 a 2.3881308,2.3881308 0 0 0 2.388132,-2.38813 V 6.6267057 L 13.194066,0.6563787 H 7.2237383 A 2.3881308,2.3881308 0 0 0 4.8356075,3.0445095 V 14.985164 a 2.3881308,2.3881308 0 0 0 2.3881308,2.38813 H 10.805934 V 18.56736 H 9.6118692 A 1.1940654,1.1940654 0 0 0 8.4178038,19.761425 H 0.05934595 v 2.38813 H 8.4178038 a 1.1940654,1.1940654 0 0 0 1.1940654,1.194066 h 4.7762618 a 1.1940654,1.1940654 0 0 0 1.194065,-1.194066 h 8.358458 v -2.38813 z M 12,2.4474768 17.373294,7.8207711 H 12 Z"
+     fill-rule="evenodd"
+     id="path1"
+     style="stroke-width:1.19406" />
+  <rect
+     width="24"
+     height="24"
+     fill="none"
+     id="rect1" />
+</svg>

@@ -18,9 +18,21 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
     [GtkChild]
     private unowned Gtk.Button create_tunnel_button;
     [GtkChild]
-    private unowned Adw.PreferencesGroup active_tunnels_group;
+    private unowned Gtk.Button refresh_tunnels_button;
     [GtkChild]
-    private unowned Adw.PreferencesGroup saved_tunnels_group;
+    private unowned Gtk.Button stop_all_tunnels_button;
+    [GtkChild]
+    private unowned Gtk.ListBox active_tunnels_list;
+    [GtkChild]
+    private unowned Adw.ActionRow active_tunnels_placeholder;
+    [GtkChild]
+    private unowned Gtk.Button import_configurations_button;
+    [GtkChild]
+    private unowned Gtk.Button clear_all_configurations_button;
+    [GtkChild]
+    private unowned Gtk.ListBox saved_tunnels_list;
+    [GtkChild]
+    private unowned Adw.ActionRow saved_tunnels_placeholder;
     
     private GenericArray<ActiveTunnel> active_tunnels;
     private GenericArray<TunnelConfiguration> saved_tunnels;
@@ -34,6 +46,10 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
         
         // Setup button signals
         create_tunnel_button.clicked.connect (on_create_tunnel_clicked);
+        refresh_tunnels_button.clicked.connect (on_refresh_tunnels_clicked);
+        stop_all_tunnels_button.clicked.connect (on_stop_all_tunnels_clicked);
+        import_configurations_button.clicked.connect (on_import_configurations_clicked);
+        clear_all_configurations_button.clicked.connect (on_clear_all_configurations_clicked);
         
         // Load tunnel data
         refresh_tunnel_data ();
@@ -58,12 +74,12 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
     }
     
     private void refresh_active_tunnels_display () {
-        // Clear current display
-        var child = active_tunnels_group.get_first_child ();
+        // Clear current display (except placeholder)
+        var child = active_tunnels_list.get_first_child ();
         while (child != null) {
             var next = child.get_next_sibling ();
-            if (child is Adw.ActionRow) {
-                active_tunnels_group.remove (child);
+            if (child is Adw.ActionRow && child != active_tunnels_placeholder) {
+                active_tunnels_list.remove (child);
             }
             child = next;
         }
@@ -74,22 +90,13 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
             // For now, we'll show placeholder content
             
             if (active_tunnels.length == 0) {
-                var placeholder_row = new Adw.ActionRow ();
-                placeholder_row.title = _("No active tunnels");
-                placeholder_row.subtitle = _("Start a tunnel from saved configurations or create a new one");
-                placeholder_row.sensitive = false;
-                
-                var prefix_icon = new Gtk.Image ();
-                prefix_icon.icon_name = "network-vpn-symbolic";
-                prefix_icon.icon_size = Gtk.IconSize.LARGE;
-                placeholder_row.add_prefix (prefix_icon);
-                
-                active_tunnels_group.add (placeholder_row);
+                active_tunnels_placeholder.visible = true;
             } else {
+                active_tunnels_placeholder.visible = false;
                 for (int i = 0; i < active_tunnels.length; i++) {
                     var tunnel = active_tunnels[i];
                     var row = create_active_tunnel_row (tunnel);
-                    active_tunnels_group.add (row);
+                    active_tunnels_list.append (row);
                 }
             }
             
@@ -100,12 +107,12 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
     }
     
     private void refresh_saved_tunnels_display () {
-        // Clear current display
-        var child = saved_tunnels_group.get_first_child ();
+        // Clear current display (except placeholder)
+        var child = saved_tunnels_list.get_first_child ();
         while (child != null) {
             var next = child.get_next_sibling ();
-            if (child is Adw.ActionRow) {
-                saved_tunnels_group.remove (child);
+            if (child is Adw.ActionRow && child != saved_tunnels_placeholder) {
+                saved_tunnels_list.remove (child);
             }
             child = next;
         }
@@ -116,22 +123,13 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
             // For now, we'll show placeholder content
             
             if (saved_tunnels.length == 0) {
-                var placeholder_row = new Adw.ActionRow ();
-                placeholder_row.title = _("No saved tunnel configurations");
-                placeholder_row.subtitle = _("Create reusable tunnel setups for quick access");
-                placeholder_row.sensitive = false;
-                
-                var prefix_icon = new Gtk.Image ();
-                prefix_icon.icon_name = "folder-symbolic";
-                prefix_icon.icon_size = Gtk.IconSize.LARGE;
-                placeholder_row.add_prefix (prefix_icon);
-                
-                saved_tunnels_group.add (placeholder_row);
+                saved_tunnels_placeholder.visible = true;
             } else {
+                saved_tunnels_placeholder.visible = false;
                 for (int i = 0; i < saved_tunnels.length; i++) {
                     var config = saved_tunnels[i];
                     var row = create_saved_tunnel_row (config);
-                    saved_tunnels_group.add (row);
+                    saved_tunnels_list.append (row);
                 }
             }
             
@@ -149,7 +147,6 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
         // Add prefix icon with connection status
         var prefix_icon = new Gtk.Image ();
         prefix_icon.icon_name = "network-vpn-symbolic";
-        prefix_icon.icon_size = Gtk.IconSize.LARGE;
         prefix_icon.add_css_class ("success"); // Green for active
         row.add_prefix (prefix_icon);
         
@@ -196,7 +193,6 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
         // Add prefix icon based on tunnel type
         var prefix_icon = new Gtk.Image ();
         prefix_icon.icon_name = config.tunnel_type.get_icon_name ();
-        prefix_icon.icon_size = Gtk.IconSize.LARGE;
         row.add_prefix (prefix_icon);
         
         // Add action buttons
@@ -272,5 +268,29 @@ public class KeyMaker.TunnelsPage : Adw.Bin {
         
         refresh_saved_tunnels_display ();
         show_toast_requested (_("Tunnel configuration '%s' updated").printf (config.name));
+    }
+    
+    private void on_refresh_tunnels_clicked () {
+        refresh_tunnel_data ();
+        show_toast_requested (_("Tunnels refreshed"));
+    }
+    
+    private void on_stop_all_tunnels_clicked () {
+        // This would stop all active tunnels
+        active_tunnels.remove_range (0, active_tunnels.length);
+        refresh_active_tunnels_display ();
+        show_toast_requested (_("All tunnels stopped"));
+    }
+    
+    private void on_import_configurations_clicked () {
+        // This would show an import dialog
+        show_toast_requested (_("Import configurations not yet implemented"));
+    }
+    
+    private void on_clear_all_configurations_clicked () {
+        // Clear all saved configurations
+        saved_tunnels.remove_range (0, saved_tunnels.length);
+        refresh_saved_tunnels_display ();
+        show_toast_requested (_("All configurations cleared"));
     }
 }

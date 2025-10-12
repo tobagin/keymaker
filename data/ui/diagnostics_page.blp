@@ -4,54 +4,136 @@ using Adw 1;
 template $KeyMakerDiagnosticsPage : Adw.Bin {
   
   child: Adw.Clamp {
-    maximum-size: 1200;
+    maximum-size: 1500;
     tightening-threshold: 600;
     
-    child: Gtk.Box {
+    child: Gtk.Box child_box {
       orientation: vertical;
-      spacing: 0;
+      spacing: 24;
       vexpand: true;
       margin-top: 24;
       margin-bottom: 24;
       margin-start: 24;
       margin-end: 24;
       
-      Adw.HeaderBar {
-        show-title: false;
-        
-        [start]
-        Gtk.Label {
-          label: _("Connection Diagnostics");
-          styles ["title-1"]
-        }
-        
-        [end]
-        Gtk.Button run_diagnostics_button {
-          icon-name: "applications-system-symbolic";
-          tooltip-text: _("Run Diagnostics");
-          styles ["suggested-action"]
-        }
-      }
-      
-      Gtk.ScrolledWindow {
+      ScrolledWindow {
+        hscrollbar-policy: never;
         vexpand: true;
-        
-        child: Adw.PreferencesPage {
-          Adw.PreferencesGroup quick_tests_group {
-            title: _("Quick Tests");
-            description: _("Basic connectivity and authentication checks");
+        margin-top: 18;
+        margin-bottom: 18;
+        margin-start: 9;
+        margin-end: 9;
+
+        Adw.Clamp {
+          maximum-size: 900;
+          tightening-threshold: 500;
+
+          Box {
+            orientation: vertical;
+            spacing: 24;
+
+            // Diagnostics section
+            Adw.PreferencesGroup {
+              title: _("SSH Connection Diagnostics");
+              description: _("Configure and manage your diagnostic tests");
+              
+              [header-suffix]
+              Box {
+                spacing: 6;
+                
+                Button add_diagnostic_button {
+                  icon-name: "tab-new-symbolic";
+                  tooltip-text: _("Add New Diagnostic");
+                  valign: center;
+                  styles ["flat"]
+                }
+                
+                Button run_all_diagnostics_button {
+                  icon-name: "io.github.tobagin.keysmith-execute-all-rotation-plan-symbolic";
+                  tooltip-text: _("Run All Diagnostics");
+                  valign: center;
+                  visible: true;
+                  styles ["flat"]
+                }
+                
+                Button refresh_diagnostics_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Refresh");
+                  valign: center;
+                  styles ["flat"]
+                }
+                
+                Button clear_all_diagnostics_button {
+                  icon-name: "user-trash-symbolic";
+                  tooltip-text: _("Clear All");
+                  valign: center;
+                  styles ["flat", "destructive-action"]
+                }
+              }
+              
+              ListBox diagnostics_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+                
+                // Placeholder when no diagnostics
+                Adw.ActionRow diagnostics_placeholder {
+                  visible: true;
+                  title: _("No diagnostics configured");
+                  subtitle: _("Add your first diagnostic to start testing SSH connections");
+                  
+                  [prefix]
+                  Image {
+                    icon-name: "network-wired-symbolic";
+                    styles ["dim-label"]
+                  }
+                }
+              }
+            }
+
+            // History section  
+            Adw.PreferencesGroup {
+              title: _("Diagnostic History");
+              description: _("View previous connection test results and rerun configurations");
+              
+              [header-suffix]
+              Box {
+                spacing: 6;
+                
+                Button refresh_history_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Refresh History");
+                  valign: center;
+                  styles ["flat"]
+                }
+                
+                Button clear_history_button {
+                  icon-name: "user-trash-symbolic";
+                  tooltip-text: _("Clear All History");
+                  valign: center;
+                  styles ["flat", "destructive-action"]
+                }
+              }
+              
+              ListBox history_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+                
+                // Placeholder when no history
+                Adw.ActionRow history_placeholder {
+                  visible: true;
+                  title: _("No diagnostic history");
+                  subtitle: _("Run your first connection diagnostic to see results here");
+                  
+                  [prefix]
+                  Image {
+                    icon-name: "folder-documents-symbolic";
+                    styles ["dim-label"]
+                  }
+                }
+              }
+            }
           }
-          
-          Adw.PreferencesGroup detailed_diagnostics_group {
-            title: _("Detailed Diagnostics");
-            description: _("Comprehensive analysis and troubleshooting");
-          }
-          
-          Adw.PreferencesGroup test_history_group {
-            title: _("Test History");
-            description: _("Previous diagnostic results");
-          }
-        };
+        }
       }
     };
   };

@@ -212,7 +212,6 @@ public class KeyMaker.BackupCenterDialog : Adw.Dialog {
             
             var placeholder_icon = new Gtk.Image ();
             placeholder_icon.icon_name = "folder-symbolic";
-            placeholder_icon.icon_size = Gtk.IconSize.LARGE;
             placeholder_row.add_prefix (placeholder_icon);
             
             var create_button = new Gtk.Button ();
@@ -244,7 +243,6 @@ public class KeyMaker.BackupCenterDialog : Adw.Dialog {
             
             var placeholder_icon = new Gtk.Image ();
             placeholder_icon.icon_name = "io.github.tobagin.keysmith-emergency-vault-symbolic";
-            placeholder_icon.icon_size = Gtk.IconSize.LARGE;
             placeholder_row.add_prefix (placeholder_icon);
             
             var create_button = new Gtk.Button ();

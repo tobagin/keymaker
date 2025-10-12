@@ -43,6 +43,8 @@ sources = files(
     'ui/dialogs/connection-diagnostics-dialog.vala',
     'ui/dialogs/connection-diagnostics-runner-dialog.vala',
     'ui/dialogs/diagnostic-results-view-dialog.vala',
+    'ui/dialogs/diagnostic-configuration-dialog.vala',
+    'ui/dialogs/diagnostic-html-report-dialog.vala',
     'backend/key-rotation.vala',
     'backend/rotation/plan.vala',
     'backend/rotation/plan-manager.vala',
@@ -79,21 +81,27 @@ sources = files(
     'utils/async-queue.vala',
 )
 
+dependencies_list = [
+    gtk_dep,
+    adw_dep,
+    gio_dep,
+    gee_dep,
+    json_dep,
+    vte_dep,
+    math_dep,
+]
+
+if webkit_dep.found()
+    dependencies_list += [webkit_dep]
+endif
+
 # Build executable
 executable(
     'keymaker',
     sources,
     config_vala,
     ui_resources,
-    dependencies: [
-        gtk_dep,
-        adw_dep,
-        gio_dep,
-        gee_dep,
-        json_dep,
-        vte_dep,
-        math_dep,
-    ],
+    dependencies: dependencies_list,
     vala_args: vala_args,
     c_args: c_args,
     install: true,

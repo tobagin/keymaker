@@ -156,7 +156,6 @@ public class KeyMaker.BackupPage : Adw.Bin {
         
         // Add type icon with proper sizing
         var type_icon = new Gtk.Image ();
-        type_icon.icon_size = Gtk.IconSize.LARGE;
         switch (backup.backup_type) {
             case RegularBackupType.ENCRYPTED_ARCHIVE:
                 type_icon.icon_name = "package-x-generic-symbolic";
@@ -257,7 +256,6 @@ public class KeyMaker.BackupPage : Adw.Bin {
         
         // Add type icon with proper sizing
         var type_icon = new Gtk.Image ();
-        type_icon.icon_size = Gtk.IconSize.LARGE;
         // Use time-unlocked icon if time-locked backup has expired
         if (backup.backup_type == EmergencyBackupType.TIME_LOCKED && backup.is_expired ()) {
             type_icon.icon_name = "io.github.tobagin.keysmith-time-unlocked-symbolic";

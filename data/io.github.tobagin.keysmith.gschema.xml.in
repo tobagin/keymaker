@@ -102,6 +102,18 @@
       <summary>Preferred terminal emulator</summary>
       <description>The preferred terminal emulator to use for SSH connections: 'auto' (detect automatically) or specific terminal name</description>
     </key>
+    
+    <key name="auto-run-diagnostics" type="b">
+      <default>false</default>
+      <summary>Auto-run diagnostics</summary>
+      <description>Whether to automatically run diagnostic tests when they are added</description>
+    </key>
+    
+    <key name="diagnostics-retention-days" type="i">
+      <default>30</default>
+      <summary>Diagnostics retention period</summary>
+      <description>Number of days to keep diagnostic history entries before automatic cleanup</description>
+    </key>
   </schema>
   
   <schema id="@APP_ID@.tunneling" path="/@APP_PATH@/tunneling/">

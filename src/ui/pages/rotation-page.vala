@@ -9,6 +9,8 @@
  * (at your option) any later version.
  */
 
+using Gee;
+
 #if DEVELOPMENT
 [GtkTemplate (ui = "/io/github/tobagin/keysmith/Devel/rotation_page.ui")]
 #else
@@ -16,271 +18,267 @@
 #endif
 public class KeyMaker.RotationPage : Adw.Bin {
     [GtkChild]
+    private unowned Gtk.Box child_box;
+    [GtkChild]
     private unowned Gtk.Button create_plan_button;
     [GtkChild]
-    private unowned Adw.PreferencesGroup active_plans_group;
+    private unowned Gtk.Button execute_all_button;
     [GtkChild]
-    private unowned Adw.PreferencesGroup rollback_group;
+    private unowned Gtk.Button refresh_plans_button;
+    [GtkChild]
+    private unowned Gtk.Button remove_all_plans_button;
     
-    private GenericArray<RotationPlan> active_plans;
-    private GenericArray<RollbackEntry> rollback_entries;
+    // Draft Plans Section
+    [GtkChild]
+    private unowned Adw.PreferencesGroup draft_plans_group;
+    [GtkChild]
+    private unowned Gtk.ListBox draft_plans_list;
+    [GtkChild]
+    private unowned Adw.ActionRow draft_placeholder;
+    
+    // Running Plans Section  
+    [GtkChild]
+    private unowned Adw.PreferencesGroup running_plans_group;
+    [GtkChild]
+    private unowned Gtk.ListBox running_plans_list;
+    [GtkChild]
+    private unowned Adw.ActionRow running_placeholder;
+    
+    // History Section
+    [GtkChild]
+    private unowned Adw.PreferencesGroup history_group;
+    [GtkChild]
+    private unowned Gtk.Button refresh_history_button;
+    [GtkChild]
+    private unowned Gtk.Button clear_history_button;
+    [GtkChild]
+    private unowned Gtk.ListBox history_list;
+    [GtkChild]
+    private unowned Adw.ActionRow history_placeholder;
+    
+    private RotationPlanManager plan_manager;
+    private GenericArray<SSHKey> available_keys;
+    private RotationPlanActions? plan_actions;
     
     // Signals for window integration
     public signal void show_toast_requested (string message);
     
     construct {
-        active_plans = new GenericArray<RotationPlan> ();
-        rollback_entries = new GenericArray<RollbackEntry> ();
-        
-        // Setup button signals
-        create_plan_button.clicked.connect (on_create_plan_clicked);
-        
-        // Load rotation data
-        refresh_rotation_data ();
+        plan_manager = new RotationPlanManager();
+        available_keys = new GenericArray<SSHKey>();
     }
     
+    public override void constructed () {
+        base.constructed();
+        
+        setup_signals();
+        load_available_keys.begin();
+        refresh_all_lists();
+    }
+    
+    private RotationPlanActions get_plan_actions() {
+        if (plan_actions == null) {
+            var window = get_root() as Gtk.Window;
+            if (window == null) {
+                // Fallback: find the window in the widget hierarchy
+                var widget = this as Gtk.Widget;
+                while (widget != null && !(widget is Gtk.Window)) {
+                    widget = widget.get_parent();
+                }
+                window = widget as Gtk.Window;
+            }
+            plan_actions = new RotationPlanActions(plan_manager, window);
+            
+            // Set up plan actions signals now that it's created
+            plan_actions.show_toast.connect(show_toast);
+            plan_actions.plans_changed.connect(refresh_all_lists);
+        }
+        return plan_actions;
+    }
+    
+    private void setup_signals () {
+        // Plan manager signals
+        plan_manager.plan_added.connect(on_plan_added);
+        plan_manager.plan_updated.connect(on_plan_updated);
+        plan_manager.plan_removed.connect(on_plan_removed);
+        plan_manager.plan_status_changed.connect(on_plan_status_changed);
+        plan_manager.execution_started.connect(on_execution_started);
+        plan_manager.execution_completed.connect(on_execution_completed);
+        plan_manager.batch_execution_started.connect(on_batch_execution_started);
+        plan_manager.batch_execution_completed.connect(on_batch_execution_completed);
+        plan_manager.plans_loaded.connect(on_plans_loaded);
+    }
+    
+    private async void load_available_keys () {
+        try {
+            available_keys = yield KeyScanner.scan_ssh_directory();
+        } catch (KeyMakerError e) {
+            warning("Failed to load SSH keys: %s", e.message);
+        }
+    }
+    
+    [GtkCallback]
     private void on_create_plan_clicked () {
-        var dialog = new KeyMaker.RotationPlanEditorDialog (get_root () as Gtk.Window);
-        // TODO: Connect to plan_saved signal when available
-        dialog.present (get_root () as Gtk.Window);
+        get_plan_actions().create_new_plan();
     }
     
-    private void on_plan_saved (RotationPlan plan) {
-        // Add or update plan in the list
-        bool found = false;
-        for (int i = 0; i < active_plans.length; i++) {
-            if (active_plans[i].rotation_id == plan.rotation_id) {
-                active_plans[i] = plan;
-                found = true;
-                break;
-            }
-        }
+    [GtkCallback]
+    private void on_execute_all_clicked () {
+        get_plan_actions().execute_all_draft_plans();
+    }
+    
+    [GtkCallback]
+    private void on_refresh_plans_clicked () {
+        refresh_all_lists();
+    }
+    
+    [GtkCallback]
+    private void on_remove_all_plans_clicked () {
+        get_plan_actions().remove_all_draft_plans();
+    }
+    
+    [GtkCallback]
+    private void on_refresh_history_clicked () {
+        refresh_history();
+    }
+    
+    [GtkCallback]
+    private void on_clear_history_clicked () {
+        get_plan_actions().clear_history();
+    }
+    
+    private void refresh_all_lists () {
+        refresh_draft_plans();
+        refresh_running_plans();
+        refresh_history();
+        update_execute_all_button();
+    }
+    
+    private void refresh_draft_plans () {
+        clear_list_except_placeholder(draft_plans_list, draft_placeholder);
         
-        if (!found) {
-            active_plans.add (plan);
-        }
+        var draft_plans = plan_manager.get_draft_plans();
+        draft_placeholder.visible = draft_plans.length == 0;
         
-        refresh_active_plans_display ();
-        show_toast_requested (_("Rotation plan '%s' saved successfully").printf (plan.name));
+        for (int i = 0; i < draft_plans.length; i++) {
+            var plan = draft_plans[i];
+            add_draft_plan_row(plan);
+        }
     }
     
-    public void refresh_rotation_data () {
-        refresh_active_plans_display ();
-        refresh_rollback_display ();
+    private void refresh_running_plans () {
+        clear_list_except_placeholder(running_plans_list, running_placeholder);
+        
+        var running_plans = plan_manager.get_running_plans();
+        running_placeholder.visible = running_plans.length == 0;
+        
+        for (int i = 0; i < running_plans.length; i++) {
+            var plan = running_plans[i];
+            add_running_plan_row(plan);
+        }
     }
     
-    private void refresh_active_plans_display () {
-        // Clear current display
-        var child = active_plans_group.get_first_child ();
+    private void refresh_history () {
+        clear_list_except_placeholder(history_list, history_placeholder);
+        
+        var historical_plans = plan_manager.get_historical_plans();
+        history_placeholder.visible = historical_plans.length == 0;
+        
+        for (int i = 0; i < historical_plans.length; i++) {
+            var plan = historical_plans[i];
+            add_history_plan_row(plan);
+        }
+    }
+    
+    private void clear_list_except_placeholder (Gtk.ListBox list, Gtk.Widget placeholder) {
+        Gtk.Widget? child = list.get_first_child();
         while (child != null) {
-            var next = child.get_next_sibling ();
-            if (child is Adw.ActionRow) {
-                active_plans_group.remove (child);
+            var next = child.get_next_sibling();
+            if (child != placeholder) {
+                list.remove(child);
             }
             child = next;
         }
-        
-        // Load active plans from storage
-        try {
-            // This would normally load from a rotation plan manager
-            // For now, we'll show placeholder content
-            
-            if (active_plans.length == 0) {
-                var placeholder_row = new Adw.ActionRow ();
-                placeholder_row.title = _("No active rotation plans");
-                placeholder_row.subtitle = _("Create your first rotation plan to automate key management");
-                placeholder_row.sensitive = false;
-                
-                var prefix_icon = new Gtk.Image ();
-                prefix_icon.icon_name = "view-refresh-symbolic";
-                prefix_icon.icon_size = Gtk.IconSize.LARGE;
-                placeholder_row.add_prefix (prefix_icon);
-                
-                active_plans_group.add (placeholder_row);
-            } else {
-                for (int i = 0; i < active_plans.length; i++) {
-                    var plan = active_plans[i];
-                    var row = create_rotation_plan_row (plan);
-                    active_plans_group.add (row);
-                }
-            }
-            
-        } catch (Error e) {
-            warning ("Failed to load rotation plans: %s", e.message);
-            show_toast_requested (_("Failed to load rotation plans: %s").printf (e.message));
+    }
+    
+    private void add_draft_plan_row (RotationPlan plan) {
+        var row = new DraftPlanRow(plan);
+        row.plan_action_requested.connect((action) => {
+            get_plan_actions().handle_plan_action(plan, action);
+        });
+        draft_plans_list.append(row);
+    }
+    
+    private void add_running_plan_row (RotationPlan plan) {
+        var row = new RunningPlanRow(plan);
+        row.plan_action_requested.connect((action) => {
+            get_plan_actions().handle_plan_action(plan, action);
+        });
+        running_plans_list.append(row);
+    }
+    
+    private void add_history_plan_row (RotationPlan plan) {
+        var row = new HistoryPlanRow(plan);
+        row.plan_action_requested.connect((action) => {
+            get_plan_actions().handle_plan_action(plan, action);
+        });
+        history_list.append(row);
+    }
+    
+    private void update_execute_all_button () {
+        var draft_plans = plan_manager.get_draft_plans();
+        execute_all_button.sensitive = draft_plans.length > 0;
+    }
+    
+    private void show_toast (string message) {
+        show_toast_requested(message);
+    }
+    
+    private void on_plan_added (RotationPlan plan) {
+        refresh_all_lists();
+        show_toast(_("Plan '%s' added").printf(plan.name));
+    }
+    
+    private void on_plan_updated (RotationPlan plan) {
+        refresh_all_lists();
+    }
+    
+    private void on_plan_removed (RotationPlan plan) {
+        refresh_all_lists();
+    }
+    
+    private void on_plan_status_changed (RotationPlan plan, RotationPlanStatus old_status) {
+        refresh_all_lists();
+    }
+    
+    private void on_execution_started (RotationPlan plan) {
+        refresh_all_lists();
+        show_toast(_("Executing plan '%s'").printf(plan.name));
+    }
+    
+    private void on_execution_completed (RotationPlan plan, bool success) {
+        refresh_all_lists();
+        if (success) {
+            show_toast(_("Plan '%s' completed successfully").printf(plan.name));
+        } else {
+            show_toast(_("Plan '%s' execution failed").printf(plan.name));
         }
     }
     
-    private void refresh_rollback_display () {
-        // Clear current display
-        var child = rollback_group.get_first_child ();
-        while (child != null) {
-            var next = child.get_next_sibling ();
-            if (child is Adw.ActionRow) {
-                rollback_group.remove (child);
-            }
-            child = next;
-        }
-        
-        // Load rollback entries from storage
-        try {
-            // This would normally load from a rollback manager
-            // For now, we'll show placeholder content
-            
-            if (rollback_entries.length == 0) {
-                var placeholder_row = new Adw.ActionRow ();
-                placeholder_row.title = _("No rollback entries available");
-                placeholder_row.subtitle = _("Rollback options will appear here after rotations");
-                placeholder_row.sensitive = false;
-                
-                var prefix_icon = new Gtk.Image ();
-                prefix_icon.icon_name = "io.github.tobagin.keysmith-backup-center-symbolic";
-                prefix_icon.icon_size = Gtk.IconSize.LARGE;
-                placeholder_row.add_prefix (prefix_icon);
-                
-                rollback_group.add (placeholder_row);
-            } else {
-                for (int i = 0; i < rollback_entries.length; i++) {
-                    var entry = rollback_entries[i];
-                    var row = create_rollback_row (entry);
-                    rollback_group.add (row);
-                }
-            }
-            
-        } catch (Error e) {
-            warning ("Failed to load rollback entries: %s", e.message);
-            show_toast_requested (_("Failed to load rollback entries: %s").printf (e.message));
+    private void on_batch_execution_started (GenericArray<RotationPlan> plans) {
+        show_toast(_("Executing %u plans").printf(plans.length));
+    }
+    
+    private void on_batch_execution_completed (int successful, int failed) {
+        refresh_all_lists();
+        if (failed == 0) {
+            show_toast(_("All %d plans completed successfully").printf(successful));
+        } else {
+            show_toast(_("%d plans completed, %d failed").printf(successful, failed));
         }
     }
     
-    private Adw.ActionRow create_rotation_plan_row (RotationPlan plan) {
-        var row = new Adw.ActionRow ();
-        row.title = plan.name;
-        row.subtitle = @"$(plan.targets.length) targets • Status: $(plan.status)";
-        
-        // Add prefix icon
-        var prefix_icon = new Gtk.Image ();
-        prefix_icon.icon_name = "view-refresh-symbolic";
-        prefix_icon.icon_size = Gtk.IconSize.LARGE;
-        row.add_prefix (prefix_icon);
-        
-        // Add status indicator
-        var status_indicator = new Gtk.Label ("");
-        status_indicator.label = plan.status.to_string ();
-        switch (plan.status) {
-            case RotationPlanStatus.RUNNING:
-                status_indicator.add_css_class ("success");
-                break;
-            case RotationPlanStatus.SCHEDULED:
-                status_indicator.add_css_class ("warning");
-                break;
-            case RotationPlanStatus.COMPLETED:
-                status_indicator.add_css_class ("success");
-                break;
-            case RotationPlanStatus.FAILED:
-                status_indicator.add_css_class ("error");
-                break;
-            default:
-                status_indicator.add_css_class ("dim-label");
-                break;
-        }
-        status_indicator.add_css_class ("caption");
-        row.add_suffix (status_indicator);
-        
-        // Add action buttons
-        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-        button_box.add_css_class ("linked");
-        
-        var execute_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic");
-        execute_button.tooltip_text = _("Execute Rotation");
-        execute_button.add_css_class ("flat");
-        execute_button.add_css_class ("suggested-action");
-        execute_button.clicked.connect (() => on_execute_plan_clicked (plan));
-        
-        var edit_button = new Gtk.Button.from_icon_name ("document-edit-symbolic");
-        edit_button.tooltip_text = _("Edit Plan");
-        edit_button.add_css_class ("flat");
-        edit_button.clicked.connect (() => on_edit_plan_clicked (plan));
-        
-        var delete_button = new Gtk.Button.from_icon_name ("edit-delete-symbolic");
-        delete_button.tooltip_text = _("Delete Plan");
-        delete_button.add_css_class ("flat");
-        delete_button.add_css_class ("destructive-action");
-        delete_button.clicked.connect (() => on_delete_plan_clicked (plan));
-        
-        button_box.append (execute_button);
-        button_box.append (edit_button);
-        button_box.append (delete_button);
-        row.add_suffix (button_box);
-        
-        return row;
-    }
-    
-    private Adw.ActionRow create_rollback_row (RollbackEntry entry) {
-        var row = new Adw.ActionRow ();
-        row.title = @"Rollback: $(entry.plan_name)";
-        row.subtitle = @"Executed: $(entry.executed_at.format ("%x %X")) • Valid until: $(entry.expiry_date.format ("%x"))";
-        
-        // Add prefix icon
-        var prefix_icon = new Gtk.Image ();
-        prefix_icon.icon_name = "io.github.tobagin.keysmith-backup-center-symbolic";
-        prefix_icon.icon_size = Gtk.IconSize.LARGE;
-        row.add_prefix (prefix_icon);
-        
-        // Add action buttons
-        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-        button_box.add_css_class ("linked");
-        
-        var rollback_button = new Gtk.Button.from_icon_name ("edit-undo-symbolic");
-        rollback_button.tooltip_text = _("Execute Rollback");
-        rollback_button.add_css_class ("flat");
-        rollback_button.add_css_class ("destructive-action");
-        rollback_button.clicked.connect (() => on_execute_rollback_clicked (entry));
-        
-        var details_button = new Gtk.Button.from_icon_name ("dialog-information-symbolic");
-        details_button.tooltip_text = _("View Details");
-        details_button.add_css_class ("flat");
-        details_button.clicked.connect (() => on_rollback_details_clicked (entry));
-        
-        button_box.append (rollback_button);
-        button_box.append (details_button);
-        row.add_suffix (button_box);
-        
-        return row;
-    }
-    
-    private void on_execute_plan_clicked (RotationPlan plan) {
-        var dialog = new KeyMaker.KeyRotationDialog (get_root () as Gtk.Window);
-        dialog.present (get_root () as Gtk.Window);
-        show_toast_requested (_("Executing rotation plan '%s'").printf (plan.name));
-    }
-    
-    private void on_edit_plan_clicked (RotationPlan plan) {
-        var dialog = new KeyMaker.RotationPlanEditorDialog (get_root () as Gtk.Window);
-        // TODO: Connect to plan_saved signal when available
-        dialog.present (get_root () as Gtk.Window);
-    }
-    
-    private void on_delete_plan_clicked (RotationPlan plan) {
-        // Remove from local list
-        for (int i = 0; i < active_plans.length; i++) {
-            if (active_plans[i].rotation_id == plan.rotation_id) {
-                active_plans.remove_index (i);
-                break;
-            }
-        }
-        
-        refresh_active_plans_display ();
-        show_toast_requested (_("Rotation plan '%s' deleted successfully").printf (plan.name));
-    }
-    
-    private void on_execute_rollback_clicked (RollbackEntry entry) {
-        // This would execute the rollback operation
-        show_toast_requested (_("Rollback functionality not yet implemented"));
-    }
-    
-    private void on_rollback_details_clicked (RollbackEntry entry) {
-        // This would show rollback details
-        show_toast_requested (_("Rollback details not yet implemented"));
+    private void on_plans_loaded () {
+        refresh_all_lists();
     }
 }

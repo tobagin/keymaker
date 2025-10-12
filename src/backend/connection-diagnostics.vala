@@ -486,6 +486,7 @@ namespace KeyMaker {
             var results = new GenericArray<DiagnosticResult> ();
             double total_tests = 0;
             double completed_tests = 0;
+            bool basic_connection_successful = false;
             
             // Count total tests
             if (options.test_basic_connection) total_tests++;
@@ -513,12 +514,14 @@ namespace KeyMaker {
                     var test = yield test_connection (target.hostname, target.username, target.port, identity_file, target.password);
                     var execution_time = (int)((get_monotonic_time () - start_time) / 1000);
                     
-                    var status = (test.result == ConnectionResult.SUCCESS) ? TestStatus.PASSED : TestStatus.FAILED;
+                    basic_connection_successful = (test.result == ConnectionResult.SUCCESS);
+                    var status = basic_connection_successful ? TestStatus.PASSED : TestStatus.FAILED;
                     var result = new DiagnosticResult ("Basic Connection Test", status, test.result.to_string ());
                     result.execution_time_ms = execution_time;
                     
                     diagnostic_test_completed (result);
                 } catch (Error e) {
+                    basic_connection_successful = false;
                     var result = new DiagnosticResult ("Basic Connection Test", TestStatus.FAILED, e.message);
                     diagnostic_test_completed (result);
                 }
@@ -535,18 +538,30 @@ namespace KeyMaker {
                 diagnostic_test_started ("DNS Resolution Test");
                 var start_time = get_monotonic_time ();
                 
-                // Simple DNS resolution test
+                // DNS resolution test
                 try {
-                    var resolver = Resolver.get_default ();
-                    var addresses = yield resolver.lookup_by_name_async (target.hostname, null);
                     var execution_time = (get_monotonic_time () - start_time) / 1000;
+                    DiagnosticResult result;
                     
-                    var details = @"Resolved to $(addresses.length()) address(es)";
-                    if (addresses.length () > 0) {
-                        details += @": $(addresses.nth_data (0).to_string ())";
+                    // Check if hostname is already an IP address
+                    var addr = new InetAddress.from_string(target.hostname);
+                    if (addr != null) {
+                        // Already an IP address, no DNS resolution needed
+                        result = new DiagnosticResult ("DNS Resolution", TestStatus.PASSED, 
+                            @"No DNS resolution needed ($(target.hostname) is already an IP address)");
+                    } else {
+                        // Perform DNS lookup
+                        var resolver = Resolver.get_default ();
+                        var addresses = yield resolver.lookup_by_name_async (target.hostname, null);
+                        
+                        var details = @"Resolved to $(addresses.length()) address(es)";
+                        if (addresses.length () > 0) {
+                            details += @": $(addresses.nth_data (0).to_string ())";
+                        }
+                        
+                        result = new DiagnosticResult ("DNS Resolution", TestStatus.PASSED, details);
                     }
                     
-                    var result = new DiagnosticResult ("DNS Resolution", TestStatus.PASSED, details);
                     result.execution_time_ms = (int) execution_time;
                     diagnostic_test_completed (result);
                 } catch (Error e) {
@@ -568,12 +583,34 @@ namespace KeyMaker {
                 diagnostic_test_started ("Protocol Detection");
                 var start_time = get_monotonic_time ();
                 
-                // Simple protocol detection (placeholder implementation)
-                var execution_time = (get_monotonic_time () - start_time) / 1000;
-                var result = new DiagnosticResult ("Protocol Detection", TestStatus.PASSED, "SSH-2.0 protocol detected");
-                result.execution_time_ms = (int) execution_time;
-                diagnostic_test_completed (result);
+                DiagnosticResult result;
+                if (!basic_connection_successful) {
+                    // Skip if basic connection failed
+                    result = new DiagnosticResult ("Protocol Detection", TestStatus.SKIPPED, 
+                        "Skipped - Basic connection test failed");
+                } else {
+                    // Try to detect SSH protocol version
+                    try {
+                        var protocol_version = yield detect_ssh_protocol (target.hostname, target.port);
+                        var execution_time = (get_monotonic_time () - start_time) / 1000;
+                        
+                        if (protocol_version != null && protocol_version != "") {
+                            result = new DiagnosticResult ("Protocol Detection", TestStatus.PASSED, 
+                                @"$(protocol_version) protocol detected");
+                        } else {
+                            result = new DiagnosticResult ("Protocol Detection", TestStatus.FAILED, 
+                                "Could not detect SSH protocol version");
+                        }
+                        result.execution_time_ms = (int) execution_time;
+                    } catch (Error e) {
+                        var execution_time = (get_monotonic_time () - start_time) / 1000;
+                        result = new DiagnosticResult ("Protocol Detection", TestStatus.FAILED, 
+                            @"Protocol detection failed: $(e.message)");
+                        result.execution_time_ms = (int) execution_time;
+                    }
+                }
                 
+                diagnostic_test_completed (result);
                 completed_tests++;
                 progress_updated (completed_tests / total_tests);
             }
@@ -586,23 +623,31 @@ namespace KeyMaker {
                 diagnostic_test_started ("Performance Test");
                 var start_time = get_monotonic_time ();
                 
-                try {
-                    // Convert key file path to File if provided
-                    File? identity_file = null;
-                    if (target.key_file != null) {
-                        identity_file = File.new_for_path (target.key_file);
+                DiagnosticResult result;
+                if (!basic_connection_successful) {
+                    // Skip if basic connection failed
+                    result = new DiagnosticResult ("Performance Test", TestStatus.SKIPPED, 
+                        "Skipped - Basic connection test failed");
+                    diagnostic_test_completed (result);
+                } else {
+                    try {
+                        // Convert key file path to File if provided
+                        File? identity_file = null;
+                        if (target.key_file != null) {
+                            identity_file = File.new_for_path (target.key_file);
+                        }
+                        
+                        var perf_result = yield measure_performance (target, identity_file);
+                        var execution_time = (int)((get_monotonic_time () - start_time) / 1000);
+                        
+                        result = new DiagnosticResult ("Performance Test", perf_result.status, perf_result.details);
+                        result.execution_time_ms = execution_time;
+                        
+                        diagnostic_test_completed (result);
+                    } catch (Error e) {
+                        result = new DiagnosticResult ("Performance Test", TestStatus.FAILED, @"Performance test failed: $(e.message)");
+                        diagnostic_test_completed (result);
                     }
-                    
-                    var perf_result = yield measure_performance (target, identity_file);
-                    var execution_time = (int)((get_monotonic_time () - start_time) / 1000);
-                    
-                    var result = new DiagnosticResult ("Performance Test", perf_result.status, perf_result.details);
-                    result.execution_time_ms = execution_time;
-                    
-                    diagnostic_test_completed (result);
-                } catch (Error e) {
-                    var result = new DiagnosticResult ("Performance Test", TestStatus.FAILED, @"Performance test failed: $(e.message)");
-                    diagnostic_test_completed (result);
                 }
                 
                 completed_tests++;
@@ -611,10 +656,41 @@ namespace KeyMaker {
             
             // Tunnel capabilities test
             if (options.test_tunnel_capabilities) {
+                if (cancellable.is_cancelled ()) {
+                    throw new IOError.CANCELLED ("Diagnostics cancelled");
+                }
                 diagnostic_test_started ("Tunnel Capabilities Test");
-                var result = new DiagnosticResult ("Tunnel Capabilities", TestStatus.PASSED, "Port forwarding supported");
-                diagnostic_test_completed (result);
+                var start_time = get_monotonic_time ();
                 
+                DiagnosticResult result;
+                if (!basic_connection_successful) {
+                    // Skip if basic connection failed
+                    result = new DiagnosticResult ("Tunnel Capabilities", TestStatus.SKIPPED, 
+                        "Skipped - Basic connection test failed");
+                } else {
+                    try {
+                        // Convert key file path to File if provided
+                        File? identity_file = null;
+                        if (target.key_file != null) {
+                            identity_file = File.new_for_path (target.key_file);
+                        }
+                        
+                        var tunnel_support = yield test_tunnel_capabilities (target, identity_file);
+                        var execution_time = (int)((get_monotonic_time () - start_time) / 1000);
+                        
+                        result = new DiagnosticResult ("Tunnel Capabilities", 
+                            tunnel_support ? TestStatus.PASSED : TestStatus.FAILED,
+                            tunnel_support ? "Port forwarding supported" : "Port forwarding not supported or failed");
+                        result.execution_time_ms = execution_time;
+                    } catch (Error e) {
+                        var execution_time = (int)((get_monotonic_time () - start_time) / 1000);
+                        result = new DiagnosticResult ("Tunnel Capabilities", TestStatus.FAILED, 
+                            @"Tunnel capabilities test failed: $(e.message)");
+                        result.execution_time_ms = execution_time;
+                    }
+                }
+                
+                diagnostic_test_completed (result);
                 completed_tests++;
                 progress_updated (completed_tests / total_tests);
             }
@@ -627,14 +703,161 @@ namespace KeyMaker {
                 diagnostic_test_started ("Permission Verification");
                 var start_time = get_monotonic_time ();
                 
-                // Simple permission test (placeholder implementation)
-                var execution_time = (get_monotonic_time () - start_time) / 1000;
-                var result = new DiagnosticResult ("Permission Verification", TestStatus.PASSED, "User permissions verified");
-                result.execution_time_ms = (int) execution_time;
-                diagnostic_test_completed (result);
+                DiagnosticResult result;
+                if (!basic_connection_successful) {
+                    // Skip if basic connection failed
+                    result = new DiagnosticResult ("Permission Verification", TestStatus.SKIPPED, 
+                        "Skipped - Basic connection test failed");
+                } else {
+                    try {
+                        // Convert key file path to File if provided
+                        File? identity_file = null;
+                        if (target.key_file != null) {
+                            identity_file = File.new_for_path (target.key_file);
+                        }
+                        
+                        var permissions = yield test_user_permissions (target, identity_file);
+                        var execution_time = (int)((get_monotonic_time () - start_time) / 1000);
+                        
+                        result = new DiagnosticResult ("Permission Verification", 
+                            permissions.success ? TestStatus.PASSED : TestStatus.WARNING,
+                            permissions.details);
+                        result.execution_time_ms = execution_time;
+                    } catch (Error e) {
+                        var execution_time = (int)((get_monotonic_time () - start_time) / 1000);
+                        result = new DiagnosticResult ("Permission Verification", TestStatus.FAILED, 
+                            @"Permission verification failed: $(e.message)");
+                        result.execution_time_ms = execution_time;
+                    }
+                }
                 
+                diagnostic_test_completed (result);
                 completed_tests++;
                 progress_updated (completed_tests / total_tests);
+            }
+        }
+        
+        private async string? detect_ssh_protocol (string hostname, int port) throws Error {
+            // Connect to SSH port and read the banner to detect protocol version
+            var client = new SocketClient();
+            var connection = yield client.connect_to_host_async(hostname, (uint16)port, null);
+            var input_stream = connection.get_input_stream();
+            var data = new uint8[256];
+            
+            // Read SSH banner (first line sent by SSH server)
+            var bytes_read = yield input_stream.read_async(data, GLib.Priority.DEFAULT, null);
+            connection.close();
+            
+            if (bytes_read > 0) {
+                var banner = (string) data[0:bytes_read];
+                if (banner.contains("SSH-")) {
+                    // Extract protocol version from banner (e.g., "SSH-2.0-OpenSSH_8.0")
+                    var parts = banner.split("-");
+                    if (parts.length >= 2) {
+                        return @"SSH-$(parts[1])";
+                    }
+                    return "SSH";
+                }
+            }
+            return null;
+        }
+        
+        private async bool test_tunnel_capabilities (DiagnosticTarget target, File? identity_file) throws Error {
+            // Test port forwarding by attempting to create a local tunnel
+            var cmd_list = new GenericArray<string> ();
+            
+            // For password authentication, use sshpass
+            if (target.password != null) {
+                cmd_list.add ("sshpass");
+                cmd_list.add ("-p");
+                cmd_list.add (target.password);
+            }
+            
+            cmd_list.add ("ssh");
+            cmd_list.add ("-o");
+            cmd_list.add ("BatchMode=yes");
+            cmd_list.add ("-o");
+            cmd_list.add ("ConnectTimeout=5");
+            cmd_list.add ("-o");
+            cmd_list.add ("ExitOnForwardFailure=yes");
+            cmd_list.add ("-L");
+            cmd_list.add ("0:localhost:22"); // Test local port forwarding
+            cmd_list.add ("-N"); // Don't execute remote command
+            
+            if (identity_file != null) {
+                cmd_list.add ("-i");
+                cmd_list.add (identity_file.get_path ());
+            }
+            
+            cmd_list.add (@"$(target.username)@$(target.hostname)");
+            if (target.port != 22) {
+                cmd_list.add ("-p");
+                cmd_list.add (target.port.to_string ());
+            }
+            
+            try {
+                var subprocess = new Subprocess.newv (cmd_list.data, SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
+                yield subprocess.wait_async (null);
+                
+                // If command succeeds (exit code 0), port forwarding is supported
+                return subprocess.get_exit_status () == 0;
+            } catch (Error e) {
+                return false;
+            }
+        }
+        
+        private class PermissionResult {
+            public bool success { get; set; }
+            public string details { get; set; }
+            
+            public PermissionResult(bool success, string details) {
+                this.success = success;
+                this.details = details;
+            }
+        }
+        
+        private async PermissionResult test_user_permissions (DiagnosticTarget target, File? identity_file) throws Error {
+            // Test user permissions by running basic commands
+            var cmd_list = new GenericArray<string> ();
+            
+            // For password authentication, use sshpass
+            if (target.password != null) {
+                cmd_list.add ("sshpass");
+                cmd_list.add ("-p");
+                cmd_list.add (target.password);
+            }
+            
+            cmd_list.add ("ssh");
+            cmd_list.add ("-o");
+            cmd_list.add ("BatchMode=yes");
+            cmd_list.add ("-o");
+            cmd_list.add ("ConnectTimeout=5");
+            
+            if (identity_file != null) {
+                cmd_list.add ("-i");
+                cmd_list.add (identity_file.get_path ());
+            }
+            
+            cmd_list.add (@"$(target.username)@$(target.hostname)");
+            if (target.port != 22) {
+                cmd_list.add ("-p");
+                cmd_list.add (target.port.to_string ());
+            }
+            
+            // Test basic commands: whoami and pwd
+            cmd_list.add ("whoami && pwd && ls -la ~/ > /dev/null");
+            
+            try {
+                var subprocess = new Subprocess.newv (cmd_list.data, SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
+                yield subprocess.wait_async (null);
+                
+                if (subprocess.get_exit_status () == 0) {
+                    return new PermissionResult(true, "User permissions verified - can execute basic commands");
+                } else {
+                    return new PermissionResult(false, "Limited permissions - some basic commands failed");
+                }
+            } catch (Error e) {
+                return new PermissionResult(false, @"Permission test failed: $(e.message)");
             }
         }
     }

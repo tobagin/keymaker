@@ -29,6 +29,7 @@ gio_dep = dependency('gio-2.0', version: '>= 2.76')
 gee_dep = dependency('gee-0.8')
 json_dep = dependency('json-glib-1.0')
 vte_dep = dependency('vte-2.91-gtk4', version: '>= 0.70')
+webkit_dep = dependency('webkitgtk-6.0', required: false)
 
 # Build configuration
 cc = meson.get_compiler('c')
@@ -65,6 +66,10 @@ vala_args = [
 
 if get_option('profile') == 'development'
     vala_args += ['-D', 'DEVELOPMENT']
+endif
+
+if webkit_dep.found()
+    vala_args += ['-D', 'HAS_WEBKIT']
 endif
 
 # C arguments

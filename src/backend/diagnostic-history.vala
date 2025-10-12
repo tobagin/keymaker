@@ -10,6 +10,7 @@
  */
 
 public struct DiagnosticHistoryEntry {
+    public string name;
     public string hostname;
     public string username;
     public int port;
@@ -119,8 +120,9 @@ public class KeyMaker.DiagnosticHistory : Object {
     }
     
     public void add_entry_with_auth_method (DiagnosticTarget target, DiagnosticOptions options, 
-                          GenericArray<DiagnosticResult> results, DateTime? test_start_time = null, string auth_method = "Unknown") {
+                          GenericArray<DiagnosticResult> results, DateTime? test_start_time = null, string auth_method = "Unknown", string? custom_name = null) {
         var entry = DiagnosticHistoryEntry () {
+            name = custom_name ?? @"$(target.username)@$(target.hostname)",
             hostname = target.hostname,
             username = target.username,
             port = target.port,
@@ -223,6 +225,7 @@ public class KeyMaker.DiagnosticHistory : Object {
             history_array.foreach_element ((array, index, element) => {
                 var entry_object = element.get_object ();
                 var entry = DiagnosticHistoryEntry () {
+                    name = entry_object.has_member ("name") ? entry_object.get_string_member ("name") : "",
                     hostname = entry_object.get_string_member ("hostname"),
                     username = entry_object.get_string_member ("username"),
                     port = (int) entry_object.get_int_member ("port"),
@@ -263,6 +266,7 @@ public class KeyMaker.DiagnosticHistory : Object {
                 var entry = entries[i];
                 var entry_object = new Json.Object ();
                 
+                entry_object.set_string_member ("name", entry.name);
                 entry_object.set_string_member ("hostname", entry.hostname);
                 entry_object.set_string_member ("username", entry.username);
                 entry_object.set_int_member ("port", entry.port);
@@ -325,7 +329,7 @@ public class KeyMaker.DiagnosticHistory : Object {
         return new DateTime.now_local();
     }
     
-    private string serialize_test_results(GenericArray<DiagnosticResult> results) {
+    public string serialize_test_results(GenericArray<DiagnosticResult> results) {
         try {
             var results_array = new Json.Array();
             
