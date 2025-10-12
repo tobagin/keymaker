@@ -33,7 +33,7 @@ done
 
 # Set manifest based on build type
 if [ "$BUILD_TYPE" = "dev" ]; then
-    MANIFEST="packaging/io.github.tobagin.keysmith-vala.yml"
+    MANIFEST="packaging/io.github.tobagin.keysmith.Devel.yml"
     APP_ID="io.github.tobagin.keysmith.Devel"
     echo "Building development version..."
 else

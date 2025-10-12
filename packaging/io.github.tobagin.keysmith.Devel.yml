@@ -81,6 +81,35 @@ modules:
       - '*.la'
       - '*.a'
 
+  - name: simdutf
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DBUILD_SHARED_LIBS=ON
+    sources:
+      - type: git
+        url: https://github.com/simdutf/simdutf.git
+        tag: v7.4.0
+        commit: 7b3f5afcae322391a03736809ef6eea0c2934388
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /lib/cmake
+
+  - name: fast_float
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DBUILD_SHARED_LIBS=ON
+    sources:
+      - type: git
+        url: https://github.com/fastfloat/fast_float.git
+        tag: v8.1.0
+        commit: 88b1e5321c6918cbe091afd76728296290668403
+    cleanup:
+      - /include
+      - /lib/cmake
+
   - name: vte
     buildsystem: meson
     config-opts:
@@ -92,7 +121,8 @@ modules:
     sources:
       - type: git
         url: https://gitlab.gnome.org/GNOME/vte.git
-        tag: 0.78.0
+        tag: 0.82.1
+        commit: aa9b69140f48a019ccc72a3a27a1ddd85b9622ed
     cleanup:
       - /etc
       - /include
