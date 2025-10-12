@@ -32,6 +32,14 @@ This refactoring is part of Phase 4 of the comprehensive KeyMaker refactoring pl
 - **Reliability**: Consistent timeout and error handling prevents hangs
 - **Code quality**: Eliminates duplicate code and improves consistency
 
+## What Changes
+- **ConnectionDiagnostics.vala**: Replace 2 direct subprocess calls with `Command.run_capture_with_timeout()` (10s timeout)
+- **EmergencyVault.vala**: Replace 2 qrencode subprocess calls with `Command.run_capture_with_timeout()` (15s timeout)
+- **ActiveTunnel.vala**: Document direct subprocess usage as approved exception (long-running process)
+- **Metadata.vala**: Document direct subprocess usage as approved exception (requires stdin)
+- **Error Handling**: Standardize to use `KeyMakerError.OPERATION_FAILED` and `KeyMakerError.OPERATION_CANCELLED`
+- **New Spec**: Create `subprocess-handling` specification documenting the requirements
+
 ## Motivation
 The current fragmented approach to subprocess execution creates several problems:
 1. **Inconsistency**: Each file handles subprocess errors differently, leading to unpredictable behavior

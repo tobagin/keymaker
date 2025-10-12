@@ -45,60 +45,70 @@ blueprints += window_ui
 
 # Compile other UI files
 ui_files = [
-  'key_list.blp',
-  'key_row.blp',
-  'generate_dialog.blp',
-  'copy_id_dialog.blp',
-  'change_passphrase_dialog.blp',
-  'key_details_dialog.blp',
-  'preferences_dialog.blp',
-  'shortcuts_dialog.blp',
-  'ssh_agent_dialog.blp',
-  'add_key_to_agent_dialog.blp',
-  'key_service_mapping_dialog.blp',
-  'ssh_config_dialog.blp',
-  'ssh_host_edit_dialog.blp',
-  'terminal_dialog.blp',
-  'connection_test_dialog.blp',
-  'connection_diagnostics_dialog.blp',
-  'connection_diagnostics_runner_dialog.blp',
-  'key_rotation_dialog.blp',
-  'rotation_plan_editor_dialog.blp',
-  'add_target_dialog.blp',
-  'plan_details_dialog.blp',
-  'emergency_vault_dialog.blp',
-  'backup_center_dialog.blp',
-  'create_backup_dialog.blp',
-  'restore_backup_dialog.blp',
-  'ssh_tunneling_dialog.blp',
-  'create_tunnel_dialog.blp',
-  'diagnostic_results_view_dialog.blp',
-  'diagnostic_configuration_dialog.blp',
-  'diagnostic_html_report_dialog.blp',
-  'keys_page.blp',
-  'hosts_page.blp',
-  'backup_page.blp',
-  'rotation_page.blp',
-  'tunnels_page.blp',
-  'diagnostics_page.blp',
+  # Widgets
+  'widgets/key_list.blp',
+  'widgets/key_row.blp',
+
+  # Dialogs
+  'dialogs/add_key_to_agent_dialog.blp',
+  'dialogs/add_target_dialog.blp',
+  'dialogs/backup_center_dialog.blp',
+  'dialogs/change_passphrase_dialog.blp',
+  'dialogs/connection_diagnostics_dialog.blp',
+  'dialogs/connection_diagnostics_runner_dialog.blp',
+  'dialogs/connection_test_dialog.blp',
+  'dialogs/copy_id_dialog.blp',
+  'dialogs/create_backup_dialog.blp',
+  'dialogs/create_tunnel_dialog.blp',
+  'dialogs/diagnostic_configuration_dialog.blp',
+  'dialogs/diagnostic_html_report_dialog.blp',
+  'dialogs/diagnostic_results_view_dialog.blp',
+  'dialogs/diagnostic_type_selection_dialog.blp',
+  'dialogs/emergency_vault_dialog.blp',
+  'dialogs/generate_dialog.blp',
+  'dialogs/key_details_dialog.blp',
+  'dialogs/key_rotation_dialog.blp',
+  'dialogs/key_service_mapping_dialog.blp',
+  'dialogs/plan_details_dialog.blp',
+  'dialogs/preferences_dialog.blp',
+  'dialogs/restore_backup_dialog.blp',
+  'dialogs/rotation_plan_editor_dialog.blp',
+  'dialogs/shortcuts_dialog.blp',
+  'dialogs/ssh_agent_dialog.blp',
+  'dialogs/ssh_config_dialog.blp',
+  'dialogs/ssh_host_edit_dialog.blp',
+  'dialogs/ssh_tunneling_dialog.blp',
+  'dialogs/terminal_dialog.blp',
+
+  # Pages
+  'pages/backup_page.blp',
+  'pages/diagnostics_page.blp',
+  'pages/hosts_page.blp',
+  'pages/keys_page.blp',
+  'pages/rotation_page.blp',
+  'pages/tunnels_page.blp',
 ]
 
 foreach ui_file : ui_files
-  ui_name = ui_file.replace('.blp', '.ui')
-  
+  # Extract just the filename without path for output
+  # Split by '/' and take the last element
+  ui_parts = ui_file.split('/')
+  ui_basename = ui_parts[ui_parts.length() - 1]
+  ui_name = ui_basename.replace('.blp', '.ui')
+
   compiled_ui = custom_target(
     ui_name,
     input: ui_file,
     output: ui_name,
     command: blueprint_cmd
   )
-  
+
   blueprints += compiled_ui
 endforeach
 
 # Configure gresource template
 gresource_xml = configure_file(
-    input: 'keysmith.gresource.xml.in',
+    input: '../keysmith.gresource.xml.in',
     output: 'keysmith.gresource.xml',
     configuration: conf_data
 )

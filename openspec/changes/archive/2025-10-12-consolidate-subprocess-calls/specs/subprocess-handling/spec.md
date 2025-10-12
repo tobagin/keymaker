@@ -129,9 +129,7 @@ Long-running background processes or operations requiring specialized subprocess
 - **AND** the limitation SHALL be noted for future Command utility enhancements
 - **AND** the operation SHALL still follow best practices for error handling
 
-## MODIFIED Requirements
-
-### Requirement: ConnectionDiagnostics Subprocess Execution (Modified)
+### Requirement: ConnectionDiagnostics Subprocess Execution
 Connection diagnostic tests SHALL use the centralized `KeyMaker.Command` utility with appropriate timeout protection instead of direct subprocess management.
 
 **Rationale**: Diagnostic tests can hang on network failures; centralized handling ensures consistent timeout behavior.
@@ -148,7 +146,7 @@ Connection diagnostic tests SHALL use the centralized `KeyMaker.Command` utility
 - **THEN** it SHALL use `KeyMaker.Command.run_capture_with_timeout()` with 10-second timeout
 - **AND** SHALL NOT use `new Subprocess.newv()` directly at line 851
 
-### Requirement: EmergencyVault QR Operations (Modified)
+### Requirement: EmergencyVault QR Operations
 QR code generation and scanning operations SHALL use the centralized `KeyMaker.Command` utility with appropriate timeout protection instead of direct subprocess management.
 
 **Rationale**: zbar operations can hang on complex QR codes or missing dependencies; centralized handling ensures consistent timeout and error reporting.
@@ -167,7 +165,7 @@ QR code generation and scanning operations SHALL use the centralized `KeyMaker.C
 - **AND** SHALL NOT use `new Subprocess.newv()` directly at line 756
 - **AND** SHALL provide clear error message if zbar is not installed or scan fails
 
-### Requirement: SSH Metadata Extraction (Modified)
+### Requirement: SSH Metadata Extraction
 SSH key metadata extraction operations SHALL use the centralized `KeyMaker.Command` utility with appropriate timeout protection instead of direct subprocess management.
 
 **Rationale**: ssh-keygen operations on corrupted or invalid keys can hang; centralized handling ensures consistent timeout behavior.
