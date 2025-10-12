@@ -73,13 +73,20 @@ template $KeyMakerCreateBackupDialog : Adw.Dialog {
               Adw.ComboRow backup_type_combo {
                 title: _("Type");
                 subtitle: _("Choose backup format");
-                
+
                 [prefix]
                 Image backup_type_icon {
                   icon-name: "package-x-generic-symbolic";
                 }
               }
-              
+
+              Adw.ActionRow qr_warning_row {
+                title: _("⚠️ Unencrypted - Not recommended for sensitive keys");
+                visible: false;
+
+                styles ["warning", "caption"]
+              }
+
               Adw.SwitchRow set_expiry_row {
                 title: _("Set Expiration");
                 subtitle: _("Backup will expire after specified date");

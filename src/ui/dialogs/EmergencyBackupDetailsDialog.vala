@@ -96,14 +96,14 @@ namespace KeyMaker {
         private Gtk.Widget? create_security_warning () {
             // Show warning for QR code backups
             if (backup.backup_type == EmergencyBackupType.QR_CODE) {
-                var banner = new Adw.Banner ("Security Warning: QR code backups contain unencrypted private keys.");
-                banner.button_label = "Learn More";
+                var banner = new Adw.Banner (_("Security Warning: QR code backups contain unencrypted private keys"));
+                banner.button_label = _("Learn More");
                 banner.button_clicked.connect (() => {
                     var dialog = new Adw.AlertDialog (
-                        "QR Code Security",
-                        "QR code backups store your private keys in an unencrypted format that can be scanned with any QR code reader. Anyone who gains access to the QR code image can access your private keys.\n\nRecommendations:\n• Store QR code images in a secure, encrypted location\n• Never share QR codes via email or messaging\n• Consider using time-locked or Shamir secret sharing for better security\n• Print QR codes and store in a secure physical location"
+                        _("QR Code Security"),
+                        _("QR code backups store your private keys in an unencrypted format that can be scanned with any QR code reader. Anyone who gains access to the QR code image can access your private keys.\n\nRecommendations:\n• Store QR code images in a secure, encrypted location\n• Never share QR codes via email or messaging\n• Consider using time-locked or Shamir secret sharing for better security\n• Print QR codes and store in a secure physical location")
                     );
-                    dialog.add_response ("ok", "I Understand");
+                    dialog.add_response ("ok", _("I Understand"));
                     dialog.set_default_response ("ok");
                     dialog.present (this);
                 });

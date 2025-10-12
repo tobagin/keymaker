@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Gettext domain verified 2025-10-12 Phase 7: Must match meson.project_name() in meson.build -->
 <schemalist gettext-domain="keysmith">
   <schema id="@APP_ID@" path="/@APP_PATH@/">
     <key name="window-width" type="i">

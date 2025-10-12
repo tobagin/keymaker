@@ -29,9 +29,12 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
     
     [GtkChild]
     private unowned Adw.ComboRow backup_type_combo;
-    
+
     [GtkChild]
     private unowned Gtk.Image backup_type_icon;
+
+    [GtkChild]
+    private unowned Adw.ActionRow qr_warning_row;
     
     [GtkChild]
     private unowned Adw.PreferencesGroup keys_group;
@@ -72,6 +75,11 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
     private KeySelectionManager key_manager;
     private DateTime? expiry_date;
     private bool programmatic_change = false;
+
+    // Security warning state management
+    private int previous_backup_type = BackupType.ENCRYPTED_ARCHIVE;
+    private bool qr_warning_acknowledged = false;
+    private bool warning_dialog_active = false;
     
     public CreateBackupDialog (Gtk.Window parent, EmergencyVault vault) {
         Object ();
@@ -400,15 +408,77 @@ public class KeyMaker.CreateBackupDialog : Adw.Dialog {
         }
     }
     
+    private void show_qr_backup_warning () {
+        warning_dialog_active = true;
+
+        // Use Adw.AlertDialog instead which presents on the Dialog itself
+        var warning_dialog = new Adw.AlertDialog (
+            _("QR Backup Security Warning"),
+            _("QR backups store your private keys as unencrypted base64 data.\n\n" +
+              "Anyone who gains access to the QR code can read your private key.\n\n" +
+              "For maximum security, use encrypted archive backups instead.\n\n" +
+              "Do you want to proceed with QR backup?")
+        );
+
+        warning_dialog.add_response ("cancel", _("Cancel"));
+        warning_dialog.add_response ("proceed", _("Proceed Anyway"));
+        warning_dialog.set_response_appearance ("proceed", Adw.ResponseAppearance.DESTRUCTIVE);
+        warning_dialog.set_default_response ("cancel");
+
+        warning_dialog.response.connect ((response) => {
+            warning_dialog_active = false;
+
+            if (response == "proceed") {
+                // User accepted risk, mark as acknowledged and keep QR selection
+                qr_warning_acknowledged = true;
+                debug ("QR backup warning accepted by user");
+            } else {
+                // Revert to previous safe selection
+                qr_warning_acknowledged = false;
+                programmatic_change = true;
+                backup_type_combo.selected = previous_backup_type;
+                programmatic_change = false;
+                debug ("QR backup cancelled, reverted to %s", ((BackupType)previous_backup_type).to_string());
+            }
+        });
+
+        warning_dialog.present (this);
+    }
+
     private void on_backup_type_changed () {
         var available_keys = key_manager.get_available_keys ();
         print ("BACKUP_TYPE_CHANGE_START: available_keys.length=%u\n", available_keys.length);
         var selected_type = (BackupType) backup_type_combo.selected;
         print ("BACKUP_TYPE_CHANGED: %s, available_keys.length=%u\n", selected_type.to_string(), available_keys.length);
+
+        // Check if user is selecting QR backup and show warning if needed
+        if (selected_type == BackupType.QR_CODE &&
+            !qr_warning_acknowledged &&
+            !warning_dialog_active &&
+            !programmatic_change) {
+            // Store current type as previous before showing warning
+            previous_backup_type = (int) selected_type;
+            show_qr_backup_warning ();
+            // Warning dialog will handle the rest via its response callback
+            return;
+        }
+
+        // Reset warning acknowledgment if user switches away from QR
+        if (selected_type != BackupType.QR_CODE) {
+            qr_warning_acknowledged = false;
+        }
+
+        // Store current selection as previous (for future reverts)
+        if (!programmatic_change) {
+            previous_backup_type = (int) selected_type;
+        }
         
         // Update backup type icon based on selection
         update_backup_type_icon (selected_type);
-        
+
+        // Show/hide QR warning indicator based on backup type
+        qr_warning_row.visible = (selected_type == BackupType.QR_CODE);
+
         // Show/hide controls based on backup type
         shares_count_row.visible = (selected_type == BackupType.SHAMIR_SECRET_SHARING);
         threshold_row.visible = (selected_type == BackupType.SHAMIR_SECRET_SHARING);

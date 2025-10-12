@@ -42,6 +42,7 @@ conf_data = configuration_data()
 conf_data.set('APP_ID', app_id)
 conf_data.set('APP_NAME', app_name)
 conf_data.set('VERSION', meson.project_version())
+# Gettext domain verified 2025-10-12 Phase 7: Must match gettext-domain in gschema.xml.in
 conf_data.set('GETTEXT_PACKAGE', meson.project_name())
 conf_data.set('LOCALEDIR', get_option('prefix') / get_option('localedir'))
 # For GSchema path (convert dots to slashes)
