@@ -9,14 +9,12 @@
  * (at your option) any later version.
  */
 
-namespace KeyMaker {
-
 #if DEVELOPMENT
 [GtkTemplate (ui = "/io/github/tobagin/keysmith/Devel/connection_diagnostics_runner_dialog.ui")]
 #else
 [GtkTemplate (ui = "/io/github/tobagin/keysmith/connection_diagnostics_runner_dialog.ui")]
 #endif
-public class ConnectionDiagnosticsRunnerDialog : Adw.Dialog {
+public class KeyMaker.ConnectionDiagnosticsRunnerDialog : Adw.Dialog {
     
     // Navigation
     [GtkChild]
@@ -569,6 +567,4 @@ public class ConnectionDiagnosticsRunnerDialog : Adw.Dialog {
         
         validate_form ();
     }
-}
-
 }

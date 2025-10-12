@@ -460,7 +460,7 @@ public class KeyMaker.RestoreBackupDialog : Adw.Dialog {
     }
 }
 
-public class RestoreParams {
+public class KeyMaker.RestoreParams {
     public string? passphrase;
     public GenericArray<string>? shamir_shares;
     public bool overwrite_existing;

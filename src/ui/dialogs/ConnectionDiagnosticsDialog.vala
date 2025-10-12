@@ -9,14 +9,12 @@
  * (at your option) any later version.
  */
 
-namespace KeyMaker {
-
 #if DEVELOPMENT
 [GtkTemplate (ui = "/io/github/tobagin/keysmith/Devel/connection_diagnostics_dialog.ui")]
 #else
 [GtkTemplate (ui = "/io/github/tobagin/keysmith/connection_diagnostics_dialog.ui")]
 #endif
-public class ConnectionDiagnosticsDialog : Adw.Dialog {
+public class KeyMaker.ConnectionDiagnosticsDialog : Adw.Dialog {
     [GtkChild]
     private unowned Adw.ViewStack main_stack;
     
@@ -379,6 +377,4 @@ public class ConnectionDiagnosticsDialog : Adw.Dialog {
         error_dialog.set_default_response ("ok");
         error_dialog.present (this);
     }
-}
-
 }

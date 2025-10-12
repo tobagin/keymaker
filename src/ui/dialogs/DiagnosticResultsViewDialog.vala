@@ -9,8 +9,6 @@
  * (at your option) any later version.
  */
 
-namespace KeyMaker {
-
 private struct TestInfo {
     public string name;
     public string description;
@@ -21,7 +19,7 @@ private struct TestInfo {
 #else
 [GtkTemplate (ui = "/io/github/tobagin/keysmith/diagnostic_results_view_dialog.ui")]
 #endif
-public class DiagnosticResultsViewDialog : Adw.Dialog {
+public class KeyMaker.DiagnosticResultsViewDialog : Adw.Dialog {
     
     [GtkChild]
     private unowned Adw.WindowTitle results_title;
@@ -439,6 +437,4 @@ public class DiagnosticResultsViewDialog : Adw.Dialog {
         
         return Random.int_range (50, 300); // Default range
     }
-}
-
 }
