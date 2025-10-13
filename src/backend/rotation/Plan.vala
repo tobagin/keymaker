@@ -1,5 +1,5 @@
 /*
- * Key Maker - Key Rotation Planning Data Types
+ * SSHer - Key Rotation Planning Data Types
  * 
  * Data structures for planning and tracking key rotation operations.
  */

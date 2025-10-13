@@ -2,7 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $KeyMakerWindow : Adw.ApplicationWindow {
-  title: "Key Maker";
+  title: "SSHer";
   default-width: 800;
   default-height: 600;
   width-request: 400;
@@ -11,11 +11,11 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
   content: Adw.ToolbarView {
     top-bar-style: raised;
     bottom-bar-style: raised;
-    
+
     [top]
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle {
-        title: "Key Maker";
+        title: "SSHer";
         subtitle: "GUI for SSH key management tasks";
       };
 
@@ -120,7 +120,7 @@ menu main_menu {
       action: "app.shortcuts";
     }
     item {
-      label: _("_About Key Maker");
+      label: _("_About SSHer");
       action: "app.about";
     }
   }

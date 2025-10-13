@@ -1,6 +1,6 @@
-# Contributing to Key Maker
+# Contributing to SSHer
 
-Thank you for your interest in contributing to Key Maker! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to SSHer! This document provides guidelines and information for contributors.
 
 ## Development Setup
 
@@ -114,7 +114,7 @@ Follow the established patterns:
 
 ```vala
 /*
- * Key Maker - [Module Purpose]
+ * SSHer - [Module Purpose]
  * 
  * [Brief description of module responsibilities]
  */
@@ -357,4 +357,4 @@ public async SSHKey generate_key(KeyGenerationRequest request) throws KeyMakerEr
 
 ## License
 
-By contributing to Key Maker, you agree that your contributions will be licensed under the same license as the project (GPL-3.0-or-later).
+By contributing to SSHer, you agree that your contributions will be licensed under the same license as the project (GPL-3.0-or-later).

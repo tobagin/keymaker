@@ -1,5 +1,5 @@
 /*
- * Key Maker - Smart Key Rotation Manager Dialog
+ * SSHer - Smart Key Rotation Manager Dialog
  * 
  * Comprehensive rotation plan management with tabs for Plans, Rollbacks, and History
  */

@@ -1,5 +1,5 @@
 /*
- * Key Maker - Main Application Class
+ * SSHer - Main Application Class
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

@@ -1,5 +1,5 @@
 /*
- * Key Maker - Help Dialog
+ * SSHer - Help Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 
@@ -12,7 +12,7 @@
 public class KeyMaker.HelpDialog {
     
     public static void show (Gtk.Window parent) {
-        var help_text = _("""Key Maker is a modern SSH key management application.
+        var help_text = _("""SSHer is a modern SSH key management application.
 
 <b>Generating SSH Keys:</b>
 • Click the "+" button to create a new SSH key
@@ -31,7 +31,7 @@ public class KeyMaker.HelpDialog {
 
 For more information, visit the project website.""");
         
-        var dialog = new Adw.AlertDialog (_("Key Maker Help"), help_text);
+        var dialog = new Adw.AlertDialog (_("SSHer Help"), help_text);
         dialog.set_body_use_markup (true);
         
         // Add response

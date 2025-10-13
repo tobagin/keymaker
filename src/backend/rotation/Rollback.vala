@@ -1,5 +1,5 @@
 /*
- * Key Maker - Key Rotation Rollback
+ * SSHer - Key Rotation Rollback
  * 
  * Handles rollback operations when key rotation fails.
  */

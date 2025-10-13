@@ -1,5 +1,5 @@
 /*
- * Key Maker - Key Details Dialog
+ * SSHer - Key Details Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

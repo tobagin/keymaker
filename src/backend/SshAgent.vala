@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Agent Operations
+ * SSHer - SSH Agent Operations
  * 
  * SSH agent interaction for live monitoring and key management.
  * 

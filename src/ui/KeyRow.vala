@@ -1,5 +1,5 @@
 /*
- * Key Maker - Key Row Widget
+ * SSHer - Key Row Widget
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

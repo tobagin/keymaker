@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Key Mutation Operations
+ * SSHer - SSH Key Mutation Operations
  * 
  * SSH key mutation operations like deleting keys and changing passphrases.
  */

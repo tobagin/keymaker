@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Tunneling Manager
+ * SSHer - SSH Tunneling Manager
  * 
  * Central manager for SSH tunnel configurations and active tunnels.
  */

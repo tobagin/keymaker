@@ -1,5 +1,5 @@
 /*
- * Key Maker - Add Target Dialog
+ * SSHer - Add Target Dialog
  * 
  * Dialog for adding target servers to rotation plans
  */

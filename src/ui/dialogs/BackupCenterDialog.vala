@@ -1,5 +1,5 @@
 /*
- * Key Maker - Backup Center Dialog
+ * SSHer - Backup Center Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

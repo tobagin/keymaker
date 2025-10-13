@@ -1,5 +1,5 @@
 /*
- * Key Maker - Diagnostic HTML Report Dialog
+ * SSHer - Diagnostic HTML Report Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

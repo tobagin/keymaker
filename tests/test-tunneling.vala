@@ -1,5 +1,5 @@
 /*
- * Key Maker - Tunneling Tests
+ * SSHer - Tunneling Tests
  * 
  * Tests for tunneling modules: configuration, active-tunnel, manager
  */

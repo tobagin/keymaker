@@ -1,5 +1,5 @@
 /*
- * Key Maker - Diagnostics Page
+ * SSHer - Diagnostics Page
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

@@ -21,18 +21,18 @@ public class KeyMaker.AboutDialog : GLib.Object {
         string[] designers = { "Thiago Fernandes" };
         string[] artists = { "Thiago Fernandes" };
         
-        string app_name = "Key Maker";
+        string app_name = "SSHer";
         string comments = "A user-friendly graphical application for managing SSH keys. It provides an intuitive interface for generating, managing, and deploying SSH keys without needing to use command-line tools.";
         
         if (Config.APP_ID.contains("Devel")) {
-            app_name = "Key Maker (Development)";
+            app_name = "SSHer (Development)";
             comments = "A user-friendly graphical application for managing SSH keys. It provides an intuitive interface for generating, managing, and deploying SSH keys without needing to use command-line tools. (Development Version)";
         }
 
         var about = new Adw.AboutDialog() {
             application_name = app_name,
             application_icon = Config.APP_ID,
-            developer_name = "Key Maker Team",
+            developer_name = "SSHer Team",
             version = Config.VERSION,
             developers = developers,
             designers = designers,
@@ -48,7 +48,7 @@ public class KeyMaker.AboutDialog : GLib.Object {
         // load_release_notes(about); // Commented out to prevent XML parsing errors
 
         // Set copyright
-        about.set_copyright("© 2025 Key Maker Team");
+        about.set_copyright("© 2025 SSHer Team");
 
         // Add acknowledgement section
         about.add_acknowledgement_section(

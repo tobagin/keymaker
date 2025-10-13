@@ -1,8 +1,8 @@
-# Key Maker - CODEX-PLAN Refactoring Complete
+# SSHer - CODEX-PLAN Refactoring Complete
 
 ## 🎉 Refactoring Summary
 
-The **CODEX-PLAN** modular architecture refactoring has been successfully completed! The Key Maker codebase has been transformed from a monolithic structure into a clean, maintainable, and scalable architecture.
+The **CODEX-PLAN** modular architecture refactoring has been successfully completed! The SSHer codebase has been transformed from a monolithic structure into a clean, maintainable, and scalable architecture.
 
 ## ✅ Completed Phases
 
@@ -199,7 +199,7 @@ meson test -C build  # (when tests are re-enabled)
 
 ## 🏆 Conclusion
 
-The **CODEX-PLAN** refactoring has successfully transformed Key Maker from a monolithic application into a **modern, modular, maintainable codebase**. The application now features:
+The **CODEX-PLAN** refactoring has successfully transformed SSHer from a monolithic application into a **modern, modular, maintainable codebase**. The application now features:
 
 - ✅ **Clean Architecture** with focused, testable modules
 - ✅ **Performance Optimizations** for SSH operations and background processing
@@ -216,4 +216,4 @@ The codebase is now **production-ready** and provides a solid foundation for fut
 **Files Created**: 25+ new focused modules and utilities  
 **Build Status**: ✅ **Successful** with 0 compilation errors  
 
-🎉 **Key Maker is now ready for the next phase of development!**
+🎉 **SSHer is now ready for the next phase of development!**

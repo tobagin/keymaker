@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Key Generation
+ * SSHer - SSH Key Generation
  * 
  * SSH key generation operations using ssh-keygen subprocess.
  */

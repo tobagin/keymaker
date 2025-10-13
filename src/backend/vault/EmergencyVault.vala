@@ -1,5 +1,5 @@
 /*
- * Key Maker - Emergency Access Vault (Refactored)
+ * SSHer - Emergency Access Vault (Refactored)
  * 
  * Emergency backup system for disaster recovery with advanced security features:
  * - Time-locked backups that unlock automatically

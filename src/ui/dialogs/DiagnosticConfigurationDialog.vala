@@ -1,5 +1,5 @@
 /*
- * Key Maker - Diagnostic Configuration Dialog
+ * SSHer - Diagnostic Configuration Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

@@ -1,5 +1,5 @@
 /*
- * Key Maker - Key Rotation Runner
+ * SSHer - Key Rotation Runner
  * 
  * Orchestrates the key rotation process through all stages.
  */

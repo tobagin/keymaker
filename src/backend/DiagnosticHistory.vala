@@ -1,5 +1,5 @@
 /*
- * Key Maker - Diagnostic History Management
+ * SSHer - Diagnostic History Management
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

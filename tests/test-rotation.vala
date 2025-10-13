@@ -1,5 +1,5 @@
 /*
- * Key Maker - Rotation Tests
+ * SSHer - Rotation Tests
  * 
  * Tests for key rotation modules: plan, runner, deploy, rollback
  */

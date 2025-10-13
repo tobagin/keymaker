@@ -1,11 +1,11 @@
-# Spanish translation for Key Maker
+# Spanish translation for SSHer
 # Copyright (C) 2024 Thiago Fernandes
-# This file is distributed under the same license as the Key Maker package.
+# This file is distributed under the same license as the SSHer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Key Maker 1.0.3\n"
+"Project-Id-Version: SSHer 1.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/tobagin/keymaker/issues\n"
 "POT-Creation-Date: 2024-01-01 12:00+0000\n"
 "PO-Revision-Date: 2024-01-01 12:00+0000\n"
@@ -122,8 +122,8 @@ msgid "Permission denied"
 msgstr "Permiso denegado"
 
 #: keymaker/ui/generate_dialog.py
-msgid "Key Maker doesn't have permission to create files in the SSH directory. Please check that ~/.ssh directory exists and has proper permissions (700)."
-msgstr "Key Maker no tiene permisos para crear archivos en el directorio SSH. Por favor, verifica que el directorio ~/.ssh existe y tiene los permisos apropiados (700)."
+msgid "SSHer doesn't have permission to create files in the SSH directory. Please check that ~/.ssh directory exists and has proper permissions (700)."
+msgstr "SSHer no tiene permisos para crear archivos en el directorio SSH. Por favor, verifica que el directorio ~/.ssh existe y tiene los permisos apropiados (700)."
 
 #: keymaker/ui/generate_dialog.py
 msgid "SSH tools not available"
@@ -156,8 +156,8 @@ msgstr ""
 "• El nombre de archivo contiene caracteres inválidos"
 
 #: data/io.github.tobagin.keysmith.desktop.in
-msgid "Key Maker"
-msgstr "Key Maker"
+msgid "SSHer"
+msgstr "SSHer"
 
 #: data/io.github.tobagin.keysmith.desktop.in
 msgid "SSH Key Management"

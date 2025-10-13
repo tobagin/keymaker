@@ -1,7 +1,7 @@
 project(
     'keysmith',
     'vala', 'c',
-    version: '1.1.0',
+    version: '1.2.0',
     meson_version: '>= 1.0.0',
     default_options: [
         'warning_level=1',
@@ -12,10 +12,10 @@ project(
 
 if get_option('profile') == 'development'
     app_id = 'io.github.tobagin.keysmith.Devel'
-    app_name = 'Key Maker (Devel)'
+    app_name = 'SSHer (Devel)'
 else
     app_id = 'io.github.tobagin.keysmith'
-    app_name = 'Key Maker'
+    app_name = 'SSHer'
 endif
 
 # Import modules

@@ -1,5 +1,5 @@
 /*
- * Key Maker - Connection Diagnostics Runner Dialog
+ * SSHer - Connection Diagnostics Runner Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

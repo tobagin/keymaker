@@ -1,5 +1,5 @@
 /*
- * Key Maker - Subprocess Command Utilities
+ * SSHer - Subprocess Command Utilities
  *
  * Shared helpers to execute commands and capture output consistently.
  */

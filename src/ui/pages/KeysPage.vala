@@ -1,5 +1,5 @@
 /*
- * Key Maker - Keys Page
+ * SSHer - Keys Page
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

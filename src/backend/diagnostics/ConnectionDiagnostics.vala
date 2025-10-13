@@ -1,5 +1,5 @@
 /*
- * Key Maker - Connection Diagnostics
+ * SSHer - Connection Diagnostics
  * 
  * Test SSH connections and diagnose connectivity issues.
  * 

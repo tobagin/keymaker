@@ -1,5 +1,5 @@
 /*
- * Key Maker - Rotation Plan Editor Dialog
+ * SSHer - Rotation Plan Editor Dialog
  * 
  * Dialog for creating and editing rotation plans
  */

@@ -1,5 +1,5 @@
 /*
- * Key Maker - Connection Diagnostics Main Dialog
+ * SSHer - Connection Diagnostics Main Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

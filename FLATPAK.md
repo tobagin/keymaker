@@ -1,6 +1,6 @@
-# Flatpak Packaging for Key Maker
+# Flatpak Packaging for SSHer
 
-This document explains how to build and test Key Maker using Flatpak, both for local development and for distribution.
+This document explains how to build and test SSHer using Flatpak, both for local development and for distribution.
 
 ## Manifests
 

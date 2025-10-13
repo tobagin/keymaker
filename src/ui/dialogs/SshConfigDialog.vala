@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Config Dialog
+ * SSHer - SSH Config Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

@@ -1,5 +1,5 @@
 /*
- * Key Maker - Utility Tests
+ * SSHer - Utility Tests
  * 
  * Tests for shared utilities: logging, filesystem, command execution
  */

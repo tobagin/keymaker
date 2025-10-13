@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Key Management Application
+ * SSHer - SSH Key Management Application
  * 
  * A GTK4/Libadwaita application for managing SSH keys with an intuitive GUI.
  * 

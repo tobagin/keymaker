@@ -1,6 +1,6 @@
-# Key Maker – Codex Refactor & Improvement Plan
+# SSHer – Codex Refactor & Improvement Plan
 
-This plan proposes targeted refactors, modularization, and quality improvements for the Key Maker codebase (Vala + GTK4/Libadwaita). It focuses on: correctness, UX responsiveness, maintainability, testability, and long‑term architectural stability.
+This plan proposes targeted refactors, modularization, and quality improvements for the SSHer codebase (Vala + GTK4/Libadwaita). It focuses on: correctness, UX responsiveness, maintainability, testability, and long‑term architectural stability.
 
 Scope balances surgical changes in critical paths with a roadmap for larger structural work. Each area includes goals, suggested changes, risks, and acceptance criteria.
 

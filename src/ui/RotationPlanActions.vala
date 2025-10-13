@@ -1,5 +1,5 @@
 /*
- * Key Maker - Rotation Plan Actions Handler
+ * SSHer - Rotation Plan Actions Handler
  * 
  * Handles all plan-related actions (edit, execute, rollback, etc.)
  */

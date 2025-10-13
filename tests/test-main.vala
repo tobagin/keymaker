@@ -1,5 +1,5 @@
 /*
- * Key Maker - Test Runner
+ * SSHer - Test Runner
  * 
  * Main entry point for running all tests
  */
@@ -9,7 +9,7 @@ using KeyMaker;
 namespace KeyMakerTests {
     
     public static int main(string[] args) {
-        print("Key Maker Test Suite\n");
+        print("SSHer Test Suite\n");
         print("===================\n\n");
         
         // Parse command line arguments

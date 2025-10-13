@@ -1,5 +1,5 @@
 /*
- * Key Maker - Rotation Plan Row Widgets
+ * SSHer - Rotation Plan Row Widgets
  * 
  * Individual row widgets for different plan states in the rotation manager
  */

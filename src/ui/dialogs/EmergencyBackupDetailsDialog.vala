@@ -1,5 +1,5 @@
 /*
- * Key Maker - Emergency Backup Details Dialog
+ * SSHer - Emergency Backup Details Dialog
  *
  * Displays comprehensive details for emergency backups with security warnings,
  * time-lock countdown, Shamir secret sharing info, and unlock methods.

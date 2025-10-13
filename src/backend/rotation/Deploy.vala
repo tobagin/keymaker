@@ -1,5 +1,5 @@
 /*
- * Key Maker - Key Rotation Deployment
+ * SSHer - Key Rotation Deployment
  * 
  * Handles deploying SSH keys to remote targets using ssh-copy-id.
  */

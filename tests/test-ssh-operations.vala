@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Operations Tests
+ * SSHer - SSH Operations Tests
  * 
  * Tests for SSH operations modules: generation, metadata, mutate
  */

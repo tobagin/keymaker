@@ -1,5 +1,5 @@
 /*
- * Key Maker - Backup Details Dialog
+ * SSHer - Backup Details Dialog
  *
  * Displays comprehensive details for regular backups including metadata,
  * encryption status, key list, and action buttons.

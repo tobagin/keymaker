@@ -1,5 +1,5 @@
 /*
- * Key Maker - Active SSH Tunnel
+ * SSHer - Active SSH Tunnel
  * 
  * Manages individual active SSH tunnel processes.
  */

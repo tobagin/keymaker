@@ -1,5 +1,5 @@
 /*
- * Key Maker - Create/Edit Tunnel Dialog
+ * SSHer - Create/Edit Tunnel Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

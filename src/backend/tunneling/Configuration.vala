@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Tunnel Configuration
+ * SSHer - SSH Tunnel Configuration
  * 
  * Data structures for tunnel configurations and types.
  */

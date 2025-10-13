@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Tunneling (Facade)
+ * SSHer - SSH Tunneling (Facade)
  * 
  * Main facade for SSH tunneling operations, delegates to specialized modules.
  * 

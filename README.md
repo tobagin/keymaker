@@ -1,11 +1,11 @@
-# Key Maker
+# SSHer
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Vala](https://img.shields.io/badge/Vala-0.56+-blue.svg)](https://vala.dev/)
 [![GTK](https://img.shields.io/badge/GTK-4.18+-blue.svg)](https://www.gtk.org/)
 [![Libadwaita](https://img.shields.io/badge/Libadwaita-1.7+-blue.svg)](https://gitlab.gnome.org/GNOME/libadwaita)
 
-Key Maker is a modern, native GTK4/Libadwaita application built with Vala that provides a user-friendly graphical interface for SSH key management tasks. It simplifies the process of generating, managing, and deploying SSH keys through an intuitive GUI while maintaining security best practices and following GNOME design guidelines.
+SSHer is a modern, native GTK4/Libadwaita application built with Vala that provides a user-friendly graphical interface for SSH key management tasks. It simplifies the process of generating, managing, and deploying SSH keys through an intuitive GUI while maintaining security best practices and following GNOME design guidelines.
 
 ## Features
 
@@ -95,7 +95,7 @@ Key Maker is a modern, native GTK4/Libadwaita application built with Vala that p
 
 ## Installation
 
-Key Maker is distributed exclusively via Flatpak for security, consistency, and ease of installation across Linux distributions.
+SSHer is distributed exclusively via Flatpak for security, consistency, and ease of installation across Linux distributions.
 
 ### Prerequisites
 
@@ -183,7 +183,7 @@ The build script automatically handles all dependencies and creates a sandboxed 
 
 ### Application Preferences
 
-Key Maker provides a comprehensive preferences system:
+SSHer provides a comprehensive preferences system:
 
 **Generation Defaults:**
 - Default key type (Ed25519/RSA/ECDSA)
@@ -208,7 +208,7 @@ Key Maker provides a comprehensive preferences system:
 
 ### GSettings Schema
 
-Key Maker uses GSettings for persistent configuration:
+SSHer uses GSettings for persistent configuration:
 
 ```bash
 # View all settings (Development)
@@ -263,7 +263,7 @@ G_MESSAGES_DEBUG=all flatpak run io.github.tobagin.keysmith.Devel
 
 ### Code Quality
 
-Key Maker uses modern Vala practices:
+SSHer uses modern Vala practices:
 
 - **Memory safety**: Automatic memory management with reference counting
 - **Type safety**: Strong typing with compile-time checks  
@@ -273,7 +273,7 @@ Key Maker uses modern Vala practices:
 
 ## Security
 
-Key Maker follows strict security practices:
+SSHer follows strict security practices:
 
 - **Never stores passphrases** - kept only in memory during operations
 - **Delegates all cryptography** to system OpenSSH tools (ssh-keygen, ssh-add)
@@ -285,7 +285,7 @@ Key Maker follows strict security practices:
 
 ## Flatpak Architecture
 
-Key Maker is designed as a Flatpak-first application:
+SSHer is designed as a Flatpak-first application:
 
 **Development vs Production:**
 - Separate app IDs: `io.github.tobagin.keysmith.Devel` vs `io.github.tobagin.keysmith`
@@ -307,7 +307,7 @@ finish-args:
 
 ## Architecture
 
-Key Maker follows modern Vala/GTK application architecture:
+SSHer follows modern Vala/GTK application architecture:
 
 ```
 src/
@@ -409,7 +409,7 @@ Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) 
 
 ## License
 
-Key Maker is licensed under the GNU General Public License v3.0 or later. See the [LICENSE](LICENSE) file for details.
+SSHer is licensed under the GNU General Public License v3.0 or later. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 

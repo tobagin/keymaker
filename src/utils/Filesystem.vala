@@ -1,5 +1,5 @@
 /*
- * Key Maker - Filesystem Utilities
+ * SSHer - Filesystem Utilities
  *
  * Central helpers for SSH directory paths and secure permissions.
  */

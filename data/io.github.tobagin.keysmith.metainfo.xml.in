@@ -9,8 +9,8 @@
   
   <description>
     <p>
-      Key Maker is a user-friendly graphical application for managing SSH keys. 
-      It provides an intuitive interface for generating, managing, and deploying 
+      SSHer is a user-friendly graphical application for managing SSH keys.
+      It provides an intuitive interface for generating, managing, and deploying
       SSH keys without needing to use command-line tools.
     </p>
     <p>
@@ -99,6 +99,17 @@
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
   
   <releases>
+    <release version="1.2.0" date="2025-10-13">
+      <description>
+        <p>Application rebranding:</p>
+        <ul>
+          <li>Renamed application from "Key Maker" to "SSHer"</li>
+          <li>Updated all user-facing text and documentation</li>
+          <li>Application ID remains io.github.tobagin.keysmith for compatibility</li>
+          <li>All user settings and data preserved</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.0" date="2025-08-25">
       <description>
         <p>Major rebranding and application ID change:</p>
@@ -126,7 +137,7 @@
       <description>
         <p>Icon and quality improvements:</p>
         <ul>
-          <li>Updated application icon with new Key Maker branding</li>
+          <li>Updated application icon with new branding</li>
           <li>Improved visual consistency across all icon sizes</li>
           <li>Enhanced application quality guidelines compliance</li>
         </ul>
@@ -143,7 +154,7 @@
     </release>
     <release version="0.1.0" date="2024-01-01">
       <description>
-        <p>Initial release of Key Maker:</p>
+        <p>Initial release:</p>
         <ul>
           <li>SSH key generation (Ed25519, RSA, ECDSA)</li>
           <li>Key management and listing</li>

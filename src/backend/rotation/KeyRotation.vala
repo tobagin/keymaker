@@ -1,5 +1,5 @@
 /*
- * Key Maker - Key Rotation Manager (Facade)
+ * SSHer - Key Rotation Manager (Facade)
  * 
  * Main facade for key rotation operations, delegates to specialized modules.
  * 

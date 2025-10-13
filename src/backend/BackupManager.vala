@@ -1,5 +1,5 @@
 /*
- * Key Maker - Regular Backup Manager
+ * SSHer - Regular Backup Manager
  * 
  * Manages day-to-day SSH key backups including encrypted archives,
  * export bundles, and cloud synchronization.

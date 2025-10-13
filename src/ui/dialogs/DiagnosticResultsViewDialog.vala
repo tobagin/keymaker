@@ -1,5 +1,5 @@
 /*
- * Key Maker - Diagnostic Results View Dialog
+ * SSHer - Diagnostic Results View Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Agent Dialog
+ * SSHer - SSH Agent Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

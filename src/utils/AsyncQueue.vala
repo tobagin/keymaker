@@ -1,5 +1,5 @@
 /*
- * Key Maker - Simple Task Queue
+ * SSHer - Simple Task Queue
  * 
  * Manages background operations with priority levels.
  */

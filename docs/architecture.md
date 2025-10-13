@@ -1,10 +1,10 @@
-# Key Maker - Architecture Documentation
+# SSHer - Architecture Documentation
 
-This document describes the modular architecture of Key Maker after the CODEX-PLAN refactoring.
+This document describes the modular architecture of SSHer after the CODEX-PLAN refactoring.
 
 ## Overview
 
-Key Maker is organized into focused, testable modules with clear separation of concerns:
+SSHer is organized into focused, testable modules with clear separation of concerns:
 
 - **Utilities**: Shared infrastructure for logging, filesystem operations, command execution, and settings
 - **Data Models**: Core domain objects (SSH keys, configurations, plans)

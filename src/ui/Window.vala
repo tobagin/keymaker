@@ -1,5 +1,5 @@
 /*
- * Key Maker - Main Application Window
+ * SSHer - Main Application Window
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

@@ -1,7 +1,7 @@
-# Key Maker - Comprehensive Testing Checklist
+# SSHer - Comprehensive Testing Checklist
 
 ## 🎯 Purpose
-This document provides detailed step-by-step testing procedures to verify **100% functionality** of every feature in the Key Maker application. Each section includes expected results, edge cases, and security validations.
+This document provides detailed step-by-step testing procedures to verify **100% functionality** of every feature in the SSHer application. Each section includes expected results, edge cases, and security validations.
 
 ---
 
@@ -11,7 +11,7 @@ This document provides detailed step-by-step testing procedures to verify **100%
 - [X] Fresh SSH directory: `rm -rf ~/.ssh && mkdir -p ~/.ssh && chmod 700 ~/.ssh`
 - [X] SSH tools installed: `ssh`, `ssh-keygen`, `ssh-copy-id`, `ssh-add`, `ssh-agent`
 - [X] Test server access available (for deployment/tunnel testing)
-- [X] Key Maker built and installed: `./scripts/build.sh --dev`
+- [X] SSHer built and installed: `./scripts/build.sh --dev`
 
 ---
 
@@ -21,7 +21,7 @@ This document provides detailed step-by-step testing procedures to verify **100%
 **Objective**: Test all key generation functionality
 
 #### 1.1.1 Generate ED25519 Key (Recommended)
-- [X] **Action**: Open Key Maker → Click "Generate Key" button
+- [X] **Action**: Open SSHer → Click "Generate Key" button
 - [X] **Config**: Select ED25519, enter comment "test-ed25519"
 - [X] **Expected**: Key generated in ~/.ssh/id_ed25519 (private) and ~/.ssh/id_ed25519.pub (public)
 - [X] **Verify**: 
@@ -71,7 +71,7 @@ This document provides detailed step-by-step testing procedures to verify **100%
 #### 1.1.6 Custom Paths and Names
 - [ ] **Custom Path**: Generate key to custom location ~/custom-keys/mykey
   - Expected: Key created in specified directory
-  - Expected: Key Maker scans and displays the custom key
+  - Expected: SSHer scans and displays the custom key
 - [X] **Name Conflicts**: Try to generate key with existing name
   - Expected: Prompt to overwrite or choose different name
   - Expected: Backup of old key created if overwrite chosen
@@ -1117,7 +1117,7 @@ This document provides detailed step-by-step testing procedures to verify **100%
 
 #### 15.1.1 New User Workflow
 - [ ] **First Launch**: Test complete new user experience
-  1. Launch Key Maker for first time
+  1. Launch SSHer for first time
   2. Generate first SSH key (ED25519)
   3. Copy key to GitHub/GitLab
   4. Test SSH connection to service
@@ -1320,4 +1320,4 @@ Use this checklist to track testing progress:
 
 **🎉 Testing Complete!** 
 
-When all tests pass, Key Maker is verified to work 100% correctly across all features and use cases. This comprehensive testing ensures a reliable, secure, and high-performance SSH key management experience.
+When all tests pass, SSHer is verified to work 100% correctly across all features and use cases. This comprehensive testing ensures a reliable, secure, and high-performance SSH key management experience.

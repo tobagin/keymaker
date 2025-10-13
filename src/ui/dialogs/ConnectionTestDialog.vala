@@ -1,5 +1,5 @@
 /*
- * Key Maker - Connection Test Dialog
+ * SSHer - Connection Test Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

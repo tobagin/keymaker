@@ -1,5 +1,5 @@
 /*
- * Key Maker - Diagnostic Type Selection Dialog
+ * SSHer - Diagnostic Type Selection Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

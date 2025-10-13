@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Tunneling Dialog
+ * SSHer - SSH Tunneling Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

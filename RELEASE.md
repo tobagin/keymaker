@@ -1,4 +1,4 @@
-# Key Maker 1.0.0 Release Checklist
+# SSHer 1.0.0 Release Checklist
 
 ## ✅ Release Preparation Completed
 
@@ -79,7 +79,7 @@
 
 ## 🚀 Ready for Release
 
-Key Maker 1.0.0 is **100% ready** for:
+SSHer 1.0.0 is **100% ready** for:
 - ✅ GitHub Release with tag `v1.0.0`
 - ✅ Flathub submission
 - ✅ Distribution to users
@@ -96,7 +96,7 @@ Key Maker 1.0.0 is **100% ready** for:
 
 ## 🎉 Milestone Achievement
 
-This represents a significant milestone - Key Maker has evolved from a concept to a production-ready, professional-grade SSH key management application with:
+This represents a significant milestone - SSHer has evolved from a concept to a production-ready, professional-grade SSH key management application with:
 
 - **Modern Architecture** - Clean separation of concerns
 - **Enterprise-Grade Error Handling** - Comprehensive user guidance
@@ -106,4 +106,4 @@ This represents a significant milestone - Key Maker has evolved from a concept t
 - **Visual Polish** - Complete screenshot showcase
 - **Distribution Ready** - Flatpak packaging for easy installation
 
-**Key Maker 1.0.0 is ready to help users manage their SSH keys with confidence and ease! 🎯**
+**SSHer 1.0.0 is ready to help users manage their SSH keys with confidence and ease! 🎯**

@@ -1,5 +1,5 @@
 /*
- * Key Maker - TOTP (Time-based One-Time Password) Manager
+ * SSHer - TOTP (Time-based One-Time Password) Manager
  * 
  * Handles TOTP generation, validation, and multi-person authentication
  * for emergency backup systems.

@@ -1,5 +1,5 @@
 /*
- * Key Maker - Batch Processor
+ * SSHer - Batch Processor
  * 
  * Simple utility for collecting items into batches for efficient processing.
  */

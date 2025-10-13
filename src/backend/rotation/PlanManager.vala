@@ -1,5 +1,5 @@
 /*
- * Key Maker - Rotation Plan Manager
+ * SSHer - Rotation Plan Manager
  * 
  * Manages multiple rotation plans with CRUD operations, persistence, and batch execution.
  */

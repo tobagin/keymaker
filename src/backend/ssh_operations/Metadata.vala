@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Key Metadata Parsing
+ * SSHer - SSH Key Metadata Parsing
  * 
  * SSH key metadata extraction including fingerprints, types, and bit sizes.
  */

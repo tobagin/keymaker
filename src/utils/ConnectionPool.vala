@@ -1,5 +1,5 @@
 /*
- * Key Maker - SSH Connection Pool
+ * SSHer - SSH Connection Pool
  * 
  * Optimizes SSH operations by reusing connections and caching results.
  */

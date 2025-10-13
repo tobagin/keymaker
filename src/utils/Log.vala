@@ -1,5 +1,5 @@
 /*
- * Key Maker - Structured Logging Utilities
+ * SSHer - Structured Logging Utilities
  * 
  * Centralized logging with consistent categorization and structured output.
  */

@@ -1,5 +1,5 @@
 /*
- * Key Maker - Vault I/O Operations
+ * SSHer - Vault I/O Operations
  *
  * Shared I/O operations for writing keys, sanitizing filenames, and managing permissions.
  */

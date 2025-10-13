@@ -53,7 +53,7 @@ namespace KeyMaker {
 }
 
 int main (string[] args) {
-    print ("Key Maker Vala Conversion Test\n");
+    print ("SSHer Vala Conversion Test\n");
     
     try {
         var request = new KeyMaker.KeyGenerationRequest ("test_key");

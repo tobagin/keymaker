@@ -1,5 +1,5 @@
 /*
- * Key Maker - Restore Backup Dialog
+ * SSHer - Restore Backup Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

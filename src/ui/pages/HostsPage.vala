@@ -1,5 +1,5 @@
 /*
- * Key Maker - Hosts Page
+ * SSHer - Hosts Page
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

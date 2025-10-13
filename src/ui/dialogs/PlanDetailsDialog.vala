@@ -1,5 +1,5 @@
 /*
- * Key Maker - Plan Details Dialog
+ * SSHer - Plan Details Dialog
  * 
  * Dialog showing comprehensive plan details
  */
