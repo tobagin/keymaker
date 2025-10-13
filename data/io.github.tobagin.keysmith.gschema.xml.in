@@ -115,8 +115,32 @@
       <summary>Diagnostics retention period</summary>
       <description>Number of days to keep diagnostic history entries before automatic cleanup</description>
     </key>
+
+    <key name="cloud-provider-github-connected" type="b">
+      <default>false</default>
+      <summary>GitHub connection status</summary>
+      <description>Whether a GitHub account is currently connected</description>
+    </key>
+
+    <key name="cloud-provider-github-username" type="s">
+      <default>''</default>
+      <summary>GitHub username</summary>
+      <description>The connected GitHub username</description>
+    </key>
+
+    <key name="cloud-provider-cache" type="s">
+      <default>'{}'</default>
+      <summary>Cloud provider key cache</summary>
+      <description>JSON cache of cloud provider SSH keys for offline viewing</description>
+    </key>
+
+    <key name="cloud-provider-show-deploy-warning" type="b">
+      <default>true</default>
+      <summary>Show deployment warning</summary>
+      <description>Whether to show security warning before deploying keys to cloud</description>
+    </key>
   </schema>
-  
+
   <schema id="@APP_ID@.tunneling" path="/@APP_PATH@/tunneling/">
     <key name="configurations" type="aa{sv}">
       <default>[]</default>

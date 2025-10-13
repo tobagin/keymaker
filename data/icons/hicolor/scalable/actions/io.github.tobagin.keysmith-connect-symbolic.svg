@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 76 76"
+   version="1.1"
+   enable-background="new 0 0 76.00 76.00"
+   xml:space="preserve"
+   id="svg1"
+   sodipodi:docname="io.github.tobagin.keysmith-connect-symbolic.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1" /><sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="0.89"
+   inkscape:cx="400"
+   inkscape:cy="400"
+   inkscape:window-width="2560"
+   inkscape:window-height="923"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg1" />
+	<path
+   fill="#000000"
+   fill-opacity="1"
+   stroke-width="0.387711"
+   stroke-linejoin="round"
+   d="M 14.2797,18.620472 3.2739558,7.6147253 c -1.1986078,-1.1986059 -1.1986078,-3.1420049 0,-4.3408059 1.1988,-1.1986078 3.1422,-1.1986078 4.3408069,1.931e-4 L 18.620507,14.279664 C 27.036152,7.9702572 39.027845,8.6425469 46.681445,16.29634 L 16.296182,46.681602 C 8.6425833,39.027808 7.9702927,27.036115 14.2797,18.620472 Z m 45.423972,10.698095 c 7.653794,7.653794 8.326083,19.645293 2.016675,28.060937 L 72.7259,68.38525 c 1.1988,1.198607 1.1988,3.142005 0,4.340807 -1.198608,1.198607 -3.142007,1.198607 -4.340615,0 L 57.379541,61.720312 c -8.415645,6.309407 -20.407338,5.63731 -28.061131,-2.016483 l 6.51121,-6.51121 -5.426008,-5.426009 c -1.798007,-1.797815 -1.798007,-4.713009 0,-6.511017 1.798008,-1.798008 4.713203,-1.798008 6.51121,0 l 5.42601,5.426009 4.340613,-4.340807 -5.425815,-5.426008 c -1.798008,-1.798008 -1.798008,-4.71301 0,-6.511018 1.798007,-1.798007 4.713009,-1.798007 6.511017,0 l 5.426008,5.425815 z"
+   id="path1" />
+</svg>

@@ -1,0 +1,60 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerHostKeyConflictDialog : Adw.AlertDialog {
+  heading: _("Host Key Verification Failed");
+  body: _("The host key has changed. This could indicate a man-in-the-middle attack!");
+
+  extra-child: Box {
+    orientation: vertical;
+    spacing: 18;
+    margin-top: 12;
+    margin-bottom: 12;
+    margin-start: 12;
+    margin-end: 12;
+
+    Adw.PreferencesGroup {
+      Adw.ActionRow hostname_row {
+        title: _("Hostname");
+        subtitle-selectable: true;
+
+        [prefix]
+        Image {
+          icon-name: "network-server-symbolic";
+        }
+      }
+
+      Adw.ActionRow old_fingerprint_row {
+        title: _("Stored Fingerprint");
+        subtitle-selectable: true;
+
+        [prefix]
+        Image {
+          icon-name: "security-low-symbolic";
+          styles ["error"]
+        }
+      }
+
+      Adw.ActionRow new_fingerprint_row {
+        title: _("Presented Fingerprint");
+        subtitle-selectable: true;
+
+        [prefix]
+        Image {
+          icon-name: "security-high-symbolic";
+          styles ["warning"]
+        }
+      }
+    }
+
+    Label warning_label {
+      label: _("⚠ Only update the key if you trust the new fingerprint and know why it changed (e.g., server reinstall).");
+      wrap: true;
+      justify: center;
+      styles ["dim-label", "caption"]
+    }
+  };
+
+  default-response: "cancel";
+  close-response: "cancel";
+}

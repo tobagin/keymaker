@@ -1,0 +1,86 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerKnownHostsPage : Adw.Bin {
+
+  child: Adw.Clamp {
+    maximum-size: 1500;
+    tightening-threshold: 600;
+
+    child: Box {
+      orientation: vertical;
+      spacing: 24;
+      vexpand: true;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+
+      ScrolledWindow {
+        hscrollbar-policy: never;
+        vexpand: true;
+        margin-top: 18;
+        margin-bottom: 18;
+        margin-start: 9;
+        margin-end: 9;
+
+        Adw.Clamp {
+          maximum-size: 900;
+          tightening-threshold: 500;
+
+          Box {
+            orientation: vertical;
+            spacing: 24;
+
+            Adw.PreferencesGroup {
+              title: _("Known Hosts");
+              description: _("Manage SSH host key fingerprints from ~/.ssh/known_hosts");
+
+              header-suffix: Box {
+                spacing: 6;
+
+                SearchEntry search_entry {
+                  placeholder-text: _("Search hosts...");
+                  valign: center;
+                }
+
+                Button refresh_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Refresh");
+                  styles ["flat"]
+                  valign: center;
+                }
+
+                Button import_button {
+                  icon-name: "document-open-symbolic";
+                  tooltip-text: _("Import Known Hosts");
+                  styles ["flat"]
+                  valign: center;
+                }
+
+                Button export_button {
+                  icon-name: "document-save-symbolic";
+                  tooltip-text: _("Export Known Hosts");
+                  styles ["flat"]
+                  valign: center;
+                }
+
+                Button remove_stale_button {
+                  icon-name: "user-trash-symbolic";
+                  tooltip-text: _("Remove Stale Entries");
+                  styles ["flat", "warning"]
+                  valign: center;
+                }
+              };
+
+              ListBox known_hosts_list {
+                selection-mode: none;
+                styles ["boxed-list"]
+              }
+            }
+          }
+        }
+      }
+    };
+  };
+}

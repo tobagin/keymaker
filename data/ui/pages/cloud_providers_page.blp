@@ -1,0 +1,126 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerCloudProvidersPage : Adw.Bin {
+  child: Adw.Clamp {
+    maximum-size: 1500;
+    tightening-threshold: 600;
+
+    child: Box {
+      orientation: vertical;
+      spacing: 24;
+      vexpand: true;
+      margin-top: 24;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+
+      ScrolledWindow {
+        hscrollbar-policy: never;
+        vexpand: true;
+        margin-top: 18;
+        margin-bottom: 18;
+        margin-start: 9;
+        margin-end: 9;
+
+        Adw.Clamp {
+          maximum-size: 900;
+          tightening-threshold: 500;
+
+          Box {
+            orientation: vertical;
+            spacing: 24;
+
+            Adw.PreferencesGroup github_group {
+              title: "GitHub";
+              description: _("Manage SSH keys on GitHub");
+
+              [header-suffix]
+              Box {
+                spacing: 6;
+
+                Button connect_button {
+                  icon-name: "io.github.tobagin.keysmith-connect-symbolic";
+                  tooltip-text: _("Connect to GitHub");
+                  visible: true;
+                  valign: center;
+                  styles ["suggested-action", "flat"]
+                }
+
+                Label connection_status_label {
+                  label: "";
+                  visible: false;
+                  valign: center;
+                  styles ["dim-label"]
+                }
+
+                Button disconnect_button {
+                  icon-name: "io.github.tobagin.keysmith-disconnect-symbolic";
+                  tooltip-text: _("Disconnect from GitHub");
+                  visible: false;
+                  valign: center;
+                  styles ["destructive-action", "flat"]
+                }
+
+                Button deploy_key_button {
+                  icon-name: "tab-new-symbolic";
+                  tooltip-text: _("Deploy Key to GitHub");
+                  visible: false;
+                  valign: center;
+                  styles ["flat"]
+                }
+
+                Button refresh_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Refresh Keys");
+                  visible: false;
+                  valign: center;
+                  styles ["flat"]
+                }
+              }
+
+              ListBox keys_list_box {
+                selection-mode: none;
+                styles ["boxed-list"]
+                visible: false;
+              }
+
+              Adw.StatusPage empty_state {
+                title: _("No Keys Found");
+                description: _("Deploy a key to get started");
+                icon-name: "dialog-information-symbolic";
+                visible: false;
+              }
+
+              Box loading_box {
+                orientation: vertical;
+                spacing: 12;
+                halign: center;
+                valign: center;
+                margin-top: 24;
+                margin-bottom: 24;
+                visible: false;
+
+                Spinner {
+                  spinning: true;
+                }
+
+                Label {
+                  label: _("Loading keys...");
+                  styles ["dim-label"]
+                }
+              }
+            }
+
+
+            Adw.Banner error_banner {
+              title: _("Unable to connect");
+              button-label: _("Retry");
+              revealed: false;
+            }
+          }
+        }
+      }
+    };
+  };
+}

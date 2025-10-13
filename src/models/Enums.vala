@@ -131,6 +131,9 @@ namespace KeyMaker {
         SUBPROCESS_FAILED,
         INVALID_INPUT,
         OPERATION_CANCELLED,
-        ACCESS_DENIED
+        ACCESS_DENIED,
+        FILE_READ_ERROR,
+        FILE_WRITE_ERROR,
+        NOT_FOUND
     }
 }

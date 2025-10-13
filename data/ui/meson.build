@@ -79,11 +79,18 @@ ui_files = [
   'dialogs/ssh_host_edit_dialog.blp',
   'dialogs/ssh_tunneling_dialog.blp',
   'dialogs/terminal_dialog.blp',
+  'dialogs/host_key_verification_dialog.blp',
+  'dialogs/host_key_conflict_dialog.blp',
+  'dialogs/github_auth_dialog.blp',
+  'dialogs/cloud_key_deploy_dialog.blp',
+  'dialogs/cloud_key_remove_dialog.blp',
 
   # Pages
   'pages/backup_page.blp',
+  'pages/cloud_providers_page.blp',
   'pages/diagnostics_page.blp',
   'pages/hosts_page.blp',
+  'pages/known_hosts_page.blp',
   'pages/keys_page.blp',
   'pages/rotation_page.blp',
   'pages/tunnels_page.blp',

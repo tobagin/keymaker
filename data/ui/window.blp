@@ -54,7 +54,21 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
           icon-name: "network-server-symbolic";
           child: $KeyMakerHostsPage hosts_page {};
         }
-        
+
+        Adw.ViewStackPage {
+          name: "known-hosts";
+          title: _("Known Hosts");
+          icon-name: "security-high-symbolic";
+          child: $KeyMakerKnownHostsPage known_hosts_page {};
+        }
+
+        Adw.ViewStackPage {
+          name: "cloud-providers";
+          title: _("Cloud");
+          icon-name: "io.github.tobagin.keysmith-cloud-symbolic";
+          child: $KeyMakerCloudProvidersPage cloud_providers_page {};
+        }
+
         Adw.ViewStackPage {
           name: "backup";
           title: _("Backup");

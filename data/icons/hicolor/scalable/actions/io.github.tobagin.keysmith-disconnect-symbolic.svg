@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 76 76"
+   version="1.1"
+   enable-background="new 0 0 76.00 76.00"
+   xml:space="preserve"
+   id="svg1"
+   sodipodi:docname="io.github.tobagin.keysmith-disconnect-symbolic.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1" /><sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="0.89"
+   inkscape:cx="400"
+   inkscape:cy="400"
+   inkscape:window-width="2560"
+   inkscape:window-height="923"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg1" />
+	<path
+   fill="#000000"
+   fill-opacity="1"
+   stroke-width="0.396246"
+   stroke-linejoin="round"
+   d="M 17.409755,21.84585 3.2938941,7.7299895 c -1.225192,-1.224994 -1.225192,-3.211176 0,-4.43617 1.224994,-1.225192 3.211176,-1.225192 4.43617,0 L 21.845925,17.40968 c 8.60111,-6.448306 20.856596,-5.761414 28.678885,2.060874 L 19.470629,50.524735 C 11.648341,42.702446 10.961449,30.44696 17.409755,21.84585 Z m 39.903935,4.413782 c 7.822288,7.822091 8.509379,20.077775 2.060874,28.678687 L 72.706255,68.27001 c 1.224993,1.224993 1.224993,3.211176 0,4.43617 -1.224994,1.225192 -3.211177,1.225192 -4.436369,0 L 54.938394,59.374687 c -8.60111,6.448307 -20.856596,5.761216 -28.678885,-2.060874 l 6.654552,-6.654552 -5.54546,-5.545461 c -1.83759,-1.83759 -1.83759,-4.816764 0,-6.654354 1.83759,-1.83759 4.816962,-1.83759 6.654552,0 l 5.545262,5.545262 4.436368,-4.43617 -5.545262,-5.54546 c -1.83759,-1.83759 -1.83759,-4.816962 0,-6.654354 1.83759,-1.83759 4.816764,-1.83759 6.654354,-1.98e-4 l 5.545461,5.54546 z"
+   id="path1" />
+</svg>

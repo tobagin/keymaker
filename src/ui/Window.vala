@@ -37,7 +37,13 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     
     [GtkChild]
     private unowned KeyMaker.HostsPage hosts_page;
-    
+
+    [GtkChild]
+    private unowned KeyMaker.KnownHostsPage known_hosts_page;
+
+    [GtkChild]
+    private unowned KeyMaker.CloudProvidersPage cloud_providers_page;
+
     [GtkChild]
     private unowned KeyMaker.BackupPage backup_page;
     
@@ -96,7 +102,10 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         
         // Hosts page signals
         hosts_page.show_toast_requested.connect (show_toast);
-        
+
+        // Known Hosts page signals
+        known_hosts_page.show_toast_requested.connect (show_toast);
+
         // Backup page signals
         backup_page.show_toast_requested.connect (show_toast);
         

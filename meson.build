@@ -30,6 +30,8 @@ gee_dep = dependency('gee-0.8')
 json_dep = dependency('json-glib-1.0')
 vte_dep = dependency('vte-2.91-gtk4', version: '>= 0.70')
 webkit_dep = dependency('webkitgtk-6.0', required: false)
+soup_dep = dependency('libsoup-3.0', version: '>= 3.0')
+secret_dep = dependency('libsecret-1', version: '>= 0.20')
 
 # Build configuration
 cc = meson.get_compiler('c')
@@ -106,6 +108,8 @@ summary({
     'GTK4': gtk_dep.version(),
     'LibAdwaita': adw_dep.version(),
     'GLib': gio_dep.version(),
+    'libsoup': soup_dep.version(),
+    'libsecret': secret_dep.version(),
 }, section: 'Dependencies')
 
 # Post-install tasks

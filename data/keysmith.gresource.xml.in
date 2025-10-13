@@ -16,6 +16,11 @@
     <file>ssh_config_dialog.ui</file>
     <file>ssh_host_edit_dialog.ui</file>
     <file>terminal_dialog.ui</file>
+    <file>host_key_verification_dialog.ui</file>
+    <file>host_key_conflict_dialog.ui</file>
+    <file>github_auth_dialog.ui</file>
+    <file>cloud_key_deploy_dialog.ui</file>
+    <file>cloud_key_remove_dialog.ui</file>
     <file>connection_test_dialog.ui</file>
     <file>connection_diagnostics_dialog.ui</file>
     <file>connection_diagnostics_runner_dialog.ui</file>
@@ -34,6 +39,8 @@
     <file>diagnostic_html_report_dialog.ui</file>
     <file>keys_page.ui</file>
     <file>hosts_page.ui</file>
+    <file>known_hosts_page.ui</file>
+    <file>cloud_providers_page.ui</file>
     <file>backup_page.ui</file>
     <file>rotation_page.ui</file>
     <file>tunnels_page.ui</file>

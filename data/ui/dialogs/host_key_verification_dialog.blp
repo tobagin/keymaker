@@ -1,0 +1,148 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyMakerHostKeyVerificationDialog : Adw.Dialog {
+  title: _("Verify Host Key");
+  content-width: 600;
+  content-height: 500;
+
+  child: Adw.ToolbarView {
+    top-bar-style: raised;
+
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("Host Key Verification");
+      };
+    }
+
+    content: ScrolledWindow {
+      vexpand: true;
+
+      Adw.Clamp {
+        maximum-size: 600;
+        tightening-threshold: 500;
+
+        Box {
+          orientation: vertical;
+          spacing: 24;
+          margin-top: 24;
+          margin-bottom: 24;
+          margin-start: 24;
+          margin-end: 24;
+
+          Adw.PreferencesGroup {
+            title: _("Host Information");
+
+            Adw.ActionRow hostname_row {
+              title: _("Hostname");
+
+              [prefix]
+              Image {
+                icon-name: "network-server-symbolic";
+              }
+            }
+
+            Adw.ActionRow key_type_row {
+              title: _("Key Type");
+
+              [prefix]
+              Image {
+                icon-name: "security-high-symbolic";
+              }
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: _("Fingerprints");
+
+            Adw.ActionRow sha256_row {
+              title: _("SHA256");
+              subtitle-selectable: true;
+
+              [prefix]
+              Image {
+                icon-name: "document-properties-symbolic";
+              }
+
+              [suffix]
+              Button copy_sha256_button {
+                icon-name: "edit-copy-symbolic";
+                tooltip-text: _("Copy SHA256 Fingerprint");
+                valign: center;
+                styles ["flat"]
+              }
+            }
+
+            Adw.ActionRow md5_row {
+              title: _("MD5");
+              subtitle-selectable: true;
+
+              [prefix]
+              Image {
+                icon-name: "document-properties-symbolic";
+              }
+
+              [suffix]
+              Button copy_md5_button {
+                icon-name: "edit-copy-symbolic";
+                tooltip-text: _("Copy MD5 Fingerprint");
+                valign: center;
+                styles ["flat"]
+              }
+            }
+          }
+
+          Adw.PreferencesGroup verification_group {
+            title: _("Verification");
+
+            Adw.ActionRow status_row {
+              title: _("Verification Status");
+
+              [prefix]
+              Image status_icon {
+                icon-name: "dialog-question-symbolic";
+              }
+            }
+
+            Adw.EntryRow manual_verification_entry {
+              title: _("Manual Verification");
+
+              [prefix]
+              Image {
+                icon-name: "edit-paste-symbolic";
+              }
+
+              [suffix]
+              Button verify_button {
+                label: _("Verify");
+                valign: center;
+                styles ["suggested-action"]
+              }
+            }
+          }
+
+          Adw.PreferencesGroup docs_group {
+            title: _("Documentation");
+            description: _("For trusted services, verify against official documentation");
+
+            Adw.ActionRow docs_row {
+              title: _("Official Documentation");
+              activatable: true;
+
+              [prefix]
+              Image {
+                icon-name: "help-browser-symbolic";
+              }
+
+              [suffix]
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+          }
+        }
+      }
+    };
+  };
+}
