@@ -24,6 +24,8 @@ sources = files(
     'backend/cloud/TokenStorage.vala',
     'backend/cloud/GitHubOAuthServer.vala',
     'backend/cloud/GitHubProvider.vala',
+    'backend/cloud/GitLabOAuthServer.vala',
+    'backend/cloud/GitLabProvider.vala',
     'backend/cloud/CacheManager.vala',
     'ui/Window.vala',
     'ui/pages/KeysPage.vala',

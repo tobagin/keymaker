@@ -1,4 +1,4 @@
-/* GitHubProvider.vala
+/* GitLabProvider.vala
  *
  * Copyright 2025 Tobagin
  *
@@ -21,42 +21,92 @@
 namespace KeyMaker {
 
     /**
-     * GitHub cloud provider implementation
+     * GitLab cloud provider implementation
+     * Supports both GitLab.com and self-hosted instances
      */
-    public class GitHubProvider : Object, CloudProvider {
-        public CloudProviderType provider_type { get { return CloudProviderType.GITHUB; } }
+    public class GitLabProvider : Object, CloudProvider {
+        public CloudProviderType provider_type { get { return CloudProviderType.GITLAB; } }
 
         private HttpClient http_client;
         private string? access_token = null;
         private string? username = null;
-        private const string API_BASE = "https://api.github.com";
-        private const string AUTH_URL = "https://github.com/login/oauth/authorize";
-        private const string TOKEN_URL = "https://github.com/login/oauth/access_token";
-
-        // Default OAuth app credentials (can be overridden in preferences)
-        // Get them from: https://github.com/settings/developers
-        private const string CLIENT_ID = "Ov23liiiXTBMQuz8VZlI";
-        private const string CLIENT_SECRET = "01000fe95bff5ced8d4fdb9ab8a3519843e95ce9";
+        private string instance_url = "https://gitlab.com";
+        private string? client_id = null;
+        private string? client_secret = null;
+        private GitLabOAuthServer? oauth_server = null;
 
         private int rate_limit_remaining = 5000;
         private DateTime? rate_limit_reset = null;
-        private GitHubOAuthServer? oauth_server = null;
 
-        public GitHubProvider() {
+        public GitLabProvider() {
             http_client = new HttpClient();
+            load_oauth_credentials();
+        }
+
+        /**
+         * Load OAuth credentials from settings
+         */
+        private void load_oauth_credentials() {
+            try {
+                var settings = SettingsManager.app;
+                client_id = settings.get_string("cloud-provider-gitlab-client-id");
+                client_secret = settings.get_string("cloud-provider-gitlab-client-secret");
+            } catch (Error e) {
+                warning(@"Failed to load GitLab OAuth credentials: $(e.message)");
+            }
+        }
+
+        /**
+         * Set OAuth credentials
+         */
+        public void set_oauth_credentials(string client_id, string client_secret) {
+            this.client_id = client_id;
+            this.client_secret = client_secret;
+
+            // Save to settings
+            var settings = SettingsManager.app;
+            settings.set_string("cloud-provider-gitlab-client-id", client_id);
+            settings.set_string("cloud-provider-gitlab-client-secret", client_secret);
+        }
+
+        /**
+         * Check if OAuth credentials are configured
+         */
+        public bool has_oauth_credentials() {
+            return client_id != null && client_id.length > 0 &&
+                   client_secret != null && client_secret.length > 0;
+        }
+
+        /**
+         * Set custom instance URL (for self-hosted GitLab)
+         */
+        public void set_instance_url(string url) {
+            instance_url = url.has_suffix("/") ? url.substring(0, url.length - 1) : url;
+        }
+
+        /**
+         * Get current instance URL
+         */
+        public string get_instance_url() {
+            return instance_url;
         }
 
         public async bool authenticate() throws Error {
+            // Check if OAuth credentials are configured
+            if (!has_oauth_credentials()) {
+                throw new IOError.FAILED("OAuth credentials not configured. Please configure your GitLab OAuth application first.");
+            }
+
             // Start OAuth server (keep as instance variable to prevent garbage collection)
-            oauth_server = new GitHubOAuthServer();
+            oauth_server = new GitLabOAuthServer();
             yield oauth_server.start();
 
             // Generate state for CSRF protection
             var state = generate_random_state();
 
             // Build authorization URL
-            // Using admin:public_key scope to allow both read/write and delete operations
-            var auth_url = @"$AUTH_URL?client_id=$CLIENT_ID&scope=admin:public_key&state=$state&redirect_uri=http://localhost:8765/callback";
+            // Using read_user + api scopes for full access
+            var auth_url = @"$instance_url/oauth/authorize?client_id=$client_id&response_type=code&scope=read_user+api&state=$state&redirect_uri=http://localhost:8765/callback";
 
             // Open browser
             try {
@@ -80,15 +130,16 @@ namespace KeyMaker {
 
             // Exchange code for token
             var form_data = new Gee.HashMap<string, string>();
-            form_data["client_id"] = CLIENT_ID;
-            form_data["client_secret"] = CLIENT_SECRET;
+            form_data["client_id"] = client_id;
+            form_data["client_secret"] = client_secret;
             form_data["code"] = code;
+            form_data["grant_type"] = "authorization_code";
             form_data["redirect_uri"] = "http://localhost:8765/callback";
 
             var headers = new Gee.HashMap<string, string>();
             headers["Accept"] = "application/json";
 
-            var response = yield http_client.post_form(TOKEN_URL, form_data, headers);
+            var response = yield http_client.post_form(@"$instance_url/oauth/token", form_data, headers);
             var parser = new Json.Parser();
             parser.load_from_data(response);
             var root = parser.get_root().get_object();
@@ -99,13 +150,14 @@ namespace KeyMaker {
                 // Get username
                 yield fetch_username();
 
-                // Store token
-                yield TokenStorage.store_token("github", username, access_token);
+                // Store token with instance URL
+                yield TokenStorage.store_token(@"gitlab:$instance_url", username, access_token);
 
                 return true;
             } else if (root.has_member("error")) {
                 var error = root.get_string_member("error");
-                throw new IOError.FAILED(@"GitHub OAuth error: $error");
+                var error_desc = root.has_member("error_description") ? root.get_string_member("error_description") : error;
+                throw new IOError.FAILED(@"GitLab OAuth error: $error_desc");
             }
 
             throw new IOError.FAILED("Failed to obtain access token");
@@ -115,7 +167,7 @@ namespace KeyMaker {
             ensure_authenticated();
 
             var headers = create_auth_headers();
-            var response = yield http_client.get(@"$API_BASE/user/keys", headers);
+            var response = yield http_client.get(@"$instance_url/api/v4/user/keys", headers);
             update_rate_limit(headers);
 
             var parser = new Json.Parser();
@@ -131,7 +183,7 @@ namespace KeyMaker {
                     obj.has_member("key") ? extract_fingerprint(obj.get_string_member("key")) : null,
                     detect_key_type(obj.get_string_member("key")),
                     parse_datetime(obj.get_string_member("created_at")),
-                    obj.has_member("last_used_at") && !obj.get_null_member("last_used_at") ? parse_datetime(obj.get_string_member("last_used_at")) : null
+                    null // GitLab doesn't provide last_used_at field
                 );
                 keys.add(key);
             });
@@ -155,7 +207,7 @@ namespace KeyMaker {
             generator.set_root(body.get_root());
             var json_data = generator.to_data(null);
 
-            yield http_client.post(@"$API_BASE/user/keys", json_data, headers);
+            yield http_client.post(@"$instance_url/api/v4/user/keys", json_data, headers);
             update_rate_limit(headers);
         }
 
@@ -163,7 +215,7 @@ namespace KeyMaker {
             ensure_authenticated();
 
             var headers = create_auth_headers();
-            yield http_client.delete(@"$API_BASE/user/keys/$key_id", headers);
+            yield http_client.delete(@"$instance_url/api/v4/user/keys/$key_id", headers);
             update_rate_limit(headers);
         }
 
@@ -172,12 +224,21 @@ namespace KeyMaker {
         }
 
         public string get_provider_name() {
-            return "GitHub";
+            // Show instance domain for self-hosted
+            if (instance_url != "https://gitlab.com") {
+                try {
+                    var uri = Uri.parse(instance_url, UriFlags.NONE);
+                    return @"GitLab ($(uri.get_host()))";
+                } catch (Error e) {
+                    return "GitLab";
+                }
+            }
+            return "GitLab";
         }
 
         public async void disconnect() throws Error {
             if (username != null) {
-                yield TokenStorage.delete_token("github", username);
+                yield TokenStorage.delete_token(@"gitlab:$instance_url", username);
             }
             access_token = null;
             username = null;
@@ -187,7 +248,7 @@ namespace KeyMaker {
          * Load authentication from stored token
          */
         public async bool load_stored_auth(string stored_username) throws Error {
-            var token = yield TokenStorage.retrieve_token("github", stored_username);
+            var token = yield TokenStorage.retrieve_token(@"gitlab:$instance_url", stored_username);
             if (token != null) {
                 access_token = token;
                 username = stored_username;
@@ -210,32 +271,71 @@ namespace KeyMaker {
             }
         }
 
+        /**
+         * Check GitLab instance version
+         */
+        public async string? get_instance_version() throws Error {
+            try {
+                var headers = new Gee.HashMap<string, string>();
+                var response = yield http_client.get(@"$instance_url/api/v4/version", headers);
+
+                var parser = new Json.Parser();
+                parser.load_from_data(response);
+                var root = parser.get_root().get_object();
+
+                if (root.has_member("version")) {
+                    return root.get_string_member("version");
+                }
+            } catch (Error e) {
+                warning(@"Failed to get GitLab version: $(e.message)");
+            }
+            return null;
+        }
+
+        /**
+         * Check if instance version is supported (>= 13.0)
+         */
+        public async bool is_version_supported() throws Error {
+            var version = yield get_instance_version();
+            if (version == null) {
+                return false;
+            }
+
+            // Parse major version
+            var parts = version.split(".");
+            if (parts.length > 0) {
+                int major = int.parse(parts[0]);
+                return major >= 13;
+            }
+
+            return false;
+        }
+
         private async void fetch_username() throws Error {
             var headers = create_auth_headers();
-            var response = yield http_client.get(@"$API_BASE/user", headers);
+            var response = yield http_client.get(@"$instance_url/api/v4/user", headers);
 
             var parser = new Json.Parser();
             parser.load_from_data(response);
             var root = parser.get_root().get_object();
 
-            if (root.has_member("login")) {
-                username = root.get_string_member("login");
+            if (root.has_member("username")) {
+                username = root.get_string_member("username");
             } else {
-                throw new IOError.FAILED("Failed to fetch username from GitHub");
+                throw new IOError.FAILED("Failed to fetch username from GitLab");
             }
         }
 
         private Gee.Map<string, string> create_auth_headers() {
             var headers = new Gee.HashMap<string, string>();
             headers["Authorization"] = @"Bearer $access_token";
-            headers["Accept"] = "application/vnd.github+json";
-            headers["X-GitHub-Api-Version"] = "2022-11-28";
+            headers["Accept"] = "application/json";
             return headers;
         }
 
         private void ensure_authenticated() throws Error {
             if (!is_authenticated()) {
-                throw new IOError.FAILED("Not authenticated with GitHub");
+                throw new IOError.FAILED("Not authenticated with GitLab");
             }
         }
 
@@ -249,7 +349,6 @@ namespace KeyMaker {
 
         private string? extract_fingerprint(string key) {
             // Compute SHA256 fingerprint from public key
-            // GitHub API returns the full public key string, we need to hash it
             try {
                 // Use ssh-keygen to compute fingerprint
                 // Create a temporary file with the key
@@ -314,7 +413,7 @@ namespace KeyMaker {
         }
 
         private void update_rate_limit(Gee.Map<string, string> headers) {
-            // In a real implementation, would extract from response headers
+            // GitLab uses RateLimit-* headers instead of X-RateLimit-*
             // For now, just decrement
             rate_limit_remaining--;
         }

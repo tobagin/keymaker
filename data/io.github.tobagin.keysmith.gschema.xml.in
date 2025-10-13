@@ -128,6 +128,42 @@
       <description>The connected GitHub username</description>
     </key>
 
+    <key name="cloud-provider-gitlab-connected" type="b">
+      <default>false</default>
+      <summary>GitLab connection status</summary>
+      <description>Whether a GitLab account is currently connected</description>
+    </key>
+
+    <key name="cloud-provider-gitlab-username" type="s">
+      <default>''</default>
+      <summary>GitLab username</summary>
+      <description>The connected GitLab username</description>
+    </key>
+
+    <key name="cloud-provider-gitlab-instance-url" type="s">
+      <default>'https://gitlab.com'</default>
+      <summary>GitLab instance URL</summary>
+      <description>The URL of the GitLab instance (GitLab.com or self-hosted)</description>
+    </key>
+
+    <key name="cloud-provider-gitlab-allow-self-signed" type="b">
+      <default>false</default>
+      <summary>Allow self-signed certificates</summary>
+      <description>Whether to allow self-signed certificates for self-hosted GitLab instances (insecure)</description>
+    </key>
+
+    <key name="cloud-provider-gitlab-client-id" type="s">
+      <default>''</default>
+      <summary>GitLab OAuth Client ID</summary>
+      <description>The OAuth application client ID for GitLab</description>
+    </key>
+
+    <key name="cloud-provider-gitlab-client-secret" type="s">
+      <default>''</default>
+      <summary>GitLab OAuth Client Secret</summary>
+      <description>The OAuth application client secret for GitLab</description>
+    </key>
+
     <key name="cloud-provider-cache" type="s">
       <default>'{}'</default>
       <summary>Cloud provider key cache</summary>

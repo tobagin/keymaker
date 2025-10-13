@@ -1,4 +1,4 @@
-/* GitHubOAuthServer.vala
+/* GitLabOAuthServer.vala
  *
  * Copyright 2025 Tobagin
  *
@@ -21,9 +21,9 @@
 namespace KeyMaker {
 
     /**
-     * Local HTTP server for OAuth callback
+     * Local HTTP server for GitLab OAuth callback
      */
-    public class GitHubOAuthServer : Object {
+    public class GitLabOAuthServer : Object {
         private Soup.Server? server = null;
         private string? authorization_code = null;
         private string? error_message = null;
