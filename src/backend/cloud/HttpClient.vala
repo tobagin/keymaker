@@ -42,8 +42,9 @@ namespace KeyMaker {
 
             try {
                 var bytes = yield session.send_and_read_async(message, Priority.DEFAULT, null);
-                check_status_code(message);
-                return (string) bytes.get_data();
+                var response = (string) bytes.get_data();
+                check_status_code(message, response);
+                return response;
             } catch (Error e) {
                 throw new IOError.FAILED("GET request failed: %s".printf(e.message));
             }
@@ -62,8 +63,9 @@ namespace KeyMaker {
 
             try {
                 var bytes = yield session.send_and_read_async(message, Priority.DEFAULT, null);
-                check_status_code(message);
-                return (string) bytes.get_data();
+                var response = (string) bytes.get_data();
+                check_status_code(message, response);
+                return response;
             } catch (Error e) {
                 throw new IOError.FAILED("POST request failed: %s".printf(e.message));
             }
@@ -78,8 +80,9 @@ namespace KeyMaker {
 
             try {
                 var bytes = yield session.send_and_read_async(message, Priority.DEFAULT, null);
-                check_status_code(message);
-                return (string) bytes.get_data();
+                var response = (string) bytes.get_data();
+                check_status_code(message, response);
+                return response;
             } catch (Error e) {
                 throw new IOError.FAILED("DELETE request failed: %s".printf(e.message));
             }
@@ -100,8 +103,9 @@ namespace KeyMaker {
 
             try {
                 var bytes = yield session.send_and_read_async(message, Priority.DEFAULT, null);
-                check_status_code(message);
-                return (string) bytes.get_data();
+                var response = (string) bytes.get_data();
+                check_status_code(message, response);
+                return response;
             } catch (Error e) {
                 throw new IOError.FAILED("POST form request failed: %s".printf(e.message));
             }
@@ -115,12 +119,23 @@ namespace KeyMaker {
             }
         }
 
-        private void check_status_code(Soup.Message message) throws Error {
+        private void check_status_code(Soup.Message message, string response_body = "") throws Error {
             var status = message.status_code;
             if (status < 200 || status >= 300) {
                 var reason = message.reason_phrase ?? "Unknown error";
                 var url = message.get_uri().to_string();
+
+                // Truncate response body if too long
+                var truncated_body = response_body;
+                if (truncated_body.length > 200) {
+                    truncated_body = truncated_body.substring(0, 200) + "...";
+                }
+
                 warning(@"HTTP $status error for $(message.method) $url: $reason");
+                if (truncated_body.length > 0) {
+                    warning(@"Response body: $truncated_body");
+                }
+
                 throw new IOError.FAILED(@"HTTP $status: $reason");
             }
         }

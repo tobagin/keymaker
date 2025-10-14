@@ -48,6 +48,7 @@ ui_files = [
   # Widgets
   'widgets/key_list.blp',
   'widgets/key_row.blp',
+  'widgets/empty_state_row.blp',
 
   # Dialogs
   'dialogs/add_key_to_agent_dialog.blp',

@@ -164,6 +164,18 @@
       <description>The OAuth application client secret for GitLab</description>
     </key>
 
+    <key name="cloud-provider-bitbucket-connected" type="b">
+      <default>false</default>
+      <summary>Bitbucket connection status</summary>
+      <description>Whether a Bitbucket account is currently connected</description>
+    </key>
+
+    <key name="cloud-provider-bitbucket-username" type="s">
+      <default>''</default>
+      <summary>Bitbucket username</summary>
+      <description>The connected Bitbucket username</description>
+    </key>
+
     <key name="cloud-provider-cache" type="s">
       <default>'{}'</default>
       <summary>Cloud provider key cache</summary>

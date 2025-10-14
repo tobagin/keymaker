@@ -33,7 +33,7 @@ template $KeyMakerCloudProvidersPage : Adw.Bin {
 
             Adw.PreferencesGroup github_group {
               title: "GitHub";
-              description: _("Manage SSH keys on GitHub");
+              description: _("Disconnected");
 
               [header-suffix]
               Box {
@@ -85,13 +85,6 @@ template $KeyMakerCloudProvidersPage : Adw.Bin {
                 visible: false;
               }
 
-              Adw.StatusPage empty_state {
-                title: _("No Keys Found");
-                description: _("Deploy a key to get started");
-                icon-name: "dialog-information-symbolic";
-                visible: false;
-              }
-
               Box loading_box {
                 orientation: vertical;
                 spacing: 12;
@@ -114,7 +107,7 @@ template $KeyMakerCloudProvidersPage : Adw.Bin {
 
             Adw.PreferencesGroup gitlab_group {
               title: "GitLab";
-              description: _("Manage SSH keys on GitLab");
+              description: _("Disconnected");
 
               [header-suffix]
               Box {
@@ -174,14 +167,82 @@ template $KeyMakerCloudProvidersPage : Adw.Bin {
                 visible: false;
               }
 
-              Adw.StatusPage gitlab_empty_state {
-                title: _("No Keys Found");
-                description: _("Deploy a key to get started");
-                icon-name: "dialog-information-symbolic";
+              Box gitlab_loading_box {
+                orientation: vertical;
+                spacing: 12;
+                halign: center;
+                valign: center;
+                margin-top: 24;
+                margin-bottom: 24;
+                visible: false;
+
+                Spinner {
+                  spinning: true;
+                }
+
+                Label {
+                  label: _("Loading keys...");
+                  styles ["dim-label"]
+                }
+              }
+            }
+
+            Adw.PreferencesGroup bitbucket_group {
+              title: "Bitbucket";
+              description: _("Disconnected");
+              visible: false;
+
+              [header-suffix]
+              Box {
+                spacing: 6;
+
+                Button bitbucket_connect_button {
+                  icon-name: "io.github.tobagin.keysmith-connect-symbolic";
+                  tooltip-text: _("Connect with API Token");
+                  visible: true;
+                  valign: center;
+                  styles ["suggested-action", "flat"]
+                }
+
+                Label bitbucket_connection_status_label {
+                  label: "";
+                  visible: false;
+                  valign: center;
+                  styles ["dim-label"]
+                }
+
+                Button bitbucket_disconnect_button {
+                  icon-name: "io.github.tobagin.keysmith-disconnect-symbolic";
+                  tooltip-text: _("Disconnect from Bitbucket");
+                  visible: false;
+                  valign: center;
+                  styles ["destructive-action", "flat"]
+                }
+
+                Button bitbucket_deploy_key_button {
+                  icon-name: "tab-new-symbolic";
+                  tooltip-text: _("Deploy Key to Bitbucket");
+                  visible: false;
+                  valign: center;
+                  styles ["flat"]
+                }
+
+                Button bitbucket_refresh_button {
+                  icon-name: "view-refresh-symbolic";
+                  tooltip-text: _("Refresh Keys");
+                  visible: false;
+                  valign: center;
+                  styles ["flat"]
+                }
+              }
+
+              ListBox bitbucket_keys_list_box {
+                selection-mode: none;
+                styles ["boxed-list"]
                 visible: false;
               }
 
-              Box gitlab_loading_box {
+              Box bitbucket_loading_box {
                 orientation: vertical;
                 spacing: 12;
                 halign: center;

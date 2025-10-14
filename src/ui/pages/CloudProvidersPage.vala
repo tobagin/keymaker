@@ -24,6 +24,16 @@
 [GtkTemplate (ui = "/io/github/tobagin/keysmith/cloud_providers_page.ui")]
 #endif
 public class KeyMaker.CloudProvidersPage : Adw.Bin {
+    // PreferencesGroups
+    [GtkChild]
+    private unowned Adw.PreferencesGroup github_group;
+
+    [GtkChild]
+    private unowned Adw.PreferencesGroup gitlab_group;
+
+    [GtkChild]
+    private unowned Adw.PreferencesGroup bitbucket_group;
+
     // GitHub widgets
     [GtkChild]
     private unowned Gtk.Button connect_button;
@@ -39,9 +49,6 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
 
     [GtkChild]
     private unowned Gtk.ListBox keys_list_box;
-
-    [GtkChild]
-    private unowned Adw.StatusPage empty_state;
 
     [GtkChild]
     private unowned Gtk.Box loading_box;
@@ -72,24 +79,46 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     private unowned Gtk.ListBox gitlab_keys_list_box;
 
     [GtkChild]
-    private unowned Adw.StatusPage gitlab_empty_state;
-
-    [GtkChild]
     private unowned Gtk.Box gitlab_loading_box;
 
     [GtkChild]
     private unowned Gtk.Button gitlab_deploy_key_button;
 
+    // Bitbucket widgets
+    [GtkChild]
+    private unowned Gtk.Button bitbucket_connect_button;
+
+    [GtkChild]
+    private unowned Gtk.Label bitbucket_connection_status_label;
+
+    [GtkChild]
+    private unowned Gtk.Button bitbucket_disconnect_button;
+
+    [GtkChild]
+    private unowned Gtk.Button bitbucket_refresh_button;
+
+    [GtkChild]
+    private unowned Gtk.ListBox bitbucket_keys_list_box;
+
+    [GtkChild]
+    private unowned Gtk.Box bitbucket_loading_box;
+
+    [GtkChild]
+    private unowned Gtk.Button bitbucket_deploy_key_button;
+
     private GitHubProvider github_provider;
     private GitLabProvider gitlab_provider;
+    private BitbucketProvider bitbucket_provider;
     private CacheManager cache_manager;
     private Settings settings;
     private Gee.List<CloudKeyMetadata>? current_keys = null;
     private Gee.List<CloudKeyMetadata>? gitlab_current_keys = null;
+    private Gee.List<CloudKeyMetadata>? bitbucket_current_keys = null;
 
     construct {
         github_provider = new GitHubProvider();
         gitlab_provider = new GitLabProvider();
+        bitbucket_provider = new BitbucketProvider();
         cache_manager = new CacheManager();
         settings = SettingsManager.app;
 
@@ -106,6 +135,12 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         gitlab_disconnect_button.clicked.connect(on_gitlab_disconnect_clicked);
         gitlab_refresh_button.clicked.connect(on_gitlab_refresh_clicked);
         gitlab_deploy_key_button.clicked.connect(on_gitlab_deploy_key_clicked);
+
+        // Wire up Bitbucket signals
+        bitbucket_connect_button.clicked.connect(on_bitbucket_connect_clicked);
+        bitbucket_disconnect_button.clicked.connect(on_bitbucket_disconnect_clicked);
+        bitbucket_refresh_button.clicked.connect(on_bitbucket_refresh_clicked);
+        bitbucket_deploy_key_button.clicked.connect(on_bitbucket_deploy_key_clicked);
 
         // Load initial state
         load_initial_state.begin();
@@ -159,6 +194,27 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         } else {
             update_gitlab_ui_disconnected();
         }
+
+        // Load Bitbucket state
+        var bitbucket_is_connected = settings.get_boolean("cloud-provider-bitbucket-connected");
+        var bitbucket_username = settings.get_string("cloud-provider-bitbucket-username");
+
+        if (bitbucket_is_connected && bitbucket_username.length > 0) {
+            try {
+                if (yield bitbucket_provider.load_stored_auth(bitbucket_username)) {
+                    update_bitbucket_ui_connected(bitbucket_username);
+                    yield load_bitbucket_keys(true); // Try from cache first
+                } else {
+                    // Token invalid, disconnect
+                    yield bitbucket_disconnect();
+                }
+            } catch (Error e) {
+                warning(@"Failed to load stored Bitbucket auth: $(e.message)");
+                update_bitbucket_ui_disconnected();
+            }
+        } else {
+            update_bitbucket_ui_disconnected();
+        }
     }
 
     private void on_connect_clicked() {
@@ -196,6 +252,23 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
 
     private void on_gitlab_deploy_key_clicked() {
         show_gitlab_deploy_dialog();
+    }
+
+    // Bitbucket signal handlers
+    private void on_bitbucket_connect_clicked() {
+        show_bitbucket_token_dialog();
+    }
+
+    private void on_bitbucket_disconnect_clicked() {
+        bitbucket_disconnect.begin();
+    }
+
+    private void on_bitbucket_refresh_clicked() {
+        load_bitbucket_keys.begin(false); // Force refresh from API
+    }
+
+    private void on_bitbucket_deploy_key_clicked() {
+        show_bitbucket_deploy_dialog();
     }
 
     private async void authenticate() {
@@ -268,6 +341,58 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         }
     }
 
+    // Bitbucket authentication methods
+    private async void bitbucket_authenticate_with_username_token(string username, string api_token) {
+        show_bitbucket_loading();
+
+        try {
+            if (yield bitbucket_provider.authenticate_with_username_and_token(username, api_token)) {
+                settings.set_boolean("cloud-provider-bitbucket-connected", true);
+                settings.set_string("cloud-provider-bitbucket-username", username);
+
+                update_bitbucket_ui_connected(username);
+                yield load_bitbucket_keys(false);
+
+                show_toast(_("Connected to Bitbucket successfully"));
+            }
+        } catch (Error e) {
+            show_error(@"Bitbucket authentication failed: $(e.message)");
+        }
+    }
+
+    private async void bitbucket_authenticate_with_token(string api_token) {
+        show_bitbucket_loading();
+
+        try {
+            if (yield bitbucket_provider.authenticate_with_token(api_token)) {
+                var username = bitbucket_provider.get_username();
+                settings.set_boolean("cloud-provider-bitbucket-connected", true);
+                settings.set_string("cloud-provider-bitbucket-username", username ?? "");
+
+                update_bitbucket_ui_connected(username ?? "");
+                yield load_bitbucket_keys(false);
+
+                show_toast(_("Connected to Bitbucket successfully"));
+            }
+        } catch (Error e) {
+            show_error(@"Bitbucket authentication failed: $(e.message)");
+        }
+    }
+
+    private async void bitbucket_disconnect() {
+        try {
+            yield bitbucket_provider.disconnect();
+            settings.set_boolean("cloud-provider-bitbucket-connected", false);
+            settings.set_string("cloud-provider-bitbucket-username", "");
+            cache_manager.clear_cache("bitbucket");
+
+            update_bitbucket_ui_disconnected();
+            show_toast(_("Disconnected from Bitbucket"));
+        } catch (Error e) {
+            show_error(@"Failed to disconnect from Bitbucket: $(e.message)");
+        }
+    }
+
     private async void load_keys(bool try_cache_first) {
         show_loading();
         error_banner.revealed = false;
@@ -296,6 +421,20 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         }
     }
 
+    private async void load_bitbucket_keys(bool try_cache_first) {
+        show_bitbucket_loading();
+        error_banner.revealed = false;
+
+        // Always fetch fresh data from Bitbucket
+        try {
+            bitbucket_current_keys = yield bitbucket_provider.list_keys();
+            cache_manager.cache_keys("bitbucket", bitbucket_current_keys);
+            display_bitbucket_keys(bitbucket_current_keys);
+        } catch (Error e) {
+            show_error(@"Failed to load Bitbucket keys: $(e.message)");
+        }
+    }
+
     private void display_keys(Gee.List<CloudKeyMetadata> keys) {
         // Clear existing
         Gtk.Widget? child = keys_list_box.get_first_child();
@@ -306,13 +445,14 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         }
 
         if (keys.size == 0) {
-            show_empty_state();
-            return;
-        }
-
-        foreach (var key in keys) {
-            var row = create_key_row(key, "github");
-            keys_list_box.append(row);
+            // Add empty state row
+            var empty_row = new EmptyStateRow();
+            keys_list_box.append(empty_row);
+        } else {
+            foreach (var key in keys) {
+                var row = create_key_row(key, "github");
+                keys_list_box.append(row);
+            }
         }
 
         loading_box.visible = false;
@@ -330,18 +470,44 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         }
 
         if (keys.size == 0) {
-            show_gitlab_empty_state();
-            return;
-        }
-
-        foreach (var key in keys) {
-            var row = create_key_row(key, "gitlab");
-            gitlab_keys_list_box.append(row);
+            // Add empty state row
+            var empty_row = new EmptyStateRow();
+            gitlab_keys_list_box.append(empty_row);
+        } else {
+            foreach (var key in keys) {
+                var row = create_key_row(key, "gitlab");
+                gitlab_keys_list_box.append(row);
+            }
         }
 
         gitlab_loading_box.visible = false;
         gitlab_keys_list_box.visible = true;
         gitlab_deploy_key_button.visible = true;
+    }
+
+    private void display_bitbucket_keys(Gee.List<CloudKeyMetadata> keys) {
+        // Clear existing
+        Gtk.Widget? child = bitbucket_keys_list_box.get_first_child();
+        while (child != null) {
+            var next = child.get_next_sibling();
+            bitbucket_keys_list_box.remove(child);
+            child = next;
+        }
+
+        if (keys.size == 0) {
+            // Add empty state row
+            var empty_row = new EmptyStateRow();
+            bitbucket_keys_list_box.append(empty_row);
+        } else {
+            foreach (var key in keys) {
+                var row = create_key_row(key, "bitbucket");
+                bitbucket_keys_list_box.append(row);
+            }
+        }
+
+        bitbucket_loading_box.visible = false;
+        bitbucket_keys_list_box.visible = true;
+        bitbucket_deploy_key_button.visible = true;
     }
 
     private Gtk.Widget create_key_row(CloudKeyMetadata key, string provider_name) {
@@ -405,7 +571,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         // Remove button (matching destructive action style from KeyRow)
         var remove_button = new Gtk.Button.from_icon_name("io.github.tobagin.keysmith-remove-symbolic");
         remove_button.valign = Gtk.Align.CENTER;
-        string provider_display = provider_name == "github" ? "GitHub" : "GitLab";
+        string provider_display = provider_name == "github" ? "GitHub" : (provider_name == "gitlab" ? "GitLab" : "Bitbucket");
         remove_button.tooltip_text = @"Remove from $provider_display";
         remove_button.add_css_class("flat");
         remove_button.add_css_class("destructive-action");
@@ -420,7 +586,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     }
 
     private async void remove_key(CloudKeyMetadata key, string provider_name) {
-        string provider_display = provider_name == "github" ? "GitHub" : "GitLab";
+        string provider_display = provider_name == "github" ? "GitHub" : (provider_name == "gitlab" ? "GitLab" : "Bitbucket");
         var dialog = new Adw.MessageDialog((Gtk.Window) this.get_root(), _("Remove Key?"), null);
         dialog.body = @"Remove '$(key.title)' from $provider_display? This cannot be undone.";
         dialog.add_response("cancel", _("Cancel"));
@@ -440,8 +606,10 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     private async void perform_key_removal(CloudKeyMetadata key, string provider_name) {
         if (provider_name == "github") {
             show_loading();
-        } else {
+        } else if (provider_name == "gitlab") {
             show_gitlab_loading();
+        } else {
+            show_bitbucket_loading();
         }
 
         try {
@@ -449,10 +617,14 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                 yield github_provider.remove_key(key.id);
                 yield load_keys(false);
                 show_toast(@"Removed '$(key.title)' from GitHub");
-            } else {
+            } else if (provider_name == "gitlab") {
                 yield gitlab_provider.remove_key(key.id);
                 yield load_gitlab_keys(false);
                 show_toast(@"Removed '$(key.title)' from GitLab");
+            } else {
+                yield bitbucket_provider.remove_key(key.id);
+                yield load_bitbucket_keys(false);
+                show_toast(@"Removed '$(key.title)' from Bitbucket");
             }
         } catch (Error e) {
             show_error(@"Failed to remove key: $(e.message)");
@@ -487,6 +659,20 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         dialog.present();
     }
 
+    private void show_bitbucket_deploy_dialog() {
+        var window = (Gtk.Window) this.get_root();
+        var dialog = new CloudKeyDeployDialog(window, bitbucket_provider);
+
+        dialog.deployment_completed.connect((success) => {
+            if (success) {
+                // Reload keys to show the newly deployed key
+                load_bitbucket_keys.begin(false);
+            }
+        });
+
+        dialog.present();
+    }
+
     private void show_gitlab_configure_dialog() {
         var window = (Gtk.Window) this.get_root();
         var dialog = new Adw.PreferencesDialog();
@@ -504,6 +690,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         Gtk.CheckButton? gitlab_com_radio = null;
         Gtk.CheckButton? gitlab_gnome_radio = null;
         Gtk.CheckButton? gitlab_freedesktop_radio = null;
+        Gtk.CheckButton? gitlab_salsa_radio = null;
         Gtk.CheckButton? custom_radio = null;
 
         // GitLab.com option
@@ -537,6 +724,17 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         gitlab_freedesktop_row.add_prefix(gitlab_freedesktop_radio);
         gitlab_freedesktop_row.activatable_widget = gitlab_freedesktop_radio;
         instance_group.add(gitlab_freedesktop_row);
+
+        // Salsa (Debian) GitLab option
+        var gitlab_salsa_row = new Adw.ActionRow();
+        gitlab_salsa_row.title = "Salsa (Debian)";
+        gitlab_salsa_row.subtitle = _("Debian's GitLab instance (pre-configured)");
+        gitlab_salsa_radio = new Gtk.CheckButton();
+        gitlab_salsa_radio.valign = Gtk.Align.CENTER;
+        gitlab_salsa_radio.group = gitlab_com_radio;
+        gitlab_salsa_row.add_prefix(gitlab_salsa_radio);
+        gitlab_salsa_row.activatable_widget = gitlab_salsa_radio;
+        instance_group.add(gitlab_salsa_row);
 
         // Custom option
         var custom_row = new Adw.ActionRow();
@@ -633,6 +831,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
             gitlab_gnome_radio.active = true;
         } else if (current_url == "https://gitlab.freedesktop.org") {
             gitlab_freedesktop_radio.active = true;
+        } else if (current_url == "https://salsa.debian.org") {
+            gitlab_salsa_radio.active = true;
         } else {
             custom_radio.active = true;
             url_row.text = current_url;
@@ -661,6 +861,11 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                 url = "https://gitlab.freedesktop.org";
                 client_id = "ddfb39c8929f22cd53165d34247d51425f7f2737934e955458bfe58882158a6c";
                 client_secret = "gloas-af32aaf323216ec55544d157733937f789acdb216dc3efde25697413ec75328b";
+            } else if (gitlab_salsa_radio.active) {
+                // Salsa (Debian) pre-configured
+                url = "https://salsa.debian.org";
+                client_id = "51093f2599b4680db128447435a0658f368adb995cd7dc6e24cfbc25dc0432f0";
+                client_secret = "gloas-989d64d8037af96689e71a2f46acefc3ff90fdeb4dc1ed6a787470d566011973";
             } else if (custom_radio.active) {
                 // Custom instance
                 url = url_row.text.strip();
@@ -712,20 +917,20 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
 
     // GitHub UI methods
     private void update_ui_connected(string username) {
+        github_group.description = @"Connected as $username";
         connect_button.visible = false;
-        connection_status_label.label = @"Connected as $username";
-        connection_status_label.visible = true;
+        connection_status_label.visible = false;
         disconnect_button.visible = true;
         refresh_button.visible = true;
     }
 
     private void update_ui_disconnected() {
+        github_group.description = _("Disconnected");
         connect_button.visible = true;
         connection_status_label.visible = false;
         disconnect_button.visible = false;
         refresh_button.visible = false;
         keys_list_box.visible = false;
-        empty_state.visible = false;
         loading_box.visible = false;
         deploy_key_button.visible = false;
     }
@@ -733,34 +938,26 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     private void show_loading() {
         loading_box.visible = true;
         keys_list_box.visible = false;
-        empty_state.visible = false;
         deploy_key_button.visible = false;
         error_banner.revealed = false;
     }
 
-    private void show_empty_state() {
-        empty_state.visible = true;
-        keys_list_box.visible = false;
-        loading_box.visible = false;
-        deploy_key_button.visible = true;
-    }
-
     // GitLab UI methods
     private void update_gitlab_ui_connected(string username) {
+        gitlab_group.description = @"Connected as $username";
         gitlab_connect_button.visible = false;
-        gitlab_connection_status_label.label = @"Connected as $username";
-        gitlab_connection_status_label.visible = true;
+        gitlab_connection_status_label.visible = false;
         gitlab_disconnect_button.visible = true;
         gitlab_refresh_button.visible = true;
     }
 
     private void update_gitlab_ui_disconnected() {
+        gitlab_group.description = _("Disconnected");
         gitlab_connect_button.visible = true;
         gitlab_connection_status_label.visible = false;
         gitlab_disconnect_button.visible = false;
         gitlab_refresh_button.visible = false;
         gitlab_keys_list_box.visible = false;
-        gitlab_empty_state.visible = false;
         gitlab_loading_box.visible = false;
         gitlab_deploy_key_button.visible = false;
     }
@@ -768,16 +965,99 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     private void show_gitlab_loading() {
         gitlab_loading_box.visible = true;
         gitlab_keys_list_box.visible = false;
-        gitlab_empty_state.visible = false;
         gitlab_deploy_key_button.visible = false;
         error_banner.revealed = false;
     }
 
-    private void show_gitlab_empty_state() {
-        gitlab_empty_state.visible = true;
-        gitlab_keys_list_box.visible = false;
-        gitlab_loading_box.visible = false;
-        gitlab_deploy_key_button.visible = true;
+    // Bitbucket UI methods
+    private void update_bitbucket_ui_connected(string username) {
+        bitbucket_group.description = @"Connected as $username";
+        bitbucket_connect_button.visible = false;
+        bitbucket_connection_status_label.visible = false;
+        bitbucket_disconnect_button.visible = true;
+        bitbucket_refresh_button.visible = true;
+    }
+
+    private void update_bitbucket_ui_disconnected() {
+        bitbucket_group.description = _("Disconnected");
+        bitbucket_connect_button.visible = true;
+        bitbucket_connection_status_label.visible = false;
+        bitbucket_disconnect_button.visible = false;
+        bitbucket_refresh_button.visible = false;
+        bitbucket_keys_list_box.visible = false;
+        bitbucket_loading_box.visible = false;
+        bitbucket_deploy_key_button.visible = false;
+    }
+
+    private void show_bitbucket_loading() {
+        bitbucket_loading_box.visible = true;
+        bitbucket_keys_list_box.visible = false;
+        bitbucket_deploy_key_button.visible = false;
+        error_banner.revealed = false;
+    }
+
+    private void show_bitbucket_token_dialog() {
+        var window = (Gtk.Window) this.get_root();
+        var dialog = new Adw.MessageDialog(window, _("Connect to Bitbucket"), null);
+        dialog.body = _("Use a Bitbucket App Password for authentication.\n\nNote: Atlassian API tokens don't work with Bitbucket API.");
+        dialog.add_response("cancel", _("Cancel"));
+        dialog.add_response("connect", _("Connect"));
+        dialog.set_response_appearance("connect", Adw.ResponseAppearance.SUGGESTED);
+        dialog.set_default_response("connect");
+
+        // Add to dialog
+        var content_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 12);
+        content_box.margin_top = 12;
+        content_box.margin_bottom = 12;
+        content_box.margin_start = 12;
+        content_box.margin_end = 12;
+
+        // Username entry
+        var username_entry = new Adw.EntryRow();
+        username_entry.title = _("Bitbucket Username");
+        username_entry.show_apply_button = false;
+        content_box.append(username_entry);
+
+        // Create token entry
+        var token_entry = new Adw.PasswordEntryRow();
+        token_entry.title = _("App Password");
+        token_entry.show_apply_button = false;
+
+        // Instructions button
+        var instructions_button = new Gtk.Button.with_label(_("Create App Password"));
+        instructions_button.valign = Gtk.Align.CENTER;
+        instructions_button.clicked.connect(() => {
+            try {
+                AppInfo.launch_default_for_uri("https://bitbucket.org/account/settings/app-passwords/", null);
+            } catch (Error e) {
+                warning(@"Failed to open URL: $(e.message)");
+            }
+        });
+        token_entry.add_suffix(instructions_button);
+        content_box.append(token_entry);
+
+        // Instructions
+        var info_label = new Gtk.Label(_("How to create an App Password:\n\n1. Enter your Bitbucket username (from Settings → Personal)\n2. Click \"Create App Password\" button above\n3. Create a new password with 'Account: Read' permission\n4. Copy and paste the generated password above"));
+        info_label.wrap = true;
+        info_label.xalign = 0;
+        info_label.add_css_class("dim-label");
+        content_box.append(info_label);
+
+        dialog.set_extra_child(content_box);
+
+        dialog.response.connect((response_id) => {
+            if (response_id == "connect") {
+                var username = username_entry.text.strip();
+                var token = token_entry.text.strip();
+                if (username.length > 0 && token.length > 0) {
+                    bitbucket_authenticate_with_username_token.begin(username, token);
+                } else {
+                    show_error(_("Both username and API token are required"));
+                }
+            }
+        });
+
+        dialog.present();
     }
 
     private void show_error(string message) {

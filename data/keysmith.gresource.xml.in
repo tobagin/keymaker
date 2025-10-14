@@ -5,6 +5,7 @@
     <file>generate_dialog.ui</file>
     <file>key_list.ui</file>
     <file>key_row.ui</file>
+    <file>empty_state_row.ui</file>
     <file>change_passphrase_dialog.ui</file>
     <file>copy_id_dialog.ui</file>
     <file>key_details_dialog.ui</file>

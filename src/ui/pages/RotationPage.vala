@@ -236,7 +236,7 @@ public class KeyMaker.RotationPage : Adw.Bin {
     
     private void on_plan_added (RotationPlan plan) {
         refresh_all_lists();
-        show_toast(_("Plan '%s' added").printf(plan.name));
+        //show_toast(_("Plan '%s' added").printf(plan.name));
     }
     
     private void on_plan_updated (RotationPlan plan) {
