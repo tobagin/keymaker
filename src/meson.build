@@ -78,6 +78,7 @@ sources = files(
     'ui/dialogs/PlanDetailsDialog.vala',
     'ui/widgets/RotationPlanRows.vala',
     'ui/widgets/EmptyStateRow.vala',
+    'ui/widgets/CloudAccountSection.vala',
     'ui/RotationPlanActions.vala',
     'backend/BackupManager.vala',
     'backend/TotpManager.vala',

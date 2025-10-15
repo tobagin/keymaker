@@ -15,6 +15,42 @@ install_data(
   rename: '@0@.svg'.format(app_id)
 )
 
+# Cloud provider colour icons
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-github-colour-dark-mode.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-github-colour-light-mode.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-gitlab-colour.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-bitbucket-colour.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-aws-colour.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-azure-colour.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-gcp-colour.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
 # Install custom symbolic icons
 install_data(
   'hicolor/scalable/actions/io.github.tobagin.keysmith-qr-code-symbolic.svg',

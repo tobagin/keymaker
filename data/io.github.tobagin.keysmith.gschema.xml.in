@@ -187,6 +187,12 @@
       <summary>Show deployment warning</summary>
       <description>Whether to show security warning before deploying keys to cloud</description>
     </key>
+
+    <key name="cloud-accounts" type="s">
+      <default>'[]'</default>
+      <summary>Cloud provider accounts</summary>
+      <description>JSON array of configured cloud provider accounts (GitHub, GitLab, Bitbucket)</description>
+    </key>
   </schema>
 
   <schema id="@APP_ID@.tunneling" path="/@APP_PATH@/tunneling/">

@@ -34,7 +34,7 @@
    inkscape:window-maximized="1"
    inkscape:current-layer="svg1" />
 	<path
-   fill="#000000"
+   fill="currentColor"
    fill-opacity="1"
    stroke-width="0.396246"
    stroke-linejoin="round"
