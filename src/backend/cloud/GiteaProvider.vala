@@ -1,4 +1,4 @@
-/* GitLabProvider.vala
+/* GiteaProvider.vala
  *
  * Copyright 2025 Tobagin
  *
@@ -21,22 +21,21 @@
 namespace KeyMaker {
 
     /**
-     * GitLab cloud provider implementation
-     * Supports both GitLab.com and self-hosted instances
+     * Gitea cloud provider implementation
+     *
+     * Supports both gitea.com and self-hosted Gitea instances
+     * Uses OAuth 2.0 for authentication
      */
-    public class GitLabProvider : Object, CloudProvider {
-        public CloudProviderType provider_type { get { return CloudProviderType.GITLAB; } }
+    public class GiteaProvider : Object, CloudProvider {
+        public CloudProviderType provider_type { get { return CloudProviderType.GITEA; } }
 
         private HttpClient http_client;
         private string? access_token = null;
         private string? username = null;
-        private string instance_url = "https://gitlab.com";
+        private string instance_url = "https://gitea.com";
         private string? client_id = null;
         private string? client_secret = null;
-        private GitLabOAuthServer? oauth_server = null;
-
-        private int rate_limit_remaining = 5000;
-        private DateTime? rate_limit_reset = null;
+        private GiteaOAuthServer? oauth_server = null;
 
         /**
          * Get the configured OAuth client ID (read-only)
@@ -52,7 +51,7 @@ namespace KeyMaker {
             return client_secret;
         }
 
-        public GitLabProvider() {
+        public GiteaProvider() {
             http_client = new HttpClient();
             load_oauth_credentials();
         }
@@ -63,24 +62,40 @@ namespace KeyMaker {
         private void load_oauth_credentials() {
             try {
                 var settings = SettingsManager.app;
-                client_id = settings.get_string("cloud-provider-gitlab-client-id");
-                client_secret = settings.get_string("cloud-provider-gitlab-client-secret");
+                client_id = settings.get_string("cloud-provider-gitea-client-id");
+                client_secret = settings.get_string("cloud-provider-gitea-client-secret");
             } catch (Error e) {
-                warning(@"Failed to load GitLab OAuth credentials: $(e.message)");
+                warning(@"Failed to load Gitea OAuth credentials: $(e.message)");
             }
+        }
+
+        /**
+         * Set the Gitea instance URL
+         */
+        public void set_instance_url(string url) {
+            this.instance_url = url.has_suffix("/") ? url.substring(0, url.length - 1) : url;
+        }
+
+        /**
+         * Get the instance URL
+         */
+        public string get_instance_url() {
+            return instance_url;
         }
 
         /**
          * Set OAuth credentials
          */
-        public void set_oauth_credentials(string client_id, string client_secret) {
+        public void set_oauth_credentials(string client_id, string client_secret, bool save_to_settings = false) {
             this.client_id = client_id;
             this.client_secret = client_secret;
 
-            // Save to settings
-            var settings = SettingsManager.app;
-            settings.set_string("cloud-provider-gitlab-client-id", client_id);
-            settings.set_string("cloud-provider-gitlab-client-secret", client_secret);
+            // Only save to settings for custom instances (not pre-configured)
+            if (save_to_settings) {
+                var settings = SettingsManager.app;
+                settings.set_string("cloud-provider-gitea-client-id", client_id);
+                settings.set_string("cloud-provider-gitea-client-secret", client_secret);
+            }
         }
 
         /**
@@ -92,35 +107,23 @@ namespace KeyMaker {
         }
 
         /**
-         * Set custom instance URL (for self-hosted GitLab)
+         * Authenticate with OAuth 2.0 flow
          */
-        public void set_instance_url(string url) {
-            instance_url = url.has_suffix("/") ? url.substring(0, url.length - 1) : url;
-        }
-
-        /**
-         * Get current instance URL
-         */
-        public string get_instance_url() {
-            return instance_url;
-        }
-
         public async bool authenticate() throws Error {
             // Check if OAuth credentials are configured
             if (!has_oauth_credentials()) {
-                throw new IOError.FAILED("OAuth credentials not configured. Please configure your GitLab OAuth application first.");
+                throw new IOError.FAILED("OAuth credentials not configured. Please configure your Gitea OAuth application first.");
             }
 
             // Start OAuth server (keep as instance variable to prevent garbage collection)
-            oauth_server = new GitLabOAuthServer();
+            oauth_server = new GiteaOAuthServer();
             yield oauth_server.start();
 
             // Generate state for CSRF protection
             var state = generate_random_state();
 
             // Build authorization URL
-            // Using read_user + api scopes for full access
-            var auth_url = @"$instance_url/oauth/authorize?client_id=$client_id&response_type=code&scope=read_user+api&state=$state&redirect_uri=http://localhost:8765/callback";
+            var auth_url = @"$instance_url/login/oauth/authorize?client_id=$client_id&response_type=code&state=$state&redirect_uri=http://localhost:8765/callback";
 
             // Open browser
             try {
@@ -153,7 +156,7 @@ namespace KeyMaker {
             var headers = new Gee.HashMap<string, string>();
             headers["Accept"] = "application/json";
 
-            var response = yield http_client.post_form(@"$instance_url/oauth/token", form_data, headers);
+            var response = yield http_client.post_form(@"$instance_url/login/oauth/access_token", form_data, headers);
             var parser = new Json.Parser();
             parser.load_from_data(response);
             var root = parser.get_root().get_object();
@@ -165,24 +168,26 @@ namespace KeyMaker {
                 yield fetch_username();
 
                 // Store token with instance URL
-                yield TokenStorage.store_token(@"gitlab:$instance_url", username, access_token);
+                yield TokenStorage.store_token(@"gitea:$instance_url", username, access_token);
 
                 return true;
             } else if (root.has_member("error")) {
                 var error = root.get_string_member("error");
                 var error_desc = root.has_member("error_description") ? root.get_string_member("error_description") : error;
-                throw new IOError.FAILED(@"GitLab OAuth error: $error_desc");
+                throw new IOError.FAILED(@"Gitea OAuth error: $error_desc");
             }
 
             throw new IOError.FAILED("Failed to obtain access token");
         }
 
+        /**
+         * List all SSH public keys for the authenticated user
+         */
         public async Gee.List<CloudKeyMetadata> list_keys() throws Error {
             ensure_authenticated();
 
             var headers = create_auth_headers();
-            var response = yield http_client.get(@"$instance_url/api/v4/user/keys", headers);
-            update_rate_limit(headers);
+            var response = yield http_client.get(@"$instance_url/api/v1/user/keys", headers);
 
             var parser = new Json.Parser();
             parser.load_from_data(response);
@@ -191,13 +196,31 @@ namespace KeyMaker {
             var keys = new Gee.ArrayList<CloudKeyMetadata>();
             array.foreach_element((arr, index, node) => {
                 var obj = node.get_object();
+
+                // Extract key type from the public key string
+                string? key_type = null;
+                if (obj.has_member("key")) {
+                    var pub_key = obj.get_string_member("key");
+                    if (pub_key.has_prefix("ssh-rsa ")) {
+                        key_type = "RSA";
+                    } else if (pub_key.has_prefix("ssh-ed25519 ")) {
+                        key_type = "Ed25519";
+                    } else if (pub_key.has_prefix("ecdsa-sha2-nistp256 ")) {
+                        key_type = "ECDSA 256";
+                    } else if (pub_key.has_prefix("ecdsa-sha2-nistp384 ")) {
+                        key_type = "ECDSA 384";
+                    } else if (pub_key.has_prefix("ecdsa-sha2-nistp521 ")) {
+                        key_type = "ECDSA 521";
+                    }
+                }
+
                 var key = new CloudKeyMetadata.full(
                     obj.get_int_member("id").to_string(),
                     obj.get_string_member("title"),
-                    obj.has_member("key") ? extract_fingerprint(obj.get_string_member("key")) : null,
-                    detect_key_type(obj.get_string_member("key")),
+                    obj.has_member("fingerprint") ? obj.get_string_member("fingerprint") : null,
+                    key_type,
                     parse_datetime(obj.get_string_member("created_at")),
-                    null // GitLab doesn't provide last_used_at field
+                    null   // last_used not provided
                 );
                 keys.add(key);
             });
@@ -205,6 +228,9 @@ namespace KeyMaker {
             return keys;
         }
 
+        /**
+         * Deploy an SSH public key to Gitea
+         */
         public async void deploy_key(string public_key, string title) throws Error {
             ensure_authenticated();
 
@@ -215,44 +241,56 @@ namespace KeyMaker {
             body.add_string_value(title);
             body.set_member_name("key");
             body.add_string_value(public_key);
+            body.set_member_name("read_only");
+            body.add_boolean_value(false);
             body.end_object();
 
             var generator = new Json.Generator();
             generator.set_root(body.get_root());
             var json_data = generator.to_data(null);
 
-            yield http_client.post(@"$instance_url/api/v4/user/keys", json_data, headers);
-            update_rate_limit(headers);
+            yield http_client.post(@"$instance_url/api/v1/user/keys", json_data, headers);
         }
 
+        /**
+         * Remove an SSH public key from Gitea
+         */
         public async void remove_key(string key_id) throws Error {
             ensure_authenticated();
 
             var headers = create_auth_headers();
-            yield http_client.delete(@"$instance_url/api/v4/user/keys/$key_id", headers);
-            update_rate_limit(headers);
+            yield http_client.delete(@"$instance_url/api/v1/user/keys/$key_id", headers);
         }
 
+        /**
+         * Check if currently authenticated
+         */
         public bool is_authenticated() {
             return access_token != null && username != null;
         }
 
+        /**
+         * Get the display name of this provider
+         */
         public string get_provider_name() {
             // Show instance domain for self-hosted
-            if (instance_url != "https://gitlab.com") {
+            if (instance_url != "https://gitea.com" && instance_url != "https://codeberg.org") {
                 try {
                     var uri = Uri.parse(instance_url, UriFlags.NONE);
-                    return @"GitLab ($(uri.get_host()))";
+                    return @"Gitea ($(uri.get_host()))";
                 } catch (Error e) {
-                    return "GitLab";
+                    return "Gitea";
                 }
             }
-            return "GitLab";
+            return "Gitea";
         }
 
+        /**
+         * Disconnect from the provider (clear stored credentials)
+         */
         public async void disconnect() throws Error {
             if (username != null) {
-                yield TokenStorage.delete_token(@"gitlab:$instance_url", username);
+                yield TokenStorage.delete_token(@"gitea:$instance_url", username);
             }
             access_token = null;
             username = null;
@@ -262,24 +300,27 @@ namespace KeyMaker {
          * Load authentication from stored token
          */
         public async bool load_stored_auth(string stored_username) throws Error {
-            var token = yield TokenStorage.retrieve_token(@"gitlab:$instance_url", stored_username);
+            debug("GiteaProvider: load_stored_auth called for username=%s, instance_url=%s", stored_username, instance_url);
+            debug("GiteaProvider: TokenStorage key will be: gitea:%s", instance_url);
+
+            var token = yield TokenStorage.retrieve_token(@"gitea:$instance_url", stored_username);
+
             if (token != null) {
+                debug("GiteaProvider: Token retrieved successfully, length=%d", (int)token.length);
                 access_token = token;
                 username = stored_username;
 
-                // Try to validate, but be lenient - keep auth state even if validation fails
-                // This allows the user to still attempt operations which will properly fail with
-                // a clear error message rather than silently disconnecting
+                // Try to validate, but be lenient
                 try {
                     yield validate_token();
-                    debug("GitLab token validated successfully for %s", username);
+                    debug("Gitea token validated successfully for %s", username);
                     return true;
                 } catch (Error e) {
-                    warning(@"Failed to validate GitLab token for $username: $(e.message)");
-                    // Keep the token and username, don't clear them
-                    // This way operations will fail with a proper error rather than silent disconnect
+                    warning(@"Failed to validate Gitea token for $username: $(e.message)");
                     return true;  // Still return true so UI shows connected state
                 }
+            } else {
+                debug("GiteaProvider: No token found in storage for gitea:%s username=%s", instance_url, stored_username);
             }
             return false;
         }
@@ -292,71 +333,35 @@ namespace KeyMaker {
             return true;
         }
 
-        /**
-         * Check GitLab instance version
-         */
-        public async string? get_instance_version() throws Error {
-            try {
-                var headers = new Gee.HashMap<string, string>();
-                var response = yield http_client.get(@"$instance_url/api/v4/version", headers);
-
-                var parser = new Json.Parser();
-                parser.load_from_data(response);
-                var root = parser.get_root().get_object();
-
-                if (root.has_member("version")) {
-                    return root.get_string_member("version");
-                }
-            } catch (Error e) {
-                warning(@"Failed to get GitLab version: $(e.message)");
-            }
-            return null;
-        }
-
-        /**
-         * Check if instance version is supported (>= 13.0)
-         */
-        public async bool is_version_supported() throws Error {
-            var version = yield get_instance_version();
-            if (version == null) {
-                return false;
-            }
-
-            // Parse major version
-            var parts = version.split(".");
-            if (parts.length > 0) {
-                int major = int.parse(parts[0]);
-                return major >= 13;
-            }
-
-            return false;
-        }
-
         private async void fetch_username() throws Error {
+            debug("GiteaProvider.fetch_username: Fetching username from %s/api/v1/user", instance_url);
             var headers = create_auth_headers();
-            var response = yield http_client.get(@"$instance_url/api/v4/user", headers);
+            var response = yield http_client.get(@"$instance_url/api/v1/user", headers);
+            debug("GiteaProvider.fetch_username: Got response: %s", response.substring(0, int.min(200, response.length)));
 
             var parser = new Json.Parser();
             parser.load_from_data(response);
             var root = parser.get_root().get_object();
 
-            if (root.has_member("username")) {
-                username = root.get_string_member("username");
+            if (root.has_member("login")) {
+                username = root.get_string_member("login");
+                debug("GiteaProvider.fetch_username: Set username='%s'", username);
             } else {
-                throw new IOError.FAILED("Failed to fetch username from GitLab");
+                debug("GiteaProvider.fetch_username: Response has no 'login' field");
+                throw new IOError.FAILED("Failed to fetch username from Gitea");
             }
         }
 
         private Gee.Map<string, string> create_auth_headers() {
             var headers = new Gee.HashMap<string, string>();
-            headers["Authorization"] = @"Bearer $access_token";
+            headers["Authorization"] = @"token $access_token";
             headers["Accept"] = "application/json";
             return headers;
         }
 
         private void ensure_authenticated() throws Error {
             if (!is_authenticated()) {
-                throw new IOError.FAILED("Not authenticated with GitLab");
+                throw new IOError.FAILED("Not authenticated with Gitea");
             }
         }
 
@@ -368,56 +373,8 @@ namespace KeyMaker {
             return Base64.encode(bytes);
         }
 
-        private string? extract_fingerprint(string key) {
-            // Compute SHA256 fingerprint from public key
-            try {
-                // Use ssh-keygen to compute fingerprint
-                // Create a temporary file with the key
-                FileIOStream iostream;
-                var temp_file = File.new_tmp("keymaker-XXXXXX.pub", out iostream);
-                iostream.close();
-
-                string? etag_out;
-                temp_file.replace_contents(key.data, null, false, FileCreateFlags.NONE, out etag_out, null);
-
-                string stdout_str;
-                string stderr_str;
-                int exit_status;
-
-                // Get fingerprint using ssh-keygen
-                Process.spawn_command_line_sync(
-                    @"ssh-keygen -lf $(temp_file.get_path())",
-                    out stdout_str,
-                    out stderr_str,
-                    out exit_status
-                );
-
-                // Clean up temp file
-                temp_file.delete();
-
-                if (exit_status == 0 && stdout_str.length > 0) {
-                    // Parse output: "256 SHA256:5og0WHosJU7BCDGHDOB9zbONgKQ8sg8Dinrpw5tjyfI user@host (ED25519)"
-                    var parts = stdout_str.strip().split(" ");
-                    if (parts.length >= 2 && parts[1].has_prefix("SHA256:")) {
-                        return parts[1]; // Return full "SHA256:xxxxx" format
-                    }
-                }
-            } catch (Error e) {
-                warning(@"Failed to compute fingerprint: $(e.message)");
-            }
-
-            return null;
-        }
-
-        private string? detect_key_type(string key) {
-            if (key.has_prefix("ssh-rsa")) {
-                return "RSA";
-            } else if (key.has_prefix("ssh-ed25519")) {
-                return "Ed25519";
-            } else if (key.has_prefix("ecdsa-")) {
-                return "ECDSA";
-            }
-            return "Unknown";
+        public string? get_username() {
+            return username;
         }
 
         private DateTime? parse_datetime(string? iso8601) {
@@ -433,18 +390,32 @@ namespace KeyMaker {
             return null;
         }
 
-        private void update_rate_limit(Gee.Map<string, string> headers) {
-            // GitLab uses RateLimit-* headers instead of X-RateLimit-*
-            // For now, just decrement
-            rate_limit_remaining--;
-        }
+        /**
+         * Throw user-friendly Gitea errors
+         */
+        private void throw_gitea_error(string message) throws Error {
+            if ("401" in message || "Unauthorized" in message) {
+                throw new IOError.PERMISSION_DENIED(
+                    _("Unauthorized. Please reconnect to Gitea.")
+                );
+            }
 
-        public string? get_username() {
-            return username;
-        }
+            if ("403" in message || "Forbidden" in message) {
+                throw new IOError.PERMISSION_DENIED(
+                    _("Forbidden. Check your Gitea permissions.")
+                );
+            }
 
-        public int get_rate_limit_remaining() {
-            return rate_limit_remaining;
+            if ("404" in message || "Not Found" in message) {
+                throw new IOError.NOT_FOUND(
+                    _("Resource not found. Check your Gitea instance URL.")
+                );
+            }
+
+            // Generic error
+            throw new IOError.FAILED(
+                _("Gitea API error: %s").printf(message)
+            );
         }
     }
 }

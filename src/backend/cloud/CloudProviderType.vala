@@ -27,6 +27,7 @@ namespace KeyMaker {
         GITHUB,
         GITLAB,
         BITBUCKET,
+        GITEA,
         AWS,
         AZURE,
         GCP;
@@ -39,6 +40,8 @@ namespace KeyMaker {
                     return "gitlab";
                 case BITBUCKET:
                     return "bitbucket";
+                case GITEA:
+                    return "gitea";
                 case AWS:
                     return "aws";
                 case AZURE:
@@ -58,6 +61,8 @@ namespace KeyMaker {
                     return GITLAB;
                 case "bitbucket":
                     return BITBUCKET;
+                case "gitea":
+                    return GITEA;
                 case "aws":
                     return AWS;
                 case "azure":

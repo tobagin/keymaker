@@ -31,9 +31,6 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
     private unowned Adw.PasswordEntryRow secret_key_entry;
 
     [GtkChild]
-    private unowned Adw.ComboRow region_combo;
-
-    [GtkChild]
     private unowned Gtk.Label error_label;
 
     [GtkChild]
@@ -56,25 +53,6 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
 
     public signal void credentials_configured(bool success);
 
-    // Region code mapping (combo row index to AWS region code)
-    private const string[] REGION_CODES = {
-        "us-east-1",
-        "us-east-2",
-        "us-west-1",
-        "us-west-2",
-        "eu-west-1",
-        "eu-west-2",
-        "eu-west-3",
-        "eu-central-1",
-        "ap-northeast-1",
-        "ap-northeast-2",
-        "ap-southeast-1",
-        "ap-southeast-2",
-        "ap-south-1",
-        "sa-east-1",
-        "ca-central-1"
-    };
-
     public AWSCredentialsDialog(Gtk.Window parent, AWSProvider provider) {
         Object(transient_for: parent);
         this.provider = provider;
@@ -87,24 +65,12 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
         documentation_button.clicked.connect(() => {
             show_iam_policy_example();
         });
-
-        // Set default region (us-east-1)
-        region_combo.selected = 0;
-
-        // Load existing region if set
-        var current_region = provider.get_region();
-        for (int i = 0; i < REGION_CODES.length; i++) {
-            if (REGION_CODES[i] == current_region) {
-                region_combo.selected = i;
-                break;
-            }
-        }
     }
 
     private async void validate_and_connect() {
         var access_key = access_key_entry.text.strip();
         var secret_key = secret_key_entry.text.strip();
-        var region = REGION_CODES[region_combo.selected];
+        var region = "us-east-1"; // IAM is global, always use us-east-1
 
         // Clear previous errors
         error_label.visible = false;
@@ -137,7 +103,6 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
         add_button.sensitive = false;
         access_key_entry.sensitive = false;
         secret_key_entry.sensitive = false;
-        region_combo.sensitive = false;
         auth_spinner.visible = true;
         auth_spinner.spinning = true;
         status_label.visible = true;
@@ -182,7 +147,6 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
         add_button.sensitive = true;
         access_key_entry.sensitive = true;
         secret_key_entry.sensitive = true;
-        region_combo.sensitive = true;
         auth_spinner.visible = false;
         auth_spinner.spinning = false;
         status_label.visible = false;

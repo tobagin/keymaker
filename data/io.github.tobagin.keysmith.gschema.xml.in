@@ -176,6 +176,18 @@
       <description>The connected Bitbucket username</description>
     </key>
 
+    <key name="cloud-provider-gitea-client-id" type="s">
+      <default>''</default>
+      <summary>Gitea OAuth Client ID</summary>
+      <description>The OAuth application client ID for Gitea</description>
+    </key>
+
+    <key name="cloud-provider-gitea-client-secret" type="s">
+      <default>''</default>
+      <summary>Gitea OAuth Client Secret</summary>
+      <description>The OAuth application client secret for Gitea</description>
+    </key>
+
     <key name="cloud-provider-aws-connected" type="b">
       <default>false</default>
       <summary>AWS IAM connection status</summary>

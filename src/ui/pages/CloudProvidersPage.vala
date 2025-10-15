@@ -41,6 +41,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     private GitHubProvider github_provider;
     private GitLabProvider gitlab_provider;
     private BitbucketProvider bitbucket_provider;
+    private GiteaProvider gitea_provider;
     private AWSProvider aws_provider;
 
     construct {
@@ -52,6 +53,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         github_provider = new GitHubProvider();
         gitlab_provider = new GitLabProvider();
         bitbucket_provider = new BitbucketProvider();
+        gitea_provider = new GiteaProvider();
         aws_provider = new AWSProvider();
 
         // Load existing accounts
@@ -81,6 +83,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                     var display_name = obj.get_string_member("display_name");
                     var username = obj.get_string_member("username");
                     var was_connected = obj.get_boolean_member("is_connected");
+                    var was_expanded = obj.has_member("is_expanded") ? obj.get_boolean_member("is_expanded") : false;
                     var instance_url = obj.has_member("instance_url") ? obj.get_string_member("instance_url") : "";
                     var instance_type = obj.has_member("instance_type") ? obj.get_string_member("instance_type") : "custom";
 
@@ -114,9 +117,11 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                                 client_id = "51093f2599b4680db128447435a0658f368adb995cd7dc6e24cfbc25dc0432f0";
                                 client_secret = "gloas-989d64d8037af96689e71a2f46acefc3ff90fdeb4dc1ed6a787470d566011973";
                             } else {
-                                // Custom instance - load from settings (legacy)
-                                client_id = settings.get_string("cloud-provider-gitlab-client-id");
-                                client_secret = settings.get_string("cloud-provider-gitlab-client-secret");
+                                // Custom instance - load from JSON (per-instance storage)
+                                if (obj.has_member("oauth_client_id") && obj.has_member("oauth_client_secret")) {
+                                    client_id = obj.get_string_member("oauth_client_id");
+                                    client_secret = obj.get_string_member("oauth_client_secret");
+                                }
                             }
 
                             if (client_id.length > 0 && client_secret.length > 0) {
@@ -126,13 +131,40 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                         provider = gitlab_prov;
                     } else if (provider_type == "bitbucket") {
                         provider = new BitbucketProvider();
+                    } else if (provider_type == "gitea") {
+                        var gitea_prov = new GiteaProvider();
+                        if (instance_url.length > 0) {
+                            gitea_prov.set_instance_url(instance_url);
+
+                            // Set OAuth credentials based on instance type
+                            string client_id = "";
+                            string client_secret = "";
+
+                            if (instance_type == "gitea.com") {
+                                client_id = "aab5f98f-15ca-4ed2-960f-dff26608b144";
+                                client_secret = "gto_gk73xynxba4nlpebsewune5tvchtwa2aafqfsuwcqodwfiaiudwq";
+                                gitea_prov.set_oauth_credentials(client_id, client_secret, false);
+                            } else if (instance_type == "codeberg.org") {
+                                // Codeberg uses Forgejo (Gitea fork)
+                                client_id = "11c3ba97-5d9f-4a76-ad03-a6fb77b0ba7d";
+                                client_secret = "gto_glejgxyyarudktv6jbyrbv6vssibe6thk5v3x4nnrjkcqcnslpta";
+                                gitea_prov.set_oauth_credentials(client_id, client_secret, false);
+                            } else {
+                                // Custom instance - load from JSON (per-instance storage)
+                                if (obj.has_member("oauth_client_id") && obj.has_member("oauth_client_secret")) {
+                                    client_id = obj.get_string_member("oauth_client_id");
+                                    client_secret = obj.get_string_member("oauth_client_secret");
+                                }
+
+                                if (client_id.length > 0 && client_secret.length > 0) {
+                                    gitea_prov.set_oauth_credentials(client_id, client_secret, false);
+                                }
+                            }
+                        }
+                        provider = gitea_prov;
                     } else if (provider_type == "aws") {
                         var aws_prov = new AWSProvider();
-                        // Load region if stored
-                        if (obj.has_member("aws_region")) {
-                            var aws_region = obj.get_string_member("aws_region");
-                            aws_prov.set_credentials("", "", aws_region);  // Credentials will be loaded from storage
-                        }
+                        // IAM is global, no region needed
                         provider = aws_prov;
                     }
 
@@ -154,6 +186,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                                         loaded = yield ((GitLabProvider)provider).load_stored_auth(username);
                                     } else if (provider is BitbucketProvider) {
                                         loaded = yield ((BitbucketProvider)provider).load_stored_auth(username);
+                                    } else if (provider is GiteaProvider) {
+                                        loaded = yield ((GiteaProvider)provider).load_stored_auth(username);
                                     } else if (provider is AWSProvider) {
                                         loaded = yield ((AWSProvider)provider).load_stored_credentials(username);
                                     }
@@ -162,6 +196,24 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                                         section.restore_connected_state(username);
                                         // Auto-load keys for restored accounts
                                         section.refresh_keys_async();
+
+                                        // Restore expanded state after keys are loaded
+                                        // Use a timeout to ensure enable_expansion is set first
+                                        debug("CloudProvidersPage: Account %s was_expanded=%s", account_id, was_expanded.to_string());
+                                        if (was_expanded) {
+                                            Timeout.add(500, () => {
+                                                debug("CloudProvidersPage: Restoring expanded state for %s", account_id);
+                                                section.set_expanded_state(was_expanded);
+                                                return false;
+                                            });
+                                        } else {
+                                            // Also explicitly set to collapsed if it was collapsed
+                                            Timeout.add(500, () => {
+                                                debug("CloudProvidersPage: Setting collapsed state for %s", account_id);
+                                                section.set_expanded_state(false);
+                                                return false;
+                                            });
+                                        }
                                     } else {
                                         debug("Failed to load stored credentials for %s", account_id);
                                     }
@@ -198,6 +250,9 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         // Connect signals
         section.account_removed.connect(on_account_removed);
         section.connection_state_changed.connect(save_accounts);
+        section.expanded_state_changed.connect((is_expanded) => {
+            save_accounts();
+        });
         section.show_toast_requested.connect(show_toast);
         section.show_error_requested.connect(show_error);
 
@@ -258,6 +313,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         model.append("GitHub");
         model.append("GitLab");
         model.append("Bitbucket");
+        model.append("Gitea");
+        model.append("Forgejo");
         model.append("AWS IAM");
         provider_row.model = model;
         provider_row.selected = 0; // Default to GitHub
@@ -287,6 +344,10 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                 } else if (selected == 2) {
                     add_bitbucket_account();
                 } else if (selected == 3) {
+                    show_gitea_instance_selector();
+                } else if (selected == 4) {
+                    show_forgejo_instance_selector();
+                } else if (selected == 5) {
                     add_aws_account();
                 }
             }
@@ -491,6 +552,235 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         dialog.present(window);
     }
 
+    private void show_gitea_instance_selector() {
+        var window = (Gtk.Window) this.get_root();
+        var dialog = new Adw.PreferencesDialog();
+        dialog.set_title(_("Select Gitea Instance"));
+
+        var page = new Adw.PreferencesPage();
+        var instance_group = new Adw.PreferencesGroup();
+        instance_group.title = _("Select Gitea Instance");
+        instance_group.description = _("Choose Gitea.com or enter custom instance credentials");
+
+        // Radio buttons
+        Gtk.CheckButton? gitea_com_radio = null;
+        Gtk.CheckButton? custom_radio = null;
+
+        // Gitea.com
+        var gitea_com_row = new Adw.ActionRow();
+        gitea_com_row.title = "Gitea.com";
+        gitea_com_row.subtitle = _("Official Gitea cloud service (pre-configured)");
+        gitea_com_radio = new Gtk.CheckButton();
+        gitea_com_radio.valign = Gtk.Align.CENTER;
+        gitea_com_radio.active = true;
+        gitea_com_row.add_prefix(gitea_com_radio);
+        gitea_com_row.activatable_widget = gitea_com_radio;
+        instance_group.add(gitea_com_row);
+
+        // Custom
+        var custom_row = new Adw.ActionRow();
+        custom_row.title = _("Custom Instance");
+        custom_row.subtitle = _("Self-hosted Gitea instance");
+        custom_radio = new Gtk.CheckButton();
+        custom_radio.valign = Gtk.Align.CENTER;
+        custom_radio.group = gitea_com_radio;
+        custom_row.add_prefix(custom_radio);
+        custom_row.activatable_widget = custom_radio;
+        instance_group.add(custom_row);
+
+        page.add(instance_group);
+
+        // Custom configuration group
+        var custom_group = new Adw.PreferencesGroup();
+        custom_group.title = _("Custom Instance Configuration");
+        custom_group.visible = false;
+
+        var url_row = new Adw.EntryRow();
+        url_row.title = _("Instance URL");
+        custom_group.add(url_row);
+
+        var client_id_row = new Adw.EntryRow();
+        client_id_row.title = _("OAuth Client ID");
+        custom_group.add(client_id_row);
+
+        var client_secret_row = new Adw.PasswordEntryRow();
+        client_secret_row.title = _("OAuth Client Secret");
+        custom_group.add(client_secret_row);
+
+        page.add(custom_group);
+        dialog.add(page);
+
+        custom_radio.toggled.connect(() => {
+            custom_group.visible = custom_radio.active;
+        });
+
+        dialog.closed.connect(() => {
+            string url = "";
+            string client_id = "";
+            string client_secret = "";
+            string instance_label = "";
+
+            if (gitea_com_radio.active) {
+                url = "https://gitea.com";
+                client_id = "aab5f98f-15ca-4ed2-960f-dff26608b144";
+                client_secret = "gto_gk73xynxba4nlpebsewune5tvchtwa2aafqfsuwcqodwfiaiudwq";
+                instance_label = "gitea.com";
+            } else if (custom_radio.active) {
+                url = url_row.text.strip();
+                client_id = client_id_row.text.strip();
+                client_secret = client_secret_row.text.strip();
+
+                if (url.length == 0 || client_id.length == 0 || client_secret.length == 0) {
+                    show_error(_("Please fill in all fields for custom Gitea instance"));
+                    return;
+                }
+
+                instance_label = url.replace("https://", "").replace("http://", "");
+            }
+
+            if (url.length > 0 && client_id.length > 0 && client_secret.length > 0) {
+                add_gitea_instance(url, client_id, client_secret, instance_label);
+            }
+        });
+
+        dialog.present(window);
+    }
+
+    private void add_gitea_instance(string url, string client_id, string client_secret, string instance_label) {
+        // Create a new Gitea provider for this instance
+        var new_provider = new GiteaProvider();
+        new_provider.set_instance_url(url);
+
+        // Save to settings only for custom instances (not pre-configured gitea.com)
+        bool is_custom = (instance_label != "gitea.com");
+        new_provider.set_oauth_credentials(client_id, client_secret, is_custom);
+
+        // Create temporary account section
+        var temp_id = @"gitea-$instance_label-temp-$(GLib.get_real_time())";
+        var display_name = @"Gitea ($instance_label)";
+
+        add_account_section(temp_id, "gitea", display_name, new_provider);
+
+        // The section will handle authentication
+    }
+
+    private void show_forgejo_instance_selector() {
+        var window = (Gtk.Window) this.get_root();
+        var dialog = new Adw.PreferencesDialog();
+        dialog.set_title(_("Select Forgejo Instance"));
+
+        var page = new Adw.PreferencesPage();
+        var instance_group = new Adw.PreferencesGroup();
+        instance_group.title = _("Select Forgejo Instance");
+        instance_group.description = _("Choose Codeberg or enter custom instance credentials");
+
+        // Radio buttons
+        Gtk.CheckButton? codeberg_radio = null;
+        Gtk.CheckButton? custom_radio = null;
+
+        // Codeberg.org (Forgejo)
+        var codeberg_row = new Adw.ActionRow();
+        codeberg_row.title = "Codeberg.org";
+        codeberg_row.subtitle = _("Codeberg Forgejo instance (pre-configured)");
+        codeberg_radio = new Gtk.CheckButton();
+        codeberg_radio.valign = Gtk.Align.CENTER;
+        codeberg_radio.active = true;
+        codeberg_row.add_prefix(codeberg_radio);
+        codeberg_row.activatable_widget = codeberg_radio;
+        instance_group.add(codeberg_row);
+
+        // Custom
+        var custom_row = new Adw.ActionRow();
+        custom_row.title = _("Custom Instance");
+        custom_row.subtitle = _("Self-hosted Forgejo instance");
+        custom_radio = new Gtk.CheckButton();
+        custom_radio.valign = Gtk.Align.CENTER;
+        custom_radio.group = codeberg_radio;
+        custom_row.add_prefix(custom_radio);
+        custom_row.activatable_widget = custom_radio;
+        instance_group.add(custom_row);
+
+        page.add(instance_group);
+
+        // Custom configuration group
+        var custom_group = new Adw.PreferencesGroup();
+        custom_group.title = _("Instance Configuration");
+        custom_group.visible = false;
+
+        var url_row = new Adw.EntryRow();
+        url_row.title = _("Instance URL");
+        custom_group.add(url_row);
+
+        var client_id_row = new Adw.EntryRow();
+        client_id_row.title = _("OAuth Client ID");
+        custom_group.add(client_id_row);
+
+        var client_secret_row = new Adw.PasswordEntryRow();
+        client_secret_row.title = _("OAuth Client Secret");
+        custom_group.add(client_secret_row);
+
+        page.add(custom_group);
+        dialog.add(page);
+
+        custom_radio.toggled.connect(() => {
+            custom_group.visible = custom_radio.active;
+        });
+
+        codeberg_radio.toggled.connect(() => {
+            custom_group.visible = custom_radio.active;
+        });
+
+        dialog.closed.connect(() => {
+            string url = "";
+            string client_id = "";
+            string client_secret = "";
+            string instance_label = "";
+
+            if (codeberg_radio.active) {
+                // Pre-configured Codeberg.org
+                url = "https://codeberg.org";
+                client_id = "11c3ba97-5d9f-4a76-ad03-a6fb77b0ba7d";
+                client_secret = "gto_glejgxyyarudktv6jbyrbv6vssibe6thk5v3x4nnrjkcqcnslpta";
+                instance_label = "codeberg.org";
+            } else if (custom_radio.active) {
+                url = url_row.text.strip();
+                client_id = client_id_row.text.strip();
+                client_secret = client_secret_row.text.strip();
+
+                if (url.length == 0 || client_id.length == 0 || client_secret.length == 0) {
+                    show_error(_("Please fill in all fields for custom Forgejo instance"));
+                    return;
+                }
+
+                instance_label = url.replace("https://", "").replace("http://", "");
+            }
+
+            if (url.length > 0 && client_id.length > 0 && client_secret.length > 0) {
+                add_forgejo_instance(url, client_id, client_secret, instance_label);
+            }
+        });
+
+        dialog.present(window);
+    }
+
+    private void add_forgejo_instance(string url, string client_id, string client_secret, string instance_label) {
+        // Create a new Gitea provider for this instance (Forgejo uses Gitea API)
+        var new_provider = new GiteaProvider();
+        new_provider.set_instance_url(url);
+
+        // Save to settings only for custom instances (not pre-configured codeberg.org)
+        bool is_custom = (instance_label != "codeberg.org");
+        new_provider.set_oauth_credentials(client_id, client_secret, is_custom);
+
+        // Create temporary account section - use "gitea" provider_type since Forgejo uses Gitea API
+        var temp_id = @"gitea-$instance_label-temp-$(GLib.get_real_time())";
+        var display_name = @"Forgejo ($instance_label)";
+
+        add_account_section(temp_id, "gitea", display_name, new_provider);
+
+        // The section will handle authentication
+    }
+
     private void add_aws_account() {
         var window = (Gtk.Window) this.get_root();
         var new_provider = new AWSProvider();
@@ -502,7 +792,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                 var username = settings.get_string("cloud-provider-aws-username");
                 if (username.length > 0) {
                     var account_id = "aws-" + username;
-                    var display_name = "AWS IAM"; // Don't include username in title
+                    // IAM is global, no need to show region
+                    var display_name = "AWS IAM";
 
                     add_account_section(account_id, "aws", display_name, new_provider, username);
 
@@ -571,17 +862,22 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
             builder.add_boolean_value(section.is_connected);
 
             builder.set_member_name("instance_url");
-            // For GitLab, get the instance URL directly from the provider
+            // For GitLab/Gitea, get the instance URL directly from the provider
             var instance_url = "";
             if (section.provider_type == "gitlab") {
                 var provider = section.get_provider();
                 if (provider is GitLabProvider) {
                     instance_url = ((GitLabProvider)provider).get_instance_url();
                 }
+            } else if (section.provider_type == "gitea") {
+                var provider = section.get_provider();
+                if (provider is GiteaProvider) {
+                    instance_url = ((GiteaProvider)provider).get_instance_url();
+                }
             }
             builder.add_string_value(instance_url);
 
-            // Save instance type for pre-configured GitLab instances
+            // Save instance type for pre-configured GitLab/Gitea instances
             builder.set_member_name("instance_type");
             var instance_type = "custom"; // default
             if (section.provider_type == "gitlab" && instance_url.length > 0) {
@@ -594,19 +890,50 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                 } else if (instance_url == "https://salsa.debian.org") {
                     instance_type = "salsa.debian.org";
                 }
+            } else if (section.provider_type == "gitea" && instance_url.length > 0) {
+                if (instance_url == "https://gitea.com") {
+                    instance_type = "gitea.com";
+                } else if (instance_url == "https://codeberg.org") {
+                    instance_type = "codeberg.org";
+                }
             }
             builder.add_string_value(instance_type);
 
-            // Save AWS region if this is an AWS provider
-            builder.set_member_name("aws_region");
-            var aws_region = "";
-            if (section.provider_type == "aws") {
-                var provider = section.get_provider();
-                if (provider is AWSProvider) {
-                    aws_region = ((AWSProvider)provider).get_region();
+            // Save OAuth credentials for custom Gitea/Forgejo/GitLab instances
+            // Pre-configured instances don't need credentials saved (they're hardcoded)
+            var oauth_client_id = "";
+            var oauth_client_secret = "";
+
+            if (instance_type == "custom") {
+                if (section.provider_type == "gitea") {
+                    var provider = section.get_provider();
+                    if (provider is GiteaProvider) {
+                        var gitea_prov = (GiteaProvider)provider;
+                        // Get credentials directly from the provider
+                        oauth_client_id = gitea_prov.get_client_id() ?? "";
+                        oauth_client_secret = gitea_prov.get_client_secret() ?? "";
+                    }
+                } else if (section.provider_type == "gitlab") {
+                    var provider = section.get_provider();
+                    if (provider is GitLabProvider) {
+                        var gitlab_prov = (GitLabProvider)provider;
+                        // Get credentials directly from the provider
+                        oauth_client_id = gitlab_prov.get_client_id() ?? "";
+                        oauth_client_secret = gitlab_prov.get_client_secret() ?? "";
+                    }
                 }
             }
-            builder.add_string_value(aws_region);
+
+            builder.set_member_name("oauth_client_id");
+            builder.add_string_value(oauth_client_id);
+            builder.set_member_name("oauth_client_secret");
+            builder.add_string_value(oauth_client_secret);
+
+            // Save expanded state
+            builder.set_member_name("is_expanded");
+            var is_expanded = section.expander_row.expanded;
+            builder.add_boolean_value(is_expanded);
+            debug("CloudProvidersPage: Saving account %s with is_expanded=%s", section.account_id, is_expanded.to_string());
 
             builder.end_object();
         }

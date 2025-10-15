@@ -378,6 +378,7 @@ namespace KeyMaker {
             var body = AWSRequestSigner.build_query_string(params);
 
             // Sign the request (empty query string, body contains params)
+            // Note: IAM is a global service and always uses us-east-1 for signing
             var authorization = AWSRequestSigner.sign_request(
                 method,
                 "iam.amazonaws.com",
@@ -386,7 +387,7 @@ namespace KeyMaker {
                 body, // Body contains the form-encoded parameters
                 access_key_id,
                 secret_access_key,
-                region,
+                "us-east-1", // IAM is global, always use us-east-1
                 IAM_SERVICE,
                 timestamp
             );

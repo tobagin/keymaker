@@ -28,6 +28,8 @@ sources = files(
     'backend/cloud/GitLabProvider.vala',
     'backend/cloud/BitbucketProvider.vala',
     'backend/cloud/BitbucketOAuthServer.vala',
+    'backend/cloud/GiteaOAuthServer.vala',
+    'backend/cloud/GiteaProvider.vala',
     'backend/cloud/AWSRequestSigner.vala',
     'backend/cloud/AWSProvider.vala',
     'backend/cloud/CacheManager.vala',

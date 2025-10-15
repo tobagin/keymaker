@@ -1,0 +1,6 @@
+MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:981: FINISHME: support more multi-planar formats with DRM modifiers
+MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:949: FINISHME: support YUV colorspace with DRM format modifiers
+
+(io.github.tobagin.keysmith.Devel:2): Adwaita-CRITICAL **: 20:24:25.920: adw_expander_row_add_row: assertion 'gtk_widget_get_parent (child) == NULL' failed
+
+(io.github.tobagin.keysmith.Devel:2): Adwaita-CRITICAL **: 20:24:59.561: adw_expander_row_add_row: assertion 'gtk_widget_get_parent (child) == NULL' failed

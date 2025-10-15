@@ -43,11 +43,13 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
     private Gee.List<CloudKeyMetadata>? current_keys = null;
     private Gee.ArrayList<Adw.PreferencesRow> key_rows;
     private Adw.ActionRow? loading_row = null;
+    private bool? pending_expanded_state = null;
 
     public signal void account_removed(string account_id);
     public signal void connection_state_changed();
     public signal void show_toast_requested(string message);
     public signal void show_error_requested(string message);
+    public signal void expanded_state_changed(bool is_expanded);
 
     public CloudProvider get_provider() {
         return provider;
@@ -82,7 +84,7 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
         update_provider_icon();
 
         // Listen for color scheme changes to update theme-aware icons
-        if (provider_type == "github" || provider_type == "aws") {
+        if (provider_type == "github" || provider_type == "aws" || (provider_type == "gitea" && display_name.down().contains("codeberg"))) {
             var style_manager = Adw.StyleManager.get_default();
             style_manager.notify["dark"].connect(() => {
                 update_provider_icon();
@@ -140,6 +142,12 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
         suffix_box.append(remove_button);
 
         expander_row.add_suffix(suffix_box);
+
+        // Listen for expanded state changes
+        expander_row.notify["expanded"].connect(() => {
+            debug("CloudAccountSection: Expander state changed for %s - expanded=%s", account_id, expander_row.expanded.to_string());
+            expanded_state_changed(expander_row.expanded);
+        });
 
         // Create loading box (will be added dynamically when needed)
         loading_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 12);
@@ -268,6 +276,7 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
             if (yield provider.authenticate()) {
                 // Try to get username from provider-specific methods
                 username = get_provider_username();
+                debug("CloudAccountSection: After authentication, username='%s' for provider_type=%s", username, provider_type);
                 is_connected = true;
 
                 update_ui_connected();
@@ -283,16 +292,29 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
     private string get_provider_username() {
         // Cast to specific provider type to access get_username()
         if (provider is GitHubProvider) {
-            return ((GitHubProvider)provider).get_username() ?? "";
+            var username = ((GitHubProvider)provider).get_username() ?? "";
+            debug("CloudAccountSection.get_provider_username: GitHub username='%s'", username);
+            return username;
         } else if (provider is GitLabProvider) {
-            return ((GitLabProvider)provider).get_username() ?? "";
+            var username = ((GitLabProvider)provider).get_username() ?? "";
+            debug("CloudAccountSection.get_provider_username: GitLab username='%s'", username);
+            return username;
         } else if (provider is BitbucketProvider) {
-            return ((BitbucketProvider)provider).get_username() ?? "";
+            var username = ((BitbucketProvider)provider).get_username() ?? "";
+            debug("CloudAccountSection.get_provider_username: Bitbucket username='%s'", username);
+            return username;
+        } else if (provider is GiteaProvider) {
+            var username = ((GiteaProvider)provider).get_username() ?? "";
+            debug("CloudAccountSection.get_provider_username: Gitea username='%s'", username);
+            return username;
         } else if (provider is AWSProvider) {
             // For AWS, the username is stored in settings after authentication
             var settings = SettingsManager.app;
-            return settings.get_string("cloud-provider-aws-username");
+            var username = settings.get_string("cloud-provider-aws-username");
+            debug("CloudAccountSection.get_provider_username: AWS username='%s'", username);
+            return username;
         }
+        debug("CloudAccountSection.get_provider_username: Unknown provider type, returning empty");
         return "";
     }
 
@@ -325,13 +347,15 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
 
     private void display_keys(Gee.List<CloudKeyMetadata> keys) {
         // Remove loading row if present
-        if (loading_row != null) {
+        if (loading_row != null && loading_row.get_parent() != null) {
             expander_row.remove(loading_row);
         }
 
         // Clear existing key rows
         foreach (var row in key_rows) {
-            expander_row.remove(row);
+            if (row.get_parent() != null) {
+                expander_row.remove(row);
+            }
         }
         key_rows.clear();
 
@@ -353,6 +377,13 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
 
         deploy_key_button.visible = true;
         expander_row.enable_expansion = true;
+
+        // Apply pending expanded state if it was set before expansion was enabled
+        if (pending_expanded_state != null) {
+            expander_row.expanded = pending_expanded_state;
+            debug("CloudAccountSection: Applied pending expanded state %s for %s", pending_expanded_state.to_string(), account_id);
+            pending_expanded_state = null;
+        }
     }
 
     private Adw.ActionRow create_key_row(CloudKeyMetadata key) {
@@ -480,6 +511,20 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
         update_ui_connected();
     }
 
+    public void set_expanded_state(bool expanded) {
+        // Restore expanded state from settings
+        debug("CloudAccountSection: set_expanded_state called for %s - expanded=%s, enable_expansion=%s",
+              account_id, expanded.to_string(), expander_row.enable_expansion.to_string());
+        if (expander_row.enable_expansion) {
+            expander_row.expanded = expanded;
+            debug("CloudAccountSection: Set expanded to %s for %s", expanded.to_string(), account_id);
+        } else {
+            // Store for later - will be applied when keys finish loading
+            pending_expanded_state = expanded;
+            debug("CloudAccountSection: Stored pending expanded state %s for %s", expanded.to_string(), account_id);
+        }
+    }
+
     public void refresh_keys_async() {
         // Public method to trigger key loading
         load_keys.begin(false);
@@ -546,6 +591,20 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
                 return "io.github.tobagin.keysmith-gitlab-colour";
             case "bitbucket":
                 return "io.github.tobagin.keysmith-bitbucket-colour";
+            case "gitea":
+                // Use specific icon based on display name
+                if (display_name.down().contains("codeberg")) {
+                    var style_manager = Adw.StyleManager.get_default();
+                    if (style_manager.dark) {
+                        return "io.github.tobagin.keysmith-codeberg-colour-dark-mode";
+                    } else {
+                        return "io.github.tobagin.keysmith-codeberg-colour-light-mode";
+                    }
+                } else if (display_name.down().contains("forgejo")) {
+                    return "io.github.tobagin.keysmith-forgejo-colour";
+                } else {
+                    return "io.github.tobagin.keysmith-gittea-colour";
+                }
             case "aws":
                 var style_manager = Adw.StyleManager.get_default();
                 if (style_manager.dark) {

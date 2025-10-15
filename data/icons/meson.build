@@ -37,6 +37,26 @@ install_data(
 )
 
 install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-gittea-colour.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-forgejo-colour.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-codeberg-colour-dark-mode.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-codeberg-colour-light-mode.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
   'hicolor/scalable/apps/io.github.tobagin.keysmith-aws-colour-dark-mode.svg',
   install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
 )

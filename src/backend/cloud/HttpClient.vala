@@ -140,14 +140,14 @@ namespace KeyMaker {
             }
         }
 
-        private void check_status_code(Soup.Message message, string response_body = "") throws Error {
+        private void check_status_code(Soup.Message message, string? response_body = null) throws Error {
             var status = message.status_code;
             if (status < 200 || status >= 300) {
                 var reason = message.reason_phrase ?? "Unknown error";
                 var url = message.get_uri().to_string();
 
                 // Truncate response body if too long
-                var truncated_body = response_body;
+                var truncated_body = response_body ?? "";
                 if (truncated_body.length > 200) {
                     truncated_body = truncated_body.substring(0, 200) + "...";
                 }
