@@ -43,10 +43,7 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
     private unowned Gtk.Label status_label;
 
     [GtkChild]
-    private unowned Gtk.Button cancel_button;
-
-    [GtkChild]
-    private unowned Gtk.Button connect_button;
+    private unowned Gtk.Button add_button;
 
     [GtkChild]
     private unowned Gtk.Button documentation_button;
@@ -83,12 +80,7 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
         this.provider = provider;
 
         // Set up button handlers
-        cancel_button.clicked.connect(() => {
-            credentials_configured(false);
-            close();
-        });
-
-        connect_button.clicked.connect(() => {
+        add_button.clicked.connect(() => {
             validate_and_connect.begin();
         });
 
@@ -142,8 +134,7 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
         }
 
         // Show loading state
-        connect_button.sensitive = false;
-        cancel_button.sensitive = false;
+        add_button.sensitive = false;
         access_key_entry.sensitive = false;
         secret_key_entry.sensitive = false;
         region_combo.sensitive = false;
@@ -188,8 +179,7 @@ public class KeyMaker.AWSCredentialsDialog : Adw.Window {
     }
 
     private void reset_ui() {
-        connect_button.sensitive = true;
-        cancel_button.sensitive = true;
+        add_button.sensitive = true;
         access_key_entry.sensitive = true;
         secret_key_entry.sensitive = true;
         region_combo.sensitive = true;

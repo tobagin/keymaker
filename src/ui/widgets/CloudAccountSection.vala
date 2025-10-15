@@ -246,6 +246,25 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
         show_loading();
 
         try {
+            // For AWS, try to load stored credentials first
+            if (provider is AWSProvider) {
+                var aws_prov = (AWSProvider)provider;
+                if (username != null && username.length > 0) {
+                    debug("CloudAccountSection: Attempting to load stored AWS credentials for %s", username);
+                    if (yield aws_prov.load_stored_credentials(username)) {
+                        is_connected = true;
+                        update_ui_connected();
+                        connection_state_changed(); // Notify parent to save
+                        yield load_keys(false);
+                        show_toast_requested(_("Connected successfully"));
+                        return;
+                    } else {
+                        debug("CloudAccountSection: Failed to load stored AWS credentials");
+                    }
+                }
+            }
+
+            // For other providers or if AWS credential loading failed, do normal authentication
             if (yield provider.authenticate()) {
                 // Try to get username from provider-specific methods
                 username = get_provider_username();
@@ -269,6 +288,10 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
             return ((GitLabProvider)provider).get_username() ?? "";
         } else if (provider is BitbucketProvider) {
             return ((BitbucketProvider)provider).get_username() ?? "";
+        } else if (provider is AWSProvider) {
+            // For AWS, the username is stored in settings after authentication
+            var settings = SettingsManager.app;
+            return settings.get_string("cloud-provider-aws-username");
         }
         return "";
     }
@@ -450,8 +473,10 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
 
     public void restore_connected_state(string restored_username) {
         // Used when restoring from saved state
+        debug("CloudAccountSection.restore_connected_state called for %s: username='%s'", provider_type, restored_username);
         username = restored_username;
         is_connected = true;
+        debug("CloudAccountSection: username set to '%s', calling update_ui_connected", username);
         update_ui_connected();
     }
 
@@ -461,7 +486,11 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
     }
 
     private void update_ui_connected() {
-        expander_row.subtitle = @"Connected as $username";
+        if (username != null && username.length > 0) {
+            expander_row.subtitle = @"Connected as $username";
+        } else {
+            expander_row.subtitle = _("Connected");
+        }
         connect_button.visible = false;
         disconnect_button.visible = true;
         refresh_button.visible = true;

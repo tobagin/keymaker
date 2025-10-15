@@ -59,8 +59,10 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     }
 
     private async void load_accounts() {
+        debug("=== LOAD ACCOUNTS CALLED ===");
         // Try to load from new multi-account storage first
         var accounts_json = settings.get_string("cloud-accounts");
+        debug("Loading JSON from settings:\n%s", accounts_json);
 
         try {
             var parser = new Json.Parser();
@@ -69,6 +71,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
 
             if (root != null && root.get_node_type() == Json.NodeType.ARRAY) {
                 var array = root.get_array();
+                debug("Found %d accounts in JSON", (int)array.get_length());
 
                 foreach (var element in array.get_elements()) {
                     var obj = element.get_object();
@@ -80,6 +83,9 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                     var was_connected = obj.get_boolean_member("is_connected");
                     var instance_url = obj.has_member("instance_url") ? obj.get_string_member("instance_url") : "";
                     var instance_type = obj.has_member("instance_type") ? obj.get_string_member("instance_type") : "custom";
+
+                    debug("Loading account: id=%s, type=%s, username=%s, was_connected=%s",
+                          account_id, provider_type, username, was_connected.to_string());
 
                     // Create provider based on type
                     CloudProvider? provider = null;
@@ -131,7 +137,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                     }
 
                     if (provider != null) {
-                        add_account_section(account_id, provider_type, display_name, provider, username);
+                        // Skip save during load - we'll restore auth state first
+                        add_account_section(account_id, provider_type, display_name, provider, username, true);
 
                         // Auto-connect if was previously connected
                         if (was_connected) {
@@ -155,6 +162,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                                         section.restore_connected_state(username);
                                         // Auto-load keys for restored accounts
                                         section.refresh_keys_async();
+                                    } else {
+                                        debug("Failed to load stored credentials for %s", account_id);
                                     }
                                 } catch (Error e) {
                                     warning(@"Failed to auto-connect $display_name: $(e.message)");
@@ -164,128 +173,26 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                     }
                 }
 
-                // If we loaded accounts successfully, return
-                if (account_sections.size > 0) {
-                    update_empty_state();
-                    return;
-                }
             }
         } catch (Error e) {
             warning(@"Failed to load accounts from new storage: $(e.message)");
         }
 
-        // Fallback: load legacy single-account setup and migrate
-        load_legacy_accounts.begin();
-    }
-
-    private async void load_legacy_accounts() {
-        // Load GitHub if connected
-        var github_connected = settings.get_boolean("cloud-provider-github-connected");
-        var github_username = settings.get_string("cloud-provider-github-username");
-
-        if (github_connected && github_username.length > 0) {
-            var account_id = "github-" + github_username;
-            var display_name = @"GitHub ($github_username)";
-            add_account_section(account_id, "github", display_name, github_provider, github_username);
-
-            // Try to load stored auth
-            try {
-                if (yield github_provider.load_stored_auth(github_username)) {
-                    var section = account_sections[account_id];
-                    if (section != null) {
-                        section.is_connected = true;
-                        section.username = github_username;
-                    }
-                }
-            } catch (Error e) {
-                warning(@"Failed to load GitHub auth: $(e.message)");
-            }
-        }
-
-        // Load GitLab if connected
-        var gitlab_connected = settings.get_boolean("cloud-provider-gitlab-connected");
-        var gitlab_username = settings.get_string("cloud-provider-gitlab-username");
-        var gitlab_instance_url = settings.get_string("cloud-provider-gitlab-instance-url");
-
-        if (gitlab_connected && gitlab_username.length > 0) {
-            // Set instance URL
-            if (gitlab_instance_url.length > 0) {
-                gitlab_provider.set_instance_url(gitlab_instance_url);
-            }
-
-            var instance_label = gitlab_instance_url.replace("https://", "").replace("http://", "");
-            var account_id = @"gitlab-$instance_label-$gitlab_username";
-            var display_name = @"GitLab ($instance_label)";
-            add_account_section(account_id, "gitlab", display_name, gitlab_provider, gitlab_username);
-
-            // Try to load stored auth
-            try {
-                if (yield gitlab_provider.load_stored_auth(gitlab_username)) {
-                    var section = account_sections[account_id];
-                    if (section != null) {
-                        section.is_connected = true;
-                        section.username = gitlab_username;
-                    }
-                }
-            } catch (Error e) {
-                warning(@"Failed to load GitLab auth: $(e.message)");
-            }
-        }
-
-        // Load Bitbucket if connected
-        var bitbucket_connected = settings.get_boolean("cloud-provider-bitbucket-connected");
-        var bitbucket_username = settings.get_string("cloud-provider-bitbucket-username");
-
-        if (bitbucket_connected && bitbucket_username.length > 0) {
-            var account_id = "bitbucket-" + bitbucket_username;
-            var display_name = @"Bitbucket ($bitbucket_username)";
-            add_account_section(account_id, "bitbucket", display_name, bitbucket_provider, bitbucket_username);
-
-            // Try to load stored auth
-            try {
-                if (yield bitbucket_provider.load_stored_auth(bitbucket_username)) {
-                    var section = account_sections[account_id];
-                    if (section != null) {
-                        section.is_connected = true;
-                        section.username = bitbucket_username;
-                    }
-                }
-            } catch (Error e) {
-                warning(@"Failed to load Bitbucket auth: $(e.message)");
-            }
-        }
-
-        // Load AWS if connected
-        var aws_connected = settings.get_boolean("cloud-provider-aws-connected");
-        var aws_username = settings.get_string("cloud-provider-aws-username");
-
-        if (aws_connected && aws_username.length > 0) {
-            var account_id = "aws-" + aws_username;
-            var display_name = @"AWS IAM ($aws_username)";
-            add_account_section(account_id, "aws", display_name, aws_provider, aws_username);
-
-            // Try to load stored credentials
-            try {
-                if (yield aws_provider.load_stored_credentials(aws_username)) {
-                    var section = account_sections[account_id];
-                    if (section != null) {
-                        section.is_connected = true;
-                        section.username = aws_username;
-                    }
-                }
-            } catch (Error e) {
-                warning(@"Failed to load AWS credentials: $(e.message)");
-            }
-        }
-
         update_empty_state();
     }
 
-    private void add_account_section(string account_id, string provider_type, string display_name, CloudProvider provider, string? username = null) {
+    private void add_account_section(string account_id, string provider_type, string display_name, CloudProvider provider, string? username = null, bool skip_save = false) {
         var section = new CloudAccountSection(account_id, provider_type, display_name, provider);
 
         if (username != null) {
             section.username = username;
+            // If provider is already authenticated, mark section as connected
+            if (provider.is_authenticated()) {
+                section.restore_connected_state(username);
+                debug("CloudProvidersPage: Added section for %s with existing auth", account_id);
+                // Auto-load keys for newly added authenticated account
+                section.refresh_keys_async();
+            }
         }
 
         // Connect signals
@@ -300,7 +207,11 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         account_order.add(account_id); // Track insertion order
 
         update_empty_state();
-        save_accounts();
+
+        // Don't save during initial load - save will happen after auth state is restored
+        if (!skip_save) {
+            save_accounts();
+        }
     }
 
     private void on_account_removed(string account_id) {
@@ -591,7 +502,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                 var username = settings.get_string("cloud-provider-aws-username");
                 if (username.length > 0) {
                     var account_id = "aws-" + username;
-                    var display_name = @"AWS IAM ($username)";
+                    var display_name = "AWS IAM"; // Don't include username in title
 
                     add_account_section(account_id, "aws", display_name, new_provider, username);
 
@@ -630,6 +541,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     }
 
     private void save_accounts() {
+        debug("=== SAVE ACCOUNTS CALLED ===");
         var builder = new Json.Builder();
         builder.begin_array();
 
@@ -637,6 +549,10 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         foreach (var account_id in account_order) {
             var section = account_sections[account_id];
             if (section == null) continue;
+
+            debug("Saving account: id=%s, type=%s, username=%s, is_connected=%s",
+                  section.account_id, section.provider_type, section.username ?? "(null)",
+                  section.is_connected.to_string());
 
             builder.begin_object();
             builder.set_member_name("id");
@@ -699,8 +615,11 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
 
         var generator = new Json.Generator();
         generator.set_root(builder.get_root());
+        generator.pretty = true;
         var json_string = generator.to_data(null);
 
+        debug("Saving JSON to settings:\n%s", json_string);
         settings.set_string("cloud-accounts", json_string);
+        debug("=== SAVE COMPLETE ===");
     }
 }

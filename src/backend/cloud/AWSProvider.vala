@@ -112,8 +112,8 @@ namespace KeyMaker {
                 // Store credentials in Secret Service
                 yield store_credentials();
 
-                // Update settings
-                settings.set_boolean("cloud-provider-aws-connected", true);
+                // Store username and region in settings (needed for retrieval)
+                // Note: NOT setting cloud-provider-aws-connected to avoid legacy storage conflicts
                 settings.set_string("cloud-provider-aws-username", username);
                 settings.set_string("cloud-provider-aws-region", region);
                 settings.set_string("cloud-provider-aws-access-key-id", access_key_id);
@@ -179,13 +179,87 @@ namespace KeyMaker {
                 throw new IOError.NOT_CONNECTED(_("Not authenticated with AWS"));
             }
 
+            // Trim and normalize the public key
+            var cleaned_key = public_key.strip().replace("\r\n", "\n").replace("\r", "\n");
+
+            // Remove trailing newlines
+            while (cleaned_key.has_suffix("\n")) {
+                cleaned_key = cleaned_key.substring(0, cleaned_key.length - 1);
+            }
+
+            // AWS IAM only supports RSA keys (minimum 2048 bits)
+            // ED25519 and ECDSA are NOT supported by AWS IAM
+            if (!cleaned_key.has_prefix("ssh-rsa ")) {
+                if (cleaned_key.has_prefix("ssh-ed25519 ")) {
+                    throw new IOError.NOT_SUPPORTED(_("AWS IAM does not support ED25519 keys. Only RSA keys (2048 bits or higher) are supported.\n\nNote: ED25519 keys work with AWS Transfer Family and EC2, but not IAM."));
+                } else if (cleaned_key.has_prefix("ecdsa-sha2-nistp")) {
+                    throw new IOError.NOT_SUPPORTED(_("AWS IAM does not support ECDSA keys. Only RSA keys (2048 bits or higher) are supported.\n\nNote: ECDSA keys work with AWS Transfer Family, but not IAM."));
+                } else {
+                    throw new IOError.INVALID_ARGUMENT(_("Invalid SSH public key format. AWS IAM only supports RSA keys in ssh-rsa format."));
+                }
+            }
+
+            // AWS is strict: format must be exactly "type key-data [optional-email]"
+            // Split by any whitespace and filter empty parts
+            var parts_raw = cleaned_key.split(" ");
+            var parts = new Gee.ArrayList<string>();
+            foreach (var part in parts_raw) {
+                if (part.length > 0) {
+                    parts.add(part);
+                }
+            }
+
+            string final_key;
+
+            if (parts.size == 2) {
+                // Just type and key - perfect
+                final_key = @"$(parts[0]) $(parts[1])";
+            } else if (parts.size >= 3) {
+                // Has comment - keep only if it looks like a real email (not just user@hostname)
+                var comment = parts[2];
+
+                // Check if it's a proper email with a domain extension (contains @ and a dot after @)
+                bool is_email = false;
+                if (comment.contains("@")) {
+                    var at_pos = comment.index_of("@");
+                    var after_at = comment.substring(at_pos + 1);
+                    // Real email should have a dot after @ (like user@example.com, not user@hostname)
+                    if (after_at.contains(".")) {
+                        is_email = true;
+                    }
+                }
+
+                if (is_email) {
+                    final_key = @"$(parts[0]) $(parts[1]) $comment";
+                } else {
+                    // Drop non-email comment (AWS doesn't accept user@hostname format)
+                    final_key = @"$(parts[0]) $(parts[1])";
+                    debug("Dropping non-email comment: %s", comment);
+                }
+            } else if (parts.size == 1) {
+                throw new IOError.INVALID_ARGUMENT(_("Invalid SSH public key format. Key appears to be incomplete."));
+            } else {
+                final_key = cleaned_key;
+            }
+
+            debug("=== AWS Key Upload Debug ===");
+            debug("Original key length: %d, Parts count: %d", public_key.length, parts.size);
+            debug("Key type: %s, Key data length: %d", parts[0], parts[1].length);
+            if (parts.size >= 3) {
+                debug("Comment: %s", parts[2]);
+            }
+            debug("Final key length: %d", final_key.length);
+            // Show first 80 chars to see the format
+            debug("Final key preview: %s...", final_key.substring(0, int.min(80, final_key.length)));
+
             try {
                 var params = new Gee.HashMap<string, string>();
                 params["Action"] = "UploadSSHPublicKey";
                 params["UserName"] = username;
-                params["SSHPublicKeyBody"] = public_key;
+                params["SSHPublicKeyBody"] = final_key;
                 params["Version"] = API_VERSION;
 
+                debug("Sending AWS request with key type: %s", parts[0]);
                 yield make_aws_request("POST", "/", params, "");
 
             } catch (Error e) {

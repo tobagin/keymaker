@@ -104,7 +104,16 @@ public class KeyMaker.CloudKeyDeployDialog : Adw.Window {
                 }
 
                 if (!already_deployed) {
-                    available_keys.add(local_key);
+                    // AWS IAM only supports RSA keys - filter out other types
+                    if (provider is AWSProvider) {
+                        if (local_key.key_type == SSHKeyType.RSA) {
+                            available_keys.add(local_key);
+                        } else {
+                            debug(@"CloudKeyDeployDialog: Filtering out $(local_key.key_type.to_string()) key for AWS (only RSA supported)");
+                        }
+                    } else {
+                        available_keys.add(local_key);
+                    }
                 }
             }
 
@@ -123,10 +132,20 @@ public class KeyMaker.CloudKeyDeployDialog : Adw.Window {
 
             // Update the count display
             var filtered_count = all_keys.length - available_keys.length;
+            var provider_name = provider.get_provider_name();
+
             if (filtered_count > 0) {
-                keys_found_row.subtitle = @"Found $(available_keys.length) deployable key(s) ($(filtered_count) already on GitHub)";
+                if (provider is AWSProvider) {
+                    keys_found_row.subtitle = @"Found $(available_keys.length) RSA key(s) (AWS IAM only supports RSA)";
+                } else {
+                    keys_found_row.subtitle = @"Found $(available_keys.length) deployable key(s) ($(filtered_count) already on $provider_name)";
+                }
             } else {
-                keys_found_row.subtitle = @"Found $(available_keys.length) SSH key(s) in ~/.ssh/";
+                if (provider is AWSProvider) {
+                    keys_found_row.subtitle = @"Found $(available_keys.length) RSA key(s) available";
+                } else {
+                    keys_found_row.subtitle = @"Found $(available_keys.length) SSH key(s) in ~/.ssh/";
+                }
             }
 
             if (available_keys.length > 0) {
@@ -136,7 +155,11 @@ public class KeyMaker.CloudKeyDeployDialog : Adw.Window {
                 deploy_button.sensitive = true;
             } else {
                 if (all_keys.length > 0) {
-                    keys_found_row.subtitle = _("All keys are already deployed to GitHub");
+                    if (provider is AWSProvider) {
+                        keys_found_row.subtitle = _("No RSA keys found. AWS IAM only supports RSA keys (2048+ bits).");
+                    } else {
+                        keys_found_row.subtitle = @"All keys are already deployed to $provider_name";
+                    }
                 } else {
                     keys_found_row.subtitle = _("No valid SSH keys found in ~/.ssh/");
                 }

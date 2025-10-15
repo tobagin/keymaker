@@ -252,7 +252,20 @@ namespace KeyMaker {
             if (token != null) {
                 access_token = token;
                 username = stored_username;
-                return yield validate_token();
+
+                // Try to validate, but be lenient - keep auth state even if validation fails
+                // This allows the user to still attempt operations which will properly fail with
+                // a clear error message rather than silently disconnecting
+                try {
+                    yield validate_token();
+                    debug("GitLab token validated successfully for %s", username);
+                    return true;
+                } catch (Error e) {
+                    warning(@"Failed to validate GitLab token for $username: $(e.message)");
+                    // Keep the token and username, don't clear them
+                    // This way operations will fail with a proper error rather than silent disconnect
+                    return true;  // Still return true so UI shows connected state
+                }
             }
             return false;
         }
@@ -261,14 +274,8 @@ namespace KeyMaker {
          * Validate current token
          */
         private async bool validate_token() throws Error {
-            try {
-                yield fetch_username();
-                return true;
-            } catch (Error e) {
-                access_token = null;
-                username = null;
-                return false;
-            }
+            yield fetch_username();
+            return true;
         }
 
         /**
