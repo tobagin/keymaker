@@ -111,6 +111,27 @@ namespace KeyMaker {
             }
         }
 
+        /**
+         * Make an async POST request with custom body and headers (for AWS)
+         */
+        public async string post_form_with_body(string url, string body, Gee.Map<string, string>? headers = null) throws Error {
+            var message = new Soup.Message("POST", url);
+            add_headers(message, headers);
+
+            if (body.length > 0) {
+                message.set_request_body_from_bytes("application/x-www-form-urlencoded", new Bytes(body.data));
+            }
+
+            try {
+                var bytes = yield session.send_and_read_async(message, Priority.DEFAULT, null);
+                var response = (string) bytes.get_data();
+                check_status_code(message, response);
+                return response;
+            } catch (Error e) {
+                throw new IOError.FAILED("POST request failed: %s".printf(e.message));
+            }
+        }
+
         private void add_headers(Soup.Message message, Gee.Map<string, string>? headers) {
             if (headers != null) {
                 foreach (var entry in headers.entries) {

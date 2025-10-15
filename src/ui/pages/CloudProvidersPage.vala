@@ -41,6 +41,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     private GitHubProvider github_provider;
     private GitLabProvider gitlab_provider;
     private BitbucketProvider bitbucket_provider;
+    private AWSProvider aws_provider;
 
     construct {
         settings = SettingsManager.app;
@@ -51,6 +52,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         github_provider = new GitHubProvider();
         gitlab_provider = new GitLabProvider();
         bitbucket_provider = new BitbucketProvider();
+        aws_provider = new AWSProvider();
 
         // Load existing accounts
         load_accounts.begin();
@@ -118,6 +120,14 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                         provider = gitlab_prov;
                     } else if (provider_type == "bitbucket") {
                         provider = new BitbucketProvider();
+                    } else if (provider_type == "aws") {
+                        var aws_prov = new AWSProvider();
+                        // Load region if stored
+                        if (obj.has_member("aws_region")) {
+                            var aws_region = obj.get_string_member("aws_region");
+                            aws_prov.set_credentials("", "", aws_region);  // Credentials will be loaded from storage
+                        }
+                        provider = aws_prov;
                     }
 
                     if (provider != null) {
@@ -137,6 +147,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                                         loaded = yield ((GitLabProvider)provider).load_stored_auth(username);
                                     } else if (provider is BitbucketProvider) {
                                         loaded = yield ((BitbucketProvider)provider).load_stored_auth(username);
+                                    } else if (provider is AWSProvider) {
+                                        loaded = yield ((AWSProvider)provider).load_stored_credentials(username);
                                     }
 
                                     if (loaded) {
@@ -243,6 +255,29 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
             }
         }
 
+        // Load AWS if connected
+        var aws_connected = settings.get_boolean("cloud-provider-aws-connected");
+        var aws_username = settings.get_string("cloud-provider-aws-username");
+
+        if (aws_connected && aws_username.length > 0) {
+            var account_id = "aws-" + aws_username;
+            var display_name = @"AWS IAM ($aws_username)";
+            add_account_section(account_id, "aws", display_name, aws_provider, aws_username);
+
+            // Try to load stored credentials
+            try {
+                if (yield aws_provider.load_stored_credentials(aws_username)) {
+                    var section = account_sections[account_id];
+                    if (section != null) {
+                        section.is_connected = true;
+                        section.username = aws_username;
+                    }
+                }
+            } catch (Error e) {
+                warning(@"Failed to load AWS credentials: $(e.message)");
+            }
+        }
+
         update_empty_state();
     }
 
@@ -312,6 +347,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         model.append("GitHub");
         model.append("GitLab");
         model.append("Bitbucket");
+        model.append("AWS IAM");
         provider_row.model = model;
         provider_row.selected = 0; // Default to GitHub
 
@@ -339,6 +375,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                     show_gitlab_instance_selector();
                 } else if (selected == 2) {
                     add_bitbucket_account();
+                } else if (selected == 3) {
+                    add_aws_account();
                 }
             }
         });
@@ -542,6 +580,30 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         dialog.present(window);
     }
 
+    private void add_aws_account() {
+        var window = (Gtk.Window) this.get_root();
+        var new_provider = new AWSProvider();
+        var dialog = new AWSCredentialsDialog(window, new_provider);
+
+        dialog.credentials_configured.connect((success) => {
+            if (success) {
+                // Get username from settings (set during authentication)
+                var username = settings.get_string("cloud-provider-aws-username");
+                if (username.length > 0) {
+                    var account_id = "aws-" + username;
+                    var display_name = @"AWS IAM ($username)";
+
+                    add_account_section(account_id, "aws", display_name, new_provider, username);
+
+                    // Save to cloud-accounts
+                    save_accounts();
+                }
+            }
+        });
+
+        dialog.present();
+    }
+
     private void add_gitlab_instance(string url, string client_id, string client_secret, string instance_label) {
         // Create a new GitLab provider for this instance
         var new_provider = new GitLabProvider();
@@ -618,6 +680,17 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                 }
             }
             builder.add_string_value(instance_type);
+
+            // Save AWS region if this is an AWS provider
+            builder.set_member_name("aws_region");
+            var aws_region = "";
+            if (section.provider_type == "aws") {
+                var provider = section.get_provider();
+                if (provider is AWSProvider) {
+                    aws_region = ((AWSProvider)provider).get_region();
+                }
+            }
+            builder.add_string_value(aws_region);
 
             builder.end_object();
         }

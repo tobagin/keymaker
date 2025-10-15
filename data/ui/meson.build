@@ -83,6 +83,7 @@ ui_files = [
   'dialogs/host_key_verification_dialog.blp',
   'dialogs/host_key_conflict_dialog.blp',
   'dialogs/github_auth_dialog.blp',
+  'dialogs/aws_credentials_dialog.blp',
   'dialogs/cloud_key_deploy_dialog.blp',
   'dialogs/cloud_key_remove_dialog.blp',
 

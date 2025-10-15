@@ -20,6 +20,7 @@
     <file>host_key_verification_dialog.ui</file>
     <file>host_key_conflict_dialog.ui</file>
     <file>github_auth_dialog.ui</file>
+    <file>aws_credentials_dialog.ui</file>
     <file>cloud_key_deploy_dialog.ui</file>
     <file>cloud_key_remove_dialog.ui</file>
     <file>connection_test_dialog.ui</file>

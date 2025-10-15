@@ -176,6 +176,30 @@
       <description>The connected Bitbucket username</description>
     </key>
 
+    <key name="cloud-provider-aws-connected" type="b">
+      <default>false</default>
+      <summary>AWS IAM connection status</summary>
+      <description>Whether an AWS IAM account is currently connected</description>
+    </key>
+
+    <key name="cloud-provider-aws-username" type="s">
+      <default>''</default>
+      <summary>AWS IAM username</summary>
+      <description>The connected AWS IAM username</description>
+    </key>
+
+    <key name="cloud-provider-aws-region" type="s">
+      <default>'us-east-1'</default>
+      <summary>AWS region</summary>
+      <description>The AWS region to use for API requests</description>
+    </key>
+
+    <key name="cloud-provider-aws-access-key-id" type="s">
+      <default>''</default>
+      <summary>AWS Access Key ID (for lookup)</summary>
+      <description>The AWS Access Key ID for retrieving the secret from Secret Service</description>
+    </key>
+
     <key name="cloud-provider-cache" type="s">
       <default>'{}'</default>
       <summary>Cloud provider key cache</summary>
