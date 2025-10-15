@@ -37,7 +37,12 @@ install_data(
 )
 
 install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-aws-colour.svg',
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-aws-colour-dark-mode.svg',
+  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
+)
+
+install_data(
+  'hicolor/scalable/apps/io.github.tobagin.keysmith-aws-colour-light-mode.svg',
   install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps'
 )
 

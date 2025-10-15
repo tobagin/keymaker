@@ -81,8 +81,8 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
         // Set icon based on provider type
         update_provider_icon();
 
-        // Listen for color scheme changes to update GitHub icon
-        if (provider_type == "github") {
+        // Listen for color scheme changes to update theme-aware icons
+        if (provider_type == "github" || provider_type == "aws") {
             var style_manager = Adw.StyleManager.get_default();
             style_manager.notify["dark"].connect(() => {
                 update_provider_icon();
@@ -547,7 +547,12 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
             case "bitbucket":
                 return "io.github.tobagin.keysmith-bitbucket-colour";
             case "aws":
-                return "io.github.tobagin.keysmith-aws-colour";
+                var style_manager = Adw.StyleManager.get_default();
+                if (style_manager.dark) {
+                    return "io.github.tobagin.keysmith-aws-colour-dark-mode";
+                } else {
+                    return "io.github.tobagin.keysmith-aws-colour-light-mode";
+                }
             case "azure":
                 return "io.github.tobagin.keysmith-azure-colour";
             case "gcp":
