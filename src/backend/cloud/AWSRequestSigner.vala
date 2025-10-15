@@ -82,8 +82,12 @@ namespace KeyMaker {
             var signature = hmac_sha256_hex(signing_key, string_to_sign);
 
             // Step 5: Create authorization header
-            var signed_headers = "host;x-amz-date";
+            var signed_headers = "content-type;host;x-amz-date";
             var authorization = @"$ALGORITHM Credential=$access_key_id/$credential_scope, SignedHeaders=$signed_headers, Signature=$signature";
+
+            debug("String to Sign: %s", string_to_sign.replace("\n", "\\n"));
+            debug("Signature: %s", signature);
+            debug("Authorization: %s", authorization);
 
             return authorization;
         }
@@ -99,11 +103,24 @@ namespace KeyMaker {
             string timestamp,
             string payload
         ) {
-            var canonical_headers = @"host:$host\nx-amz-date:$timestamp\n";
-            var signed_headers = "host;x-amz-date";
+            // Canonical headers must be sorted alphabetically
+            var canonical_headers = @"content-type:application/x-www-form-urlencoded\nhost:$host\nx-amz-date:$timestamp\n";
+            var signed_headers = "content-type;host;x-amz-date";
             var payload_hash = sha256_hex(payload);
 
             var canonical_request = @"$method\n$uri\n$query_string\n$canonical_headers\n$signed_headers\n$payload_hash";
+
+            // Debug logging
+            debug("=== AWS Signature Debug ===");
+            debug("Method: %s", method);
+            debug("URI: %s", uri);
+            debug("Query String: %s", query_string);
+            debug("Canonical Headers: %s", canonical_headers.replace("\n", "\\n"));
+            debug("Signed Headers: %s", signed_headers);
+            debug("Payload: %s", payload);
+            debug("Payload Hash: %s", payload_hash);
+            debug("Canonical Request: %s", canonical_request.replace("\n", "\\n"));
+
             return canonical_request;
         }
 

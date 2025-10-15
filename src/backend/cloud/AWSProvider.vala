@@ -299,15 +299,17 @@ namespace KeyMaker {
             string payload
         ) throws Error {
             var timestamp = AWSRequestSigner.get_iso8601_timestamp();
-            var query_string = AWSRequestSigner.build_query_string(params);
 
-            // Sign the request
+            // For IAM API, parameters go in the POST body, not query string
+            var body = AWSRequestSigner.build_query_string(params);
+
+            // Sign the request (empty query string, body contains params)
             var authorization = AWSRequestSigner.sign_request(
                 method,
                 "iam.amazonaws.com",
                 path,
-                query_string,
-                payload,
+                "", // Empty query string for IAM API
+                body, // Body contains the form-encoded parameters
                 access_key_id,
                 secret_access_key,
                 region,
@@ -322,14 +324,32 @@ namespace KeyMaker {
             headers["Host"] = "iam.amazonaws.com";
             headers["Content-Type"] = "application/x-www-form-urlencoded";
 
-            // Make request
-            var url = @"$IAM_ENDPOINT?$query_string";
-            var response = yield http_client.post_form_with_body(url, payload, headers);
+            // Make request - parameters in body, not URL
+            var url = IAM_ENDPOINT;
+
+            debug("=== AWS Request ===");
+            debug("URL: %s", url);
+            debug("Method: %s", method);
+            debug("Body: %s", body);
+            debug("Headers:");
+            foreach (var entry in headers.entries) {
+                if (entry.key == "Authorization") {
+                    debug("  %s: %s...", entry.key, entry.value.substring(0, 50));
+                } else {
+                    debug("  %s: %s", entry.key, entry.value);
+                }
+            }
+
+            var response = yield http_client.post_form_with_body(url, body, headers);
+
+            debug("=== AWS Response (first 500 chars) ===");
+            debug("%s", response.length > 500 ? response.substring(0, 500) : response);
 
             // Check for AWS errors in response
             if (response.contains("<ErrorResponse>") || response.contains("<Error>")) {
                 var error_code = extract_xml_value(response, "Code");
                 var error_message = extract_xml_value(response, "Message");
+                debug("AWS Error - Code: %s, Message: %s", error_code, error_message);
                 throw new IOError.FAILED(@"AWS Error [$error_code]: $error_message");
             }
 
