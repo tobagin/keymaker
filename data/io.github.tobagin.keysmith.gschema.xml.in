@@ -188,6 +188,18 @@
       <description>The OAuth application client secret for Gitea</description>
     </key>
 
+    <key name="cloud-provider-gcp-client-id" type="s">
+      <default>''</default>
+      <summary>GCP OAuth Client ID</summary>
+      <description>The OAuth application client ID for Google Cloud Platform</description>
+    </key>
+
+    <key name="cloud-provider-gcp-client-secret" type="s">
+      <default>''</default>
+      <summary>GCP OAuth Client Secret</summary>
+      <description>The OAuth application client secret for Google Cloud Platform</description>
+    </key>
+
     <key name="cloud-provider-aws-connected" type="b">
       <default>false</default>
       <summary>AWS IAM connection status</summary>

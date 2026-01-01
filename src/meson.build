@@ -30,6 +30,8 @@ sources = files(
     'backend/cloud/BitbucketOAuthServer.vala',
     'backend/cloud/GiteaOAuthServer.vala',
     'backend/cloud/GiteaProvider.vala',
+    'backend/cloud/GCPOAuthServer.vala',
+    'backend/cloud/GCPProvider.vala',
     'backend/cloud/AWSRequestSigner.vala',
     'backend/cloud/AWSProvider.vala',
     'backend/cloud/CacheManager.vala',

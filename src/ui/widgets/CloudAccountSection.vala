@@ -70,7 +70,8 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
     }
 
     private void build_ui() {
-        // Create PreferencesGroup to wrap the expander
+        // Note: group is kept for backward compatibility but not used anymore
+        // All expander rows are added to a single group in CloudProvidersPage
         group = new Adw.PreferencesGroup();
 
         // Create the expander row
@@ -164,8 +165,7 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
         loading_label.add_css_class("dim-label");
         loading_box.append(loading_label);
 
-        // Add expander to group
-        group.add(expander_row);
+        // Don't add expander to group here - CloudProvidersPage will add it to the single shared group
     }
 
     private void on_connect_clicked() {
@@ -307,6 +307,10 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
             var username = ((GiteaProvider)provider).get_username() ?? "";
             debug("CloudAccountSection.get_provider_username: Gitea username='%s'", username);
             return username;
+        } else if (provider is GCPProvider) {
+            var username = ((GCPProvider)provider).get_username() ?? "";
+            debug("CloudAccountSection.get_provider_username: GCP username='%s'", username);
+            return username;
         } else if (provider is AWSProvider) {
             // For AWS, the username is stored in settings after authentication
             var settings = SettingsManager.app;
@@ -326,8 +330,8 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
             update_ui_disconnected();
             show_toast_requested(_("Disconnected"));
 
-            // Emit signal to remove this section
-            account_removed(account_id);
+            // Just disconnect - don't remove from UI
+            // User can use the Remove button if they want to remove it entirely
         } catch (Error e) {
             show_error_requested(@"Failed to disconnect: $(e.message)");
         }
@@ -549,6 +553,14 @@ public class KeyMaker.CloudAccountSection : GLib.Object {
         loading_box.visible = false;
         deploy_key_button.visible = false;
         expander_row.enable_expansion = false;
+
+        // Clear all key rows when disconnected
+        foreach (var row in key_rows) {
+            if (row.get_parent() != null) {
+                expander_row.remove(row);
+            }
+        }
+        key_rows.clear();
     }
 
     private void show_loading() {

@@ -146,10 +146,10 @@ namespace KeyMaker {
                 var reason = message.reason_phrase ?? "Unknown error";
                 var url = message.get_uri().to_string();
 
-                // Truncate response body if too long
+                // Truncate response body if too long (but show more for debugging)
                 var truncated_body = response_body ?? "";
-                if (truncated_body.length > 200) {
-                    truncated_body = truncated_body.substring(0, 200) + "...";
+                if (truncated_body.length > 500) {
+                    truncated_body = truncated_body.substring(0, 500) + "...";
                 }
 
                 warning(@"HTTP $status error for $(message.method) $url: $reason");
@@ -157,7 +157,13 @@ namespace KeyMaker {
                     warning(@"Response body: $truncated_body");
                 }
 
-                throw new IOError.FAILED(@"HTTP $status: $reason");
+                // Include response body in error message for better debugging
+                var error_msg = @"HTTP $status: $reason";
+                if (truncated_body.length > 0 && truncated_body.length < 200) {
+                    error_msg = @"HTTP $status: $reason - $truncated_body";
+                }
+
+                throw new IOError.FAILED(error_msg);
             }
         }
 

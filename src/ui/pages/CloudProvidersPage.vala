@@ -30,12 +30,10 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     [GtkChild]
     private unowned Adw.StatusPage empty_state_page;
 
-    [GtkChild]
-    private unowned Adw.Banner error_banner;
-
     private Settings settings;
     private Gee.HashMap<string, CloudAccountSection> account_sections;
     private Gee.ArrayList<string> account_order; // Track insertion order
+    private Adw.PreferencesGroup providers_group; // Single group for accordion behavior
 
     // Provider instances
     private GitHubProvider github_provider;
@@ -48,6 +46,11 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         settings = SettingsManager.app;
         account_sections = new Gee.HashMap<string, CloudAccountSection>();
         account_order = new Gee.ArrayList<string>();
+
+        // Create single preferences group for all providers
+        providers_group = new Adw.PreferencesGroup();
+        providers_group.title = _("Cloud Providers");
+        accounts_container.append(providers_group);
 
         // Initialize providers
         github_provider = new GitHubProvider();
@@ -162,6 +165,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                             }
                         }
                         provider = gitea_prov;
+                    } else if (provider_type == "gcp") {
+                        provider = new GCPProvider();
                     } else if (provider_type == "aws") {
                         var aws_prov = new AWSProvider();
                         // IAM is global, no region needed
@@ -188,6 +193,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                                         loaded = yield ((BitbucketProvider)provider).load_stored_auth(username);
                                     } else if (provider is GiteaProvider) {
                                         loaded = yield ((GiteaProvider)provider).load_stored_auth(username);
+                                    } else if (provider is GCPProvider) {
+                                        loaded = yield ((GCPProvider)provider).load_stored_auth(username);
                                     } else if (provider is AWSProvider) {
                                         loaded = yield ((AWSProvider)provider).load_stored_credentials(username);
                                     }
@@ -256,8 +263,16 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         section.show_toast_requested.connect(show_toast);
         section.show_error_requested.connect(show_error);
 
-        // Add preferences group to container
-        accounts_container.append(section.group);
+        // Add expander row directly to single group (accordion behavior)
+        providers_group.add(section.expander_row);
+
+        // Connect accordion behavior - collapse others when this one expands
+        section.expander_row.notify["expanded"].connect(() => {
+            if (section.expander_row.expanded) {
+                collapse_other_sections(account_id);
+            }
+        });
+
         account_sections[account_id] = section;
         account_order.add(account_id); // Track insertion order
 
@@ -269,10 +284,20 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         }
     }
 
+    private void collapse_other_sections(string current_account_id) {
+        // Collapse all other sections when one is expanded (accordion behavior)
+        foreach (var entry in account_sections.entries) {
+            if (entry.key != current_account_id) {
+                entry.value.expander_row.expanded = false;
+            }
+        }
+    }
+
     private void on_account_removed(string account_id) {
         var section = account_sections[account_id];
         if (section != null) {
-            accounts_container.remove(section.group);
+            // Remove expander row from the single group
+            providers_group.remove(section.expander_row);
             account_sections.unset(account_id);
             account_order.remove(account_id); // Remove from order tracking
 
@@ -296,6 +321,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
 
     private void update_empty_state() {
         empty_state_page.visible = (account_sections.size == 0);
+        providers_group.visible = (account_sections.size > 0);
     }
 
     public void show_add_account_chooser() {
@@ -315,6 +341,7 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         model.append("Bitbucket");
         model.append("Gitea");
         model.append("Forgejo");
+        model.append("Google Cloud Platform");
         model.append("AWS IAM");
         provider_row.model = model;
         provider_row.selected = 0; // Default to GitHub
@@ -348,6 +375,8 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
                 } else if (selected == 4) {
                     show_forgejo_instance_selector();
                 } else if (selected == 5) {
+                    add_gcp_account();
+                } else if (selected == 6) {
                     add_aws_account();
                 }
             }
@@ -781,6 +810,19 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
         // The section will handle authentication
     }
 
+    private void add_gcp_account() {
+        // GCP now uses hardcoded OAuth credentials, no need for dialog
+        var new_provider = new GCPProvider();
+
+        // Create temporary account section
+        var temp_id = @"gcp-temp-$(GLib.get_real_time())";
+        var display_name = "Google Cloud Platform";
+
+        add_account_section(temp_id, "gcp", display_name, new_provider);
+
+        // The section will handle authentication
+    }
+
     private void add_aws_account() {
         var window = (Gtk.Window) this.get_root();
         var new_provider = new AWSProvider();
@@ -822,8 +864,13 @@ public class KeyMaker.CloudProvidersPage : Adw.Bin {
     }
 
     private void show_error(string message) {
-        error_banner.title = message;
-        error_banner.revealed = true;
+        var window = (Gtk.Window) this.get_root();
+        var dialog = new Adw.AlertDialog(_("Error"), message);
+        dialog.add_response("ok", _("OK"));
+        dialog.set_response_appearance("ok", Adw.ResponseAppearance.DEFAULT);
+        dialog.set_default_response("ok");
+        dialog.set_close_response("ok");
+        dialog.present(window);
     }
 
     private void show_toast(string message) {

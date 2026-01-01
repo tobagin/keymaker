@@ -31,6 +31,7 @@ namespace KeyMaker {
 
         private HttpClient http_client;
         private string? access_token = null;
+        private string? refresh_token = null;
         private string? username = null;
         private string instance_url = "https://gitea.com";
         private string? client_id = null;
@@ -156,7 +157,18 @@ namespace KeyMaker {
             var headers = new Gee.HashMap<string, string>();
             headers["Accept"] = "application/json";
 
-            var response = yield http_client.post_form(@"$instance_url/login/oauth/access_token", form_data, headers);
+            debug("GiteaProvider: Exchanging code for token at %s", @"$instance_url/login/oauth/access_token");
+            debug("GiteaProvider: client_id=%s, redirect_uri=%s", client_id, "http://localhost:8765/callback");
+
+            string response;
+            try {
+                response = yield http_client.post_form(@"$instance_url/login/oauth/access_token", form_data, headers);
+                debug("GiteaProvider: Token exchange response: %s", response);
+            } catch (Error e) {
+                warning("GiteaProvider: Token exchange failed: %s", e.message);
+                throw new IOError.FAILED(@"Failed to exchange authorization code for access token: $(e.message)");
+            }
+
             var parser = new Json.Parser();
             parser.load_from_data(response);
             var root = parser.get_root().get_object();
@@ -164,11 +176,19 @@ namespace KeyMaker {
             if (root.has_member("access_token")) {
                 access_token = root.get_string_member("access_token");
 
+                // Store refresh token if provided
+                if (root.has_member("refresh_token")) {
+                    refresh_token = root.get_string_member("refresh_token");
+                }
+
                 // Get username
                 yield fetch_username();
 
-                // Store token with instance URL
+                // Store both access token and refresh token
                 yield TokenStorage.store_token(@"gitea:$instance_url", username, access_token);
+                if (refresh_token != null) {
+                    yield TokenStorage.store_token(@"gitea:$instance_url:refresh", username, refresh_token);
+                }
 
                 return true;
             } else if (root.has_member("error")) {
@@ -181,13 +201,81 @@ namespace KeyMaker {
         }
 
         /**
+         * Refresh the access token using the refresh token
+         */
+        private async bool refresh_access_token() throws Error {
+            if (refresh_token == null || client_id == null || client_secret == null) {
+                return false;
+            }
+
+            debug("GiteaProvider: Refreshing access token for %s", instance_url);
+
+            var form_data = new Gee.HashMap<string, string>();
+            form_data["client_id"] = client_id;
+            form_data["client_secret"] = client_secret;
+            form_data["refresh_token"] = refresh_token;
+            form_data["grant_type"] = "refresh_token";
+
+            var headers = new Gee.HashMap<string, string>();
+            headers["Accept"] = "application/json";
+
+            try {
+                var response = yield http_client.post_form(@"$instance_url/login/oauth/access_token", form_data, headers);
+                var parser = new Json.Parser();
+                parser.load_from_data(response);
+                var root = parser.get_root().get_object();
+
+                if (root.has_member("access_token")) {
+                    access_token = root.get_string_member("access_token");
+
+                    // Update refresh token if a new one is provided
+                    if (root.has_member("refresh_token")) {
+                        refresh_token = root.get_string_member("refresh_token");
+                        if (username != null) {
+                            yield TokenStorage.store_token(@"gitea:$instance_url:refresh", username, refresh_token);
+                        }
+                    }
+
+                    // Store new access token
+                    if (username != null) {
+                        yield TokenStorage.store_token(@"gitea:$instance_url", username, access_token);
+                    }
+
+                    debug("GiteaProvider: Token refreshed successfully");
+                    return true;
+                }
+            } catch (Error e) {
+                warning("GiteaProvider: Failed to refresh token: %s", e.message);
+            }
+
+            return false;
+        }
+
+        /**
          * List all SSH public keys for the authenticated user
          */
         public async Gee.List<CloudKeyMetadata> list_keys() throws Error {
             ensure_authenticated();
 
             var headers = create_auth_headers();
-            var response = yield http_client.get(@"$instance_url/api/v1/user/keys", headers);
+            string response;
+
+            try {
+                response = yield http_client.get(@"$instance_url/api/v1/user/keys", headers);
+            } catch (Error e) {
+                // If 401 Unauthorized, try to refresh token and retry once
+                if (e.message.contains("401")) {
+                    debug("GiteaProvider: Got 401, attempting token refresh");
+                    if (yield refresh_access_token()) {
+                        headers = create_auth_headers();
+                        response = yield http_client.get(@"$instance_url/api/v1/user/keys", headers);
+                    } else {
+                        throw e;
+                    }
+                } else {
+                    throw e;
+                }
+            }
 
             var parser = new Json.Parser();
             parser.load_from_data(response);
@@ -289,10 +377,10 @@ namespace KeyMaker {
          * Disconnect from the provider (clear stored credentials)
          */
         public async void disconnect() throws Error {
-            if (username != null) {
-                yield TokenStorage.delete_token(@"gitea:$instance_url", username);
-            }
+            // Don't delete tokens from storage - just clear from memory
+            // This allows reconnecting without re-authenticating
             access_token = null;
+            refresh_token = null;
             username = null;
         }
 
@@ -310,13 +398,28 @@ namespace KeyMaker {
                 access_token = token;
                 username = stored_username;
 
-                // Try to validate, but be lenient
+                // Also load refresh token if available
+                var stored_refresh = yield TokenStorage.retrieve_token(@"gitea:$instance_url:refresh", stored_username);
+                if (stored_refresh != null) {
+                    refresh_token = stored_refresh;
+                    debug("GiteaProvider: Loaded refresh token for %s", username);
+                }
+
+                // Try to validate token
                 try {
                     yield validate_token();
                     debug("Gitea token validated successfully for %s", username);
                     return true;
                 } catch (Error e) {
                     warning(@"Failed to validate Gitea token for $username: $(e.message)");
+                    // If we have a refresh token, try to refresh automatically
+                    if (refresh_token != null) {
+                        debug("GiteaProvider: Attempting automatic token refresh on load");
+                        if (yield refresh_access_token()) {
+                            debug("GiteaProvider: Token refreshed successfully on load");
+                            return true;
+                        }
+                    }
                     return true;  // Still return true so UI shows connected state
                 }
             } else {
