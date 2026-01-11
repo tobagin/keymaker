@@ -41,41 +41,10 @@ namespace KeyMaker {
             }
             
             try {
-                debug ("KeyScanner: Directory exists, enumerating files...");
+                debug ("KeyScanner: Directory exists, enumerating files recursively...");
                 // Find all potential private key files
                 var private_keys = new GenericArray<File> ();
-                
-                var enumerator = target_dir.enumerate_children (
-                    FileAttribute.STANDARD_NAME + "," + FileAttribute.STANDARD_TYPE,
-                    FileQueryInfoFlags.NONE
-                );
-                debug ("KeyScanner: Got enumerator, reading files...");
-                
-                FileInfo info;
-                while ((info = enumerator.next_file (null)) != null) {
-                    if (info.get_file_type () == FileType.REGULAR) {
-                        var filename = info.get_name ();
-                        
-                        // Skip known non-key files
-                        if (filename in new string[] {"config", "known_hosts", "authorized_keys"}) {
-                            continue;
-                        }
-                        
-                        // Skip .pub files (we look for private keys)
-                        if (filename.has_suffix (".pub")) {
-                            continue;
-                        }
-                        
-                        var file_path = target_dir.get_child (filename);
-                        
-                        // Check if corresponding public key exists
-                        var public_path = File.new_for_path (file_path.get_path () + ".pub");
-                        if (public_path.query_exists ()) {
-                            debug ("KeyScanner: Found key pair: %s", filename);
-                            private_keys.add (file_path);
-                        }
-                    }
-                }
+                scan_directory_recursive (target_dir, private_keys, 0, null);
                 
                 debug ("KeyScanner: Found %d private keys, building models...", private_keys.length);
                 
@@ -105,6 +74,8 @@ namespace KeyMaker {
             }
         }
         
+        private const int MAX_SCAN_DEPTH = 3;
+
         public static async GenericArray<SSHKey> scan_ssh_directory_with_cancellable (File? ssh_dir, Cancellable? cancellable) throws KeyMakerError {
             var target_dir = ssh_dir ?? File.new_for_path (Path.build_filename (Environment.get_home_dir (), ".ssh"));
             debug ("KeyScanner: Starting scan of directory: %s", target_dir.get_path ());
@@ -128,42 +99,10 @@ namespace KeyMaker {
             }
             
             try {
-                debug ("KeyScanner: Directory exists, enumerating files...");
-                // Find all potential private key files
+                debug ("KeyScanner: Directory exists, enumerating files recursively...");
+                // Find all potential private key files recursively
                 var private_keys = new GenericArray<File> ();
-
-                // Use synchronous enumeration to avoid async enumerator pitfalls
-                var enumerator = target_dir.enumerate_children (
-                    FileAttribute.STANDARD_NAME + "," + FileAttribute.STANDARD_TYPE,
-                    FileQueryInfoFlags.NONE
-                );
-                debug ("KeyScanner: Got enumerator, reading files...");
-
-                FileInfo? info;
-                while ((info = enumerator.next_file (null)) != null) {
-                    if (info.get_file_type () == FileType.REGULAR) {
-                        var filename = info.get_name ();
-                        
-                        // Skip known non-key files
-                        if (filename in new string[] {"config", "known_hosts", "authorized_keys"}) {
-                            continue;
-                        }
-                        
-                        // Skip .pub files (we look for private keys)
-                        if (filename.has_suffix (".pub")) {
-                            continue;
-                        }
-                        
-                        var file_path = target_dir.get_child (filename);
-                        
-                        // Check if corresponding public key exists
-                        var public_path = File.new_for_path (file_path.get_path () + ".pub");
-                        if (public_path.query_exists ()) {
-                            debug ("KeyScanner: Found key pair: %s", filename);
-                            private_keys.add (file_path);
-                        }
-                    }
-                }
+                scan_directory_recursive (target_dir, private_keys, 0, cancellable);
                 
                 debug ("KeyScanner: Found %d private keys, building models...", private_keys.length);
                 
@@ -196,6 +135,58 @@ namespace KeyMaker {
                 
             } catch (Error e) {
                 throw new KeyMakerError.OPERATION_FAILED ("Failed to scan SSH directory: %s", e.message);
+            }
+        }
+        
+        private static void scan_directory_recursive (File dir, GenericArray<File> private_keys, int depth, Cancellable? cancellable) {
+            if (depth > MAX_SCAN_DEPTH) {
+                return;
+            }
+            
+            if (cancellable != null && cancellable.is_cancelled ()) {
+                return;
+            }
+
+            try {
+                // Use synchronous enumeration to avoid async enumerator pitfalls in recursive sync call
+                var enumerator = dir.enumerate_children (
+                    FileAttribute.STANDARD_NAME + "," + FileAttribute.STANDARD_TYPE,
+                    FileQueryInfoFlags.NONE,
+                    cancellable
+                );
+
+                FileInfo? info;
+                while ((info = enumerator.next_file (cancellable)) != null) {
+                    var filename = info.get_name ();
+                    var file_path = dir.get_child (filename);
+                    
+                    if (info.get_file_type () == FileType.DIRECTORY) {
+                        // Recurse into subdirectories
+                        // Skip .ssh (shouldn't happen inside itself, but safety) and hidden dirs if needed
+                        if (!filename.has_prefix (".")) {
+                             scan_directory_recursive (file_path, private_keys, depth + 1, cancellable);
+                        }
+                    } else if (info.get_file_type () == FileType.REGULAR) {
+                        // Skip known non-key files
+                        if (filename in new string[] {"config", "known_hosts", "authorized_keys", "environment"}) {
+                            continue;
+                        }
+                        
+                        // Skip .pub files (we look for private keys)
+                        if (filename.has_suffix (".pub")) {
+                            continue;
+                        }
+                        
+                        // Check if corresponding public key exists
+                        var public_path = File.new_for_path (file_path.get_path () + ".pub");
+                        if (public_path.query_exists ()) {
+                            debug ("KeyScanner: Found key pair: %s", file_path.get_path ());
+                            private_keys.add (file_path);
+                        }
+                    }
+                }
+            } catch (Error e) {
+                debug ("KeyScanner: Error scanning directory %s: %s", dir.get_path (), e.message);
             }
         }
         
