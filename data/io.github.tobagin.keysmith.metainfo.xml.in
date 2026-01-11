@@ -105,7 +105,7 @@
         <ul>
           <li>Renamed application from "KeySmith" to "Keymaker"</li>
           <li>Complete rewrite in Vala for better performance</li>
-          <li><b>Advanced SSH:</b> Agent Intelligence, Key-Service Mapping, Config Editor, and Recursive Key Scanning</li>
+          <li><b>Advanced SSH:</b> Key-Service Mapping, Config Editor, and Recursive Key Scanning</li>
           <li><b>Security:</b> QR Code Backups and Time-locked recovery</li>
           <li>✨ New Icons: Fresh new application icons (Thanks to <a href="https://github.com/oiimrosabel">Rosabel</a>)</li>
           <li>Added GUI password dialog for easier key copying</li>

@@ -9,12 +9,20 @@ finish-args:
   - --share=network
   - --socket=fallback-x11
   - --socket=wayland
-  - --socket=ssh-auth
   - --device=dri
   - --filesystem=~/.ssh:create
   - --talk-name=org.freedesktop.secrets
   - --talk-name=org.gnome.keyring
-  - --allow=per-app-dev-shm
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /man
+  - /share/doc
+  - /share/gtk-doc
+  - /share/man
+  - /share/pkgconfig
+  - '*.la'
+  - '*.a'
 
 modules:
   - name: openssh-client

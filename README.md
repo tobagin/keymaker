@@ -81,6 +81,24 @@ Distributed under the GNU General Public License v3.0. See `LICENSE` for more in
 
 If you encounter any problems, please [open an issue](https://github.com/tobagin/keymaker/issues).
 
+## Screenshots
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window.png" alt="Main Window" width="700"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/generate-key.png" alt="Generate Key" width="700"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/key-details.png" alt="Key Details" width="700"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/copy-key-to-server.png" alt="Deploy to Server" width="700"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/preferences.png" alt="Preferences" width="700"/>
+</p>
+
 ## Acknowledgments
 
 - **Thiago Fernandes**: Developer and Designer

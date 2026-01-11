@@ -9,7 +9,6 @@ finish-args:
   - --share=network
   - --socket=fallback-x11
   - --socket=wayland
-  - --socket=ssh-auth
   - --device=dri
   - --filesystem=~/.ssh:create
   - --talk-name=org.freedesktop.secrets

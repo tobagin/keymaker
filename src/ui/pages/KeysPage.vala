@@ -18,12 +18,6 @@ public class KeyMaker.KeysPage : Adw.Bin {
     [GtkChild]
     private unowned Gtk.Box child_box;
     [GtkChild]
-    private unowned Gtk.Button add_key_to_agent_button;
-    [GtkChild]
-    private unowned Gtk.Button refresh_agent_button;
-    [GtkChild]
-    private unowned Gtk.ListBox agent_keys_list;
-    [GtkChild]
     private unowned Gtk.ListBox key_list_box;
     [GtkChild]
     private unowned Gtk.Button refresh_button;
@@ -33,7 +27,7 @@ public class KeyMaker.KeysPage : Adw.Bin {
     private GenericArray<KeyMaker.KeyRowWidget> key_rows;
     private GenericArray<SSHKey> ssh_keys;
     private Cancellable? refresh_cancellable;
-    private KeyMaker.SSHAgent? ssh_agent;
+
     
     // Signals for window integration
     public signal void key_copy_requested (SSHKey ssh_key);
@@ -52,13 +46,7 @@ public class KeyMaker.KeysPage : Adw.Bin {
         
         // SSH agent will be initialized when needed
         
-        // Setup SSH agent buttons with null checks
-        if (add_key_to_agent_button != null) {
-            add_key_to_agent_button.clicked.connect (on_add_key_to_agent_clicked);
-        }
-        if (refresh_agent_button != null) {
-            refresh_agent_button.clicked.connect (on_refresh_agent_clicked);
-        }
+
         
         // Setup SSH Keys buttons with null checks
         if (refresh_button != null) {
@@ -72,7 +60,6 @@ public class KeyMaker.KeysPage : Adw.Bin {
         
         // Load SSH keys and agent keys
         refresh_keys ();
-        refresh_agent_keys ();
     }
     
     
@@ -130,150 +117,7 @@ public class KeyMaker.KeysPage : Adw.Bin {
         remove_key_from_list (deleted_key);
     }
     
-    private void on_add_key_to_agent_clicked () {
-        var agent = new KeyMaker.SSHAgent ();
-        var dialog = new KeyMaker.AddKeyToAgentDialog (get_root () as Gtk.Window, ssh_keys, agent);
-        dialog.present (get_root () as Gtk.Window);
-        // Refresh after dialog is closed (no signal available)
-        dialog.closed.connect (() => {
-            refresh_agent_keys ();
-        });
-    }
-    
-    private void on_refresh_agent_clicked () {
-        refresh_agent_keys ();
-    }
-    
-    private void refresh_agent_keys () {
-        refresh_agent_keys_async.begin ();
-    }
-    
-    private async void refresh_agent_keys_async () {
-        try {
-            // Clear current display
-            clear_agent_keys_list ();
-            
-            var agent = new KeyMaker.SSHAgent ();
-            bool is_available = yield agent.check_agent_availability ();
-            
-            if (is_available) {
-                var agent_keys = yield agent.get_loaded_keys ();
-                
-                if (agent_keys.length == 0) {
-                    var no_keys_row = new Adw.ActionRow ();
-                    no_keys_row.title = _("No keys loaded");
-                    no_keys_row.subtitle = _("Load keys using the SSH Agent Manager");
-                    no_keys_row.sensitive = false;
-                    if (agent_keys_list != null) {
-                        agent_keys_list.append (no_keys_row);
-                    }
-                } else {
-                    for (int i = 0; i < agent_keys.length; i++) {
-                        var agent_key = agent_keys[i];
-                        var row = create_agent_key_row (agent_key);
-                        if (agent_keys_list != null) {
-                            agent_keys_list.append (row);
-                        }
-                    }
-                }
-            } else {
-                var unavailable_row = new Adw.ActionRow ();
-                unavailable_row.title = _("SSH agent not available");
-                unavailable_row.subtitle = _("Start SSH agent to load keys");
-                unavailable_row.sensitive = false;
-                if (agent_keys_list != null) {
-                    agent_keys_list.append (unavailable_row);
-                }
-            }
-        } catch (Error e) {
-            var error_row = new Adw.ActionRow ();
-            error_row.title = _("Failed to check agent");
-            error_row.subtitle = e.message;
-            error_row.sensitive = false;
-            if (agent_keys_list != null) {
-                agent_keys_list.append (error_row);
-            }
-            warning ("Failed to check SSH agent status: %s", e.message);
-        }
-    }
-    
-    private void clear_agent_keys_list () {
-        if (agent_keys_list == null) return;
-        
-        Gtk.Widget? child = agent_keys_list.get_first_child ();
-        while (child != null) {
-            var next = child.get_next_sibling ();
-            agent_keys_list.remove (child);
-            child = next;
-        }
-    }
-    
-    private Gtk.Widget create_agent_key_row (KeyMaker.SSHAgent.AgentKey agent_key) {
-        var row = new Adw.ActionRow ();
-        
-        // Title: comment + (KEY_TYPE) like in image #2
-        string comment = agent_key.comment != "" ? agent_key.comment : "Unnamed Key";
-        row.title = @"$(comment) ($(agent_key.key_type))";
-        
-        // Subtitle: just the fingerprint like in image #2
-        row.subtitle = agent_key.fingerprint;
-        
-        // Add key type icon using proper enum
-        var type_icon = new Gtk.Image ();
-        SSHKeyType key_type = SSHKeyType.RSA; // default
-        if (agent_key.key_type.contains ("Ed25519")) {
-            key_type = SSHKeyType.ED25519;
-        } else if (agent_key.key_type.contains ("ECDSA")) {
-            key_type = SSHKeyType.ECDSA;
-        } else if (agent_key.key_type.contains ("RSA")) {
-            key_type = SSHKeyType.RSA;
-        }
-        
-        type_icon.icon_name = key_type.get_icon_name ();
-        
-        switch (key_type) {
-            case SSHKeyType.ED25519:
-                type_icon.add_css_class ("success");
-                break;
-            case SSHKeyType.RSA:
-                type_icon.add_css_class ("accent");
-                break;
-            case SSHKeyType.ECDSA:
-                type_icon.add_css_class ("warning");
-                break;
-        }
-        row.add_prefix (type_icon);
-        
-        // Add remove button
-        var remove_button = new Gtk.Button ();
-        remove_button.icon_name = "io.github.tobagin.keysmith-remove-symbolic";
-        remove_button.tooltip_text = "Remove from Agent";
-        remove_button.add_css_class ("flat");
-        remove_button.add_css_class ("destructive-action");
-        remove_button.valign = Gtk.Align.CENTER;
-        remove_button.clicked.connect (() => {
-            remove_key_from_agent (agent_key);
-        });
-        
-        row.add_suffix (remove_button);
-        
-        return row;
-    }
-    
-    private void remove_key_from_agent (KeyMaker.SSHAgent.AgentKey agent_key) {
-        remove_key_from_agent_async.begin (agent_key);
-    }
-    
-    private async void remove_key_from_agent_async (KeyMaker.SSHAgent.AgentKey agent_key) {
-        try {
-            var agent = new KeyMaker.SSHAgent ();
-            yield agent.remove_key_from_agent (agent_key.fingerprint);
-            refresh_agent_keys ();
-        } catch (Error e) {
-            warning ("Failed to remove key from agent: %s", e.message);
-            show_toast_requested (_("Failed to remove key from agent: %s").printf (e.message));
-        }
-    }
+
     
     public void on_passphrase_changed (SSHKey updated_key) {
         // Refresh the key list to update button tooltips and UI state

@@ -62,34 +62,7 @@ template $KeyMakerKeysPage : Adw.Bin {
               }
             }
 
-            // SSH Agent section
-            Adw.PreferencesGroup {
-              title: _("SSH Agent");
-              description: _("Manage keys loaded in the SSH authentication agent");
-              
-              header-suffix: Box {
-                spacing: 6;
 
-                Button add_key_to_agent_button {
-                  icon-name: "tab-new-symbolic";
-                  tooltip-text: _("Add Key to Agent");
-                  styles ["flat"]
-                  valign: center;
-                }
-
-                Button refresh_agent_button {
-                  icon-name: "view-refresh-symbolic";
-                  tooltip-text: _("Refresh Agent Status");
-                  styles ["flat"]
-                  valign: center;
-                }
-              };
-
-              ListBox agent_keys_list {
-                selection-mode: none;
-                styles ["boxed-list"]
-              }
-            }
           }
         }
       }

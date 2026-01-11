@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ✨ New Features
 - **🕵️ Recursive Key Scanning**: Automatically finds keys in subdirectories (up to depth 3).
-- **🤖 SSH Agent Intelligence**: Better handling of loaded keys.
 - **🔗 Key-Service Mapping**: Associate keys with specific services.
 - **📝 SSH Config Editor**: Edit your SSH configuration directly.
 - **📱 QR Code Backups**: Securely export keys as QR codes with security warnings.
