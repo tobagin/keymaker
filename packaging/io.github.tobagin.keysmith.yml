@@ -98,7 +98,6 @@ modules:
       - -Dgtk4=true
       - -Dgtk3=false
       - -D_systemd=false
-      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
     sources:
       - type: git
         url: https://gitlab.gnome.org/GNOME/vte.git
