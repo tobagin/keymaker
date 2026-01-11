@@ -10,7 +10,7 @@ finish-args:
   - --socket=fallback-x11
   - --socket=wayland
   - --device=dri
-  - --filesystem=~/.ssh:create
+  - --filesystem=~/.ssh
   - --talk-name=org.freedesktop.secrets
   - --talk-name=org.gnome.keyring
 cleanup:
@@ -89,6 +89,35 @@ modules:
       - /share/man
       - '*.la'
       - '*.a'
+      
+  - name: simdutf
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DBUILD_SHARED_LIBS=ON
+    sources:
+      - type: git
+        url: https://github.com/simdutf/simdutf.git
+        tag: v7.4.0
+        commit: 7b3f5afcae322391a03736809ef6eea0c2934388
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /lib/cmake
+
+  - name: fast_float
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DBUILD_SHARED_LIBS=ON
+    sources:
+      - type: git
+        url: https://github.com/fastfloat/fast_float.git
+        tag: v8.1.0
+        commit: 88b1e5321c6918cbe091afd76728296290668403
+    cleanup:
+      - /include
+      - /lib/cmake
 
   - name: vte
     buildsystem: meson
