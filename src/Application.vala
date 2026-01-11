@@ -1,5 +1,5 @@
 /*
- * SSHer - Main Application Class
+ * Key Maker - Main Application Class
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 
@@ -85,18 +85,6 @@ namespace KeyMaker {
             }
         }
         
-        private bool should_show_release_notes () {
-            var last_version = SettingsManager.last_version_shown;
-            var current_version = Config.VERSION;
-
-            // Show if this is the first run (empty last version) or version has changed
-            if (last_version == "" || last_version != current_version) {
-                SettingsManager.last_version_shown = current_version;
-                return true;
-            }
-            return false;
-        }
-
         private void on_activate () {
             // Create or present main window
             if (window == null) {
@@ -107,15 +95,6 @@ namespace KeyMaker {
             var defer_scan = Environment.get_variable ("KEYMAKER_DEFER_SCAN");
             if (defer_scan == null || defer_scan.strip () == "" || defer_scan == "0") {
                 Idle.add (() => { window.refresh_keys (); return false; });
-            }
-            
-            // Check if this is a new version and show release notes automatically
-            if (should_show_release_notes ()) {
-                // Small delay to ensure main window is fully presented
-                Timeout.add (500, () => {
-                    show_about_with_release_notes ();
-                    return false;
-                });
             }
         }
 
@@ -199,136 +178,16 @@ namespace KeyMaker {
             ssh_config_action.activate.connect (on_ssh_config_action);
             add_action (ssh_config_action);
 
-            // Connection Diagnostics action
-            var connection_diagnostics_action = new SimpleAction ("connection-diagnostics", null);
-            connection_diagnostics_action.activate.connect (on_connection_diagnostics_action);
-            add_action (connection_diagnostics_action);
-
-            // Key Rotation action
-            var key_rotation_action = new SimpleAction ("key-rotation", null);
-            key_rotation_action.activate.connect (on_key_rotation_action);
-            add_action (key_rotation_action);
-
             // Backup Center action
             var backup_center_action = new SimpleAction ("backup-center", null);
             backup_center_action.activate.connect (on_backup_center_action);
             add_action (backup_center_action);
-
-            // SSH Tunneling action
-            var ssh_tunneling_action = new SimpleAction ("ssh-tunneling", null);
-            ssh_tunneling_action.activate.connect (on_ssh_tunneling_action);
-            add_action (ssh_tunneling_action);
         }
 
         private void on_about_action () {
-            show_about_dialog ();
+            KeyMaker.AboutDialog.show (window);
         }
-        
-        private void show_about_dialog () {
-            var about = new Adw.AboutDialog () {
-                application_name = Config.APP_NAME,
-                application_icon = Config.APP_ID,
-                developer_name = "Thiago Fernandes",
-                version = Config.VERSION,
-                website = "https://github.com/tobagin/keymaker",
-                issue_url = "https://github.com/tobagin/keymaker/issues",
-                license_type = Gtk.License.GPL_3_0,
-                copyright = "Copyright © 2025 Thiago Fernandes"
-            };
-            
-            // Load release notes from metainfo
-            try {
-                var metainfo_path = Path.build_filename ("/app/share/metainfo", "%s.metainfo.xml".printf (Config.APP_ID));
-                var file = File.new_for_path (metainfo_path);
-                
-                if (file.query_exists ()) {
-                    uint8[] contents;
-                    file.load_contents (null, out contents, null);
-                    string xml_content = (string) contents;
-                    
-                    // Simple XML parsing to extract release notes
-                    var release_notes = extract_release_notes_from_xml (xml_content);
-                    if (release_notes != null) {
-                        about.set_release_notes (release_notes);
-                    }
-                }
-            } catch (Error e) {
-                warning ("Could not load release notes: %s", e.message);
-            }
-            
-            if (window != null) {
-                about.present (window);
-            }
-        }
-        
-        private void show_about_with_release_notes () {
-            show_about_dialog ();
-            
-            // Wait for the dialog to appear, then navigate to release notes
-            Timeout.add (300, () => {
-                simulate_tab_navigation ();
-                
-                // Simulate Enter key press after another delay to open release notes
-                Timeout.add (200, () => {
-                    simulate_enter_activation ();
-                    return false;
-                });
-                return false;
-            });
-        }
-        
-        private void simulate_tab_navigation () {
-            if (window == null) return;
-            
-            var focused_widget = window.get_focus ();
-            if (focused_widget != null) {
-                var parent = focused_widget.get_parent ();
-                if (parent != null) {
-                    parent.child_focus (Gtk.DirectionType.TAB_FORWARD);
-                }
-            }
-        }
-        
-        private void simulate_enter_activation () {
-            if (window == null) return;
-            
-            var focused_widget = window.get_focus ();
-            if (focused_widget != null) {
-                if (focused_widget is Gtk.Button) {
-                    ((Gtk.Button)focused_widget).activate ();
-                } else {
-                    focused_widget.activate_default ();
-                }
-            }
-        }
-        
-        private string? extract_release_notes_from_xml (string xml_content) {
-            // Simple extraction of the first release entry
-            var start_marker = "<release version=\"" + Config.VERSION + "\"";
-            var start_pos = xml_content.index_of (start_marker);
-            if (start_pos == -1) {
-                // Fallback to first release
-                start_pos = xml_content.index_of ("<release");
-                if (start_pos == -1) return null;
-            }
-            
-            var desc_start = xml_content.index_of ("<description>", start_pos);
-            if (desc_start == -1) return null;
-            desc_start += 13; // length of "<description>"
-            
-            var desc_end = xml_content.index_of ("</description>", desc_start);
-            if (desc_end == -1) return null;
-            
-            var description = xml_content.substring (desc_start, desc_end - desc_start);
-            
-            // Clean up the description
-            description = description.replace ("<p>", "").replace ("</p>", "\n");
-            description = description.replace ("<ul>", "").replace ("</ul>", "");
-            description = description.replace ("<li>", "• ").replace ("</li>", "\n");
-            description = description.strip ();
-            
-            return description;
-        }
+
 
         private void on_preferences_action () {
             if (window != null) {
@@ -373,19 +232,9 @@ namespace KeyMaker {
             }
         }
 
-        private void on_connection_diagnostics_action () {
-            if (window != null) {
-                var dialog = new KeyMaker.ConnectionDiagnosticsDialog (window);
-                dialog.present (window);
-            }
-        }
 
-        private void on_key_rotation_action () {
-            if (window != null) {
-                var dialog = new KeyMaker.KeyRotationDialog (window);
-                dialog.present (window);
-            }
-        }
+
+
 
         private void on_backup_center_action () {
             if (window != null) {
@@ -394,12 +243,7 @@ namespace KeyMaker {
             }
         }
 
-        private void on_ssh_tunneling_action () {
-            if (window != null) {
-                var dialog = new KeyMaker.SSHTunnelingDialog (window);
-                dialog.present (window);
-            }
-        }
+
         
         private void add_command_line_options () {
             add_main_option ("version", 0, OptionFlags.NONE, OptionArg.NONE,

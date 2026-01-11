@@ -19,33 +19,17 @@
     <file>terminal_dialog.ui</file>
     <file>host_key_verification_dialog.ui</file>
     <file>host_key_conflict_dialog.ui</file>
-    <file>github_auth_dialog.ui</file>
-    <file>aws_credentials_dialog.ui</file>
-    <file>cloud_key_deploy_dialog.ui</file>
-    <file>cloud_key_remove_dialog.ui</file>
-    <file>connection_test_dialog.ui</file>
-    <file>connection_diagnostics_dialog.ui</file>
-    <file>connection_diagnostics_runner_dialog.ui</file>
-    <file>key_rotation_dialog.ui</file>
-    <file>rotation_plan_editor_dialog.ui</file>
-    <file>add_target_dialog.ui</file>
-    <file>plan_details_dialog.ui</file>
+
     <file>emergency_vault_dialog.ui</file>
     <file>backup_center_dialog.ui</file>
     <file>create_backup_dialog.ui</file>
     <file>restore_backup_dialog.ui</file>
-    <file>ssh_tunneling_dialog.ui</file>
-    <file>create_tunnel_dialog.ui</file>
-    <file>diagnostic_results_view_dialog.ui</file>
-    <file>diagnostic_configuration_dialog.ui</file>
-    <file>diagnostic_html_report_dialog.ui</file>
+
     <file>keys_page.ui</file>
     <file>hosts_page.ui</file>
     <file>known_hosts_page.ui</file>
-    <file>cloud_providers_page.ui</file>
+
     <file>backup_page.ui</file>
-    <file>rotation_page.ui</file>
-    <file>tunnels_page.ui</file>
-    <file>diagnostics_page.ui</file>
+
   </gresource>
 </gresources>

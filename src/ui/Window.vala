@@ -1,5 +1,5 @@
 /*
- * SSHer - Main Application Window
+ * Key Maker - Main Application Window
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 
@@ -18,8 +18,7 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     [GtkChild]
     private unowned Adw.HeaderBar header_bar;
 
-    [GtkChild]
-    private unowned Gtk.Button add_account_button;
+
 
     [GtkChild]
     private unowned Gtk.MenuButton menu_button;
@@ -42,20 +41,12 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     [GtkChild]
     private unowned KeyMaker.KnownHostsPage known_hosts_page;
 
-    [GtkChild]
-    private unowned KeyMaker.CloudProvidersPage cloud_providers_page;
+
 
     [GtkChild]
     private unowned KeyMaker.BackupPage backup_page;
     
-    [GtkChild]
-    private unowned KeyMaker.RotationPage rotation_page;
-    
-    [GtkChild]
-    private unowned KeyMaker.TunnelsPage tunnels_page;
-    
-    [GtkChild]
-    private unowned KeyMaker.DiagnosticsPage diagnostics_page;
+
 
 
     construct {
@@ -63,10 +54,13 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         setup_actions ();
         setup_page_signals ();
 
-        // Setup visibility control for add account button
-        setup_add_account_button_visibility ();
+
 
         // Initial refresh is scheduled by Application after presenting the window
+
+#if DEVELOPMENT
+        add_css_class("devel");
+#endif
     }
     
     public Window (KeyMaker.Application app) {
@@ -84,10 +78,7 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         add_existing_action.activate.connect (on_add_existing_key_action);
         add_action (add_existing_action);
 
-        // Add account action
-        var add_account_action = new SimpleAction ("add-account", null);
-        add_account_action.activate.connect (on_add_account_action);
-        add_action (add_account_action);
+
 
         // Refresh action
         var refresh_action = new SimpleAction ("refresh", null);
@@ -118,26 +109,10 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         // Backup page signals
         backup_page.show_toast_requested.connect (show_toast);
 
-        // Rotation page signals
-        rotation_page.show_toast_requested.connect (show_toast);
 
-        // Tunnels page signals
-        tunnels_page.show_toast_requested.connect (show_toast);
-
-        // Diagnostics page signals
-        diagnostics_page.show_toast_requested.connect (show_toast);
     }
 
-    private void setup_add_account_button_visibility () {
-        // Initially hide the button
-        add_account_button.visible = false;
 
-        // Show/hide based on active page
-        main_stack.notify["visible-child-name"].connect (() => {
-            var visible_page = main_stack.visible_child_name;
-            add_account_button.visible = (visible_page == "cloud-providers");
-        });
-    }
     
     public void on_generate_key_action () {
         var dialog = new KeyMaker.GenerateKeyDialog (this);
@@ -187,13 +162,7 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         KeyMaker.HelpDialog.show (this);
     }
 
-    public void on_add_account_action () {
-        // Switch to cloud providers page if not already there
-        main_stack.set_visible_child_name ("cloud-providers");
 
-        // Trigger the add account action on the cloud providers page
-        cloud_providers_page.show_add_account_chooser ();
-    }
     
     private void on_key_copy_requested (SSHKey ssh_key) {
         copy_public_key_to_clipboard (ssh_key);

@@ -59,65 +59,7 @@ namespace KeyMaker {
         }
     }
     
-    public enum RotationPlanStatus {
-        DRAFT,          // Plan created but not executed
-        SCHEDULED,      // Plan scheduled for execution
-        RUNNING,        // Currently executing
-        COMPLETED,      // Successfully completed
-        FAILED,         // Failed during execution
-        CANCELLED,      // Cancelled by user
-        ROLLED_BACK;    // Successfully rolled back
-        
-        public string to_string () {
-            switch (this) {
-                case DRAFT: return "Draft";
-                case SCHEDULED: return "Scheduled";
-                case RUNNING: return "Running";
-                case COMPLETED: return "Completed";
-                case FAILED: return "Failed";
-                case CANCELLED: return "Cancelled";
-                case ROLLED_BACK: return "Rolled Back";
-                default: return "Unknown";
-            }
-        }
-        
-        public string get_icon_name () {
-            switch (this) {
-                case DRAFT: return "x-office-address-book-symbolic";
-                case SCHEDULED: return "alarm-symbolic";
-                case RUNNING: return "system-run-symbolic";
-                case COMPLETED: return "emblem-ok-symbolic";
-                case FAILED: return "dialog-error-symbolic";
-                case CANCELLED: return "process-stop-symbolic";
-                case ROLLED_BACK: return "io.github.tobagin.keysmith-rollback-symbolic";
-                default: return "help-about-symbolic";
-            }
-        }
-    }
-    
-    public enum RollbackPeriod {
-        ONE_WEEK,
-        ONE_FORTNIGHT,
-        ONE_MONTH;
-        
-        public string to_string () {
-            switch (this) {
-                case ONE_WEEK: return "1 Week";
-                case ONE_FORTNIGHT: return "1 Fortnight";
-                case ONE_MONTH: return "1 Month";
-                default: return "Unknown";
-            }
-        }
-        
-        public int64 to_seconds () {
-            switch (this) {
-                case ONE_WEEK: return 7 * 24 * 60 * 60;
-                case ONE_FORTNIGHT: return 14 * 24 * 60 * 60;
-                case ONE_MONTH: return 30 * 24 * 60 * 60;
-                default: return 7 * 24 * 60 * 60;
-            }
-        }
-    }
+
 
     /**
      * Custom error types for SSH operations

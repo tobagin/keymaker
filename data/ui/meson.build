@@ -52,50 +52,38 @@ ui_files = [
 
   # Dialogs
   'dialogs/add_key_to_agent_dialog.blp',
-  'dialogs/add_target_dialog.blp',
   'dialogs/backup_center_dialog.blp',
   'dialogs/change_passphrase_dialog.blp',
-  'dialogs/connection_diagnostics_dialog.blp',
-  'dialogs/connection_diagnostics_runner_dialog.blp',
-  'dialogs/connection_test_dialog.blp',
+
   'dialogs/copy_id_dialog.blp',
   'dialogs/create_backup_dialog.blp',
-  'dialogs/create_tunnel_dialog.blp',
-  'dialogs/diagnostic_configuration_dialog.blp',
-  'dialogs/diagnostic_html_report_dialog.blp',
-  'dialogs/diagnostic_results_view_dialog.blp',
-  'dialogs/diagnostic_type_selection_dialog.blp',
+
   'dialogs/emergency_vault_dialog.blp',
   'dialogs/generate_dialog.blp',
   'dialogs/key_details_dialog.blp',
-  'dialogs/key_rotation_dialog.blp',
+
   'dialogs/key_service_mapping_dialog.blp',
-  'dialogs/plan_details_dialog.blp',
+
   'dialogs/preferences_dialog.blp',
   'dialogs/restore_backup_dialog.blp',
-  'dialogs/rotation_plan_editor_dialog.blp',
+
   'dialogs/shortcuts_dialog.blp',
   'dialogs/ssh_agent_dialog.blp',
   'dialogs/ssh_config_dialog.blp',
   'dialogs/ssh_host_edit_dialog.blp',
-  'dialogs/ssh_tunneling_dialog.blp',
+
   'dialogs/terminal_dialog.blp',
   'dialogs/host_key_verification_dialog.blp',
   'dialogs/host_key_conflict_dialog.blp',
-  'dialogs/github_auth_dialog.blp',
-  'dialogs/aws_credentials_dialog.blp',
-  'dialogs/cloud_key_deploy_dialog.blp',
-  'dialogs/cloud_key_remove_dialog.blp',
+
 
   # Pages
   'pages/backup_page.blp',
-  'pages/cloud_providers_page.blp',
-  'pages/diagnostics_page.blp',
+
   'pages/hosts_page.blp',
   'pages/known_hosts_page.blp',
   'pages/keys_page.blp',
-  'pages/rotation_page.blp',
-  'pages/tunnels_page.blp',
+
 ]
 
 foreach ui_file : ui_files

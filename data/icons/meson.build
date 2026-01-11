@@ -1,19 +1,19 @@
-# PNG icons kept in source but not installed (using SVG only)
-# icon_sizes = ['16x16', '24x24', '32x32', '48x48', '64x64', '96x96', '128x128', '256x256', '512x512']
-# foreach size : icon_sizes
-#   install_data(
-#     'hicolor' / size / 'apps' / 'io.github.tobagin.keysmith.png',
-#     install_dir: get_option('datadir') / 'icons' / 'hicolor' / size / 'apps',
-#     rename: '@0@.png'.format(app_id)
-#   )
-# endforeach
+
 
 # Install SVG icon (made square by adjusting viewBox)
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps',
-  rename: '@0@.svg'.format(app_id)
-)
+if get_option('profile') == 'development'
+  install_data(
+    'hicolor/scalable/apps/io.github.tobagin.keysmith.Devel.svg',
+    install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps',
+    rename: '@0@.svg'.format(app_id)
+  )
+else
+  install_data(
+    'hicolor/scalable/apps/io.github.tobagin.keysmith.svg',
+    install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'apps',
+    rename: '@0@.svg'.format(app_id)
+  )
+endif
 
 # Cloud provider colour icons
 install_data(

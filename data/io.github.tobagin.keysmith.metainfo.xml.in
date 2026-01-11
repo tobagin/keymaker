@@ -9,7 +9,7 @@
   
   <description>
     <p>
-      SSHer is a user-friendly graphical application for managing SSH keys.
+      Keymaker is a user-friendly graphical application for managing SSH keys.
       It provides an intuitive interface for generating, managing, and deploying
       SSH keys without needing to use command-line tools.
     </p>
@@ -99,27 +99,19 @@
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
   
   <releases>
-    <release version="1.2.0" date="2025-10-13">
+    <release version="1.1.0" date="2026-01-11">
       <description>
-        <p>Application rebranding:</p>
+        <p>Major update and renaming:</p>
         <ul>
-          <li>Renamed application from "Key Maker" to "SSHer"</li>
-          <li>Updated all user-facing text and documentation</li>
-          <li>Application ID remains io.github.tobagin.keysmith for compatibility</li>
-          <li>All user settings and data preserved</li>
-        </ul>
-      </description>
-    </release>
-    <release version="1.1.0" date="2025-08-25">
-      <description>
-        <p>Major rebranding and application ID change:</p>
-        <ul>
-          <li>Renamed application from "KeySmith" to "Key Maker"</li>
-          <li>Changed application ID from io.github.tobagin.keymaker to io.github.tobagin.keysmith</li>
-          <li>Updated all branding, documentation, and user-facing text</li>
-          <li>Maintained backward compatibility through Flatpak ID transition support</li>
-          <li>Updated repository URL to reflect new name</li>
-          <li>Full rebranding across all components and files</li>
+          <li>Renamed application from "KeySmith" to "Keymaker"</li>
+          <li>Complete rewrite in Vala for better performance</li>
+          <li><b>Advanced SSH:</b> Agent Intelligence, Key-Service Mapping, and Config Editor</li>
+          <li><b>Security:</b> QR Code Backups and Time-locked recovery</li>
+          <li>✨ New Icons: Fresh new application icons (Thanks to <a href="https://github.com/oiimrosabel">Rosabel</a>)</li>
+          <li>Added GUI password dialog for easier key copying</li>
+          <li>Improved visual coding for key types</li>
+          <li>Refined About Window and release notes</li>
+          <li>Added development profile with distinct styling</li>
         </ul>
       </description>
     </release>

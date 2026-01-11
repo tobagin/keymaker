@@ -1,8 +1,8 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $KeyMakerWindow : Adw.ApplicationWindow {
-  title: "SSHer";
+template $KeyMakerWindow: Adw.ApplicationWindow {
+  title: "Keymaker";
   default-width: 800;
   default-height: 600;
   width-request: 400;
@@ -14,15 +14,8 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
 
     [top]
     Adw.HeaderBar header_bar {
-      [start]
-      Button add_account_button {
-        icon-name: "list-add-symbolic";
-        tooltip-text: _("Add Cloud Account");
-        action-name: "win.add-account";
-      }
-
       title-widget: Adw.WindowTitle {
-        title: "SSHer";
+        title: "Keymaker";
         subtitle: "GUI for SSH key management tasks";
       };
 
@@ -37,7 +30,7 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
     [bottom]
     Adw.HeaderBar bottom_header_bar {
       show-end-title-buttons: false;
-      
+
       title-widget: Adw.ViewSwitcherBar view_switcher_bar {
         stack: main_stack;
         reveal: true;
@@ -47,18 +40,20 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
     content: Adw.ToastOverlay toast_overlay {
       child: Adw.ViewStack main_stack {
         vexpand: true;
-        
+
         Adw.ViewStackPage {
           name: "keys";
           title: _("SSH");
           icon-name: "dialog-password-symbolic";
+
           child: $KeyMakerKeysPage keys_page {};
         }
-        
+
         Adw.ViewStackPage {
           name: "hosts";
           title: _("Hosts");
           icon-name: "network-server-symbolic";
+
           child: $KeyMakerHostsPage hosts_page {};
         }
 
@@ -66,42 +61,16 @@ template $KeyMakerWindow : Adw.ApplicationWindow {
           name: "known-hosts";
           title: _("Known Hosts");
           icon-name: "security-high-symbolic";
-          child: $KeyMakerKnownHostsPage known_hosts_page {};
-        }
 
-        Adw.ViewStackPage {
-          name: "cloud-providers";
-          title: _("Cloud");
-          icon-name: "io.github.tobagin.keysmith-cloud-symbolic";
-          child: $KeyMakerCloudProvidersPage cloud_providers_page {};
+          child: $KeyMakerKnownHostsPage known_hosts_page {};
         }
 
         Adw.ViewStackPage {
           name: "backup";
           title: _("Backup");
           icon-name: "io.github.tobagin.keysmith-backup-center-symbolic";
+
           child: $KeyMakerBackupPage backup_page {};
-        }
-        
-        Adw.ViewStackPage {
-          name: "rotation";
-          title: _("Rotation");
-          icon-name: "view-refresh-symbolic";
-          child: $KeyMakerRotationPage rotation_page {};
-        }
-        
-        Adw.ViewStackPage {
-          name: "tunnels";
-          title: _("Tunnels");
-          icon-name: "network-vpn-symbolic";
-          child: $KeyMakerTunnelsPage tunnels_page {};
-        }
-        
-        Adw.ViewStackPage {
-          name: "diagnostics";
-          title: _("Diagnostics");
-          icon-name: "io.github.tobagin.keysmith-diagnostics-symbolic";
-          child: $KeyMakerDiagnosticsPage diagnostics_page {};
         }
       };
     };
@@ -115,22 +84,26 @@ menu main_menu {
       action: "app.ssh-agent";
     }
   }
+
   section {
     item {
       label: _("_Preferences");
       action: "app.preferences";
     }
   }
+
   section {
     item {
       label: _("Keyboard _Shortcuts");
       action: "app.shortcuts";
     }
+
     item {
-      label: _("_About SSHer");
+      label: _("_About Keymaker");
       action: "app.about";
     }
   }
+
   section {
     item {
       label: _("_Quit");

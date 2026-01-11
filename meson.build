@@ -1,7 +1,7 @@
 project(
     'keysmith',
     'vala', 'c',
-    version: '1.2.0',
+    version: '1.1.0',
     meson_version: '>= 1.0.0',
     default_options: [
         'warning_level=1',
@@ -12,10 +12,10 @@ project(
 
 if get_option('profile') == 'development'
     app_id = 'io.github.tobagin.keysmith.Devel'
-    app_name = 'SSHer (Devel)'
+    app_name = 'Keymaker'
 else
     app_id = 'io.github.tobagin.keysmith'
-    app_name = 'SSHer'
+    app_name = 'Keymaker'
 endif
 
 # Import modules
@@ -49,6 +49,7 @@ conf_data.set('GETTEXT_PACKAGE', meson.project_name())
 conf_data.set('LOCALEDIR', get_option('prefix') / get_option('localedir'))
 # For GSchema path (convert dots to slashes)
 conf_data.set('APP_PATH', app_id.replace('.', '/'))
+conf_data.set('DATADIR', get_option('prefix') / get_option('datadir'))
 
 # Make conf_data available to subdirs
 set_variable('conf_data', conf_data)
