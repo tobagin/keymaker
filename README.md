@@ -2,7 +2,7 @@
 
 Keymaker is a user-friendly, native GTK4/LibAdwaita application for managing SSH keys. It provides an intuitive interface for generating, managing, and deploying SSH keys without needing to use command-line tools.
 
-![Keymaker Application](https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window-with-keys.png)
+![Keymaker Application](https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window.png)
 
 ## Features
 
