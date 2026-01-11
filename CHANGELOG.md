@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - **SSH Agent Intelligence**: Better handling of loaded keys.
     - **Key-Service Mapping**: Associate keys with specific services.
     - **SSH Config Editor**: Edit your SSH configuration directly.
+    - **SSH Config Editor**: Edit your SSH configuration directly.
+    - **Recursive Key Scanning**: Automatically finds keys in subdirectories (up to depth 3).
 - **Security & Backups**:
     - **QR Code Backups**: securely export keys as QR codes with security warnings.
     - **Time-locked Backups**: Improved security for backup accessing.
@@ -27,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Rewrite**: Complete codebase rewrite from Python to Vala for improved performance and native integration.
 - **Icons**: Fresh new application icons (Thanks to [Rosabel](https://github.com/oiimrosabel)).
 - Unified branding across all components.
+- Updated documentation screenshots.
 - Changed "What's New" behavior to be on-demand instead of auto-showing.
 
 ## [1.0.3] - 2025-07-14

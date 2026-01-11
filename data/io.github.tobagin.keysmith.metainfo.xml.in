@@ -29,40 +29,40 @@
   
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window-with-keys.png</image>
-      <caption>Main window showing SSH key management with individual action buttons</caption>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window.png</image>
+      <caption>Main window showing SSH key management</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window-no-keys.png</image>
-      <caption>Clean interface when no SSH keys are present</caption>
-    </screenshot>
-    <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/generate-key-without-passphrase.png</image>
-      <caption>Key generation dialog with comprehensive options</caption>
-    </screenshot>
-    <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/gerenate-ssh-key-passphrase-mismatch.png</image>
-      <caption>Real-time validation with helpful error feedback</caption>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/generate-key.png</image>
+      <caption>Key generation wizard</caption>
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/key-details.png</image>
-      <caption>Detailed SSH key information and fingerprint</caption>
+      <caption>Detailed SSH key information</caption>
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/copy-key-to-server.png</image>
-      <caption>Generate ssh-copy-id commands for server deployment</caption>
-    </screenshot>
-    <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/change-passphrase.png</image>
-      <caption>Secure passphrase management</caption>
-    </screenshot>
-    <screenshot>
-      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/delete-key.png</image>
-      <caption>Safe key deletion with confirmation</caption>
+      <caption>Deploy keys to servers easily</caption>
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/preferences.png</image>
-      <caption>Comprehensive preferences and settings</caption>
+      <caption>Application preferences</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/backup.png</image>
+      <caption>Secure backup and restore</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/hosts.png</image>
+      <caption>Manage SSH config hosts</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/known-hosts.png</image>
+      <caption>Manage known hosts</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/about.png</image>
+      <caption>About Keymaker</caption>
     </screenshot>
   </screenshots>
   
@@ -105,12 +105,13 @@
         <ul>
           <li>Renamed application from "KeySmith" to "Keymaker"</li>
           <li>Complete rewrite in Vala for better performance</li>
-          <li><b>Advanced SSH:</b> Agent Intelligence, Key-Service Mapping, and Config Editor</li>
+          <li><b>Advanced SSH:</b> Agent Intelligence, Key-Service Mapping, Config Editor, and Recursive Key Scanning</li>
           <li><b>Security:</b> QR Code Backups and Time-locked recovery</li>
           <li>✨ New Icons: Fresh new application icons (Thanks to <a href="https://github.com/oiimrosabel">Rosabel</a>)</li>
           <li>Added GUI password dialog for easier key copying</li>
           <li>Improved visual coding for key types</li>
           <li>Refined About Window and release notes</li>
+          <li>Updated documentation screenshots</li>
           <li>Added development profile with distinct styling</li>
         </ul>
       </description>
