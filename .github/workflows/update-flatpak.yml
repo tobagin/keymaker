@@ -68,8 +68,8 @@ jobs:
         cp ../packaging/io.github.tobagin.keysmith.yml ./io.github.tobagin.keysmith.yml
         
         # Update the manifest with the correct tag and commit hash (only for keysmith module)
-        sed -i '/- name: keysmith/,/^  - name:/{s/tag: v.*/tag: ${{ steps.version.outputs.tag_name }}/}' io.github.tobagin.keysmith.yml
-        sed -i '/- name: keysmith/,/^  - name:/{s/commit: .*/commit: ${{ steps.version.outputs.commit_hash }}/}' io.github.tobagin.keysmith.yml
+        sed -i '/- name: keymaker/,/^  - name:/{s/tag: v.*/tag: ${{ steps.version.outputs.tag_name }}/}' io.github.tobagin.keysmith.yml
+        sed -i '/- name: keymaker/,/^  - name:/{s/commit: .*/commit: ${{ steps.version.outputs.commit_hash }}/}' io.github.tobagin.keysmith.yml
         
         echo "📋 Updated manifest with:"
         echo "  Tag: ${{ steps.version.outputs.tag_name }}"
