@@ -83,17 +83,21 @@ If you encounter any problems, please [open an issue](https://github.com/tobagin
 
 ## Screenshots
 
-| Main Window | Key Generation |
-|-------------|----------------|
-| ![Main Window](data/screenshots/main-window.png) | ![Key Generation](data/screenshots/generate-key.png) |
+| Main Window | Key Generation | Key Details |
+|-------------|----------------|-------------|
+| ![Main Window](data/screenshots/main-window.png) | ![Key Generation](data/screenshots/generate-key.png) | ![Key Details](data/screenshots/key-details.png) |
 
-| Key Details | Deployment |
-|-------------|------------|
-| ![Key Details](data/screenshots/key-details.png) | ![Deployment](data/screenshots/copy-key-to-server.png) |
+| Deployment | Add Passphrase | Change Passphrase |
+|------------|----------------|-------------------|
+| ![Deployment](data/screenshots/copy-key-to-server.png) | ![Add Passphrase](data/screenshots/add-passphrase.png) | ![Change Passphrase](data/screenshots/change-passphrase.png) |
 
-| Preferences |
-|-------------|
-| ![Preferences](data/screenshots/preferences.png) |
+| Hosts | Known Hosts | Backup |
+|-------|-------------|--------|
+| ![Hosts](data/screenshots/hosts.png) | ![Known Hosts](data/screenshots/known-hosts.png) | ![Backup](data/screenshots/backup.png) |
+
+| Preferences | About |
+|-------------|-------|
+| ![Preferences](data/screenshots/preferences.png) | ![About](data/screenshots/about.png) |
 
 ## Acknowledgments
 
