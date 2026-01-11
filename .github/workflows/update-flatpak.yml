@@ -23,7 +23,7 @@ jobs:
       id: version
       run: |
         TAG_NAME=${GITHUB_REF#refs/tags/}
-        COMMIT_HASH=$(git rev-parse $TAG_NAME)
+        COMMIT_HASH=$(git rev-parse HEAD)
         VERSION=${TAG_NAME#v}
         
         echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
