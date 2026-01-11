@@ -15,66 +15,7 @@ else
   )
 endif
 
-# Cloud provider colour icons
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-github-colour-dark-mode.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
 
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-github-colour-light-mode.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-gitlab-colour.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-bitbucket-colour.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-gittea-colour.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-forgejo-colour.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-codeberg-colour-dark-mode.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-codeberg-colour-light-mode.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-aws-colour-dark-mode.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-aws-colour-light-mode.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-azure-colour.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
-
-install_data(
-  'hicolor/scalable/apps/io.github.tobagin.keysmith-gcp-colour.svg',
-  install_dir: get_option('datadir') / 'icons' / 'hicolor' / 'scalable' / 'status'
-)
 
 # Install custom symbolic icons
 install_data(
