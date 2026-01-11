@@ -23,22 +23,16 @@ Keymaker is a user-friendly, native GTK4/LibAdwaita application for managing SSH
 
 ### Flatpak (Recommended)
 
-Keymaker is available on Flathub:
-
-<a href='https://flathub.org/apps/io.github.tobagin.keysmith'><img width='240' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-i-en.png'/></a>
+[![Get it on Flathub](https://flathub.org/api/badge)](https://flathub.org/apps/io.github.tobagin.keysmith)
 
 ### From Source
 
-Requirements:
-- Meson
-- Vala
-- GTK4
-- LibAdwaita
-- LibSecret
-
 ```bash
+# Clone the repository
 git clone https://github.com/tobagin/keymaker.git
 cd keymaker
+
+# Build and install development version
 ./scripts/build.sh --dev
 ```
 
