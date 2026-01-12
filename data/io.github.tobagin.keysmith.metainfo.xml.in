@@ -5,27 +5,31 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>@APP_NAME@</name>
-  <summary>SSH Key Management Application</summary>
+  <summary>Manage SSH keys easily</summary>
   
   <description>
     <p>
-      Keymaker is a user-friendly graphical application for managing SSH keys.
-      It provides an intuitive interface for generating, managing, and deploying
-      SSH keys without needing to use command-line tools.
+      Keymaker allows you to manage your SSH keys without dealing with the command line.
+      It helps you generate new keys, view existing ones, and deploy them to servers with a simple interface.
     </p>
     <p>
       Features:
     </p>
     <ul>
-      <li>Generate Ed25519, RSA, and ECDSA SSH keys</li>
-      <li>Manage existing SSH keys in your ~/.ssh directory</li>
-      <li>Copy public keys to clipboard</li>
-      <li>Generate ssh-copy-id commands for server deployment</li>
-      <li>Change key passphrases</li>
-      <li>Secure key deletion with confirmation</li>
-      <li>Modern GTK4 and Libadwaita user interface</li>
+      <li>Generate new SSH keys (Ed25519, RSA, ECDSA)</li>
+      <li>View and manage keys in your local directory</li>
+      <li>Copy public keys to your clipboard</li>
+      <li>Deploy keys to remote servers</li>
+      <li>Update key passphrases</li>
+      <li>Delete unused keys securely</li>
+      <li>Modern interface built for GNOME</li>
     </ul>
   </description>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#3584e4</color>
+    <color type="primary" scheme_preference="dark">#1c71d8</color>
+  </branding>
   
   <screenshots>
     <screenshot type="default">
@@ -100,6 +104,16 @@
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
   
   <releases>
+    <release version="1.1.1" date="2026-01-12">
+      <description>
+        <p>Documentation and metadata improvements:</p>
+        <ul>
+          <li>Updated metadata summary and description for better clarity</li>
+          <li>Added new branding colors</li>
+          <li>Refined documentation and added Flathub/Ko-fi badges</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.0" date="2026-01-11">
       <description>
         <p>Major update and renaming:</p>

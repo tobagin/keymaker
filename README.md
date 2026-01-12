@@ -1,31 +1,31 @@
 # Keymaker
 
-Keymaker is a user-friendly, native GTK4/LibAdwaita application for managing SSH keys. It provides an intuitive interface for generating, managing, and deploying SSH keys without needing to use command-line tools.
+Manage SSH keys easily with a modern native app.
 
-![Keymaker Application](https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window.png)
+<div align="center">
+
+![Keymaker Application](data/screenshots/main-window.png)
+
+<a href="https://flathub.org/apps/io.github.tobagin.keysmith"><img src="https://flathub.org/api/badge" height="110" alt="Get it on Flathub"></a>
+<a href="https://ko-fi.com/tobagin"><img src="data/kofi_button.png" height="82" alt="Support me on Ko-Fi"></a>
+
+</div>
 
 ## Features
 
 ### Core Features
-- **Key Generation**: Easily generate Ed25519, RSA, and ECDSA keys.
-- **Key Management**: View and manage existing keys in your `~/.ssh` directory.
-- **Passphrase Management**: Securely change key passphrases.
-- **Deployment**: Generate `ssh-copy-id` commands with a single click.
-- **Clipboard Integration**: Quickly copy public keys to clipboard.
-- **Safety**: Secure key deletion with confirmation.
+- **Key Generation**: Create Ed25519, RSA, and ECDSA keys in seconds.
+- **Key Management**: View and organize your local SSH keys.
+- **Easy Deployment**: Deploy keys to servers with a guidable interface.
+- **Clipboard Ready**: Copy public keys with a single click.
+- **Security**: Manage passphrases and delete keys securely.
 
 ### User Experience
-- **Modern Interface**: Built with GTK4 and LibAdwaita for a native GNOME feel.
-- **Responsive Design**: Adapts beautifully to different window sizes.
-- **Dark Mode**: Fully supports system-wide dark mode preference.
+- **Native Design**: Built with GTK4 for a seamless GNOME experience.
+- **Responsive**: Adapts to any window size.
+- **Dark Mode**: Supports system-wide dark theme.
 
-## Installation
-
-### Flatpak (Recommended)
-
-[![Get it on Flathub](https://flathub.org/api/badge)](https://flathub.org/apps/io.github.tobagin.keysmith)
-
-### From Source
+## Building from Source
 
 ```bash
 # Clone the repository
@@ -40,46 +40,35 @@ cd keymaker
 
 ### Basic Usage
 
-1.  **Generate a Key**: Click the "+" button, select your algorithm (Ed25519 recommended), and set a passphrase.
-2.  **Copy Public Key**: Click the copy icon next to any key to copy the public key to your clipboard.
-3.  **Deploy to Server**: Click the "server" icon to copy the `ssh-copy-id` command for that key.
+1.  **Generate**: Click the **+** button to create a new key pair.
+2.  **Copy**: Use the copy icon to grab your public key.
+3.  **Deploy**: Use the server icon to copy the deployment command.
 
 ### Preferences
 
-Access preferences from the main menu to customize:
-- Clean up old backups
-- Confirmation dialogs settings
-
-## Architecture
-
-Keymaker is built using:
-- **Language**: Vala
-- **UI Toolkit**: GTK4 + LibAdwaita
-- **Build System**: Meson
+Customize your experience in the Preferences menu:
+- Manage backups
+- Configure confirmation dialogs
 
 ## Privacy & Security
 
-- **Local Only**: All key operations are performed locally on your machine.
-- **Secure Storage**: Passphrases can be stored in the system keyring (via LibSecret) if supported.
-- **No Analytics**: No tracking or analytics data is collected.
+- **Local Only**: Your keys never leave your machine unless you deploy them.
+- **Secure Storage**: Passphrases can be stored in your system keyring.
+- **No Tracking**: No analytics or telemetry.
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-1.  Fork the project
-2.  Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
-
 ## License
 
 Distributed under the GNU General Public License v3.0. See `LICENSE` for more information.
 
-## Support
+## Acknowledgments
 
-If you encounter any problems, please [open an issue](https://github.com/tobagin/keymaker/issues).
+- **Thiago Fernandes**: Developer
+- **The GNOME Project**: For the GTK toolkit
+- **OpenSSH**: For the underlying tools
 
 ## Screenshots
 
@@ -87,20 +76,3 @@ If you encounter any problems, please [open an issue](https://github.com/tobagin
 |-------------|----------------|-------------|
 | ![Main Window](data/screenshots/main-window.png) | ![Key Generation](data/screenshots/generate-key.png) | ![Key Details](data/screenshots/key-details.png) |
 
-| Deployment | Add Passphrase | Change Passphrase |
-|------------|----------------|-------------------|
-| ![Deployment](data/screenshots/copy-key-to-server.png) | ![Add Passphrase](data/screenshots/add-passphrase.png) | ![Change Passphrase](data/screenshots/change-passphrase.png) |
-
-| Hosts | Known Hosts | Backup |
-|-------|-------------|--------|
-| ![Hosts](data/screenshots/hosts.png) | ![Known Hosts](data/screenshots/known-hosts.png) | ![Backup](data/screenshots/backup.png) |
-
-| Preferences | About |
-|-------------|-------|
-| ![Preferences](data/screenshots/preferences.png) | ![About](data/screenshots/about.png) |
-
-## Acknowledgments
-
-- **Thiago Fernandes**: Developer and Designer
-- **The GNOME Project**: For the amazing GTK toolkit
-- **OpenSSH**: For the underlying SSH tools
