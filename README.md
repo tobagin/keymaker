@@ -11,6 +11,18 @@ Manage SSH keys easily with a modern native app.
 
 </div>
 
+## 🎉 Version 1.2.0 - Mobile Adaptation
+
+**Keymaker 1.2.0** brings full mobile support and a refined navigation experience.
+
+### 🆕 What's New in 1.2.0
+
+- **Mobile UI**: Comprehensive layout adaptation for mobile devices.
+- **Navigation**: Refactored architecture to use `Adw.NavigationView`.
+- **Backup**: Redesigned Backup page using `Adw.BottomSheet`.
+
+For detailed release notes and version history, see [CHANGELOG.md](CHANGELOG.md).
+
 ## Features
 
 ### Core Features
