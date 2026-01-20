@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-01-20
+
+### ✨ New Features
+- **Mobile UI**: Comprehensive layout adaptation for mobile devices.
+- **Navigation**: Refactored architecture to use `Adw.NavigationView`.
+- **Backup**: Redesigned Backup page using `Adw.BottomSheet`.
+
+### 🔧 Changed
+- **UI**: Updated Hosts and Known Hosts pages for better consistency.
+- **Refactoring**: Standardized usage of `Adw.ToolbarView` across pages.
+
 ## [1.1.1] - 2026-01-12
 
 ### 🏗️ Maintenance

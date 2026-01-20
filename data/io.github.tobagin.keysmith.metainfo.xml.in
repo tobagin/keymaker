@@ -104,6 +104,17 @@
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
   
   <releases>
+    <release version="1.2.0" date="2026-01-20">
+      <description>
+        <p>Keymaker 1.2.0 brings a fully adaptive mobile UI and improved navigation architecture.</p>
+        <ul>
+          <li>Comprehensive mobile layout adaptation for smaller screens</li>
+          <li>New navigation architecture using Adw.NavigationView</li>
+          <li>Redesigned Backup page with bottom sheet integration</li>
+          <li>Refined Hosts and Known Hosts pages</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.1" date="2026-01-12">
       <description>
         <p>Documentation and metadata improvements:</p>
