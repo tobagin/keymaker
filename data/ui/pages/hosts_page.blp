@@ -3,72 +3,100 @@ using Adw 1;
 
 template $KeyMakerHostsPage : Adw.Bin {
 
-  child: Adw.Clamp {
-    maximum-size: 1500;
-    tightening-threshold: 600;
+  child: Adw.BreakpointBin {
+    width-request: 360;
+    height-request: 200;
 
-    child: Box {
-      orientation: vertical;
-      spacing: 24;
-      vexpand: true;
-      margin-top: 24;
-      margin-bottom: 24;
-      margin-start: 24;
-      margin-end: 24;
+    child: Adw.Clamp {
+      maximum-size: 1500;
+      tightening-threshold: 600;
 
-      ScrolledWindow {
-        hscrollbar-policy: never;
+      child: Box {
+        orientation: vertical;
+        spacing: 24;
         vexpand: true;
-        margin-top: 18;
-        margin-bottom: 18;
-        margin-start: 9;
-        margin-end: 9;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 24;
+        margin-end: 24;
 
-        Adw.Clamp {
-          maximum-size: 900;
-          tightening-threshold: 500;
+        ScrolledWindow {
+          hscrollbar-policy: never;
+          vexpand: true;
+          margin-top: 18;
+          margin-bottom: 18;
+          margin-start: 9;
+          margin-end: 9;
 
-          Box {
-            orientation: vertical;
-            spacing: 24;
+          Adw.Clamp {
+            maximum-size: 900;
+            tightening-threshold: 500;
 
-            Adw.PreferencesGroup {
-              title: _("SSH Hosts");
-              description: _("Configure SSH client host settings from ~/.ssh/config");
+            Box {
+              orientation: vertical;
+              spacing: 24;
 
-              header-suffix: Box {
-                spacing: 6;
+              Adw.PreferencesGroup {
+                title: _("SSH Hosts");
+                description: _("Configure SSH client host settings from ~/.ssh/config");
 
-                Button add_host_button {
-                  icon-name: "tab-new-symbolic";
-                  tooltip-text: _("Add New Host");
-                  styles ["flat"]
-                  valign: center;
+                header-suffix: Box {
+                  spacing: 6;
+
+                  Box desktop_buttons_box {
+                    spacing: 6;
+
+                    Button add_host_button {
+                      icon-name: "tab-new-symbolic";
+                      tooltip-text: _("Add New Host");
+                      styles ["flat"]
+                      valign: center;
+                    }
+
+                    Button reload_button {
+                      icon-name: "view-refresh-symbolic";
+                      tooltip-text: _("Reload Configuration");
+                      styles ["flat"]
+                      valign: center;
+                    }
+
+                    Button remove_all_hosts_button {
+                      icon-name: "user-trash-symbolic";
+                      tooltip-text: _("Remove All Hosts");
+                      styles ["flat", "destructive-action"]
+                      valign: center;
+                    }
+                  }
+
+                  Button mobile_menu_button {
+                    icon-name: "open-menu-symbolic";
+                    tooltip-text: _("Actions");
+                    valign: center;
+                    visible: false;
+                    styles ["flat"]
+                  }
+                };
+
+                ListBox hosts_list {
+                  selection-mode: none;
+                  styles ["boxed-list"]
                 }
-
-                Button reload_button {
-                  icon-name: "view-refresh-symbolic";
-                  tooltip-text: _("Reload Configuration");
-                  styles ["flat"]
-                  valign: center;
-                }
-
-                Button remove_all_hosts_button {
-                  icon-name: "user-trash-symbolic";
-                  tooltip-text: _("Remove All Hosts");
-                  styles ["flat", "destructive-action"]
-                  valign: center;
-                }
-              };
-
-              ListBox hosts_list {
-                selection-mode: none;
-                styles ["boxed-list"]
               }
             }
           }
         }
-      }
+      };
     };
+
+    Adw.Breakpoint {
+      condition ("max-width: 500sp")
+      setters {
+        desktop_buttons_box.visible: false;
+        mobile_menu_button.visible: true;
+        template.mobile-view: true;
+      }
+    }
   };
 }
+
+

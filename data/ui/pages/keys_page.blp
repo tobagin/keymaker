@@ -3,70 +3,96 @@ using Adw 1;
 
 template $KeyMakerKeysPage : Adw.Bin {
   
-  child: Adw.Clamp {
-    maximum-size: 1500;
-    tightening-threshold: 600;
+  child: Adw.BreakpointBin {
+    width-request: 360;
+    height-request: 200;
+
+    child: Adw.Clamp {
+      maximum-size: 1500;
+      tightening-threshold: 600;
     
-    child: Gtk.Box child_box {
-      orientation: vertical;
-      spacing: 24;
-      vexpand: true;
-      margin-top: 24;
-      margin-bottom: 24;
-      margin-start: 24;
-      margin-end: 24;
-      
-      ScrolledWindow {
-        hscrollbar-policy: never;
+      child: Gtk.Box child_box {
+        orientation: vertical;
+        spacing: 24;
         vexpand: true;
-        margin-top: 18;
-        margin-bottom: 18;
-        margin-start: 9;
-        margin-end: 9;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 24;
+        margin-end: 24;
+        
+        ScrolledWindow {
+          hscrollbar-policy: never;
+          vexpand: true;
+          margin-top: 18;
+          margin-bottom: 18;
+          margin-start: 9;
+          margin-end: 9;
 
-        Adw.Clamp {
-          maximum-size: 900;
-          tightening-threshold: 500;
+          Adw.Clamp {
+            maximum-size: 900;
+            tightening-threshold: 500;
 
-          Box {
-            orientation: vertical;
-            spacing: 24;
+            Box {
+              orientation: vertical;
+              spacing: 24;
 
-            // SSH Keys section
-            Adw.PreferencesGroup {
-              title: _("SSH Keys");
-              description: _("Manage your SSH authentication keys");
-              
-              header-suffix: Box {
-                spacing: 6;
+              // SSH Keys section
+              Adw.PreferencesGroup {
+                title: _("SSH Keys");
+                description: _("Manage your SSH authentication keys");
+                
+                header-suffix: Box {
+                  spacing: 6;
 
-                MenuButton generate_button {
-                  icon-name: "tab-new-symbolic";
-                  tooltip-text: _("SSH Key Actions");
-                  menu-model: key_actions_menu;
-                  valign: center;
-                  styles ["flat"]
+                  Box desktop_buttons_box {
+                    spacing: 6;
+                    
+                    MenuButton generate_button {
+                      icon-name: "tab-new-symbolic";
+                      tooltip-text: _("SSH Key Actions");
+                      menu-model: key_actions_menu;
+                      valign: center;
+                      styles ["flat"]
+                    }
+
+                    Button refresh_button {
+                      icon-name: "view-refresh-symbolic";
+                      tooltip-text: _("Refresh Key List");
+                      valign: center;
+                      styles ["flat"]
+                    }
+                  }
+
+                  Button mobile_menu_button {
+                    icon-name: "open-menu-symbolic";
+                    tooltip-text: _("Actions");
+                    valign: center;
+                    visible: false;
+                    styles ["flat"]
+                  }
+                };
+
+                ListBox key_list_box {
+                  selection-mode: none;
+                  styles ["boxed-list"]
                 }
-
-                Button refresh_button {
-                  icon-name: "view-refresh-symbolic";
-                  tooltip-text: _("Refresh Key List");
-                  valign: center;
-                  styles ["flat"]
-                }
-              };
-
-              ListBox key_list_box {
-                selection-mode: none;
-                styles ["boxed-list"]
               }
+
+
             }
-
-
           }
         }
-      }
+      };
     };
+
+    Adw.Breakpoint {
+      condition ("max-width: 500sp")
+      setters {
+        desktop_buttons_box.visible: false;
+        mobile_menu_button.visible: true;
+        template.mobile-view: true;
+      }
+    }
   };
 }
 

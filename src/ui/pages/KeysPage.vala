@@ -23,6 +23,8 @@ public class KeyMaker.KeysPage : Adw.Bin {
     private unowned Gtk.Button refresh_button;
     [GtkChild]
     private unowned Gtk.MenuButton generate_button;
+    [GtkChild]
+    private unowned Gtk.Button mobile_menu_button; // Changed to Button
     
     private GenericArray<KeyMaker.KeyRowWidget> key_rows;
     private GenericArray<SSHKey> ssh_keys;
@@ -39,18 +41,29 @@ public class KeyMaker.KeysPage : Adw.Bin {
     public signal void add_existing_key_requested ();
     public signal void show_toast_requested (string message);
     
+    public bool mobile_view { get; set; default = false; }
+
     construct {
         // Initialize arrays
         ssh_keys = new GenericArray<SSHKey> ();
         key_rows = new GenericArray<KeyMaker.KeyRowWidget> ();
+
+        // Listen for mobile view changes
+        notify["mobile-view"].connect (on_mobile_view_changed);
         
         // SSH agent will be initialized when needed
         
 
         
+        // ...
+        
         // Setup SSH Keys buttons with null checks
         if (refresh_button != null) {
             refresh_button.clicked.connect (() => refresh_keys ());
+        }
+        
+        if (mobile_menu_button != null) {
+            mobile_menu_button.clicked.connect (show_header_mobile_menu);
         }
         
         // Setup the key list box
@@ -60,6 +73,60 @@ public class KeyMaker.KeysPage : Adw.Bin {
         
         // Load SSH keys and agent keys
         refresh_keys ();
+    }
+
+    private void on_mobile_view_changed () {
+        for (int i = 0; i < key_rows.length; i++) {
+            key_rows[i].set_mobile_mode (mobile_view);
+        }
+    }
+
+    private void show_header_mobile_menu () {
+        var sheet = new Adw.Dialog ();
+        sheet.title = _("Page Actions");
+        
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.margin_top = 12;
+        box.margin_bottom = 12;
+        box.margin_start = 12;
+        box.margin_end = 12;
+        box.spacing = 12;
+        
+        var actions_group = new Adw.PreferencesGroup ();
+        
+        // Generate Key
+        var row_generate = new Adw.ButtonRow ();
+        row_generate.title = _("Generate New SSH Key");
+        row_generate.start_icon_name = "tab-new-symbolic";
+        row_generate.activated.connect (() => {
+            sheet.close ();
+            generate_key_requested ();
+        });
+        actions_group.add (row_generate);
+        
+        // Import Key
+        var row_import = new Adw.ButtonRow ();
+        row_import.title = _("Import Existing Key");
+        row_import.start_icon_name = "document-open-symbolic"; // Assuming icon for import
+        row_import.activated.connect (() => {
+            sheet.close ();
+            add_existing_key_requested ();
+        });
+        actions_group.add (row_import);
+        
+        // Refresh
+        var row_refresh = new Adw.ButtonRow ();
+        row_refresh.title = _("Refresh Key List");
+        row_refresh.start_icon_name = "view-refresh-symbolic";
+        row_refresh.activated.connect (() => {
+            sheet.close ();
+            refresh_keys ();
+        });
+        actions_group.add (row_refresh);
+
+        box.append (actions_group);
+        sheet.child = box;
+        sheet.present (this.get_root () as Gtk.Widget);
     }
     
     
@@ -144,6 +211,7 @@ public class KeyMaker.KeysPage : Adw.Bin {
         if (key_list_box == null) return;
         
         var key_row = new KeyMaker.KeyRowWidget (ssh_key);
+        key_row.set_mobile_mode (mobile_view);
         
         // Connect signals
         key_row.copy_requested.connect ((key) => key_copy_requested (key));

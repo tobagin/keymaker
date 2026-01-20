@@ -24,7 +24,7 @@ i18n = import('i18n')
 
 # Dependencies
 gtk_dep = dependency('gtk4', version: '>= 4.8')
-adw_dep = dependency('libadwaita-1', version: '>= 1.4')
+adw_dep = dependency('libadwaita-1', version: '>= 1.8')
 gio_dep = dependency('gio-2.0', version: '>= 2.76')
 gee_dep = dependency('gee-0.8')
 json_dep = dependency('json-glib-1.0')

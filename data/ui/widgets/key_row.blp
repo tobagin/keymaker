@@ -28,39 +28,52 @@ template $KeyMakerKeyRowWidget : Adw.ActionRow {
       margin-end: 6;
     }
 
-    Button details_button {
-      icon-name: "view-reveal-symbolic";
-      tooltip-text: _("View Details");
+    Box desktop_buttons_box {
+      spacing: 2;
       valign: center;
-      styles ["flat"]
+
+      Button details_button {
+        icon-name: "view-reveal-symbolic";
+        tooltip-text: _("View Details");
+        valign: center;
+        styles ["flat"]
+      }
+
+      Button copy_button {
+        icon-name: "edit-copy-symbolic";
+        tooltip-text: _("Copy Public Key");
+        valign: center;
+        styles ["flat"]
+      }
+
+      Button copy_id_button {
+        icon-name: "network-server-symbolic";
+        tooltip-text: _("Copy to Server");
+        valign: center;
+        styles ["flat"]
+      }
+
+      Button change_passphrase_button {
+        icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
+        tooltip-text: _("Change Passphrase");
+        valign: center;
+        styles ["flat"]
+      }
+
+      Button delete_button {
+        icon-name: "io.github.tobagin.keysmith-remove-symbolic";
+        tooltip-text: _("Delete Key");
+        valign: center;
+        styles ["flat", "destructive-action"]
+      }
     }
 
-    Button copy_button {
-      icon-name: "edit-copy-symbolic";
-      tooltip-text: _("Copy Public Key");
+    Button mobile_menu_button {
+      icon-name: "open-menu-symbolic";
+      tooltip-text: _("Actions");
       valign: center;
+      visible: false;
       styles ["flat"]
-    }
-
-    Button copy_id_button {
-      icon-name: "network-server-symbolic";
-      tooltip-text: _("Copy to Server");
-      valign: center;
-      styles ["flat"]
-    }
-
-    Button change_passphrase_button {
-      icon-name: "io.github.tobagin.keysmith-change-passphrase-symbolic";
-      tooltip-text: _("Change Passphrase");
-      valign: center;
-      styles ["flat"]
-    }
-
-    Button delete_button {
-      icon-name: "io.github.tobagin.keysmith-remove-symbolic";
-      tooltip-text: _("Delete Key");
-      valign: center;
-      styles ["flat", "destructive-action"]
     }
   }
 }

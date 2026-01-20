@@ -27,6 +27,8 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
     private unowned Gtk.Button remove_stale_button;
     [GtkChild]
     private unowned Gtk.ListBox known_hosts_list;
+    [GtkChild]
+    private unowned Gtk.Button mobile_menu_button;
 
     private KnownHostsManager manager;
     private GenericArray<KnownHostEntry> entries;
@@ -35,24 +37,32 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
 
     // Signals for window integration
     public signal void show_toast_requested (string message);
+    
+    public bool mobile_view { get; set; default = false; }
 
     construct {
         manager = new KnownHostsManager ();
         entries = new GenericArray<KnownHostEntry> ();
         filtered_entries = new GenericArray<KnownHostEntry> ();
+        
+        // Listen for mobile view changes
+        notify["mobile-view"].connect (on_mobile_view_changed);
 
         // Setup button signals
         if (refresh_button != null) {
-            refresh_button.clicked.connect (on_refresh_clicked);
+            refresh_button.clicked.connect (refresh);
         }
         if (import_button != null) {
-            import_button.clicked.connect (on_import_clicked);
+            import_button.clicked.connect (import_hosts_ui);
         }
         if (export_button != null) {
-            export_button.clicked.connect (on_export_clicked);
+            export_button.clicked.connect (export_hosts_ui);
         }
         if (remove_stale_button != null) {
-            remove_stale_button.clicked.connect (on_remove_stale_clicked);
+            remove_stale_button.clicked.connect (remove_stale_entries_ui);
+        }
+        if (mobile_menu_button != null) {
+            mobile_menu_button.clicked.connect (show_header_mobile_menu);
         }
 
         // Setup search
@@ -146,6 +156,64 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
             known_hosts_list.append (row);
         }
     }
+    
+    private void show_header_mobile_menu () {
+        var sheet = new Adw.Dialog ();
+        sheet.title = _("Page Actions");
+        
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.margin_top = 12;
+        box.margin_bottom = 12;
+        box.margin_start = 12;
+        box.margin_end = 12;
+        box.spacing = 12;
+        
+        var actions_group = new Adw.PreferencesGroup ();
+        
+        // Import
+        var row_import = new Adw.ButtonRow ();
+        row_import.title = _("Import Known Hosts");
+        row_import.start_icon_name = "document-open-symbolic";
+        row_import.activated.connect (() => {
+            sheet.close ();
+            import_hosts_ui ();
+        });
+        actions_group.add (row_import);
+        
+        // Export
+        var row_export = new Adw.ButtonRow ();
+        row_export.title = _("Export Known Hosts");
+        row_export.start_icon_name = "document-save-symbolic";
+        row_export.activated.connect (() => {
+            sheet.close ();
+            export_hosts_ui ();
+        });
+        actions_group.add (row_export);
+        
+        // Remove Stale
+        var row_stale = new Adw.ButtonRow ();
+        row_stale.title = _("Remove Stale Entries");
+        row_stale.start_icon_name = "user-trash-symbolic";
+        row_stale.activated.connect (() => {
+            sheet.close ();
+            remove_stale_entries_ui ();
+        });
+        actions_group.add (row_stale);
+
+        // Refresh
+        var row_refresh = new Adw.ButtonRow ();
+        row_refresh.title = _("Refresh");
+        row_refresh.start_icon_name = "view-refresh-symbolic";
+        row_refresh.activated.connect (() => {
+            sheet.close ();
+            refresh ();
+        });
+        actions_group.add (row_refresh);
+        
+        box.append (actions_group);
+        sheet.child = box;
+        sheet.present (this.get_root () as Gtk.Widget);
+    }
 
     private bool matches_filter (KnownHostEntry entry) {
         if (current_filter.length == 0) {
@@ -205,11 +273,60 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
         }
         row.add_prefix (icon);
 
-        // Create button box
-        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-        button_box.valign = Gtk.Align.CENTER;
+        // Create button box for desktop
+        var desktop_buttons_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        desktop_buttons_box.valign = Gtk.Align.CENTER;
+        
+        // Create mobile menu button (Gtk.Button opening Adw.BottomSheet)
+        var mobile_menu_button = new Gtk.Button.from_icon_name ("open-menu-symbolic");
+        mobile_menu_button.tooltip_text = _("Actions");
+        mobile_menu_button.valign = Gtk.Align.CENTER;
+        mobile_menu_button.add_css_class ("flat");
+        
+        mobile_menu_button.clicked.connect (() => {
+             var sheet = new Adw.Dialog ();
+             sheet.title = _("Actions");
+             var sheet_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+             sheet_box.margin_top = 12;
+             sheet_box.margin_bottom = 12;
+             sheet_box.margin_start = 12;
+             sheet_box.margin_end = 12;
+             sheet_box.spacing = 12;
+             
+             var sheet_actions = new Adw.PreferencesGroup ();
+             
+             // Verify
+             var row_verify = new Adw.ButtonRow ();
+             row_verify.title = _("Verify Fingerprint");
+             row_verify.start_icon_name = "security-high-symbolic";
+             row_verify.activated.connect (() => {
+                 sheet.close ();
+                 on_verify_clicked (entry);
+             });
+             sheet_actions.add (row_verify);
+             
+             sheet_box.append (sheet_actions);
+             
+             // Delete
+             var sheet_destructive = new Adw.PreferencesGroup ();
+             var row_delete = new Adw.ButtonRow ();
+             row_delete.title = _("Remove Entry");
+             row_delete.start_icon_name = "io.github.tobagin.keysmith-remove-symbolic";
+             row_delete.add_css_class ("destructive-action");
+             row_delete.activated.connect (() => {
+                 sheet.close ();
+                 on_remove_entry_clicked (entry);
+             });
+             sheet_destructive.add (row_delete);
+             
+             sheet_box.append (sheet_destructive);
+             
+             sheet.child = sheet_box;
+             sheet.present (this.get_root () as Gtk.Widget);
+        });
 
         // Add verify button
+        // Desktop
         var verify_button = new Gtk.Button ();
         verify_button.icon_name = "security-medium-symbolic";
         verify_button.tooltip_text = _("Verify Fingerprint");
@@ -218,9 +335,12 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
         verify_button.clicked.connect (() => {
             on_verify_clicked (entry);
         });
-        button_box.append (verify_button);
+        desktop_buttons_box.append (verify_button);
+
+
 
         // Add delete button
+        // Desktop
         var delete_button = new Gtk.Button ();
         delete_button.icon_name = "io.github.tobagin.keysmith-remove-symbolic";
         delete_button.tooltip_text = _("Remove Entry");
@@ -230,9 +350,21 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
         delete_button.clicked.connect (() => {
             on_remove_entry_clicked (entry);
         });
-        button_box.append (delete_button);
+        desktop_buttons_box.append (delete_button);
+        
 
-        row.add_suffix (button_box);
+
+        row.add_suffix (desktop_buttons_box);
+        row.add_suffix (mobile_menu_button);
+        
+        // Store widgets
+        row.set_data ("desktop_buttons_box", desktop_buttons_box);
+        row.set_data ("mobile_menu_button", mobile_menu_button);
+        row.set_data ("entry", entry);
+        
+        // Set initial visibility
+        desktop_buttons_box.visible = !mobile_view;
+        mobile_menu_button.visible = mobile_view;
         row.set_data ("entry", entry);
 
         return row;
@@ -243,8 +375,25 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
         refresh_display ();
     }
 
-    private void on_refresh_clicked () {
-        load_entries ();
+
+
+    // refresh() is already public at the bottom, we can just use it directly in the signal connection
+    // Removed duplicate private wrapper on_refresh_clicked
+
+    private void on_mobile_view_changed () {
+         var child = known_hosts_list.get_first_child ();
+         while (child != null) {
+             var row = child as Adw.ActionRow;
+             if (row != null) {
+                 var desktop = row.get_data<Gtk.Box>("desktop_buttons_box");
+                 var mobile = row.get_data<Gtk.Button>("mobile_menu_button");
+                 if (desktop != null && mobile != null) {
+                     desktop.visible = !mobile_view;
+                     mobile.visible = mobile_view;
+                 }
+             }
+             child = child.get_next_sibling ();
+         }
     }
 
     private void on_verify_clicked (KnownHostEntry entry) {
@@ -295,7 +444,7 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
         }
     }
 
-    private void on_remove_stale_clicked () {
+    public void remove_stale_entries_ui () {
         var stale = manager.get_stale_entries ();
 
         if (stale.length == 0) {
@@ -354,7 +503,7 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
         }
     }
 
-    private void on_import_clicked () {
+    public void import_hosts_ui () {
         var file_chooser = new Gtk.FileDialog ();
         file_chooser.title = _("Import Known Hosts");
 
@@ -405,7 +554,7 @@ public class KeyMaker.KnownHostsPage : Adw.Bin {
         }
     }
 
-    private void on_export_clicked () {
+    public void export_hosts_ui () {
         var file_chooser = new Gtk.FileDialog ();
         file_chooser.title = _("Export Known Hosts");
         file_chooser.initial_name = "known_hosts";

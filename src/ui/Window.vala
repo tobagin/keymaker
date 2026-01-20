@@ -89,6 +89,61 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
         var help_action = new SimpleAction ("help", null);
         help_action.activate.connect (on_help_action);
         add_action (help_action);
+
+        // Hosts actions
+        var hosts_add_action = new SimpleAction ("hosts-add", null);
+        hosts_add_action.activate.connect (on_hosts_add_action);
+        add_action (hosts_add_action);
+
+        var hosts_reload_action = new SimpleAction ("hosts-reload", null);
+        hosts_reload_action.activate.connect (on_hosts_reload_action);
+        add_action (hosts_reload_action);
+
+        var hosts_remove_all_action = new SimpleAction ("hosts-remove-all", null);
+        hosts_remove_all_action.activate.connect (on_hosts_remove_all_action);
+        add_action (hosts_remove_all_action);
+
+        // Known Hosts actions
+        var known_hosts_import_action = new SimpleAction ("known-hosts-import", null);
+        known_hosts_import_action.activate.connect (on_known_hosts_import_action);
+        add_action (known_hosts_import_action);
+
+        var known_hosts_export_action = new SimpleAction ("known-hosts-export", null);
+        known_hosts_export_action.activate.connect (on_known_hosts_export_action);
+        add_action (known_hosts_export_action);
+
+        var known_hosts_refresh_action = new SimpleAction ("known-hosts-refresh", null);
+        known_hosts_refresh_action.activate.connect (on_known_hosts_refresh_action);
+        add_action (known_hosts_refresh_action);
+
+        var known_hosts_remove_stale_action = new SimpleAction ("known-hosts-remove-stale", null);
+        known_hosts_remove_stale_action.activate.connect (on_known_hosts_remove_stale_action);
+        add_action (known_hosts_remove_stale_action);
+
+        // Backup actions
+        var backup_create_regular_action = new SimpleAction ("backup-create-regular", null);
+        backup_create_regular_action.activate.connect (on_backup_create_regular_action);
+        add_action (backup_create_regular_action);
+
+        var backup_refresh_regular_action = new SimpleAction ("backup-refresh-regular", null);
+        backup_refresh_regular_action.activate.connect (on_backup_refresh_regular_action);
+        add_action (backup_refresh_regular_action);
+
+        var backup_remove_all_regular_action = new SimpleAction ("backup-remove-all-regular", null);
+        backup_remove_all_regular_action.activate.connect (on_backup_remove_all_regular_action);
+        add_action (backup_remove_all_regular_action);
+
+        var backup_create_emergency_action = new SimpleAction ("backup-create-emergency", null);
+        backup_create_emergency_action.activate.connect (on_backup_create_emergency_action);
+        add_action (backup_create_emergency_action);
+
+        var backup_refresh_emergency_action = new SimpleAction ("backup-refresh-emergency", null);
+        backup_refresh_emergency_action.activate.connect (on_backup_refresh_emergency_action);
+        add_action (backup_refresh_emergency_action);
+
+        var backup_remove_all_emergency_action = new SimpleAction ("backup-remove-all-emergency", null);
+        backup_remove_all_emergency_action.activate.connect (on_backup_remove_all_emergency_action);
+        add_action (backup_remove_all_emergency_action);
     }
     
     private void setup_page_signals () {
@@ -160,6 +215,60 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
     
     public void on_help_action () {
         KeyMaker.HelpDialog.show (this);
+    }
+
+    private void on_hosts_add_action () {
+        hosts_page.add_host ();
+    }
+
+    private void on_hosts_reload_action () {
+        hosts_page.refresh_hosts ();
+    }
+
+    private void on_hosts_remove_all_action () {
+        hosts_page.remove_all_hosts_ui ();
+    }
+
+    // Known Hosts Action Handlers
+    private void on_known_hosts_import_action () {
+        known_hosts_page.import_hosts_ui ();
+    }
+
+    private void on_known_hosts_export_action () {
+        known_hosts_page.export_hosts_ui ();
+    }
+
+    private void on_known_hosts_refresh_action () {
+        known_hosts_page.refresh ();
+    }
+
+    private void on_known_hosts_remove_stale_action () {
+        known_hosts_page.remove_stale_entries_ui ();
+    }
+
+    // Backup Action Handlers
+    private void on_backup_create_regular_action () {
+        backup_page.create_regular_backup_ui ();
+    }
+
+    private void on_backup_refresh_regular_action () {
+        backup_page.refresh_regular_backups_ui ();
+    }
+
+    private void on_backup_remove_all_regular_action () {
+        backup_page.remove_all_regular_backups_ui ();
+    }
+
+    private void on_backup_create_emergency_action () {
+        backup_page.create_emergency_backup_ui ();
+    }
+
+    private void on_backup_refresh_emergency_action () {
+        backup_page.refresh_emergency_backups_ui ();
+    }
+
+    private void on_backup_remove_all_emergency_action () {
+        backup_page.remove_all_emergency_backups_ui ();
     }
 
 

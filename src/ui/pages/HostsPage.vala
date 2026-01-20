@@ -23,6 +23,8 @@ public class KeyMaker.HostsPage : Adw.Bin {
     private unowned Gtk.Button remove_all_hosts_button;
     [GtkChild]
     private unowned Gtk.ListBox hosts_list;
+    [GtkChild]
+    private unowned Gtk.Button mobile_menu_button;
     
     private GenericArray<SSHConfigHost> hosts;
     private GenericArray<SSHConfigHost> filtered_hosts;
@@ -30,28 +32,88 @@ public class KeyMaker.HostsPage : Adw.Bin {
     // Signals for window integration
     public signal void show_toast_requested (string message);
 
+    public bool mobile_view { get; set; default = false; }
+
     construct {
         // Initialize hosts lists
         hosts = new GenericArray<SSHConfigHost> ();
         filtered_hosts = new GenericArray<SSHConfigHost> ();
         
+        // Listen for mobile view changes
+        notify["mobile-view"].connect (on_mobile_view_changed);
+
         // Setup button signals with null checks
         if (add_host_button != null) {
-            add_host_button.clicked.connect (on_add_host_clicked);
+            add_host_button.clicked.connect (add_host);
         }
         if (reload_button != null) {
             reload_button.clicked.connect (on_reload_clicked);
         }
         if (remove_all_hosts_button != null) {
-            remove_all_hosts_button.clicked.connect (on_remove_all_clicked);
+            remove_all_hosts_button.clicked.connect (remove_all_hosts_ui);
         }
-        
+        if (mobile_menu_button != null) {
+            mobile_menu_button.clicked.connect (show_header_mobile_menu);
+        }
         
         // Load hosts
         load_hosts ();
     }
     
-    private void on_add_host_clicked () {
+    private void show_header_mobile_menu () {
+        var sheet = new Adw.Dialog ();
+        sheet.title = _("Page Actions");
+        
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.margin_top = 12;
+        box.margin_bottom = 12;
+        box.margin_start = 12;
+        box.margin_end = 12;
+        box.spacing = 12;
+        
+        var actions_group = new Adw.PreferencesGroup ();
+        
+        // Add New Host
+        var row_add = new Adw.ButtonRow ();
+        row_add.title = _("Add New Host");
+        row_add.start_icon_name = "tab-new-symbolic";
+        row_add.activated.connect (() => {
+            sheet.close ();
+            add_host ();
+        });
+        actions_group.add (row_add);
+        
+        // Reload
+        var row_reload = new Adw.ButtonRow ();
+        row_reload.title = _("Reload Configuration");
+        row_reload.start_icon_name = "view-refresh-symbolic";
+        row_reload.activated.connect (() => {
+            sheet.close ();
+            on_reload_clicked ();
+        });
+        actions_group.add (row_reload);
+        
+        box.append (actions_group);
+        
+        // Destructive
+        var destructive_group = new Adw.PreferencesGroup ();
+        var row_remove_all = new Adw.ButtonRow ();
+        row_remove_all.title = _("Remove All Hosts");
+        row_remove_all.start_icon_name = "user-trash-symbolic";
+        row_remove_all.add_css_class ("destructive-action");
+        row_remove_all.activated.connect (() => {
+            sheet.close ();
+            remove_all_hosts_ui ();
+        });
+        destructive_group.add (row_remove_all);
+        
+        box.append (destructive_group);
+        
+        sheet.child = box;
+        sheet.present (this.get_root () as Gtk.Widget);
+    }
+    
+    public void add_host () {
         var dialog = new KeyMaker.SSHHostEditDialog (get_root () as Gtk.Window, null);
         dialog.host_saved.connect (on_host_saved);
         dialog.present (get_root () as Gtk.Window);
@@ -164,7 +226,23 @@ public class KeyMaker.HostsPage : Adw.Bin {
         load_hosts ();
     }
     
-    private void on_remove_all_clicked () {
+    private void on_mobile_view_changed () {
+         var child = hosts_list.get_first_child ();
+         while (child != null) {
+             var row = child as Adw.ActionRow;
+             if (row != null) {
+                 var desktop = row.get_data<Gtk.Box>("desktop_buttons_box");
+                 var mobile = row.get_data<Gtk.Button>("mobile_menu_button");
+                 if (desktop != null && mobile != null) {
+                     desktop.visible = !mobile_view;
+                     mobile.visible = mobile_view;
+                 }
+             }
+             child = child.get_next_sibling ();
+         }
+    }
+    
+    public void remove_all_hosts_ui () {
         if (hosts.length == 0) {
             return;
         }
@@ -238,11 +316,71 @@ public class KeyMaker.HostsPage : Adw.Bin {
         }
         row.add_prefix (type_icon);
         
-        // Create a button box to hold all buttons
-        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-        button_box.valign = Gtk.Align.CENTER;
+        // Create a button box to hold desktop buttons
+        var desktop_buttons_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        desktop_buttons_box.valign = Gtk.Align.CENTER;
         
-        // Add connect button (only for saved hosts with hostname/IP)
+        // Create mobile menu button (Gtk.Button opening Adw.BottomSheet)
+        var mobile_menu_button = new Gtk.Button.from_icon_name ("open-menu-symbolic");
+        mobile_menu_button.tooltip_text = _("Actions");
+        mobile_menu_button.valign = Gtk.Align.CENTER;
+        mobile_menu_button.add_css_class ("flat");
+        
+        mobile_menu_button.clicked.connect (() => {
+             var sheet = new Adw.Dialog ();
+             sheet.title = _("Actions");
+             var sheet_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+             sheet_box.margin_top = 12;
+             sheet_box.margin_bottom = 12;
+             sheet_box.margin_start = 12;
+             sheet_box.margin_end = 12;
+             sheet_box.spacing = 12;
+             
+             var sheet_actions = new Adw.PreferencesGroup ();
+             
+             // Connect
+             if (host.line_number > -1 && host.hostname != null && host.hostname.strip () != "") {
+                 var row_connect = new Adw.ButtonRow ();
+                 row_connect.title = _("Connect via SSH");
+                 row_connect.start_icon_name = "utilities-terminal-symbolic";
+                 row_connect.activated.connect (() => {
+                     sheet.close ();
+                     connect_to_host (host);
+                 });
+                 sheet_actions.add (row_connect);
+             }
+             
+             // Edit
+             var row_edit = new Adw.ButtonRow ();
+             row_edit.title = _("Edit Host");
+             row_edit.start_icon_name = "document-edit-symbolic";
+             row_edit.activated.connect (() => {
+                 sheet.close ();
+                 edit_host (host);
+             });
+             sheet_actions.add (row_edit);
+             
+             sheet_box.append (sheet_actions);
+             
+             // Delete
+             var sheet_destructive = new Adw.PreferencesGroup ();
+             var row_delete = new Adw.ButtonRow ();
+             row_delete.title = _("Delete Host");
+             row_delete.start_icon_name = "io.github.tobagin.keysmith-remove-symbolic";
+             row_delete.add_css_class ("destructive-action");
+             row_delete.activated.connect (() => {
+                 sheet.close ();
+                 delete_host (host);
+             });
+             sheet_destructive.add (row_delete);
+             
+             sheet_box.append (sheet_destructive);
+             
+             sheet.child = sheet_box;
+             sheet.present (this.get_root () as Gtk.Widget);
+        });
+        
+        // Add connect button (desktop only)
         if (host.line_number > -1 && host.hostname != null && host.hostname.strip () != "") {
             var connect_button = new Gtk.Button ();
             connect_button.icon_name = "utilities-terminal-symbolic";
@@ -250,46 +388,45 @@ public class KeyMaker.HostsPage : Adw.Bin {
             connect_button.add_css_class ("flat");
             connect_button.valign = Gtk.Align.CENTER;
             connect_button.clicked.connect (() => {
-                print ("🖱️ Connect button clicked for host: %s\n", host.name);
                 connect_to_host (host);
             });
-            button_box.append (connect_button);
+            desktop_buttons_box.append (connect_button);
         }
         
-        // Add edit button
+        // Add edit button (desktop only)
         var edit_button = new Gtk.Button ();
         edit_button.icon_name = "document-edit-symbolic";
         edit_button.tooltip_text = "Edit Host Configuration";
         edit_button.add_css_class ("flat");
         edit_button.valign = Gtk.Align.CENTER;
-        edit_button.sensitive = true;
         edit_button.clicked.connect (() => {
-            debug ("Edit button clicked for host: %s", host.name);
             edit_host (host);
         });
-        button_box.append (edit_button);
-        
-        // Add delete button
+        desktop_buttons_box.append (edit_button);
+
+        // Add delete button (desktop only)
         var delete_button = new Gtk.Button ();
         delete_button.icon_name = "io.github.tobagin.keysmith-remove-symbolic";
         delete_button.tooltip_text = "Delete Host";
         delete_button.add_css_class ("flat");
         delete_button.add_css_class ("destructive-action");
         delete_button.valign = Gtk.Align.CENTER;
-        delete_button.sensitive = true;
         delete_button.clicked.connect (() => {
-            print ("🗑️  Delete button clicked for host: %s\n", host.name);
             delete_host (host);
         });
+        desktop_buttons_box.append (delete_button);
         
-        button_box.append (delete_button);
-        row.add_suffix (button_box);
+        row.add_suffix (desktop_buttons_box);
+        row.add_suffix (mobile_menu_button);
         
-        // Store host reference
+        // Store widgets for toggling
+        row.set_data ("desktop_buttons_box", desktop_buttons_box);
+        row.set_data ("mobile_menu_button", mobile_menu_button);
         row.set_data ("ssh-host", host);
         
-        // Force show all widgets
-        button_box.show ();
+        // Set initial visibility
+        desktop_buttons_box.visible = !mobile_view;
+        mobile_menu_button.visible = mobile_view;
         
         debug ("Row created for host %s with buttons", host.name);
         

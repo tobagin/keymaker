@@ -1,0 +1,189 @@
+Emptying app dir 'build'
+Downloading sources
+Fetching git repo https://github.com/fukuchi/libqrencode.git, ref refs/tags/v4.1.1
+git-lfs/3.7.1 (GitHub; linux amd64; go 1.25.1 X:nodwarf5)
+Running git lfs fetch
+Fetching all references...
+Fetching git repo https://github.com/mchehab/zbar.git, ref refs/tags/0.23.93
+Running git lfs fetch
+1 object found, done.
+Fetching all references...
+Fetching git repo https://gitlab.gnome.org/GNOME/libsecret.git, ref refs/tags/0.21.7
+Running git lfs fetch
+Fetching all references...
+Fetching git repo https://gitlab.gnome.org/GNOME/libsoup.git, ref refs/tags/3.6.5
+Running git lfs fetch
+Fetching all references...
+Fetching git repo https://github.com/simdutf/simdutf.git, ref refs/tags/v7.4.0
+Running git lfs fetch
+Fetching all references...
+Fetching git repo https://github.com/fastfloat/fast_float.git, ref refs/tags/v8.1.0
+Running git lfs fetch
+1 object found, done.
+Fetching all references...
+Fetching git repo https://gitlab.gnome.org/GNOME/vte.git, ref refs/tags/0.82.1
+Running git lfs fetch
+Fetching all references...
+Starting build of io.github.tobagin.keysmith.Devel
+Cache hit for openssh-client, skipping build
+Cache hit for qrencode, skipping build
+Cache hit for zbar, skipping build
+Cache hit for libsecret, skipping build
+Cache hit for libsoup, skipping build
+Cache hit for simdutf, skipping build
+Cache hit for fast_float, skipping build
+Cache hit for vte, skipping build
+Cache miss, checking out last cache hit
+========================================================================
+Building module keymaker in /home/tobagin/Projects/keymaker/.flatpak-builder/build/keymaker-20
+========================================================================
+The Meson build system
+Version: 1.9.1
+Source dir: /run/build/keymaker
+Build dir: /run/build/keymaker/_flatpak_build
+Build type: native build
+Project name: keysmith
+Project version: 1.1.1
+C compiler for the host machine: ccache cc (gcc 15.2.0 "cc (GCC) 15.2.0")
+C linker for the host machine: cc ld.bfd 2.45.1
+Vala compiler for the host machine: valac (valac 0.56.18)
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Found pkg-config: YES (/usr/bin/pkg-config) 2.5.1
+Run-time dependency gtk4 found: YES 4.20.3
+Run-time dependency libadwaita-1 found: YES 1.8.3
+Run-time dependency gio-2.0 found: YES 2.86.3
+Run-time dependency gee-0.8 found: YES 0.20.8
+Run-time dependency json-glib-1.0 found: YES 1.10.8
+Run-time dependency vte-2.91-gtk4 found: YES 0.82.1
+Run-time dependency webkitgtk-6.0 found: YES 2.50.4
+Run-time dependency libsoup-3.0 found: YES 3.6.5
+Run-time dependency libsecret-1 found: YES 0.21.7
+Library m found: YES
+Configuring Config.vala using configuration
+Configuring io.github.tobagin.keysmith.desktop.configured using configuration
+Program msgfmt found: YES (/usr/bin/msgfmt)
+Program desktop-file-validate found: YES (/usr/bin/desktop-file-validate)
+Configuring io.github.tobagin.keysmith.Devel.metainfo.xml using configuration
+Program appstreamcli found: YES (/usr/bin/appstreamcli)
+Configuring io.github.tobagin.keysmith.Devel.gschema.xml using configuration
+Dependency gio-2.0 found: YES 2.86.3 (cached)
+Program /usr/bin/glib-compile-schemas found: YES (/usr/bin/glib-compile-schemas)
+Program blueprint-compiler found: YES (/usr/bin/blueprint-compiler)
+Configuring keysmith.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.86.3 (cached)
+Program /usr/bin/glib-compile-resources found: YES (/usr/bin/glib-compile-resources)
+Program msginit found: YES (/usr/bin/msginit)
+Program msgmerge found: YES (/usr/bin/msgmerge)
+Program xgettext found: YES (/usr/bin/xgettext)
+Dependency gio-2.0 found: YES 2.86.3 (cached)
+Program /usr/bin/glib-compile-schemas found: YES (/usr/bin/glib-compile-schemas)
+Program gtk4-update-icon-cache found: YES (/usr/bin/gtk4-update-icon-cache)
+Program update-desktop-database found: YES (/usr/bin/update-desktop-database)
+Build targets in project: 35
+
+keysmith 1.1.1
+
+  Configuration
+    Version   : 1.1.1
+    App ID    : io.github.tobagin.keysmith.Devel
+    Prefix    : /app
+    Bindir    : bin
+    Datadir   : share
+
+  Dependencies
+    GTK4      : 4.20.3
+    LibAdwaita: 1.8.3
+    GLib      : 2.86.3
+    libsoup   : 3.6.5
+    libsecret : 0.21.7
+
+  User defined options
+    libdir    : /app/lib
+    prefix    : /app
+    profile   : development
+    wrap_mode : nodownload
+
+Found ninja-1.13.2 at /usr/bin/ninja
+[1/95] Generating data/ui/window.ui with a custom command
+[2/95] Generating data/ui/key_list.ui with a custom command
+[3/95] Generating data/ui/key_row.ui with a custom command
+[4/95] Generating data/ui/empty_state_row.ui with a custom command
+[5/95] Generating data/ui/add_key_to_agent_dialog.ui with a custom command
+[6/95] Generating data/ui/backup_center_dialog.ui with a custom command
+[7/95] Generating data/ui/change_passphrase_dialog.ui with a custom command
+[8/95] Generating data/ui/copy_id_dialog.ui with a custom command
+[9/95] Generating data/ui/create_backup_dialog.ui with a custom command
+[10/95] Generating data/ui/emergency_vault_dialog.ui with a custom command
+[11/95] Generating data/ui/generate_dialog.ui with a custom command
+[12/95] Generating data/ui/key_details_dialog.ui with a custom command
+[13/95] Generating data/ui/key_service_mapping_dialog.ui with a custom command
+[14/95] Generating data/ui/preferences_dialog.ui with a custom command
+[15/95] Generating data/ui/restore_backup_dialog.ui with a custom command
+[16/95] Generating data/ui/shortcuts_dialog.ui with a custom command
+[17/95] Generating data/ui/ssh_agent_dialog.ui with a custom command
+[18/95] Generating data/ui/ssh_config_dialog.ui with a custom command
+[19/95] Generating data/ui/ssh_host_edit_dialog.ui with a custom command
+[20/95] Generating data/ui/terminal_dialog.ui with a custom command
+[21/95] Generating data/ui/host_key_verification_dialog.ui with a custom command
+[22/95] Generating data/ui/host_key_conflict_dialog.ui with a custom command
+[23/95] Generating data/ui/backup_page.ui with a custom command
+[24/95] Generating data/ui/hosts_page.ui with a custom command
+[25/95] Generating data/ui/known_hosts_page.ui with a custom command
+[26/95] Generating data/ui/keys_page.ui with a custom command
+[27/95] Generating data/ui/keysmith-resources_c with a custom command
+[28/95] Generating data/ui/keysmith-resources_h with a custom command
+[29/95] Compiling Vala source ../src/Main.vala ../src/Application.vala ../src/models/Enums.vala ../src/models/SshKey.vala ../src/models/KeyServiceMapping.vala ../src/models/PageModels.vala ../src/models/KnownHostEntry.vala ../src/backend/ssh_operations/SshOperations.vala ../src/backend/ssh_operations/Generation.vala ../src/backend/ssh_operations/Metadata.vala ../src/backend/ssh_operations/Mutate.vala ../src/backend/KeyScanner.vala ../src/backend/SshAgent.vala ../src/backend/SshConfig.vala ../src/backend/KeySelectionManager.vala ../src/backend/KnownHostsManager.vala ../src/ui/Window.vala ../src/ui/pages/KeysPage.vala ../src/ui/pages/HostsPage.vala ../src/ui/pages/KnownHostsPage.vala ../src/ui/pages/BackupPage.vala ../src/ui/KeyList.vala ../src/ui/KeyRow.vala ../src/ui/dialogs/GenerateDialog.vala ../src/ui/dialogs/KeyDetailsDialog.vala ../src/ui/dialogs/ChangePassphraseDialog.vala ../src/ui/dialogs/CopyIdDialog.vala ../src/ui/dialogs/DeleteKeyDialog.vala ../src/ui/dialogs/PreferencesDialog.vala ../src/ui/dialogs/HelpDialog.vala ../src/ui/dialogs/AboutDialog.vala ../src/ui/dialogs/ShortcutsDialog.vala ../src/ui/dialogs/SshAgentDialog.vala ../src/ui/dialogs/AddKeyToAgentDialog.vala ../src/ui/dialogs/KeyServiceMappingDialog.vala ../src/ui/dialogs/SshConfigDialog.vala ../src/ui/dialogs/SshHostEditDialog.vala ../src/ui/dialogs/TerminalDialog.vala ../src/ui/dialogs/HostKeyVerificationDialog.vala ../src/ui/dialogs/HostKeyConflictDialog.vala ../src/backend/BackupManager.vala ../src/backend/TotpManager.vala ../src/backend/vault/EmergencyVault.vala ../src/backend/vault/BackupEntry.vala ../src/backend/vault/VaultIo.vala ../src/ui/dialogs/EmergencyVaultDialog.vala ../src/ui/dialogs/BackupCenterDialog.vala ../src/ui/dialogs/CreateBackupDialog.vala ../src/ui/dialogs/RestoreBackupDialog.vala ../src/ui/dialogs/BackupDetailsDialog.vala ../src/ui/dialogs/EmergencyBackupDetailsDialog.vala ../src/ui/dialogs/EmergencyBackupAuthDialog.vala ../src/ui/helpers/BackupHelpers.vala ../src/utils/Filesystem.vala ../src/utils/Command.vala ../src/utils/Log.vala ../src/utils/Settings.vala ../src/utils/ConnectionPool.vala ../src/utils/BatchProcessor.vala ../src/utils/AsyncQueue.vala Config.vala
+FAILED: [code=1] src/keymaker.p/Main.c src/keymaker.p/Application.c src/keymaker.p/models/Enums.c src/keymaker.p/models/SshKey.c src/keymaker.p/models/KeyServiceMapping.c src/keymaker.p/models/PageModels.c src/keymaker.p/models/KnownHostEntry.c src/keymaker.p/backend/ssh_operations/SshOperations.c src/keymaker.p/backend/ssh_operations/Generation.c src/keymaker.p/backend/ssh_operations/Metadata.c src/keymaker.p/backend/ssh_operations/Mutate.c src/keymaker.p/backend/KeyScanner.c src/keymaker.p/backend/SshAgent.c src/keymaker.p/backend/SshConfig.c src/keymaker.p/backend/KeySelectionManager.c src/keymaker.p/backend/KnownHostsManager.c src/keymaker.p/ui/Window.c src/keymaker.p/ui/pages/KeysPage.c src/keymaker.p/ui/pages/HostsPage.c src/keymaker.p/ui/pages/KnownHostsPage.c src/keymaker.p/ui/pages/BackupPage.c src/keymaker.p/ui/KeyList.c src/keymaker.p/ui/KeyRow.c src/keymaker.p/ui/dialogs/GenerateDialog.c src/keymaker.p/ui/dialogs/KeyDetailsDialog.c src/keymaker.p/ui/dialogs/ChangePassphraseDialog.c src/keymaker.p/ui/dialogs/CopyIdDialog.c src/keymaker.p/ui/dialogs/DeleteKeyDialog.c src/keymaker.p/ui/dialogs/PreferencesDialog.c src/keymaker.p/ui/dialogs/HelpDialog.c src/keymaker.p/ui/dialogs/AboutDialog.c src/keymaker.p/ui/dialogs/ShortcutsDialog.c src/keymaker.p/ui/dialogs/SshAgentDialog.c src/keymaker.p/ui/dialogs/AddKeyToAgentDialog.c src/keymaker.p/ui/dialogs/KeyServiceMappingDialog.c src/keymaker.p/ui/dialogs/SshConfigDialog.c src/keymaker.p/ui/dialogs/SshHostEditDialog.c src/keymaker.p/ui/dialogs/TerminalDialog.c src/keymaker.p/ui/dialogs/HostKeyVerificationDialog.c src/keymaker.p/ui/dialogs/HostKeyConflictDialog.c src/keymaker.p/backend/BackupManager.c src/keymaker.p/backend/TotpManager.c src/keymaker.p/backend/vault/EmergencyVault.c src/keymaker.p/backend/vault/BackupEntry.c src/keymaker.p/backend/vault/VaultIo.c src/keymaker.p/ui/dialogs/EmergencyVaultDialog.c src/keymaker.p/ui/dialogs/BackupCenterDialog.c src/keymaker.p/ui/dialogs/CreateBackupDialog.c src/keymaker.p/ui/dialogs/RestoreBackupDialog.c src/keymaker.p/ui/dialogs/BackupDetailsDialog.c src/keymaker.p/ui/dialogs/EmergencyBackupDetailsDialog.c src/keymaker.p/ui/dialogs/EmergencyBackupAuthDialog.c src/keymaker.p/ui/helpers/BackupHelpers.c src/keymaker.p/utils/Filesystem.c src/keymaker.p/utils/Command.c src/keymaker.p/utils/Log.c src/keymaker.p/utils/Settings.c src/keymaker.p/utils/ConnectionPool.c src/keymaker.p/utils/BatchProcessor.c src/keymaker.p/utils/AsyncQueue.c src/keymaker.p/Config.c 
+valac -C --debug --pkg webkitgtk-6.0 --pkg libsecret-1 --pkg libsoup-3.0 --pkg vte-2.91-gtk4 --pkg json-glib-1.0 --pkg gee-0.8 --pkg gio-2.0 --pkg libadwaita-1 --pkg gtk4 --color=always --directory src/keymaker.p --basedir ../src --gresources=data/ui/keysmith.gresource.xml --gresourcesdir=/run/build/keymaker/_flatpak_build/data/ui --gresourcesdir=../data/ui/data --gresourcesdir=data/ui --gresourcesdir=../data/ui --target-glib=2.78 --pkg=posix -D DEVELOPMENT -D HAS_WEBKIT ../src/Main.vala ../src/Application.vala ../src/models/Enums.vala ../src/models/SshKey.vala ../src/models/KeyServiceMapping.vala ../src/models/PageModels.vala ../src/models/KnownHostEntry.vala ../src/backend/ssh_operations/SshOperations.vala ../src/backend/ssh_operations/Generation.vala ../src/backend/ssh_operations/Metadata.vala ../src/backend/ssh_operations/Mutate.vala ../src/backend/KeyScanner.vala ../src/backend/SshAgent.vala ../src/backend/SshConfig.vala ../src/backend/KeySelectionManager.vala ../src/backend/KnownHostsManager.vala ../src/ui/Window.vala ../src/ui/pages/KeysPage.vala ../src/ui/pages/HostsPage.vala ../src/ui/pages/KnownHostsPage.vala ../src/ui/pages/BackupPage.vala ../src/ui/KeyList.vala ../src/ui/KeyRow.vala ../src/ui/dialogs/GenerateDialog.vala ../src/ui/dialogs/KeyDetailsDialog.vala ../src/ui/dialogs/ChangePassphraseDialog.vala ../src/ui/dialogs/CopyIdDialog.vala ../src/ui/dialogs/DeleteKeyDialog.vala ../src/ui/dialogs/PreferencesDialog.vala ../src/ui/dialogs/HelpDialog.vala ../src/ui/dialogs/AboutDialog.vala ../src/ui/dialogs/ShortcutsDialog.vala ../src/ui/dialogs/SshAgentDialog.vala ../src/ui/dialogs/AddKeyToAgentDialog.vala ../src/ui/dialogs/KeyServiceMappingDialog.vala ../src/ui/dialogs/SshConfigDialog.vala ../src/ui/dialogs/SshHostEditDialog.vala ../src/ui/dialogs/TerminalDialog.vala ../src/ui/dialogs/HostKeyVerificationDialog.vala ../src/ui/dialogs/HostKeyConflictDialog.vala ../src/backend/BackupManager.vala ../src/backend/TotpManager.vala ../src/backend/vault/EmergencyVault.vala ../src/backend/vault/BackupEntry.vala ../src/backend/vault/VaultIo.vala ../src/ui/dialogs/EmergencyVaultDialog.vala ../src/ui/dialogs/BackupCenterDialog.vala ../src/ui/dialogs/CreateBackupDialog.vala ../src/ui/dialogs/RestoreBackupDialog.vala ../src/ui/dialogs/BackupDetailsDialog.vala ../src/ui/dialogs/EmergencyBackupDetailsDialog.vala ../src/ui/dialogs/EmergencyBackupAuthDialog.vala ../src/ui/helpers/BackupHelpers.vala ../src/utils/Filesystem.vala ../src/utils/Command.vala ../src/utils/Log.vala ../src/utils/Settings.vala ../src/utils/ConnectionPool.vala ../src/utils/BatchProcessor.vala ../src/utils/AsyncQueue.vala Config.vala
+../src/ui/pages/KnownHostsPage.vala:92.9-92.10: error: syntax error, statements outside blocks allowed only in root namespace
+   92 |         if (search_entry != null) {
+      |         ^~                         
+../src/ui/pages/KnownHostsPage.vala:332.5-332.34: error: `KnownHostsPage' already contains a definition for `on_search_changed'
+  332 |     private void on_search_changed () {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:327.5-327.34: note: previous definition of `on_search_changed' was here
+  327 |     private void on_search_changed () {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:404.5-404.39: error: `KnownHostsPage' already contains a definition for `remove_stale_entries_ui'
+  404 |     public void remove_stale_entries_ui () {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:66.5-66.39: note: previous definition of `remove_stale_entries_ui' was here
+   66 |     public void remove_stale_entries_ui () {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:463.5-463.31: error: `KnownHostsPage' already contains a definition for `import_hosts_ui'
+  463 |     public void import_hosts_ui () {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:73.5-73.31: note: previous definition of `import_hosts_ui' was here
+   73 |     public void import_hosts_ui () {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:514.5-514.31: error: `KnownHostsPage' already contains a definition for `export_hosts_ui'
+  514 |     public void export_hosts_ui () {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:80.5-80.31: note: previous definition of `export_hosts_ui' was here
+   80 |     public void export_hosts_ui () {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:540.5-540.23: error: `KnownHostsPage' already contains a definition for `refresh'
+  540 |     public void refresh () {
+      |     ^~~~~~~~~~~~~~~~~~~     
+../src/ui/pages/KnownHostsPage.vala:87.5-87.23: note: previous definition of `refresh' was here
+   87 |     public void refresh () {
+      |     ^~~~~~~~~~~~~~~~~~~     
+../src/utils/Settings.vala:91.23-91.27: warning: `owned' is default in this context
+   91 |         public static owned string default_key_type {
+      |                       ^~~~~                          
+../src/utils/Settings.vala:106.23-106.27: warning: `owned' is default in this context
+  106 |         public static owned string default_comment {
+      |                       ^~~~~                         
+../src/utils/Settings.vala:132.23-132.27: warning: `owned' is default in this context
+  132 |         public static owned string theme {
+      |                       ^~~~~               
+../src/utils/Settings.vala:137.23-137.27: warning: `owned' is default in this context
+  137 |         public static owned string preferred_terminal {
+      |                       ^~~~~                            
+../src/utils/Settings.vala:142.23-142.27: warning: `owned' is default in this context
+  142 |         public static owned string last_version_shown {
+      |                       ^~~~~                            
+Compilation failed: 6 error(s), 5 warning(s)
+ninja: build stopped: subcommand failed.
+Error: module keymaker: Child process exited with code 1

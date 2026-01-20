@@ -3,7 +3,11 @@ using Adw 1;
 
 template $KeyMakerBackupPage : Adw.Bin {
   
-  child: Adw.Clamp {
+  child: Adw.BreakpointBin {
+    width-request: 360;
+    height-request: 200;
+
+    child: Adw.Clamp {
     maximum-size: 1500;
     tightening-threshold: 600;
     
@@ -40,26 +44,38 @@ template $KeyMakerBackupPage : Adw.Bin {
               [header-suffix]
               Box {
                 spacing: 6;
-                
-                Button create_regular_backup_button_header {
-                  icon-name: "tab-new-symbolic";
-                  tooltip-text: _("Create New Backup");
-                  valign: center;
-                  styles ["flat"]
+
+                Box regular_desktop_buttons_box {
+                  spacing: 6;
+                  
+                  Button create_regular_backup_button_header {
+                    icon-name: "tab-new-symbolic";
+                    tooltip-text: _("Create New Backup");
+                    valign: center;
+                    styles ["flat"]
+                  }
+                  
+                  Button refresh_regular_button {
+                    icon-name: "view-refresh-symbolic";
+                    tooltip-text: _("Refresh Backups");
+                    valign: center;
+                    styles ["flat"]
+                  }
+                  
+                  Button remove_all_regular_backups_button {
+                    icon-name: "user-trash-symbolic";
+                    tooltip-text: _("Remove All Backups");
+                    valign: center;
+                    styles ["flat", "destructive-action"]
+                  }
                 }
-                
-                Button refresh_regular_button {
-                  icon-name: "view-refresh-symbolic";
-                  tooltip-text: _("Refresh Backups");
+
+                Button regular_mobile_menu_button {
+                  icon-name: "open-menu-symbolic";
+                  tooltip-text: _("Actions");
                   valign: center;
+                  visible: false;
                   styles ["flat"]
-                }
-                
-                Button remove_all_regular_backups_button {
-                  icon-name: "user-trash-symbolic";
-                  tooltip-text: _("Remove All Backups");
-                  valign: center;
-                  styles ["flat", "destructive-action"]
                 }
               }
               
@@ -89,26 +105,38 @@ template $KeyMakerBackupPage : Adw.Bin {
               [header-suffix]
               Box {
                 spacing: 6;
-                
-                Button create_emergency_backup_button_header {
-                  icon-name: "tab-new-symbolic";
-                  tooltip-text: _("Create New Emergency Backup");
-                  valign: center;
-                  styles ["flat"]
+
+                Box emergency_desktop_buttons_box {
+                  spacing: 6;
+                  
+                  Button create_emergency_backup_button_header {
+                    icon-name: "tab-new-symbolic";
+                    tooltip-text: _("Create New Emergency Backup");
+                    valign: center;
+                    styles ["flat"]
+                  }
+                  
+                  Button refresh_emergency_button {
+                    icon-name: "view-refresh-symbolic";
+                    tooltip-text: _("Refresh Backups");
+                    valign: center;
+                    styles ["flat"]
+                  }
+                  
+                  Button remove_all_emergency_backups_button {
+                    icon-name: "user-trash-symbolic";
+                    tooltip-text: _("Remove All Emergency Backups");
+                    valign: center;
+                    styles ["flat", "destructive-action"]
+                  }
                 }
-                
-                Button refresh_emergency_button {
-                  icon-name: "view-refresh-symbolic";
-                  tooltip-text: _("Refresh Backups");
+
+                Button emergency_mobile_menu_button {
+                  icon-name: "open-menu-symbolic";
+                  tooltip-text: _("Actions");
                   valign: center;
+                  visible: false;
                   styles ["flat"]
-                }
-                
-                Button remove_all_emergency_backups_button {
-                  icon-name: "user-trash-symbolic";
-                  tooltip-text: _("Remove All Emergency Backups");
-                  valign: center;
-                  styles ["flat", "destructive-action"]
                 }
               }
               
@@ -132,7 +160,19 @@ template $KeyMakerBackupPage : Adw.Bin {
           }
         }
       }
+      };
     };
+
+    Adw.Breakpoint {
+      condition ("max-width: 500sp")
+      setters {
+        regular_desktop_buttons_box.visible: false;
+        regular_mobile_menu_button.visible: true;
+        emergency_desktop_buttons_box.visible: false;
+        emergency_mobile_menu_button.visible: true;
+        template.mobile-view: true;
+      }
+    }
   };
 }
 

@@ -27,6 +27,8 @@ public class KeyMaker.BackupPage : Adw.Bin {
     
     [GtkChild]
     private unowned Gtk.Button remove_all_regular_backups_button;
+    [GtkChild]
+    private unowned Gtk.Button regular_mobile_menu_button; // Added field
     
     // Emergency vault page components
     [GtkChild]
@@ -40,6 +42,8 @@ public class KeyMaker.BackupPage : Adw.Bin {
     
     [GtkChild]
     private unowned Gtk.Button remove_all_emergency_backups_button;
+    [GtkChild]
+    private unowned Gtk.Button emergency_mobile_menu_button; // Added field
     
     // Backend managers
     private BackupManager backup_manager;
@@ -50,10 +54,15 @@ public class KeyMaker.BackupPage : Adw.Bin {
     // Signals for window integration
     public signal void show_toast_requested (string message);
     
+    public bool mobile_view { get; set; default = false; }
+
     construct {
         backup_manager = new BackupManager ();
         emergency_vault = new EmergencyVault ();
         totp_manager = new TOTPManager ();
+        
+        // Listen for mobile view changes
+        notify["mobile-view"].connect (on_mobile_view_changed);
         
         // Delay initialization until the template is loaded
         Idle.add (() => {
@@ -71,28 +80,34 @@ public class KeyMaker.BackupPage : Adw.Bin {
     private void setup_signals () {
         // Regular backups page signals
         if (create_regular_backup_button_header != null) {
-            create_regular_backup_button_header.clicked.connect (on_create_regular_backup);
+            create_regular_backup_button_header.clicked.connect (create_regular_backup_ui);
         }
         
         if (refresh_regular_button != null) {
-            refresh_regular_button.clicked.connect (on_refresh_regular_backups);
+            refresh_regular_button.clicked.connect (refresh_regular_backups_ui);
         }
         
         if (remove_all_regular_backups_button != null) {
-            remove_all_regular_backups_button.clicked.connect (on_remove_all_regular_backups);
+            remove_all_regular_backups_button.clicked.connect (remove_all_regular_backups_ui);
+        }
+        if (regular_mobile_menu_button != null) {
+            regular_mobile_menu_button.clicked.connect (show_regular_mobile_menu);
         }
         
         // Emergency vault page signals
         if (create_emergency_backup_button_header != null) {
-            create_emergency_backup_button_header.clicked.connect (on_create_emergency_backup);
+            create_emergency_backup_button_header.clicked.connect (create_emergency_backup_ui);
         }
         
         if (refresh_emergency_button != null) {
-            refresh_emergency_button.clicked.connect (on_refresh_emergency_backups);
+            refresh_emergency_button.clicked.connect (refresh_emergency_backups_ui);
         }
         
         if (remove_all_emergency_backups_button != null) {
-            remove_all_emergency_backups_button.clicked.connect (on_remove_all_emergency_backups);
+            remove_all_emergency_backups_button.clicked.connect (remove_all_emergency_backups_ui);
+        }
+        if (emergency_mobile_menu_button != null) {
+            emergency_mobile_menu_button.clicked.connect (show_emergency_mobile_menu);
         }
         
         // Backend signals
@@ -107,6 +122,145 @@ public class KeyMaker.BackupPage : Adw.Bin {
                 populate_emergency_backups_list ();
             });
         }
+    }
+    
+    private void show_regular_mobile_menu () {
+        var sheet = new Adw.Dialog ();
+        sheet.title = _("Actions");
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.margin_top = 12;
+        box.margin_bottom = 12;
+        box.margin_start = 12;
+        box.margin_end = 12;
+        box.spacing = 12;
+        
+        var actions = new Adw.PreferencesGroup ();
+        
+        // Create
+        var row_create = new Adw.ButtonRow ();
+        row_create.title = _("Create New Backup");
+        row_create.start_icon_name = "tab-new-symbolic";
+        row_create.activated.connect (() => {
+            sheet.close ();
+            create_regular_backup_ui ();
+        });
+        actions.add (row_create);
+        
+        // Refresh
+        var row_refresh = new Adw.ButtonRow ();
+        row_refresh.title = _("Refresh Backups");
+        row_refresh.start_icon_name = "view-refresh-symbolic";
+        row_refresh.activated.connect (() => {
+            sheet.close ();
+            refresh_regular_backups_ui ();
+        });
+        actions.add (row_refresh);
+        
+        box.append (actions);
+        
+        // Destructive
+        var destructive = new Adw.PreferencesGroup ();
+        var row_delete_all = new Adw.ButtonRow ();
+        row_delete_all.title = _("Remove All Backups");
+        row_delete_all.start_icon_name = "user-trash-symbolic";
+        row_delete_all.add_css_class ("destructive-action");
+        row_delete_all.activated.connect (() => {
+            sheet.close ();
+            remove_all_regular_backups_ui ();
+        });
+        destructive.add (row_delete_all);
+        
+        box.append (destructive);
+        
+        sheet.child = box;
+        sheet.present (this.get_root () as Gtk.Widget);
+    }
+    
+    private void show_emergency_mobile_menu () {
+        var sheet = new Adw.Dialog ();
+        sheet.title = _("Actions");
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.margin_top = 12;
+        box.margin_bottom = 12;
+        box.margin_start = 12;
+        box.margin_end = 12;
+        box.spacing = 12;
+        
+        var actions = new Adw.PreferencesGroup ();
+        
+        // Create
+        var row_create = new Adw.ButtonRow ();
+        row_create.title = _("Create New Emergency Backup");
+        row_create.start_icon_name = "tab-new-symbolic";
+        row_create.activated.connect (() => {
+            sheet.close ();
+            create_emergency_backup_ui ();
+        });
+        actions.add (row_create);
+         // Refresh
+        var row_refresh = new Adw.ButtonRow ();
+        row_refresh.title = _("Refresh Backups");
+        row_refresh.start_icon_name = "view-refresh-symbolic";
+        row_refresh.activated.connect (() => {
+            sheet.close ();
+            refresh_emergency_backups_ui ();
+        });
+        actions.add (row_refresh);
+        
+        box.append (actions);
+        
+        // Destructive
+        var destructive = new Adw.PreferencesGroup ();
+        var row_delete_all = new Adw.ButtonRow ();
+        row_delete_all.title = _("Remove All Emergency Backups");
+        row_delete_all.start_icon_name = "user-trash-symbolic";
+        row_delete_all.add_css_class ("destructive-action");
+        row_delete_all.activated.connect (() => {
+            sheet.close ();
+            remove_all_emergency_backups_ui ();
+        });
+        destructive.add (row_delete_all);
+        
+        box.append (destructive);
+        
+        sheet.child = box;
+        sheet.present (this.get_root () as Gtk.Widget);
+    }
+    
+    private void on_mobile_view_changed () {
+        // Update regular backup rows
+        var child = regular_backups_list.get_first_child ();
+        while (child != null) {
+            update_row_mobile_mode (child);
+            child = child.get_next_sibling ();
+        }
+        
+        // Update emergency backup rows
+        child = emergency_backups_list.get_first_child ();
+        while (child != null) {
+            update_row_mobile_mode (child); // Reusing helper method
+            child = child.get_next_sibling ();
+        }
+    }
+    
+    private void update_row_mobile_mode (Gtk.Widget row_widget) {
+         var row = row_widget as Adw.ActionRow;
+         if (row != null) {
+             var desktop = row.get_data<Gtk.Box>("desktop_buttons_box");
+             var mobile = row.get_data<Gtk.Button>("mobile_menu_button");
+             var health_icon = row.get_data<Gtk.Image>("health_icon_desktop");
+             
+             if (desktop != null && mobile != null) {
+                 desktop.visible = !mobile_view;
+                 mobile.visible = mobile_view;
+             }
+             
+             // Hide separate health icon on mobile (integrated into mobile rows differently if needed? 
+             // Requirement said "Hiding the backup health indicator on mobile")
+             if (health_icon != null) {
+                 health_icon.visible = !mobile_view;
+             }
+         }
     }
     
     private void populate_regular_backups_list () {
@@ -188,27 +342,93 @@ public class KeyMaker.BackupPage : Adw.Bin {
         }
         
         // Add action buttons
-        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        // Desktop Container
+        var desktop_buttons_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        desktop_buttons_box.valign = Gtk.Align.CENTER;
         
-        // Add status icon BEFORE buttons
-        button_box.append (status_icon);
+        // Add status icon to desktop container
+        desktop_buttons_box.append (status_icon);
         
+        // Mobile Menu Button (Gtk.Button opening Adw.BottomSheet)
+        var mobile_menu_button = new Gtk.Button.from_icon_name ("open-menu-symbolic");
+        mobile_menu_button.tooltip_text = _("Actions");
+        mobile_menu_button.valign = Gtk.Align.CENTER;
+        mobile_menu_button.add_css_class ("flat");
+        
+        mobile_menu_button.clicked.connect (() => {
+             var sheet = new Adw.Dialog ();
+             sheet.title = _("Actions");
+             var sheet_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+             sheet_box.margin_top = 12;
+             sheet_box.margin_bottom = 12;
+             sheet_box.margin_start = 12;
+             sheet_box.margin_end = 12;
+             sheet_box.spacing = 12;
+             
+             var sheet_actions = new Adw.PreferencesGroup ();
+             
+             // View
+             var row_view = new Adw.ButtonRow ();
+             row_view.title = _("View Details");
+             row_view.start_icon_name = "view-reveal-symbolic";
+             row_view.activated.connect (() => {
+                 sheet.close ();
+                 show_regular_backup_details (backup);
+             });
+             sheet_actions.add (row_view);
+             
+             // Restore
+             var row_restore = new Adw.ButtonRow ();
+             row_restore.title = _("Restore Backup");
+             row_restore.start_icon_name = "document-revert-symbolic";
+             row_restore.activated.connect (() => {
+                 sheet.close ();
+                 restore_regular_backup (backup);
+             });
+             sheet_actions.add (row_restore);
+             
+             sheet_box.append (sheet_actions);
+             
+             // Delete
+             var sheet_destructive = new Adw.PreferencesGroup ();
+             var row_delete = new Adw.ButtonRow ();
+             row_delete.title = _("Delete Backup");
+             row_delete.start_icon_name = "user-trash-symbolic";
+             row_delete.add_css_class ("destructive-action");
+             row_delete.activated.connect (() => {
+                 sheet.close ();
+                 delete_regular_backup (backup);
+             });
+             sheet_destructive.add (row_delete);
+             
+             sheet_box.append (sheet_destructive);
+             
+             sheet.child = sheet_box;
+             sheet.present (this.get_root () as Gtk.Widget);
+        });
+
+        // View Button
+        // Desktop
         var view_button = new Gtk.Button ();
         view_button.icon_name = "view-reveal-symbolic";
         view_button.tooltip_text = "View Backup Information";
         view_button.add_css_class ("flat");
         view_button.valign = Gtk.Align.CENTER;
         view_button.clicked.connect (() => show_regular_backup_details (backup));
-        button_box.append (view_button);
+        desktop_buttons_box.append (view_button);
         
+        // Restore Button
+        // Desktop
         var restore_button = new Gtk.Button ();
         restore_button.icon_name = "document-revert-symbolic";
         restore_button.tooltip_text = "Restore Backup";
         restore_button.add_css_class ("flat");
         restore_button.valign = Gtk.Align.CENTER;
         restore_button.clicked.connect (() => restore_regular_backup (backup));
-        button_box.append (restore_button);
-        
+        desktop_buttons_box.append (restore_button);
+
+        // Delete Button
+        // Desktop
         var delete_button = new Gtk.Button ();
         delete_button.icon_name = "user-trash-symbolic";
         delete_button.tooltip_text = "Delete Backup";
@@ -216,10 +436,23 @@ public class KeyMaker.BackupPage : Adw.Bin {
         delete_button.add_css_class ("destructive-action");
         delete_button.valign = Gtk.Align.CENTER;
         delete_button.clicked.connect (() => delete_regular_backup (backup));
-        button_box.append (delete_button);
+        desktop_buttons_box.append (delete_button);
         
-        // Add buttons to suffix (status icon is now in title area)
-        row.add_suffix (button_box);
+        // Add buttons to suffix (status icon includes in desktop box)
+        row.add_suffix (desktop_buttons_box);
+        row.add_suffix (mobile_menu_button);
+        
+        // Store data
+        row.set_data ("desktop_buttons_box", desktop_buttons_box);
+        row.set_data ("mobile_menu_button", mobile_menu_button);
+        row.set_data ("health_icon_desktop", status_icon); // Actually inside box, but we might want to track it specifically? 
+        // Wait, status_icon is inside desktop_buttons_box, so hiding desktop_buttons_box hides status_icon too.
+        // My update_row_mobile_mode logic hides desktop_buttons_box, so status_icon is hidden.
+        // That satisfies "Hiding the backup health indicator on mobile".
+        
+        // Initial visibility
+        desktop_buttons_box.visible = !mobile_view;
+        mobile_menu_button.visible = mobile_view;
         row.set_data ("backup", backup);
         
         regular_backups_list.append (row);
@@ -228,6 +461,15 @@ public class KeyMaker.BackupPage : Adw.Bin {
     private void add_emergency_backup_row (EmergencyBackupEntry backup) {
         var row = new Adw.ActionRow ();
         row.title = backup.name;
+        
+        // Calculate locked status early for mobile menu
+        bool is_locked = false;
+        if (backup.backup_type == EmergencyBackupType.TIME_LOCKED && backup.expires_at != null) {
+            var now = new DateTime.now_local ();
+            if (now.compare (backup.expires_at) <= 0) {
+                is_locked = true;
+            }
+        }
         
         // Show contextually relevant information based on backup type
         string context_info;
@@ -291,50 +533,127 @@ public class KeyMaker.BackupPage : Adw.Bin {
         }
         
         // Add action buttons
-        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        // Desktop Container
+        var desktop_buttons_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        desktop_buttons_box.valign = Gtk.Align.CENTER;
         
-        // Add status icon BEFORE buttons
-        button_box.append (status_icon);
+        // Add status icon to desktop container
+        desktop_buttons_box.append (status_icon);
         
+        // Mobile Menu Button (Gtk.Button opening Adw.BottomSheet)
+        var mobile_menu_button = new Gtk.Button.from_icon_name ("open-menu-symbolic");
+        mobile_menu_button.tooltip_text = _("Actions");
+        mobile_menu_button.valign = Gtk.Align.CENTER;
+        mobile_menu_button.add_css_class ("flat");
+        
+        mobile_menu_button.clicked.connect (() => {
+             var sheet = new Adw.Dialog ();
+             sheet.title = _("Actions");
+             var sheet_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+             sheet_box.margin_top = 12;
+             sheet_box.margin_bottom = 12;
+             sheet_box.margin_start = 12;
+             sheet_box.margin_end = 12;
+             sheet_box.spacing = 12;
+             
+             var sheet_actions = new Adw.PreferencesGroup ();
+             
+             // View
+             var row_view = new Adw.ButtonRow ();
+             row_view.title = _("View Details");
+             row_view.start_icon_name = "view-reveal-symbolic";
+             row_view.activated.connect (() => {
+                 sheet.close ();
+                 show_emergency_backup_details (backup);
+             });
+             sheet_actions.add (row_view);
+             
+             // Restore (check locked status)
+             if (!is_locked) {
+                 var row_restore = new Adw.ButtonRow ();
+                 row_restore.title = _("Restore Backup");
+                 row_restore.start_icon_name = "document-revert-symbolic";
+                 row_restore.activated.connect (() => {
+                     sheet.close ();
+                     restore_emergency_backup (backup);
+                 });
+                 sheet_actions.add (row_restore);
+             }
+             
+             sheet_box.append (sheet_actions);
+             
+             // Delete (check locked status)
+             if (!is_locked) {
+                 var sheet_destructive = new Adw.PreferencesGroup ();
+                 var row_delete = new Adw.ButtonRow ();
+                 row_delete.title = _("Delete Backup");
+                 row_delete.start_icon_name = "user-trash-symbolic";
+                 row_delete.add_css_class ("destructive-action");
+                 row_delete.activated.connect (() => {
+                     sheet.close ();
+                     delete_emergency_backup (backup);
+                 });
+                 sheet_destructive.add (row_delete);
+                 
+                 sheet_box.append (sheet_destructive);
+             }
+             
+             sheet.child = sheet_box;
+             sheet.present (this.get_root () as Gtk.Widget);
+        });
+        
+        // View Button
+        // Desktop
         var view_button = new Gtk.Button ();
         view_button.icon_name = "view-reveal-symbolic";
         view_button.tooltip_text = "View Backup Information";
         view_button.valign = Gtk.Align.CENTER;
         view_button.add_css_class ("flat");
         view_button.clicked.connect (() => show_emergency_backup_details (backup));
-        button_box.append (view_button);
+        desktop_buttons_box.append (view_button);
         
+        // Restore Button
+        // Desktop
         var restore_button = new Gtk.Button ();
         restore_button.icon_name = "document-revert-symbolic";
         restore_button.tooltip_text = "Restore Backup";
         restore_button.valign = Gtk.Align.CENTER;
         restore_button.add_css_class ("flat");
         restore_button.clicked.connect (() => restore_emergency_backup (backup));
-        button_box.append (restore_button);
-        
+        desktop_buttons_box.append (restore_button);
+
+        // Delete Button
+        // Desktop
         var delete_button = new Gtk.Button ();
         delete_button.icon_name = "user-trash-symbolic";
         delete_button.tooltip_text = "Delete Backup";
         delete_button.valign = Gtk.Align.CENTER;
         delete_button.add_css_class ("flat");
         delete_button.add_css_class ("destructive-action");
+        
         // For time-locked backups that haven't expired yet, disable restore and delete buttons
-        if (backup.backup_type == EmergencyBackupType.TIME_LOCKED && backup.expires_at != null) {
-            var now = new DateTime.now_local ();
-            if (now.compare (backup.expires_at) <= 0) {
-                // Still time-locked - disable only restore and delete buttons
-                restore_button.sensitive = false;
-                restore_button.tooltip_text = "Cannot restore time-locked backup until unlock time";
-                delete_button.sensitive = false;
-                delete_button.tooltip_text = "Cannot delete time-locked backup until unlock time";
-            }
-            // Note: View button is never disabled - you can always view backup details
+        if (is_locked) {
+            // Desktop
+            restore_button.sensitive = false;
+            restore_button.tooltip_text = "Cannot restore time-locked backup until unlock time";
+            delete_button.sensitive = false;
+            delete_button.tooltip_text = "Cannot delete time-locked backup until unlock time";
         }
         delete_button.clicked.connect (() => delete_emergency_backup (backup));
-        button_box.append (delete_button);
+        desktop_buttons_box.append (delete_button);
         
-        // Add buttons to suffix (status icon is now in title area)
-        row.add_suffix (button_box);
+        // Add buttons to suffix
+        row.add_suffix (desktop_buttons_box);
+        row.add_suffix (mobile_menu_button);
+        
+        // Store data
+        row.set_data ("desktop_buttons_box", desktop_buttons_box);
+        row.set_data ("mobile_menu_button", mobile_menu_button);
+        row.set_data ("health_icon_desktop", status_icon);
+        
+        // Initial visibility
+        desktop_buttons_box.visible = !mobile_view;
+        mobile_menu_button.visible = mobile_view;
         row.set_data ("backup", backup);
         
         emergency_backups_list.append (row);
@@ -350,27 +669,27 @@ public class KeyMaker.BackupPage : Adw.Bin {
     }
     
     // Signal handlers
-    private void on_create_regular_backup () {
+    public void create_regular_backup_ui () {
         var window = get_root () as Gtk.Window;
         var dialog = new CreateBackupDialog (window, emergency_vault);
         dialog.present (window);
     }
     
-    private void on_create_emergency_backup () {
+    public void create_emergency_backup_ui () {
         var window = get_root () as Gtk.Window;
         var dialog = new CreateBackupDialog (window, emergency_vault);
         dialog.present (window);
     }
     
-    private void on_refresh_regular_backups () {
+    public void refresh_regular_backups_ui () {
         populate_regular_backups_list ();
     }
     
-    private void on_refresh_emergency_backups () {
+    public void refresh_emergency_backups_ui () {
         populate_emergency_backups_list ();
     }
     
-    private void on_remove_all_regular_backups () {
+    public void remove_all_regular_backups_ui () {
         var window = get_root () as Gtk.Window;
         var alert = new Adw.AlertDialog ("Remove All Regular Backups?", 
                                           "Are you sure you want to remove all regular backups? This action cannot be undone.");
@@ -388,7 +707,7 @@ public class KeyMaker.BackupPage : Adw.Bin {
         alert.present (window);
     }
     
-    private void on_remove_all_emergency_backups () {
+    public void remove_all_emergency_backups_ui () {
         var window = get_root () as Gtk.Window;
         var alert = new Adw.AlertDialog ("Remove All Emergency Backups?", 
                                           "Are you sure you want to remove all emergency backups? This will require authentication and cannot be undone.");

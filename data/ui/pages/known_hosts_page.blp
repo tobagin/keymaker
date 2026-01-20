@@ -3,7 +3,11 @@ using Adw 1;
 
 template $KeyMakerKnownHostsPage : Adw.Bin {
 
-  child: Adw.Clamp {
+  child: Adw.BreakpointBin {
+    width-request: 360;
+    height-request: 200;
+
+    child: Adw.Clamp {
     maximum-size: 1500;
     tightening-threshold: 600;
 
@@ -44,34 +48,50 @@ template $KeyMakerKnownHostsPage : Adw.Bin {
                   valign: center;
                 }
 
-                Button refresh_button {
-                  icon-name: "view-refresh-symbolic";
-                  tooltip-text: _("Refresh");
-                  styles ["flat"]
-                  valign: center;
-                }
+                Box {
+                  spacing: 6;
 
-                Button import_button {
-                  icon-name: "document-open-symbolic";
-                  tooltip-text: _("Import Known Hosts");
-                  styles ["flat"]
-                  valign: center;
-                }
+                  Box desktop_buttons_box {
+                    spacing: 6;
 
-                Button export_button {
-                  icon-name: "document-save-symbolic";
-                  tooltip-text: _("Export Known Hosts");
-                  styles ["flat"]
-                  valign: center;
-                }
+                    Button refresh_button {
+                      icon-name: "view-refresh-symbolic";
+                      tooltip-text: _("Refresh");
+                      styles ["flat"]
+                      valign: center;
+                    }
 
-                Button remove_stale_button {
-                  icon-name: "user-trash-symbolic";
-                  tooltip-text: _("Remove Stale Entries");
-                  styles ["flat", "warning"]
-                  valign: center;
+                    Button import_button {
+                      icon-name: "document-open-symbolic";
+                      tooltip-text: _("Import Known Hosts");
+                      styles ["flat"]
+                      valign: center;
+                    }
+
+                    Button export_button {
+                      icon-name: "document-save-symbolic";
+                      tooltip-text: _("Export Known Hosts");
+                      styles ["flat"]
+                      valign: center;
+                    }
+
+                    Button remove_stale_button {
+                      icon-name: "user-trash-symbolic";
+                      tooltip-text: _("Remove Stale Entries");
+                      styles ["flat", "warning"]
+                      valign: center;
+                    }
+                  }
+
+                  Button mobile_menu_button {
+                    icon-name: "open-menu-symbolic";
+                    tooltip-text: _("Actions");
+                    valign: center;
+                    visible: false;
+                    styles ["flat"]
+                  }
                 }
-              };
+                };
 
               ListBox known_hosts_list {
                 selection-mode: none;
@@ -82,5 +102,21 @@ template $KeyMakerKnownHostsPage : Adw.Bin {
         }
       }
     };
+      };
+
+
+    Adw.Breakpoint {
+      condition ("max-width: 500sp")
+      setters {
+        desktop_buttons_box.visible: false;
+        mobile_menu_button.visible: true;
+        search_entry.visible: false; // Also hide search on very small screens? No, search is important.
+        // Actually, let's keep search visible.
+        template.mobile-view: true;
+      }
+    }
   };
 }
+
+
+
