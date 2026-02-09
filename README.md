@@ -11,15 +11,15 @@ Manage SSH keys easily with a modern native app.
 
 </div>
 
-## 🎉 Version 1.2.0 - Mobile Adaptation
+## 🎉 Version 1.3.0 - Security Key Support
 
-**Keymaker 1.2.0** brings full mobile support and a refined navigation experience.
+**Keymaker 1.3.0** adds support for `ED25519-SK` security keys and features several UI refinements.
 
-### 🆕 What's New in 1.2.0
+### 🆕 What's New in 1.3.0
 
-- **Mobile UI**: Comprehensive layout adaptation for mobile devices.
-- **Navigation**: Refactored architecture to use `Adw.NavigationView`.
-- **Backup**: Redesigned Backup page using `Adw.BottomSheet`.
+- **Security Keys**: Added support for `ED25519-SK` security keys.
+- **Improved Detection**: Enhanced key type and bit size detection for security-backed keys.
+- **UI Refinements**: Improved dialog dimensions and removed `raised` bar styles for a cleaner look.
 
 For detailed release notes and version history, see [CHANGELOG.md](CHANGELOG.md).
 

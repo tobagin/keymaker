@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
   <id>@APP_ID@</id>
-  
+
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>@APP_NAME@</name>
   <summary>Manage SSH keys easily</summary>
-  
+
   <description>
     <p>
       Keymaker allows you to manage your SSH keys without dealing with the command line.
@@ -30,7 +30,7 @@
     <color type="primary" scheme_preference="light">#3584e4</color>
     <color type="primary" scheme_preference="dark">#1c71d8</color>
   </branding>
-  
+
   <screenshots>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/tobagin/keymaker/main/data/screenshots/main-window.png</image>
@@ -69,30 +69,30 @@
       <caption>About Keymaker</caption>
     </screenshot>
   </screenshots>
-  
+
   <url type="homepage">https://github.com/tobagin/keymaker</url>
   <url type="bugtracker">https://github.com/tobagin/keymaker/issues</url>
   <url type="help">https://github.com/tobagin/keymaker/wiki</url>
   <url type="vcs-browser">https://github.com/tobagin/keymaker</url>
-  
+
   <developer_name>Thiago Fernandes</developer_name>
-  
+
   <requires>
     <display_length compare="ge">360</display_length>
   </requires>
-  
+
   <recommends>
     <control>keyboard</control>
     <control>pointing</control>
     <control>touch</control>
   </recommends>
-  
+
   <categories>
     <category>System</category>
     <category>Security</category>
     <category>Utility</category>
   </categories>
-  
+
   <keywords>
     <keyword>ssh</keyword>
     <keyword>keys</keyword>
@@ -100,10 +100,21 @@
     <keyword>remote</keyword>
     <keyword>authentication</keyword>
   </keywords>
-  
+
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
-  
+
   <releases>
+    <release version="1.3.0" date="2026-02-09">
+      <description>
+        <p>Keymaker 1.3.0 adds support for ED25519-SK security keys and features several UI refinements.</p>
+        <ul>
+          <li>Added support for ED25519-SK security keys</li>
+          <li>Enhanced key type and bit size detection for security-backed keys</li>
+          <li>Improved dialog dimensions and removed raised bar styles for a cleaner look</li>
+          <li>Further refinements to dialog layouts for better responsiveness</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.2.0" date="2026-01-20">
       <description>
         <p>Keymaker 1.2.0 brings a fully adaptive mobile UI and improved navigation architecture.</p>
@@ -185,6 +196,6 @@
       </description>
     </release>
   </releases>
-  
+
   <content_rating type="oars-1.1"/>
 </component>

@@ -4,12 +4,9 @@ using Adw 1;
 template $KeyMakerBackupCenterDialog : Adw.Dialog {
   title: _("Backup & Recovery Center");
   content-width: 800;
-  content-height: 600;
+  content-height: 800;
 
   child: Adw.ToolbarView {
-    top-bar-style: raised;
-    bottom-bar-style: raised;
-    
     [top]
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle {
@@ -269,9 +266,9 @@ template $KeyMakerBackupCenterDialog : Adw.Dialog {
             }
           };
         }
-      };
     };
-  }
+  };
+}
 
 menu backup_menu {
   section {

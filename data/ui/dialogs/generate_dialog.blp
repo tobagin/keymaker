@@ -4,11 +4,9 @@ using Adw 1;
 template $KeyMakerGenerateKeyDialog: Adw.Dialog {
   title: _("Generate SSH Key");
   content-width: 800;
-  content-height: 600;
+  content-height: 800;
 
   child: Adw.ToolbarView {
-    top-bar-style: raised;
-    bottom-bar-style: raised;
     
     [top]
     Adw.HeaderBar {
@@ -194,7 +192,6 @@ template $KeyMakerGenerateKeyDialog: Adw.Dialog {
         }
       }
     };
-
 
     [bottom]
     Adw.HeaderBar {

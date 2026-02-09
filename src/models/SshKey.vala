@@ -77,6 +77,9 @@ namespace KeyMaker {
          */
         public string get_type_description () {
             var type_str = key_type.to_string ().up ();
+            if (key_type == SSHKeyType.ED25519_SK) {
+                return "ED25519-SK";
+            }
             if (bit_size > 0) {
                 switch (key_type) {
                     case SSHKeyType.RSA:

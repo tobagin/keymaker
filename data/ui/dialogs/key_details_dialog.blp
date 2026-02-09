@@ -4,10 +4,9 @@ using Adw 1;
 template $KeyMakerKeyDetailsDialog : Adw.Dialog {
   title: _("SSH Key Details");
   content-width: 800;
-  content-height: 600;
+  content-height: 800;
 
-  Adw.ToolbarView {
-    top-bar-style: raised;
+  child: Adw.ToolbarView {
     
     [top]
     Adw.HeaderBar {
@@ -32,154 +31,154 @@ template $KeyMakerKeyDetailsDialog : Adw.Dialog {
           margin-start: 24;
           margin-end: 24;
 
-        Adw.PreferencesGroup {
-          title: _("Key Information");
+          Adw.PreferencesGroup {
+            title: _("Key Information");
 
-          Adw.ActionRow key_type_row {
-            title: _("Type");
-            subtitle-selectable: true;
-            
-            [prefix]
-            Image {
-              icon-name: "dialog-password-symbolic";
+            Adw.ActionRow key_type_row {
+              title: _("Type");
+              subtitle-selectable: true;
+              
+              [prefix]
+              Image {
+                icon-name: "dialog-password-symbolic";
+              }
+            }
+
+            Adw.ActionRow bit_size_row {
+              title: _("Bit Size");
+              subtitle-selectable: true;
+              visible: false;
+              
+              [prefix]
+              Image {
+                icon-name: "applications-utilities-symbolic";
+              }
+            }
+
+            Adw.ActionRow fingerprint_row {
+              title: _("Fingerprint");
+              subtitle-selectable: true;
+              
+              [prefix]
+              Image {
+                icon-name: "auth-fingerprint-symbolic";
+              }
+
+              [suffix]
+              Button copy_fingerprint_button {
+                icon-name: "edit-copy-symbolic";
+                tooltip-text: _("Copy Fingerprint");
+                valign: center;
+                styles ["flat"]
+              }
+            }
+
+            Adw.ActionRow comment_row {
+              title: _("Comment");
+              subtitle-selectable: true;
+              
+              [prefix]
+              Image {
+                icon-name: "text-x-generic-symbolic";
+              }
             }
           }
 
-          Adw.ActionRow bit_size_row {
-            title: _("Bit Size");
-            subtitle-selectable: true;
-            visible: false;
-            
-            [prefix]
-            Image {
-              icon-name: "applications-utilities-symbolic";
+          Adw.PreferencesGroup {
+            title: _("File Information");
+
+            Adw.ActionRow private_path_row {
+              title: _("Private Key");
+              subtitle-selectable: true;
+              
+              [prefix]
+              Image {
+                icon-name: "security-medium-symbolic";
+              }
+
+              [suffix]
+              Button copy_private_path_button {
+                icon-name: "edit-copy-symbolic";
+                tooltip-text: _("Copy Path");
+                valign: center;
+                styles ["flat"]
+              }
+            }
+
+            Adw.ActionRow private_permissions_row {
+              title: _("Private Key Permissions");
+              subtitle-selectable: true;
+              
+              [prefix]
+              Image {
+                icon-name: "system-lock-screen-symbolic";
+              }
+            }
+
+            Adw.ActionRow public_path_row {
+              title: _("Public Key");
+              subtitle-selectable: true;
+              
+              [prefix]
+              Image {
+                icon-name: "security-low-symbolic";
+              }
+
+              [suffix]
+              Button copy_public_path_button {
+                icon-name: "edit-copy-symbolic";
+                tooltip-text: _("Copy Path");
+                valign: center;
+                styles ["flat"]
+              }
+            }
+
+            Adw.ActionRow public_permissions_row {
+              title: _("Public Key Permissions");
+              subtitle-selectable: true;
+              
+              [prefix]
+              Image {
+                icon-name: "system-users-symbolic";
+              }
+            }
+
+            Adw.ActionRow modified_row {
+              title: _("Last Modified");
+              subtitle-selectable: true;
+              
+              [prefix]
+              Image {
+                icon-name: "x-office-calendar-symbolic";
+              }
             }
           }
 
-          Adw.ActionRow fingerprint_row {
-            title: _("Fingerprint");
-            subtitle-selectable: true;
-            
-            [prefix]
-            Image {
-              icon-name: "auth-fingerprint-symbolic";
-            }
-
-            [suffix]
-            Button copy_fingerprint_button {
+          Adw.PreferencesGroup {
+            title: _("Public Key Content");
+            header-suffix: Button copy_public_key_button {
               icon-name: "edit-copy-symbolic";
-              tooltip-text: _("Copy Fingerprint");
+              tooltip-text: _("Copy Public Key Content");
               valign: center;
               styles ["flat"]
+            };
+
+            ScrolledWindow public_key_scroll {
+              height-request: 120;
+              hscrollbar-policy: automatic;
+              vscrollbar-policy: automatic;
+              styles ["card"]
+
+              TextView public_key_text {
+                editable: false;
+                cursor-visible: false;
+                wrap-mode: char;
+                styles ["monospace"]
+              }
             }
           }
-
-          Adw.ActionRow comment_row {
-            title: _("Comment");
-            subtitle-selectable: true;
-            
-            [prefix]
-            Image {
-              icon-name: "text-x-generic-symbolic";
-            }
-          }
-        }
-
-        Adw.PreferencesGroup {
-          title: _("File Information");
-
-          Adw.ActionRow private_path_row {
-            title: _("Private Key");
-            subtitle-selectable: true;
-            
-            [prefix]
-            Image {
-              icon-name: "security-medium-symbolic";
-            }
-
-            [suffix]
-            Button copy_private_path_button {
-              icon-name: "edit-copy-symbolic";
-              tooltip-text: _("Copy Path");
-              valign: center;
-              styles ["flat"]
-            }
-          }
-
-          Adw.ActionRow private_permissions_row {
-            title: _("Private Key Permissions");
-            subtitle-selectable: true;
-            
-            [prefix]
-            Image {
-              icon-name: "system-lock-screen-symbolic";
-            }
-          }
-
-          Adw.ActionRow public_path_row {
-            title: _("Public Key");
-            subtitle-selectable: true;
-            
-            [prefix]
-            Image {
-              icon-name: "security-low-symbolic";
-            }
-
-            [suffix]
-            Button copy_public_path_button {
-              icon-name: "edit-copy-symbolic";
-              tooltip-text: _("Copy Path");
-              valign: center;
-              styles ["flat"]
-            }
-          }
-
-          Adw.ActionRow public_permissions_row {
-            title: _("Public Key Permissions");
-            subtitle-selectable: true;
-            
-            [prefix]
-            Image {
-              icon-name: "system-users-symbolic";
-            }
-          }
-
-          Adw.ActionRow modified_row {
-            title: _("Last Modified");
-            subtitle-selectable: true;
-            
-            [prefix]
-            Image {
-              icon-name: "x-office-calendar-symbolic";
-            }
-          }
-        }
-
-        Adw.PreferencesGroup {
-          title: _("Public Key Content");
-          header-suffix: Button copy_public_key_button {
-            icon-name: "edit-copy-symbolic";
-            tooltip-text: _("Copy Public Key Content");
-            valign: center;
-            styles ["flat"]
-          };
-
-          ScrolledWindow public_key_scroll {
-            height-request: 120;
-            hscrollbar-policy: automatic;
-            vscrollbar-policy: automatic;
-            styles ["card"]
-
-            TextView public_key_text {
-              editable: false;
-              cursor-visible: false;
-              wrap-mode: char;
-              styles ["monospace"]
-            }
-          }
-        }
         }
       }
     };
-  }
+  };
 }

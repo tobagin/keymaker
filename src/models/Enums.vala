@@ -16,6 +16,7 @@ namespace KeyMaker {
      */
     public enum SSHKeyType {
         ED25519,
+        ED25519_SK,
         RSA,
         ECDSA; // Listed but not recommended
         
@@ -23,6 +24,8 @@ namespace KeyMaker {
             switch (this) {
                 case ED25519:
                     return "ed25519";
+                case ED25519_SK:
+                    return "ed25519-sk";
                 case RSA:
                     return "rsa";
                 case ECDSA:
@@ -35,6 +38,7 @@ namespace KeyMaker {
         public string get_icon_name () {
             switch (this) {
                 case ED25519:
+                case ED25519_SK:
                     return "security-high-symbolic";
                 case RSA:
                     return "security-medium-symbolic";
@@ -49,6 +53,8 @@ namespace KeyMaker {
             switch (type_str.down ()) {
                 case "ed25519":
                     return ED25519;
+                case "ed25519-sk":
+                    return ED25519_SK;
                 case "rsa":
                     return RSA;
                 case "ecdsa":

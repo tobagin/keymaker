@@ -4,11 +4,11 @@ using Adw 1;
 template $KeyMakerRestoreBackupDialog : Adw.Dialog {
   title: _("Restore from Backup");
   content-width: 800;
-  content-height: 600;
+  content-height: 800;
 
-  child: Box {
-    orientation: vertical;
+  child: Adw.ToolbarView {
     
+    [top]
     Adw.HeaderBar {
       show-end-title-buttons: false;
       title-widget: Adw.WindowTitle {
@@ -20,15 +20,19 @@ template $KeyMakerRestoreBackupDialog : Adw.Dialog {
       Button cancel_button {
         label: _("Cancel");
       }
-      
-      [end]
+    }
+
+    [bottom]
+    Adw.HeaderBar bottom_bar {
+      show-end-title-buttons: false;
+      [title]
       Button restore_button {
         label: _("Restore Key(s)");
-        styles ["suggested-action"]
+        styles ["suggested-action", "pill"]
       }
     }
 
-    Adw.NavigationView main_navigation {
+    content: Adw.NavigationView main_navigation {
       vexpand: true;
       
       Adw.NavigationPage selection_page {
@@ -130,6 +134,6 @@ template $KeyMakerRestoreBackupDialog : Adw.Dialog {
           }
         };
       }
-    }
+    };
   };
 }

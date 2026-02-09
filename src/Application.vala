@@ -40,6 +40,13 @@ namespace KeyMaker {
             // Initialize Adwaita
             Adw.init ();
             
+            // Ensure .ssh directory exists early on
+            try {
+                KeyMaker.Filesystem.ensure_ssh_dir ();
+            } catch (Error e) {
+                warning ("Failed to ensure SSH directory: %s", e.message);
+            }
+            
             // Optional: allow disabling forwarded SSH agent inside Flatpak to avoid
             // sandbox socket issues (e.g. "Connection reset by peer" from ssh-auth).
             // Enable by launching with KEYMAKER_IGNORE_SSH_AGENT=1

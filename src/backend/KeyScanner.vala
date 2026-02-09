@@ -310,6 +310,7 @@ namespace KeyMaker {
                         switch (parts[0]) {
                             case "ssh-rsa": key_type_quick = SSHKeyType.RSA; break;
                             case "ssh-ed25519": key_type_quick = SSHKeyType.ED25519; break;
+                            case "sk-ssh-ed25519@openssh.com": key_type_quick = SSHKeyType.ED25519_SK; break;
                             case "ecdsa-sha2-nistp256": key_type_quick = SSHKeyType.ECDSA; break;
                             case "ecdsa-sha2-nistp384": key_type_quick = SSHKeyType.ECDSA; break;
                             case "ecdsa-sha2-nistp521": key_type_quick = SSHKeyType.ECDSA; break;
@@ -323,6 +324,8 @@ namespace KeyMaker {
                             if (key_data.length > 700) bit_size_quick = 4096;
                             else if (key_data.length > 350) bit_size_quick = 2048;
                             else bit_size_quick = 1024;
+                        } else if (key_type_quick == SSHKeyType.ED25519 || key_type_quick == SSHKeyType.ED25519_SK) {
+                            bit_size_quick = 256;
                         }
                         var quick_src = line;
                         var quick_hash = Checksum.compute_for_string (ChecksumType.SHA256, quick_src);
@@ -403,7 +406,7 @@ namespace KeyMaker {
                 }
                 
                 // Ensure non-null bit size for constructor (-1 for non-RSA or unknown)
-                int bit_size_final = bit_size ?? -1;
+                int bit_size_final = bit_size ?? bit_size_quick;
                 debug ("KeyScanner: Creating SSHKey object...");
                 return new SSHKey (
                     private_path,

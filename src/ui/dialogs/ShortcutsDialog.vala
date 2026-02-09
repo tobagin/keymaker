@@ -9,19 +9,26 @@
  * (at your option) any later version.
  */
 
-#if DEVELOPMENT
-[GtkTemplate (ui = "/io/github/tobagin/keysmith/Devel/shortcuts_dialog.ui")]
-#else
-[GtkTemplate (ui = "/io/github/tobagin/keysmith/shortcuts_dialog.ui")]
-#endif
-public class KeyMaker.ShortcutsDialog : Adw.Dialog {
-    
-    public ShortcutsDialog () {
-        Object ();
-    }
+public class KeyMaker.ShortcutsDialog : GLib.Object {
     
     public static void show (Gtk.Window? parent = null) {
-        var dialog = new KeyMaker.ShortcutsDialog ();
-        dialog.present (parent);
+        try {
+            #if DEVELOPMENT
+            var resource_path = "/io/github/tobagin/keysmith/Devel/shortcuts_dialog.ui";
+            #else
+            var resource_path = "/io/github/tobagin/keysmith/shortcuts_dialog.ui";
+            #endif
+            
+            var builder = new Gtk.Builder.from_resource (resource_path);
+            var dialog = builder.get_object ("shortcuts_dialog") as Adw.ShortcutsDialog;
+            
+            if (dialog != null) {
+                dialog.present (parent);
+            } else {
+                warning ("Could not find shortcuts_dialog object in %s", resource_path);
+            }
+        } catch (Error e) {
+            warning ("Could not load shortcuts dialog: %s", e.message);
+        }
     }
 }

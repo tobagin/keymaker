@@ -149,7 +149,9 @@ namespace KeyMaker {
                         var line = lines[0].strip();
                         
                         // Check most specific patterns first, then broader ones
-                        if (line.contains("(ED25519)") || line.contains(" ED25519 ") || line.contains("ssh-ed25519")) {
+                        if (line.contains("sk-ssh-ed25519@openssh.com") || line.contains("ED25519-SK")) {
+                            return SSHKeyType.ED25519_SK;
+                        } else if (line.contains("(ED25519)") || line.contains(" ED25519 ") || line.contains("ssh-ed25519")) {
                             return SSHKeyType.ED25519;
                         } else if (line.contains("(ECDSA)") || line.contains(" ECDSA ") || line.contains("ecdsa-sha2")) {
                             return SSHKeyType.ECDSA;
@@ -226,6 +228,11 @@ namespace KeyMaker {
                     }
                 }
                 
+                // Handle bit size for security keys which always report 256
+                if (result.stdout != null && (result.stdout.contains("sk-ssh-ed25519") || result.stdout.contains("ED25519-SK"))) {
+                    return 256;
+                }
+
                 return null;
                 
             } catch (KeyMakerError.OPERATION_CANCELLED e) {
@@ -302,8 +309,12 @@ namespace KeyMaker {
             
             // Look for key type in the line - check most specific patterns first
             var line = output_line.strip();
-            if (line.contains("(ED25519)") || line.contains(" ED25519 ") || line.contains("ssh-ed25519")) {
+            if (line.contains("sk-ssh-ed25519@openssh.com") || line.contains("ED25519-SK") || line.contains("sk-ssh-ed25519")) {
+                info.key_type = SSHKeyType.ED25519_SK;
+                info.bit_size = 256;
+            } else if (line.contains("(ED25519)") || line.contains(" ED25519 ") || line.contains("ssh-ed25519")) {
                 info.key_type = SSHKeyType.ED25519;
+                info.bit_size = 256;
             } else if (line.contains("(ECDSA)") || line.contains(" ECDSA ") || line.contains("ecdsa-sha2")) {
                 info.key_type = SSHKeyType.ECDSA;
             } else if (line.contains("(RSA)") || line.contains(" RSA ") || line.contains("ssh-rsa")) {

@@ -369,6 +369,9 @@ public class KeyMaker.Window : Adw.ApplicationWindow {
             var filename = key_file.get_basename ();
             var destination = ssh_dir.get_child (filename);
             
+            // Ensure .ssh directory exists
+            KeyMaker.Filesystem.ensure_ssh_dir ();
+            
             // Check if key already exists in .ssh directory
             if (destination.query_exists ()) {
                 show_toast (_("Key '%s' already exists in SSH directory").printf (filename));
