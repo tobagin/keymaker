@@ -1,91 +1,105 @@
 ---
 name: Release
-description: Create a new version release by analyzing changes, bumping version, updating changelogs, committing, tagging, and pushing
+description: Create a new Keymaker release — analyze changes, bump version, update changelog/README/AppStream metadata, build, commit, tag, push, and create GitHub release
 ---
 
 # Release Skill
 
-This skill automates the entire release process for this project.
+Automates the release process for Keymaker (Vala/GTK4/libadwaita Flatpak app).
+
+Project facts:
+- App ID: `io.github.tobagin.keysmith` (note: dir is `keymaker`, app ID is `keysmith`)
+- Build system: Meson (no Cargo, no lockfiles)
+- Packaged as Flatpak via `flatpak-builder`
+- Manifests: `packaging/io.github.tobagin.keysmith.yml` (prod) and `…Devel.yml` (dev)
+- Version source of truth: `meson.build` line ~4 (`version: 'X.Y.Z'`)
 
 ## Workflow
 
-### Step 1: Analyze Changes Since Last Release
+### Step 1: Analyze changes since last release
 
 ```bash
-# Get the last release tag
 git describe --tags --abbrev=0
-
-# List all commits since the last tag
 git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges
-
-# Check for uncommitted changes
 git status --short
 ```
 
-Categorize all changes into:
-- **Added**: New features
-- **Changed**: Modifications to existing functionality
-- **Fixed**: Bug fixes
-- **Removed**: Removed features
-- **Breaking**: Breaking changes (triggers major version bump)
+Categorize changes:
+- ✨ **New Features** — user-visible additions
+- 🎨 **UI Refinements** — visual/UX polish
+- 🔧 **Changed** — behavior changes
+- 🐛 **Fixed** — bug fixes
+- 🏗️ **Maintenance** — metadata, docs, infra
+- ❌ **Breaking** — triggers major bump
 
-### Step 2: Determine Version Bump
+### Step 2: Determine version bump
 
-Follow [Semantic Versioning](https://semver.org/):
-- **MAJOR** (X.0.0): Breaking changes or major rewrites
+[SemVer](https://semver.org/):
+- **MAJOR** (X.0.0): Breaking changes
 - **MINOR** (x.Y.0): New features, backward compatible
-- **PATCH** (x.y.Z): Bug fixes, metadata updates, backward compatible
+- **PATCH** (x.y.Z): Bug fixes, metadata, backward compatible
 
-Current version can be found in:
-- `Cargo.toml` (line ~3): `version = "X.Y.Z"`
-- `meson.build` (line ~2): `version: 'X.Y.Z'`
+Current version: `meson.build` line 4 (`version: 'X.Y.Z'`).
 
-### Step 3: Update Version Numbers
+**Confirm version with user before proceeding.**
 
-Update the version in these files:
-1. **`Cargo.toml`**: `version = "X.Y.Z"`
-2. **`meson.build`**: `version: 'X.Y.Z'`
+### Step 3: Update version in `meson.build`
 
-### Step 4: Update CHANGELOG.md
+Edit `meson.build` line ~4:
 
-Move content from `[Unreleased]` section to a new version section:
+```meson
+project(
+    'keysmith',
+    'vala', 'c',
+    version: 'X.Y.Z',
+    ...
+)
+```
+
+### Step 4: Update `CHANGELOG.md`
+
+Insert new section at the TOP (after the header block, before previous releases). Match existing emoji-grouped style — do NOT use `[Unreleased]` placeholder, this project appends directly:
 
 ```markdown
 ## [X.Y.Z] - YYYY-MM-DD
 
-### Added
-- Feature description
+### ✨ New Features
+- **Feature**: Description.
 
-### Changed
-- Change description
+### 🔧 Changed
+- **Area**: Change description.
 
-### Fixed
-- Fix description
+### 🐛 Fixed
+- **Component**: Fix description.
 ```
 
-Reset the `[Unreleased]` section to empty placeholders.
+Only include subsections that have entries. CHANGELOG can be more detailed/technical than README.
 
-### Step 5: Update README.md
+### Step 5: Update `README.md`
 
-Update the version header section (around line 14):
+Replace the version header block (around lines 14-22):
+
 ```markdown
 ## 🎉 Version X.Y.Z - [Short Title]
 
-**Karere X.Y.Z** brings [brief description of main changes].
+**Keymaker X.Y.Z** brings [brief description].
 
 ### 🆕 What's New in X.Y.Z
 
-- **Feature 1**: Description
-- **Feature 2**: Description
+- **Feature 1**: Brief user-facing description.
+- **Feature 2**: Brief user-facing description.
 ```
 
-### Step 6: Update metainfo.xml.in
+Keep this section short and user-friendly — full detail lives in CHANGELOG.
 
-Add a new `<release>` entry at the TOP of the `<releases>` section (after line 97):
+### Step 6: Update `data/io.github.tobagin.keysmith.metainfo.xml.in`
+
+Add a new `<release>` entry at the TOP of the `<releases>` section (currently around line 107, immediately after `<releases>` on line 106):
 
 ```xml
 <release version="X.Y.Z" date="YYYY-MM-DD">
   <description>
+    <p>Keymaker X.Y.Z [one-sentence summary].</p>
     <ul>
       <li>Change description 1</li>
       <li>Change description 2</li>
@@ -94,60 +108,75 @@ Add a new `<release>` entry at the TOP of the `<releases>` section (after line 9
 </release>
 ```
 
-**File location**: `data/io.github.tobagin.karere.metainfo.xml.in`
+Rules:
+- No emojis in `<li>` items (AppStream validators reject them).
+- Keep `<li>` entries concise — one short line each.
+- Date format: `YYYY-MM-DD`.
 
-### Step 7: Update Cargo Lock and Sources
+### Step 7: Verify build
 
-// turbo
+Run the dev flatpak build to catch syntax/resource errors before tagging:
+
 ```bash
-cargo generate-lockfile
-python3 tools/flatpak-cargo-generator.py Cargo.lock -o packaging/cargo-sources.json
+./scripts/build.sh --dev
 ```
 
-### Step 8: Commit All Changes
-
-Stage and commit with a detailed message:
+If the build fails, fix issues and re-run before continuing. Optionally smoke-test:
 
 ```bash
-git add .
-git commit -m "Release vX.Y.Z
-
-Changes in this release:
-- [List main changes]
-- [One per line]
-
-Files updated:
-- Cargo.toml, meson.build (version bump)
-- CHANGELOG.md (release notes)
-- README.md (version header)
-- metainfo.xml.in (AppStream release)
-- Cargo.lock, cargo-sources.json (dependencies)"
+flatpak run io.github.tobagin.keysmith.Devel
 ```
 
-### Step 9: Create and Push Tag
+### Step 8: Commit all changes
 
 ```bash
-# Create annotated tag
+git add meson.build CHANGELOG.md README.md \
+  data/io.github.tobagin.keysmith.metainfo.xml.in
+git commit -m "Release vX.Y.Z"
+```
+
+Match existing commit-message style: short subject `Release vX.Y.Z` (see `git log --oneline` for prior releases). No `Co-Authored-By` trailer unless the user requests it.
+
+### Step 9: Create and push annotated tag
+
+```bash
 git tag -a vX.Y.Z -m "Release vX.Y.Z"
-
-# Push commits and tags
 git push origin HEAD --tags
 ```
 
-## Important Notes
+Never force-push tags unless the user explicitly asks.
 
-- Always use the format `vX.Y.Z` for tags (with the `v` prefix)
-- Date format in CHANGELOG.md and metainfo.xml is `YYYY-MM-DD`
-- The metainfo.xml release entries should be concise (no emojis in `<li>` items)
-- Keep README.md "What's New" section brief and user-friendly
-- CHANGELOG.md can be more detailed and technical
+### Step 10: Create GitHub release
 
-## File Locations Summary
+```bash
+gh release create vX.Y.Z --generate-notes
+```
 
-| File | Version Location | Purpose |
-|------|------------------|---------|
-| `Cargo.toml` | Line ~3 | Rust package version |
-| `meson.build` | Line ~2 | Build system version |
-| `CHANGELOG.md` | New section after line 8 | Detailed release notes |
-| `README.md` | Lines 14-22 | User-facing highlights |
-| `data/io.github.tobagin.karere.metainfo.xml.in` | After line 97 | AppStream metadata |
+Or pass `--notes-file` with curated notes derived from the CHANGELOG entry.
+
+### Step 11: Verify
+
+Report to user:
+- Tag created: `git tag --list vX.Y.Z`
+- Commit hash: `git rev-parse HEAD`
+- Push success
+- GitHub release URL (from `gh release view vX.Y.Z --json url -q .url`)
+- Reminder: Flathub PR must be opened separately to ship the new version to users.
+
+## File Locations
+
+| File | Update | Purpose |
+|------|--------|---------|
+| `meson.build` | Line ~4 (`version:`) | Build system version (source of truth) |
+| `CHANGELOG.md` | New section at top | Detailed release notes |
+| `README.md` | Lines ~14-22 | User-facing highlights |
+| `data/io.github.tobagin.keysmith.metainfo.xml.in` | Top of `<releases>` (line ~107) | AppStream metadata |
+
+## Notes
+
+- Always tag with `v` prefix: `vX.Y.Z`.
+- Date format everywhere: `YYYY-MM-DD`.
+- AppStream `<li>` entries: no emojis, one short line each.
+- README "What's New": brief, user-friendly.
+- CHANGELOG: more detailed, can include technical context.
+- Flathub release is a separate workflow (PR to flathub/io.github.tobagin.keysmith) — out of scope for this skill.

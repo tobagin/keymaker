@@ -11,15 +11,14 @@ Manage SSH keys easily with a modern native app.
 
 </div>
 
-## 🎉 Version 1.3.0 - Security Key Support
+## 🎉 Version 1.4.0 - More SSH Options
 
-**Keymaker 1.3.0** adds support for `ED25519-SK` security keys and features several UI refinements.
+**Keymaker 1.4.0** adds Warp terminal support and three new per-host SSH config options.
 
-### 🆕 What's New in 1.3.0
+### 🆕 What's New in 1.4.0
 
-- **Security Keys**: Added support for `ED25519-SK` security keys.
-- **Improved Detection**: Enhanced key type and bit size detection for security-backed keys.
-- **UI Refinements**: Improved dialog dimensions and removed `raised` bar styles for a cleaner look.
+- **Warp Terminal**: Selectable as the preferred terminal emulator.
+- **SSH Host Options**: Configure `WarnWeakCrypto`, `IdentitiesOnly`, and `IdentityAgent` per host from the editor.
 
 For detailed release notes and version history, see [CHANGELOG.md](CHANGELOG.md).
 

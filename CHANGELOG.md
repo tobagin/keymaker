@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-05-10
+
+### ✨ New Features
+- **Warp Terminal**: Added Warp to the preferred terminal emulator list (#19).
+- **SSH Host Options**: Added editor support for `WarnWeakCrypto`, `IdentitiesOnly`, and `IdentityAgent` per-host options (#18).
+
 ## [1.3.0] - 2026-02-09
 
 ### ✨ New Features

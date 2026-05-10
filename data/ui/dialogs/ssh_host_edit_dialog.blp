@@ -162,10 +162,41 @@ template $KeyMakerSSHHostEditDialog : Adw.Dialog {
               title: _("Strict Host Key Checking");
               subtitle: _("Verify host keys for security");
               active: true;
-              
+
               [prefix]
               Image {
                 icon-name: "security-medium-symbolic";
+              }
+            }
+
+            Adw.SwitchRow warn_weak_crypto_row {
+              title: _("Warn Weak Crypto");
+              subtitle: _("Warn when negotiating weak ciphers, MACs, or key exchange");
+              active: true;
+
+              [prefix]
+              Image {
+                icon-name: "dialog-warning-symbolic";
+              }
+            }
+
+            Adw.SwitchRow identities_only_row {
+              title: _("Identities Only");
+              subtitle: _("Only use identity files configured for this host");
+
+              [prefix]
+              Image {
+                icon-name: "dialog-password-symbolic";
+              }
+            }
+
+            Adw.EntryRow identity_agent_row {
+              title: _("Identity Agent");
+              text: "";
+
+              [prefix]
+              Image {
+                icon-name: "system-run-symbolic";
               }
             }
           }

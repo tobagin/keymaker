@@ -88,6 +88,7 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
         terminal_model.append ("Ptyxis");
         terminal_model.append ("Terminator");
         terminal_model.append ("Tilix");
+        terminal_model.append ("Warp");
         terminal_model.append ("XFCE Terminal");
         terminal_model.append ("XTerm");
         preferred_terminal_row.set_model (terminal_model);
@@ -210,11 +211,14 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
             case "tilix":
                 terminal_index = 10;
                 break;
-            case "xfce4-terminal":
+            case "warp-terminal":
                 terminal_index = 11;
                 break;
-            case "xterm":
+            case "xfce4-terminal":
                 terminal_index = 12;
+                break;
+            case "xterm":
+                terminal_index = 13;
                 break;
             default: // "auto"
                 terminal_index = 0;
@@ -365,9 +369,12 @@ public class KeyMaker.PreferencesDialog : Adw.PreferencesDialog {
                 terminal = "tilix";
                 break;
             case 11:
-                terminal = "xfce4-terminal";
+                terminal = "warp-terminal";
                 break;
             case 12:
+                terminal = "xfce4-terminal";
+                break;
+            case 13:
                 terminal = "xterm";
                 break;
             default: // "auto"

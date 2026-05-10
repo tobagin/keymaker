@@ -24,6 +24,9 @@ namespace KeyMaker {
         public bool? forward_agent { get; set; }
         public bool? strict_host_key_checking { get; set; }
         public string? user_known_hosts_file { get; set; }
+        public bool? warn_weak_crypto { get; set; }
+        public bool? identities_only { get; set; }
+        public string? identity_agent { get; set; }
         public GenericArray<SSHConfigOption> custom_options { get; set; }
         public int line_number { get; set; default = -1; }
         
@@ -212,6 +215,15 @@ namespace KeyMaker {
                 case "userknownhostsfile":
                     host.user_known_hosts_file = value;
                     break;
+                case "warnweakcrypto":
+                    host.warn_weak_crypto = (value.down () == "yes");
+                    break;
+                case "identitiesonly":
+                    host.identities_only = (value.down () == "yes");
+                    break;
+                case "identityagent":
+                    host.identity_agent = value;
+                    break;
                 default:
                     host.add_custom_option (parts[0], value);
                     break;
@@ -265,7 +277,19 @@ namespace KeyMaker {
                 if (host.user_known_hosts_file != null) {
                     builder.append_printf ("    UserKnownHostsFile %s\n", host.user_known_hosts_file);
                 }
-                
+
+                if (host.warn_weak_crypto != null) {
+                    builder.append_printf ("    WarnWeakCrypto %s\n", host.warn_weak_crypto ? "yes" : "no");
+                }
+
+                if (host.identities_only != null) {
+                    builder.append_printf ("    IdentitiesOnly %s\n", host.identities_only ? "yes" : "no");
+                }
+
+                if (host.identity_agent != null) {
+                    builder.append_printf ("    IdentityAgent %s\n", host.identity_agent);
+                }
+
                 // Add custom options
                 for (int j = 0; j < host.custom_options.length; j++) {
                     var option = host.custom_options[j];

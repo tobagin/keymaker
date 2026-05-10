@@ -50,7 +50,16 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
     
     [GtkChild]
     private unowned Adw.SwitchRow strict_host_key_checking_row;
-    
+
+    [GtkChild]
+    private unowned Adw.SwitchRow warn_weak_crypto_row;
+
+    [GtkChild]
+    private unowned Adw.SwitchRow identities_only_row;
+
+    [GtkChild]
+    private unowned Adw.EntryRow identity_agent_row;
+
     [GtkChild]
     private unowned Gtk.Button save_button;
     
@@ -298,7 +307,16 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         if (strict_host_key_checking_row != null) {
             strict_host_key_checking_row.active = existing_host.strict_host_key_checking ?? true;
         }
-        
+        if (warn_weak_crypto_row != null) {
+            warn_weak_crypto_row.active = existing_host.warn_weak_crypto ?? true;
+        }
+        if (identities_only_row != null) {
+            identities_only_row.active = existing_host.identities_only ?? false;
+        }
+        if (identity_agent_row != null) {
+            identity_agent_row.text = existing_host.identity_agent ?? "";
+        }
+
         if (existing_host.identity_file != null) {
             selected_identity_file = existing_host.identity_file;
             // Note: Actual selection happens in setup_identity_files() after keys are loaded
@@ -314,6 +332,15 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         }
         if (strict_host_key_checking_row != null) {
             strict_host_key_checking_row.active = true;
+        }
+        if (warn_weak_crypto_row != null) {
+            warn_weak_crypto_row.active = true;
+        }
+        if (identities_only_row != null) {
+            identities_only_row.active = false;
+        }
+        if (identity_agent_row != null) {
+            identity_agent_row.text = "";
         }
     }
     
@@ -550,7 +577,11 @@ public class KeyMaker.SSHHostEditDialog : Adw.Dialog {
         host.proxy_jump = get_selected_proxy_jump ();
         host.forward_agent = forward_agent_row.active;
         host.strict_host_key_checking = strict_host_key_checking_row.active;
-        
+        host.warn_weak_crypto = warn_weak_crypto_row.active;
+        host.identities_only = identities_only_row.active;
+        var identity_agent_text = identity_agent_row.text.strip ();
+        host.identity_agent = identity_agent_text.length > 0 ? identity_agent_text : null;
+
         host_saved (host);
         close ();
     }

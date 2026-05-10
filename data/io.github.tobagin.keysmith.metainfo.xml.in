@@ -104,6 +104,15 @@
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
 
   <releases>
+    <release version="1.4.0" date="2026-05-10">
+      <description>
+        <p>Keymaker 1.4.0 adds Warp terminal support and three new per-host SSH config options.</p>
+        <ul>
+          <li>Add Warp to the preferred terminal emulator list</li>
+          <li>Add WarnWeakCrypto, IdentitiesOnly, and IdentityAgent options to the SSH host editor</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.3.0" date="2026-02-09">
       <description>
         <p>Keymaker 1.3.0 adds support for ED25519-SK security keys and features several UI refinements.</p>
