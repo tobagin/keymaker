@@ -1,0 +1,2823 @@
+# German translation for keymaker.
+# Copyright (C) 2026 Thiago Fernandes
+# This file is distributed under the same license as the keymaker package.
+# Samuel Rüegger <samuel@rueegger.me>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: keymaker\n"
+"Report-Msgid-Bugs-To: https://github.com/tobagin/keymaker/issues\n"
+"POT-Creation-Date: 2026-05-16 11:59+0200\n"
+"PO-Revision-Date: 2026-05-16 12:00+0200\n"
+"Last-Translator: Samuel Rüegger <samuel@rueegger.me>\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/io.github.tobagin.keysmith.desktop.in:2
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:7
+msgid "@APP_NAME@"
+msgstr "@APP_NAME@"
+
+#: data/io.github.tobagin.keysmith.desktop.in:3
+msgid "SSH Key Management Application"
+msgstr "Anwendung zur Verwaltung von SSH-Schlüsseln"
+
+#: data/io.github.tobagin.keysmith.desktop.in:9
+msgid "ssh;keys;security;remote;authentication;"
+msgstr "ssh;keys;schlüssel;security;sicherheit;remote;fernzugriff;authentication;authentifizierung;"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:7
+msgid "Default window width"
+msgstr "Standard-Fensterbreite"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:8
+msgid "The default width of the main window"
+msgstr "Die Standardbreite des Hauptfensters"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:13
+msgid "Default window height"
+msgstr "Standard-Fensterhöhe"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:14
+msgid "The default height of the main window"
+msgstr "Die Standardhöhe des Hauptfensters"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:19
+msgid "Window maximized state"
+msgstr "Fenster maximiert"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:20
+msgid "Whether the window is maximized"
+msgstr "Legt fest, ob das Fenster maximiert ist"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:25
+msgid "Default SSH key type"
+msgstr "Standard-Typ für SSH-Schlüssel"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:26
+msgid "The default SSH key type to use when generating new keys"
+msgstr "Der Standard-SSH-Schlüsseltyp beim Erzeugen neuer Schlüssel"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:31
+msgid "Default RSA key size"
+msgstr "Standardgröße für RSA-Schlüssel"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:32
+msgid "The default bit size for RSA keys"
+msgstr "Die Standard-Bitgröße für RSA-Schlüssel"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:37
+msgid "Default ECDSA curve"
+msgstr "Standard-ECDSA-Kurve"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:38
+msgid "The default curve size for ECDSA keys (256, 384, or 521)"
+msgstr "Die Standardgröße der Kurve für ECDSA-Schlüssel (256, 384 oder 521)"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:43
+msgid "Default key comment"
+msgstr "Standard-Schlüsselkommentar"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:44
+msgid "The default comment to use for new SSH keys"
+msgstr "Der Standardkommentar für neue SSH-Schlüssel"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:49
+msgid "Use passphrase by default"
+msgstr "Passphrase standardmäßig verwenden"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:50
+msgid "Whether to enable passphrase protection by default for new keys"
+msgstr "Legt fest, ob der Passphrase-Schutz für neue Schlüssel standardmäßig aktiviert ist"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:55
+msgid "Auto refresh interval"
+msgstr "Intervall zur automatischen Aktualisierung"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:56
+msgid ""
+"Interval in seconds for automatically refreshing the key list (0 to disable)"
+msgstr ""
+"Intervall in Sekunden für die automatische Aktualisierung der "
+"Schlüsselliste (0 zum Deaktivieren)"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:61
+msgid "Show fingerprints"
+msgstr "Fingerabdrücke anzeigen"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:62
+msgid "Whether to show key fingerprints in the key list"
+msgstr "Legt fest, ob Schlüssel-Fingerabdrücke in der Schlüsselliste angezeigt werden"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:67
+msgid "Confirm key deletions"
+msgstr "Löschen von Schlüsseln bestätigen"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:68
+msgid "Whether to show confirmation dialog before deleting keys"
+msgstr "Legt fest, ob vor dem Löschen von Schlüsseln ein Bestätigungsdialog angezeigt wird"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:73
+msgid "Theme preference"
+msgstr "Erscheinungsbild"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:74
+msgid "The theme to use: 'auto' (system), 'light', or 'dark'"
+msgstr "Zu verwendendes Erscheinungsbild: »auto« (System), »hell« oder »dunkel«"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:79
+msgid "Last version for which release notes were shown"
+msgstr "Letzte Version, für die Versionshinweise angezeigt wurden"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:80
+msgid ""
+"Tracks the last application version for which release notes were displayed "
+"to avoid showing them repeatedly"
+msgstr ""
+"Speichert die letzte Anwendungsversion, deren Versionshinweise angezeigt "
+"wurden, um eine wiederholte Anzeige zu vermeiden"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:85
+msgid "SSH key service mappings"
+msgstr "Dienstzuordnungen für SSH-Schlüssel"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:86
+msgid "Stores associations between SSH keys and services they are used for"
+msgstr "Speichert die Zuordnung von SSH-Schlüsseln zu den Diensten, für die sie verwendet werden"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:91
+msgid "SSH key rotation plans"
+msgstr "Rotationspläne für SSH-Schlüssel"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:92
+msgid ""
+"Stores rotation plan configurations for SSH keys including targets and "
+"settings"
+msgstr ""
+"Speichert die Rotationsplan-Konfigurationen für SSH-Schlüssel inklusive "
+"Zielen und Einstellungen"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:97
+#: data/io.github.tobagin.keysmith.gschema.xml.in:249
+msgid "SSH tunnel configurations"
+msgstr "SSH-Tunnel-Konfigurationen"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:98
+#: data/io.github.tobagin.keysmith.gschema.xml.in:250
+msgid "Stores saved SSH tunnel configurations"
+msgstr "Speichert die gespeicherten SSH-Tunnel-Konfigurationen"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:103
+msgid "Preferred terminal emulator"
+msgstr "Bevorzugter Terminal-Emulator"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:104
+msgid ""
+"The preferred terminal emulator to use for SSH connections: 'auto' (detect "
+"automatically) or specific terminal name"
+msgstr ""
+"Der bevorzugte Terminal-Emulator für SSH-Verbindungen: »auto« (automatisch "
+"erkennen) oder ein konkreter Terminal-Name"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:109
+msgid "Auto-run diagnostics"
+msgstr "Diagnose automatisch ausführen"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:110
+msgid "Whether to automatically run diagnostic tests when they are added"
+msgstr "Legt fest, ob Diagnosetests beim Hinzufügen automatisch ausgeführt werden"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:115
+msgid "Diagnostics retention period"
+msgstr "Aufbewahrungsdauer für Diagnoseergebnisse"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:116
+msgid ""
+"Number of days to keep diagnostic history entries before automatic cleanup"
+msgstr ""
+"Anzahl der Tage, für die Diagnoseeinträge vor der automatischen Bereinigung "
+"aufbewahrt werden"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:121
+msgid "GitHub connection status"
+msgstr "GitHub-Verbindungsstatus"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:122
+msgid "Whether a GitHub account is currently connected"
+msgstr "Legt fest, ob ein GitHub-Konto derzeit verbunden ist"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:127
+msgid "GitHub username"
+msgstr "GitHub-Benutzername"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:128
+msgid "The connected GitHub username"
+msgstr "Der verbundene GitHub-Benutzername"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:133
+msgid "GitLab connection status"
+msgstr "GitLab-Verbindungsstatus"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:134
+msgid "Whether a GitLab account is currently connected"
+msgstr "Legt fest, ob ein GitLab-Konto derzeit verbunden ist"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:139
+msgid "GitLab username"
+msgstr "GitLab-Benutzername"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:140
+msgid "The connected GitLab username"
+msgstr "Der verbundene GitLab-Benutzername"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:145
+msgid "GitLab instance URL"
+msgstr "URL der GitLab-Instanz"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:146
+msgid "The URL of the GitLab instance (GitLab.com or self-hosted)"
+msgstr "Die URL der GitLab-Instanz (GitLab.com oder selbst gehostet)"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:151
+msgid "Allow self-signed certificates"
+msgstr "Selbstsignierte Zertifikate zulassen"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:152
+msgid ""
+"Whether to allow self-signed certificates for self-hosted GitLab instances "
+"(insecure)"
+msgstr ""
+"Legt fest, ob selbstsignierte Zertifikate für selbst gehostete GitLab-"
+"Instanzen zugelassen werden (unsicher)"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:157
+msgid "GitLab OAuth Client ID"
+msgstr "GitLab-OAuth-Client-Kennung"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:158
+msgid "The OAuth application client ID for GitLab"
+msgstr "Die OAuth-Client-Kennung der Anwendung für GitLab"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:163
+msgid "GitLab OAuth Client Secret"
+msgstr "GitLab-OAuth-Client-Geheimnis"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:164
+msgid "The OAuth application client secret for GitLab"
+msgstr "Das OAuth-Client-Geheimnis der Anwendung für GitLab"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:169
+msgid "Bitbucket connection status"
+msgstr "Bitbucket-Verbindungsstatus"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:170
+msgid "Whether a Bitbucket account is currently connected"
+msgstr "Legt fest, ob ein Bitbucket-Konto derzeit verbunden ist"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:175
+msgid "Bitbucket username"
+msgstr "Bitbucket-Benutzername"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:176
+msgid "The connected Bitbucket username"
+msgstr "Der verbundene Bitbucket-Benutzername"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:181
+msgid "Gitea OAuth Client ID"
+msgstr "Gitea-OAuth-Client-Kennung"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:182
+msgid "The OAuth application client ID for Gitea"
+msgstr "Die OAuth-Client-Kennung der Anwendung für Gitea"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:187
+msgid "Gitea OAuth Client Secret"
+msgstr "Gitea-OAuth-Client-Geheimnis"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:188
+msgid "The OAuth application client secret for Gitea"
+msgstr "Das OAuth-Client-Geheimnis der Anwendung für Gitea"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:193
+msgid "GCP OAuth Client ID"
+msgstr "GCP-OAuth-Client-Kennung"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:194
+msgid "The OAuth application client ID for Google Cloud Platform"
+msgstr "Die OAuth-Client-Kennung der Anwendung für die Google Cloud Platform"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:199
+msgid "GCP OAuth Client Secret"
+msgstr "GCP-OAuth-Client-Geheimnis"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:200
+msgid "The OAuth application client secret for Google Cloud Platform"
+msgstr "Das OAuth-Client-Geheimnis der Anwendung für die Google Cloud Platform"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:205
+msgid "AWS IAM connection status"
+msgstr "AWS-IAM-Verbindungsstatus"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:206
+msgid "Whether an AWS IAM account is currently connected"
+msgstr "Legt fest, ob ein AWS-IAM-Konto derzeit verbunden ist"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:211
+msgid "AWS IAM username"
+msgstr "AWS-IAM-Benutzername"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:212
+msgid "The connected AWS IAM username"
+msgstr "Der verbundene AWS-IAM-Benutzername"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:217
+msgid "AWS region"
+msgstr "AWS-Region"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:218
+msgid "The AWS region to use for API requests"
+msgstr "Die für API-Anfragen zu verwendende AWS-Region"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:223
+msgid "AWS Access Key ID (for lookup)"
+msgstr "AWS-Zugriffsschlüssel-Kennung (zum Nachschlagen)"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:224
+msgid "The AWS Access Key ID for retrieving the secret from Secret Service"
+msgstr "Die AWS-Zugriffsschlüssel-Kennung zum Abrufen des Geheimnisses vom Secret Service"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:229
+msgid "Cloud provider key cache"
+msgstr "Schlüssel-Zwischenspeicher des Cloud-Anbieters"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:230
+msgid "JSON cache of cloud provider SSH keys for offline viewing"
+msgstr "JSON-Zwischenspeicher der SSH-Schlüssel von Cloud-Anbietern für die Offline-Anzeige"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:235
+msgid "Show deployment warning"
+msgstr "Warnung beim Einspielen anzeigen"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:236
+msgid "Whether to show security warning before deploying keys to cloud"
+msgstr "Legt fest, ob vor dem Einspielen von Schlüsseln in die Cloud eine Sicherheitswarnung angezeigt wird"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:241
+msgid "Cloud provider accounts"
+msgstr "Konten bei Cloud-Anbietern"
+
+#: data/io.github.tobagin.keysmith.gschema.xml.in:242
+msgid ""
+"JSON array of configured cloud provider accounts (GitHub, GitLab, Bitbucket)"
+msgstr ""
+"JSON-Liste konfigurierter Konten bei Cloud-Anbietern (GitHub, GitLab, "
+"Bitbucket)"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:8
+msgid "Manage SSH keys easily"
+msgstr "SSH-Schlüssel einfach verwalten"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:11
+msgid ""
+"Keymaker allows you to manage your SSH keys without dealing with the command "
+"line. It helps you generate new keys, view existing ones, and deploy them to "
+"servers with a simple interface."
+msgstr ""
+"Keymaker ermöglicht das Verwalten von SSH-Schlüsseln ohne Kommandozeile. "
+"Die Anwendung erzeugt neue Schlüssel, zeigt vorhandene an und spielt sie "
+"über eine einfache Oberfläche auf Server ein."
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:15
+msgid "Features:"
+msgstr "Funktionen:"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:19
+msgid "Generate new SSH keys (Ed25519, RSA, ECDSA)"
+msgstr "Neue SSH-Schlüssel erzeugen (Ed25519, RSA, ECDSA)"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:20
+msgid "View and manage keys in your local directory"
+msgstr "Schlüssel im lokalen Verzeichnis ansehen und verwalten"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:21
+msgid "Copy public keys to your clipboard"
+msgstr "Öffentliche Schlüssel in die Zwischenablage kopieren"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:22
+msgid "Deploy keys to remote servers"
+msgstr "Schlüssel auf entfernten Servern einspielen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:23
+msgid "Update key passphrases"
+msgstr "Schlüssel-Passphrasen ändern"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:24
+msgid "Delete unused keys securely"
+msgstr "Unbenutzte Schlüssel sicher löschen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:25
+msgid "Modern interface built for GNOME"
+msgstr "Moderne Oberfläche für GNOME"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:37
+msgid "Main window showing SSH key management"
+msgstr "Hauptfenster mit der SSH-Schlüsselverwaltung"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:41
+msgid "Key generation wizard"
+msgstr "Assistent zum Erzeugen von Schlüsseln"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:45
+msgid "Detailed SSH key information"
+msgstr "Ausführliche Informationen zu SSH-Schlüsseln"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:49
+msgid "Deploy keys to servers easily"
+msgstr "Schlüssel einfach auf Servern einspielen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:53
+msgid "Application preferences"
+msgstr "Anwendungseinstellungen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:57
+msgid "Secure backup and restore"
+msgstr "Sichere Datensicherung und Wiederherstellung"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:61
+msgid "Manage SSH config hosts"
+msgstr "SSH-Konfigurations-Hosts verwalten"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:65
+msgid "Manage known hosts"
+msgstr "Bekannte Hosts verwalten"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:69
+msgid "About Keymaker"
+msgstr "Info zu Keymaker"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:78
+msgid "Thiago Fernandes"
+msgstr "Thiago Fernandes"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:97
+msgid "ssh"
+msgstr "ssh"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:98
+msgid "keys"
+msgstr "Schlüssel"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:99
+msgid "security"
+msgstr "Sicherheit"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:100
+msgid "remote"
+msgstr "Fernzugriff"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:101
+msgid "authentication"
+msgstr "Authentifizierung"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:109
+msgid ""
+"Keymaker 1.4.0 adds Warp terminal support and three new per-host SSH config "
+"options."
+msgstr ""
+"Keymaker 1.4.0 ergänzt Unterstützung für das Warp-Terminal sowie drei "
+"neue, hostspezifische SSH-Konfigurationsoptionen."
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:111
+msgid "Add Warp to the preferred terminal emulator list"
+msgstr "Warp zur Liste der bevorzugten Terminal-Emulatoren hinzugefügt"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:112
+msgid ""
+"Add WarnWeakCrypto, IdentitiesOnly, and IdentityAgent options to the SSH "
+"host editor"
+msgstr ""
+"Die Optionen WarnWeakCrypto, IdentitiesOnly und IdentityAgent im SSH-"
+"Host-Editor ergänzt"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:118
+msgid ""
+"Keymaker 1.3.0 adds support for ED25519-SK security keys and features "
+"several UI refinements."
+msgstr ""
+"Keymaker 1.3.0 unterstützt ED25519-SK-Sicherheitsschlüssel und enthält "
+"mehrere Verbesserungen der Oberfläche."
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:120
+msgid "Added support for ED25519-SK security keys"
+msgstr "Unterstützung für ED25519-SK-Sicherheitsschlüssel hinzugefügt"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:121
+msgid "Enhanced key type and bit size detection for security-backed keys"
+msgstr "Verbesserte Erkennung von Schlüsseltyp und Bitgröße für hardwaregestützte Schlüssel"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:122
+msgid ""
+"Improved dialog dimensions and removed raised bar styles for a cleaner look"
+msgstr ""
+"Verbesserte Dialogabmessungen und Entfernen erhabener Leistenstile für ein "
+"aufgeräumteres Erscheinungsbild"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:123
+msgid "Further refinements to dialog layouts for better responsiveness"
+msgstr "Weitere Anpassungen der Dialog-Layouts für besseres responsives Verhalten"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:129
+msgid ""
+"Keymaker 1.2.0 brings a fully adaptive mobile UI and improved navigation "
+"architecture."
+msgstr ""
+"Keymaker 1.2.0 bringt eine vollständig anpassbare mobile Oberfläche und "
+"eine verbesserte Navigationsarchitektur."
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:131
+msgid "Comprehensive mobile layout adaptation for smaller screens"
+msgstr "Umfassende mobile Layout-Anpassung für kleinere Bildschirme"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:132
+msgid "New navigation architecture using Adw.NavigationView"
+msgstr "Neue Navigationsarchitektur mit Adw.NavigationView"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:133
+msgid "Redesigned Backup page with bottom sheet integration"
+msgstr "Neu gestaltete Sicherungsseite mit Integration eines Bottom-Sheets"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:134
+msgid "Refined Hosts and Known Hosts pages"
+msgstr "Überarbeitete Seiten »Hosts« und »Bekannte Hosts«"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:140
+msgid "Documentation and metadata improvements:"
+msgstr "Verbesserungen an Dokumentation und Metadaten:"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:142
+msgid "Updated metadata summary and description for better clarity"
+msgstr "Zusammenfassung und Beschreibung der Metadaten für mehr Klarheit aktualisiert"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:143
+msgid "Added new branding colors"
+msgstr "Neue Markenfarben hinzugefügt"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:144
+msgid "Refined documentation and added Flathub/Ko-fi badges"
+msgstr "Dokumentation überarbeitet und Flathub-/Ko-fi-Plaketten hinzugefügt"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:150
+msgid "Major update and renaming:"
+msgstr "Großes Update und Umbenennung:"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:152
+msgid "Renamed application from \"KeySmith\" to \"Keymaker\""
+msgstr "Anwendung von »KeySmith« in »Keymaker« umbenannt"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:153
+msgid "Complete rewrite in Vala for better performance"
+msgstr "Vollständige Neuimplementierung in Vala für bessere Leistung"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:154
+msgid ""
+"Advanced SSH: Key-Service Mapping, Config Editor, and Recursive Key Scanning"
+msgstr ""
+"Erweiterte SSH-Funktionen: Schlüssel-Dienst-Zuordnung, Konfigurationseditor "
+"und rekursives Durchsuchen nach Schlüsseln"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:155
+msgid "Security: QR Code Backups and Time-locked recovery"
+msgstr "Sicherheit: QR-Code-Sicherungen und zeitgesperrte Wiederherstellung"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:156
+msgid "New Icons: Fresh new application icons (Thanks to Rosabel)"
+msgstr "Neue Symbole: Frische neue Anwendungssymbole (Dank an Rosabel)"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:157
+msgid "Added GUI password dialog for easier key copying"
+msgstr "Grafischen Passwortdialog für einfacheres Kopieren von Schlüsseln hinzugefügt"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:158
+msgid "Improved visual coding for key types"
+msgstr "Verbesserte visuelle Kennzeichnung von Schlüsseltypen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:159
+msgid "Refined About Window and release notes"
+msgstr "Überarbeitetes Info-Fenster und überarbeitete Versionshinweise"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:160
+msgid "Updated documentation screenshots"
+msgstr "Bildschirmfotos in der Dokumentation aktualisiert"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:161
+msgid "Added development profile with distinct styling"
+msgstr "Entwicklungsprofil mit eigenständigem Stil hinzugefügt"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:167
+msgid "Icon sizing fixes:"
+msgstr "Korrekturen an Symbolgrößen:"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:169
+msgid "Fixed 512x512 icon to correct dimensions (was 1024x1024)"
+msgstr "Symbol 512×512 auf die korrekten Abmessungen gebracht (war 1024×1024)"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:170
+msgid "Ensured all icon sizes match their directory specifications"
+msgstr "Sichergestellt, dass alle Symbolgrößen ihren Verzeichnisangaben entsprechen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:171
+msgid "Improved icon quality and consistency across all sizes"
+msgstr "Verbesserte Symbolqualität und Konsistenz über alle Größen hinweg"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:177
+msgid "Icon and quality improvements:"
+msgstr "Symbol- und Qualitätsverbesserungen:"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:179
+msgid "Updated application icon with new branding"
+msgstr "Anwendungssymbol mit neuem Branding aktualisiert"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:180
+msgid "Improved visual consistency across all icon sizes"
+msgstr "Verbesserte visuelle Konsistenz über alle Symbolgrößen hinweg"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:181
+msgid "Enhanced application quality guidelines compliance"
+msgstr "Bessere Einhaltung der Qualitätsrichtlinien für Anwendungen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:187
+msgid "Developer attribution update:"
+msgstr "Aktualisierung der Entwicklerangabe:"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:189
+msgid "Updated developer attribution to Thiago Fernandes"
+msgstr "Entwicklerangabe auf Thiago Fernandes aktualisiert"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:190
+msgid "Updated copyright notices and translation headers"
+msgstr "Urheberrechtshinweise und Übersetzungs-Header aktualisiert"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:196
+msgid "Initial release:"
+msgstr "Erstveröffentlichung:"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:198
+msgid "SSH key generation (Ed25519, RSA, ECDSA)"
+msgstr "Erzeugen von SSH-Schlüsseln (Ed25519, RSA, ECDSA)"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:199
+msgid "Key management and listing"
+msgstr "Schlüssel verwalten und auflisten"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:200
+msgid "Public key copying to clipboard"
+msgstr "Öffentlichen Schlüssel in die Zwischenablage kopieren"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:201
+msgid "ssh-copy-id command generation"
+msgstr "Erzeugen von ssh-copy-id-Befehlen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:202
+msgid "Passphrase management"
+msgstr "Verwaltung von Passphrasen"
+
+#: data/io.github.tobagin.keysmith.metainfo.xml.in:203
+msgid "GTK4 and Libadwaita interface"
+msgstr "Oberfläche mit GTK4 und Libadwaita"
+
+#: data/ui/window.blp:25
+msgid "Main Menu"
+msgstr "Hauptmenü"
+
+#: data/ui/window.blp:46
+msgid "SSH"
+msgstr "SSH"
+
+#: data/ui/window.blp:54
+msgid "Hosts"
+msgstr "Hosts"
+
+#: data/ui/window.blp:62 data/ui/pages/known_hosts_page.blp:40
+msgid "Known Hosts"
+msgstr "Bekannte Hosts"
+
+#: data/ui/window.blp:70
+msgid "Backup"
+msgstr "Sicherung"
+
+#: data/ui/window.blp:83
+msgid "_Preferences"
+msgstr "_Einstellungen"
+
+#: data/ui/window.blp:90
+msgid "Keyboard _Shortcuts"
+msgstr "Tasten_kürzel"
+
+#: data/ui/window.blp:95
+msgid "_About Keymaker"
+msgstr "_Info zu Keymaker"
+
+#: data/ui/window.blp:102
+msgid "_Quit"
+msgstr "_Beenden"
+
+#: data/ui/widgets/empty_state_row.blp:5
+msgid "No Keys Found"
+msgstr "Keine Schlüssel gefunden"
+
+#: data/ui/widgets/empty_state_row.blp:6
+msgid "Deploy a key to get started"
+msgstr "Einen Schlüssel einspielen, um zu beginnen"
+
+#: data/ui/widgets/key_list.blp:10
+msgid "No SSH Keys Found"
+msgstr "Keine SSH-Schlüssel gefunden"
+
+#: data/ui/widgets/key_list.blp:11
+msgid "Generate your first SSH key to get started with secure authentication"
+msgstr "Den ersten SSH-Schlüssel erzeugen, um mit sicherer Authentifizierung zu beginnen"
+
+#: data/ui/widgets/key_list.blp:16 data/ui/dialogs/generate_dialog.blp:5
+#: data/ui/dialogs/generate_dialog.blp:14
+msgid "Generate SSH Key"
+msgstr "SSH-Schlüssel erzeugen"
+
+#: data/ui/widgets/key_list.blp:55 data/ui/pages/keys_page.blp:41
+msgid "SSH Keys"
+msgstr "SSH-Schlüssel"
+
+#: data/ui/widgets/key_list.blp:61 data/ui/pages/keys_page.blp:42
+msgid "Manage your SSH authentication keys"
+msgstr "SSH-Authentifizierungsschlüssel verwalten"
+
+#: data/ui/widgets/key_list.blp:75 data/ui/pages/keys_page.blp:52
+msgid "SSH Key Actions"
+msgstr "Aktionen für SSH-Schlüssel"
+
+#. Refresh
+#: data/ui/widgets/key_list.blp:83 data/ui/pages/keys_page.blp:60
+#: src/ui/pages/KeysPage.vala:119
+msgid "Refresh Key List"
+msgstr "Schlüsselliste aktualisieren"
+
+#: data/ui/widgets/key_list.blp:97
+msgid "Loading SSH keys..."
+msgstr "SSH-Schlüssel werden geladen …"
+
+#. Generate Key
+#: data/ui/widgets/key_list.blp:113 data/ui/pages/keys_page.blp:102
+#: src/ui/pages/KeysPage.vala:99
+msgid "Generate New SSH Key"
+msgstr "Neuen SSH-Schlüssel erzeugen"
+
+#. Import Key
+#: data/ui/widgets/key_list.blp:117 data/ui/dialogs/shortcuts_dialog.blp:35
+#: data/ui/pages/keys_page.blp:106 src/ui/pages/KeysPage.vala:109
+msgid "Import Existing Key"
+msgstr "Vorhandenen Schlüssel importieren"
+
+#. Actions Group
+#. Details
+#. View
+#: data/ui/widgets/key_row.blp:37 src/ui/KeyRow.vala:99
+#: src/ui/pages/BackupPage.vala:372 src/ui/pages/BackupPage.vala:563
+msgid "View Details"
+msgstr "Details anzeigen"
+
+#. Copy Public Key
+#: data/ui/widgets/key_row.blp:44 src/ui/KeyRow.vala:109
+msgid "Copy Public Key"
+msgstr "Öffentlichen Schlüssel kopieren"
+
+#. Copy to Server
+#: data/ui/widgets/key_row.blp:51 src/ui/KeyRow.vala:119
+msgid "Copy to Server"
+msgstr "Auf Server kopieren"
+
+#. Passphrase
+#. Determine label based on current state (async check would be ideal but we use cached state or check)
+#. For simplicity and UX speed, we use the same text logic as the desktop button tooltip if possible,
+#. or re-check. Since we can't easily sync-wait here, we'll check the desktop button's tooltip
+#. which acts as a proxy for the state, or use a generic "Manage Passphrase".
+#. A better approach is to store the state.
+#. For now, let's use "Change/Add Passphrase" based on the button tooltip which is updated by update_passphrase_button.
+#. Default to "Change Passphrase" if detection fails
+#. Check if key has passphrase
+#. Update UI based on key state
+#. Key has passphrase - show current passphrase field
+#. Default to assuming key has passphrase for safety
+#: data/ui/widgets/key_row.blp:58
+#: data/ui/dialogs/change_passphrase_dialog.blp:5
+#: data/ui/dialogs/change_passphrase_dialog.blp:14 src/ui/KeyRow.vala:135
+#: src/ui/KeyRow.vala:245 src/ui/KeyRow.vala:252
+#: src/ui/dialogs/ChangePassphraseDialog.vala:79
+#: src/ui/dialogs/ChangePassphraseDialog.vala:81
+#: src/ui/dialogs/ChangePassphraseDialog.vala:98
+msgid "Change Passphrase"
+msgstr "Passphrase ändern"
+
+#. Destructive Group
+#. Delete
+#: data/ui/widgets/key_row.blp:65 src/ui/KeyRow.vala:151
+msgid "Delete Key"
+msgstr "Schlüssel löschen"
+
+#. Add status icon to desktop container
+#. Mobile Menu Button (Gtk.Button opening Adw.BottomSheet)
+#. Create mobile menu button (Gtk.Button opening Adw.BottomSheet)
+#: data/ui/widgets/key_row.blp:73 data/ui/pages/backup_page.blp:75
+#: data/ui/pages/backup_page.blp:136 data/ui/pages/hosts_page.blp:73
+#: data/ui/pages/keys_page.blp:68 data/ui/pages/known_hosts_page.blp:88
+#: src/ui/KeyRow.vala:84 src/ui/pages/BackupPage.vala:129
+#: src/ui/pages/BackupPage.vala:181 src/ui/pages/BackupPage.vala:354
+#: src/ui/pages/BackupPage.vala:360 src/ui/pages/BackupPage.vala:545
+#: src/ui/pages/BackupPage.vala:551 src/ui/pages/HostsPage.vala:325
+#: src/ui/pages/HostsPage.vala:331 src/ui/pages/KnownHostsPage.vala:282
+#: src/ui/pages/KnownHostsPage.vala:288
+msgid "Actions"
+msgstr "Aktionen"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:5
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:13
+#: data/ui/dialogs/ssh_agent_dialog.blp:52
+msgid "Add Key to Agent"
+msgstr "Schlüssel zum Agenten hinzufügen"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:14
+msgid "Add SSH keys to the authentication agent"
+msgstr "SSH-Schlüssel zum Authentifizierungs-Agenten hinzufügen"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:34
+msgid "Select Key"
+msgstr "Schlüssel auswählen"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:35
+msgid "Choose an SSH key to add to the agent"
+msgstr "SSH-Schlüssel auswählen, der dem Agenten hinzugefügt werden soll"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:49
+msgid "Options"
+msgstr "Optionen"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:52
+msgid "Auto-remove after timeout"
+msgstr "Nach Zeitablauf automatisch entfernen"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:53
+msgid "Automatically remove key from agent after specified time"
+msgstr "Schlüssel nach der angegebenen Zeit automatisch aus dem Agenten entfernen"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:62
+msgid "Timeout (minutes)"
+msgstr "Zeitüberschreitung (Minuten)"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:63
+msgid "Key will be removed after this many minutes"
+msgstr "Schlüssel wird nach dieser Anzahl Minuten entfernt"
+
+#: data/ui/dialogs/add_key_to_agent_dialog.blp:89
+msgid "Add to Agent"
+msgstr "Zum Agenten hinzufügen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:5
+#: data/ui/dialogs/backup_center_dialog.blp:13
+#: data/ui/dialogs/backup_center_dialog.blp:47
+msgid "Backup & Recovery Center"
+msgstr "Sicherungs- und Wiederherstellungszentrum"
+
+#: data/ui/dialogs/backup_center_dialog.blp:14
+#: data/ui/dialogs/backup_center_dialog.blp:48
+msgid "Manage your SSH key backups and emergency recovery options"
+msgstr "Sicherungen von SSH-Schlüsseln und Optionen zur Notfallwiederherstellung verwalten"
+
+#: data/ui/dialogs/backup_center_dialog.blp:30
+msgid "Overview"
+msgstr "Übersicht"
+
+#: data/ui/dialogs/backup_center_dialog.blp:60
+#: data/ui/dialogs/backup_center_dialog.blp:134
+msgid "Regular Backups"
+msgstr "Reguläre Sicherungen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:61
+msgid "Day-to-day backup operations"
+msgstr "Tägliche Sicherungsvorgänge"
+
+#: data/ui/dialogs/backup_center_dialog.blp:64
+msgid "0 backups"
+msgstr "0 Sicherungen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:65
+msgid "Last backup: Never"
+msgstr "Letzte Sicherung: Nie"
+
+#: data/ui/dialogs/backup_center_dialog.blp:76
+msgid "Create Regular Backup"
+msgstr "Reguläre Sicherung erstellen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:85
+#: data/ui/dialogs/backup_center_dialog.blp:195
+#: data/ui/dialogs/emergency_vault_dialog.blp:31
+msgid "Emergency Vault"
+msgstr "Notfall-Tresor"
+
+#: data/ui/dialogs/backup_center_dialog.blp:86
+msgid "Disaster recovery backups"
+msgstr "Sicherungen zur Notfallwiederherstellung"
+
+#: data/ui/dialogs/backup_center_dialog.blp:89
+msgid "0 emergency backups"
+msgstr "0 Notfallsicherungen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:90
+msgid "Vault status: Empty"
+msgstr "Tresorstatus: Leer"
+
+#: data/ui/dialogs/backup_center_dialog.blp:101
+#: data/ui/dialogs/create_backup_dialog.blp:5
+msgid "Create Emergency Backup"
+msgstr "Notfallsicherung erstellen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:117
+#: data/ui/dialogs/emergency_vault_dialog.blp:49
+#: data/ui/pages/backup_page.blp:41
+msgid "Backups"
+msgstr "Sicherungen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:135
+#: data/ui/pages/backup_page.blp:42
+msgid "Day-to-day backup operations for routine key management"
+msgstr "Tägliche Sicherungsvorgänge für die routinemäßige Schlüsselverwaltung"
+
+#. Create
+#: data/ui/dialogs/backup_center_dialog.blp:143
+#: data/ui/dialogs/emergency_vault_dialog.blp:40
+#: data/ui/dialogs/emergency_vault_dialog.blp:75
+#: data/ui/pages/backup_page.blp:53 src/ui/pages/BackupPage.vala:141
+msgid "Create New Backup"
+msgstr "Neue Sicherung erstellen"
+
+#. Refresh
+#: data/ui/dialogs/backup_center_dialog.blp:150
+#: data/ui/dialogs/backup_center_dialog.blp:228
+#: data/ui/dialogs/emergency_vault_dialog.blp:82
+#: data/ui/pages/backup_page.blp:60 data/ui/pages/backup_page.blp:121
+#: src/ui/pages/BackupPage.vala:151 src/ui/pages/BackupPage.vala:202
+msgid "Refresh Backups"
+msgstr "Sicherungen aktualisieren"
+
+#: data/ui/dialogs/backup_center_dialog.blp:157
+#: data/ui/dialogs/emergency_vault_dialog.blp:89
+#: data/ui/pages/backup_page.blp:67 src/ui/pages/BackupPage.vala:164
+msgid "Remove All Backups"
+msgstr "Alle Sicherungen entfernen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:170
+msgid "No regular backups"
+msgstr "Keine regulären Sicherungen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:171
+#: data/ui/pages/backup_page.blp:90
+msgid "Create your first backup to get started"
+msgstr "Erste Sicherung erstellen, um zu beginnen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:180
+#: data/ui/dialogs/create_backup_dialog.blp:21
+msgid "Create Backup"
+msgstr "Sicherung erstellen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:212
+#: data/ui/dialogs/emergency_vault_dialog.blp:66
+#: data/ui/pages/backup_page.blp:102
+msgid "Emergency Backups"
+msgstr "Notfallsicherungen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:213
+#: data/ui/dialogs/emergency_vault_dialog.blp:67
+msgid "Encrypted backups of your SSH keys for emergency recovery"
+msgstr "Verschlüsselte Sicherungen Ihrer SSH-Schlüssel zur Notfallwiederherstellung"
+
+#. Create
+#: data/ui/dialogs/backup_center_dialog.blp:221
+#: data/ui/pages/backup_page.blp:114 src/ui/pages/BackupPage.vala:193
+msgid "Create New Emergency Backup"
+msgstr "Neue Notfallsicherung erstellen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:235
+#: data/ui/pages/backup_page.blp:128 src/ui/pages/BackupPage.vala:215
+msgid "Remove All Emergency Backups"
+msgstr "Alle Notfallsicherungen entfernen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:248
+#: data/ui/pages/backup_page.blp:150
+msgid "No emergency backups"
+msgstr "Keine Notfallsicherungen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:249
+#: data/ui/pages/backup_page.blp:151
+msgid "Create emergency backups for disaster recovery"
+msgstr "Notfallsicherungen für die Wiederherstellung im Katastrophenfall erstellen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:258
+msgid "Setup Emergency Vault"
+msgstr "Notfall-Tresor einrichten"
+
+#: data/ui/dialogs/backup_center_dialog.blp:276
+#: data/ui/pages/backup_page.blp:182
+msgid "Import Backup..."
+msgstr "Sicherung importieren …"
+
+#: data/ui/dialogs/backup_center_dialog.blp:281
+#: data/ui/pages/backup_page.blp:187
+msgid "Export All..."
+msgstr "Alle exportieren …"
+
+#: data/ui/dialogs/backup_center_dialog.blp:288
+#: data/ui/pages/backup_page.blp:194
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: data/ui/dialogs/backup_center_dialog.blp:293
+#: data/ui/pages/backup_page.blp:199
+msgid "Help"
+msgstr "Hilfe"
+
+#: data/ui/dialogs/change_passphrase_dialog.blp:15
+#: src/ui/dialogs/ChangePassphraseDialog.vala:80
+msgid "Update your SSH key passphrase"
+msgstr "Passphrase des SSH-Schlüssels ändern"
+
+#: data/ui/dialogs/change_passphrase_dialog.blp:31
+#: data/ui/dialogs/change_passphrase_dialog.blp:35
+msgid "Current Passphrase"
+msgstr "Aktuelle Passphrase"
+
+#: data/ui/dialogs/change_passphrase_dialog.blp:32
+msgid "Enter the current passphrase for this key"
+msgstr "Aktuelle Passphrase für diesen Schlüssel eingeben"
+
+#: data/ui/dialogs/change_passphrase_dialog.blp:46
+#: data/ui/dialogs/change_passphrase_dialog.blp:50
+msgid "New Passphrase"
+msgstr "Neue Passphrase"
+
+#: data/ui/dialogs/change_passphrase_dialog.blp:47
+msgid "Enter the new passphrase (leave blank to remove passphrase)"
+msgstr "Neue Passphrase eingeben (leer lassen, um die Passphrase zu entfernen)"
+
+#: data/ui/dialogs/change_passphrase_dialog.blp:60
+msgid "Confirm New Passphrase"
+msgstr "Neue Passphrase bestätigen"
+
+#: data/ui/dialogs/change_passphrase_dialog.blp:80
+msgid "Changing passphrase..."
+msgstr "Passphrase wird geändert …"
+
+#: data/ui/dialogs/change_passphrase_dialog.blp:91
+msgid "Change"
+msgstr "Ändern"
+
+#: data/ui/dialogs/copy_id_dialog.blp:5 data/ui/dialogs/copy_id_dialog.blp:14
+msgid "Copy Key to Server"
+msgstr "Schlüssel auf Server kopieren"
+
+#: data/ui/dialogs/copy_id_dialog.blp:15
+msgid "Deploy your SSH public key"
+msgstr "Öffentlichen SSH-Schlüssel einspielen"
+
+#: data/ui/dialogs/copy_id_dialog.blp:31
+msgid "Server Details"
+msgstr "Server-Details"
+
+#: data/ui/dialogs/copy_id_dialog.blp:32
+msgid "Enter the server connection details"
+msgstr "Verbindungsdetails des Servers eingeben"
+
+#: data/ui/dialogs/copy_id_dialog.blp:35
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:62
+msgid "Hostname or IP"
+msgstr "Hostname oder IP"
+
+#: data/ui/dialogs/copy_id_dialog.blp:44
+#: data/ui/dialogs/key_service_mapping_dialog.blp:56
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:76
+msgid "Username"
+msgstr "Benutzername"
+
+#: data/ui/dialogs/copy_id_dialog.blp:53
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:86
+msgid "Port"
+msgstr "Port"
+
+#: data/ui/dialogs/copy_id_dialog.blp:54
+msgid "SSH port (usually 22)"
+msgstr "SSH-Port (üblicherweise 22)"
+
+#: data/ui/dialogs/copy_id_dialog.blp:80
+msgid "Copying key to server..."
+msgstr "Schlüssel wird auf den Server kopiert …"
+
+#: data/ui/dialogs/copy_id_dialog.blp:91 data/ui/dialogs/terminal_dialog.blp:22
+#: data/ui/dialogs/terminal_dialog.blp:76
+msgid "Copy"
+msgstr "Kopieren"
+
+#: data/ui/dialogs/create_backup_dialog.blp:45
+msgid "Backup Details"
+msgstr "Details zur Sicherung"
+
+#: data/ui/dialogs/create_backup_dialog.blp:48
+msgid "Backup Name"
+msgstr "Name der Sicherung"
+
+#: data/ui/dialogs/create_backup_dialog.blp:58
+#: data/ui/dialogs/key_service_mapping_dialog.blp:65
+msgid "Description"
+msgstr "Beschreibung"
+
+#: data/ui/dialogs/create_backup_dialog.blp:69
+msgid "Backup Type"
+msgstr "Sicherungstyp"
+
+#: data/ui/dialogs/create_backup_dialog.blp:72
+#: data/ui/dialogs/key_details_dialog.blp:38
+msgid "Type"
+msgstr "Typ"
+
+#: data/ui/dialogs/create_backup_dialog.blp:73
+msgid "Choose backup format"
+msgstr "Sicherungsformat auswählen"
+
+#: data/ui/dialogs/create_backup_dialog.blp:82
+msgid "⚠️ Unencrypted - Not recommended for sensitive keys"
+msgstr "⚠️ Unverschlüsselt – nicht empfohlen für sensible Schlüssel"
+
+#: data/ui/dialogs/create_backup_dialog.blp:89
+msgid "Set Expiration"
+msgstr "Ablauf festlegen"
+
+#: data/ui/dialogs/create_backup_dialog.blp:90
+msgid "Backup will expire after specified date"
+msgstr "Sicherung läuft nach dem angegebenen Datum ab"
+
+#: data/ui/dialogs/create_backup_dialog.blp:99
+msgid "Expires On"
+msgstr "Läuft ab am"
+
+#: data/ui/dialogs/create_backup_dialog.blp:108
+msgid "Set Expiry Date"
+msgstr "Ablaufdatum festlegen"
+
+#: data/ui/dialogs/create_backup_dialog.blp:115
+msgid "Total Shares"
+msgstr "Gesamtanzahl der Teile"
+
+#: data/ui/dialogs/create_backup_dialog.blp:116
+msgid "Number of secret shares to create"
+msgstr "Anzahl der zu erstellenden geheimen Teile"
+
+#: data/ui/dialogs/create_backup_dialog.blp:131
+msgid "Threshold"
+msgstr "Schwellwert"
+
+#: data/ui/dialogs/create_backup_dialog.blp:132
+msgid "Minimum shares needed for recovery"
+msgstr "Mindestanzahl der Teile, die zur Wiederherstellung benötigt werden"
+
+#: data/ui/dialogs/create_backup_dialog.blp:148
+msgid "SSH Keys to Backup"
+msgstr "Zu sichernde SSH-Schlüssel"
+
+#: data/ui/dialogs/create_backup_dialog.blp:149
+msgid "Select which keys to include in the backup"
+msgstr "Auswählen, welche Schlüssel in die Sicherung einbezogen werden"
+
+#: data/ui/dialogs/create_backup_dialog.blp:158
+msgid "SSH Key to Backup"
+msgstr "Zu sichernder SSH-Schlüssel"
+
+#: data/ui/dialogs/create_backup_dialog.blp:159
+#: data/ui/dialogs/create_backup_dialog.blp:164
+msgid "Select a single key for QR code backup"
+msgstr "Einzelnen Schlüssel für die QR-Code-Sicherung auswählen"
+
+#: data/ui/dialogs/create_backup_dialog.blp:163
+msgid "SSH Key"
+msgstr "SSH-Schlüssel"
+
+#: data/ui/dialogs/create_backup_dialog.blp:198
+msgid "Creating Backup..."
+msgstr "Sicherung wird erstellt …"
+
+#: data/ui/dialogs/create_backup_dialog.blp:203
+msgid "Please wait while your keys are being secured"
+msgstr "Bitte warten, während die Schlüssel gesichert werden"
+
+#: data/ui/dialogs/emergency_vault_dialog.blp:5
+#: data/ui/dialogs/emergency_vault_dialog.blp:14
+#: data/ui/dialogs/emergency_vault_dialog.blp:35
+msgid "Emergency Access Vault"
+msgstr "Notfallzugriffs-Tresor"
+
+#: data/ui/dialogs/emergency_vault_dialog.blp:15
+msgid "Secure backup and recovery system"
+msgstr "Sicheres Sicherungs- und Wiederherstellungssystem"
+
+#: data/ui/dialogs/emergency_vault_dialog.blp:36
+msgid "Secure backup and recovery system for your SSH keys"
+msgstr "Sicheres Sicherungs- und Wiederherstellungssystem für SSH-Schlüssel"
+
+#: data/ui/dialogs/generate_dialog.blp:15
+msgid "Create a new SSH key pair"
+msgstr "Neues SSH-Schlüsselpaar erzeugen"
+
+#: data/ui/dialogs/generate_dialog.blp:35
+#: data/ui/dialogs/host_key_verification_dialog.blp:46
+msgid "Key Type"
+msgstr "Schlüsseltyp"
+
+#: data/ui/dialogs/generate_dialog.blp:36
+msgid "Choose the SSH key algorithm"
+msgstr "SSH-Schlüsselalgorithmus auswählen"
+
+#: data/ui/dialogs/generate_dialog.blp:39
+msgid "Algorithm"
+msgstr "Algorithmus"
+
+#: data/ui/dialogs/generate_dialog.blp:40
+msgid "Ed25519 is recommended for new keys"
+msgstr "Ed25519 wird für neue Schlüssel empfohlen"
+
+#. Setup key type model
+#: data/ui/dialogs/generate_dialog.blp:49
+#: data/ui/dialogs/preferences_dialog.blp:37
+#: src/ui/dialogs/GenerateDialog.vala:77
+msgid "Ed25519 (Recommended)"
+msgstr "Ed25519 (empfohlen)"
+
+#: data/ui/dialogs/generate_dialog.blp:50
+#: data/ui/dialogs/preferences_dialog.blp:38
+#: src/ui/dialogs/GenerateDialog.vala:78
+#: src/ui/dialogs/PreferencesDialog.vala:66
+msgid "RSA"
+msgstr "RSA"
+
+#: data/ui/dialogs/generate_dialog.blp:51
+#: data/ui/dialogs/preferences_dialog.blp:39
+msgid "ECDSA (Not Recommended)"
+msgstr "ECDSA (nicht empfohlen)"
+
+#: data/ui/dialogs/generate_dialog.blp:59
+msgid "RSA Key Size"
+msgstr "RSA-Schlüsselgröße"
+
+#: data/ui/dialogs/generate_dialog.blp:60
+msgid "Higher bit sizes are more secure but slower"
+msgstr "Höhere Bitgrößen sind sicherer, aber langsamer"
+
+#: data/ui/dialogs/generate_dialog.blp:70
+#: data/ui/dialogs/preferences_dialog.blp:51
+msgid "2048 bits"
+msgstr "2048 Bit"
+
+#: data/ui/dialogs/generate_dialog.blp:71
+#: data/ui/dialogs/preferences_dialog.blp:52
+msgid "3072 bits"
+msgstr "3072 Bit"
+
+#: data/ui/dialogs/generate_dialog.blp:72
+#: data/ui/dialogs/preferences_dialog.blp:53
+msgid "4096 bits (Recommended)"
+msgstr "4096 Bit (empfohlen)"
+
+#: data/ui/dialogs/generate_dialog.blp:73
+#: data/ui/dialogs/preferences_dialog.blp:54
+msgid "8192 bits"
+msgstr "8192 Bit"
+
+#: data/ui/dialogs/generate_dialog.blp:81
+msgid "ECDSA Curve"
+msgstr "ECDSA-Kurve"
+
+#: data/ui/dialogs/generate_dialog.blp:82
+msgid "P-256 is most widely supported"
+msgstr "P-256 wird am weitesten unterstützt"
+
+#: data/ui/dialogs/generate_dialog.blp:92
+msgid "P-256 (256 bits)"
+msgstr "P-256 (256 Bit)"
+
+#: data/ui/dialogs/generate_dialog.blp:93
+msgid "P-384 (384 bits)"
+msgstr "P-384 (384 Bit)"
+
+#: data/ui/dialogs/generate_dialog.blp:94
+msgid "P-521 (521 bits)"
+msgstr "P-521 (521 Bit)"
+
+#: data/ui/dialogs/generate_dialog.blp:103
+msgid "Key Details"
+msgstr "Schlüssel-Details"
+
+#: data/ui/dialogs/generate_dialog.blp:104
+msgid "Configure key filename and comment"
+msgstr "Dateinamen und Kommentar des Schlüssels festlegen"
+
+#: data/ui/dialogs/generate_dialog.blp:107
+msgid "Filename"
+msgstr "Dateiname"
+
+#: data/ui/dialogs/generate_dialog.blp:117
+#: data/ui/dialogs/key_details_dialog.blp:77
+msgid "Comment"
+msgstr "Kommentar"
+
+#: data/ui/dialogs/generate_dialog.blp:127
+msgid "Security"
+msgstr "Sicherheit"
+
+#: data/ui/dialogs/generate_dialog.blp:128
+msgid "Configure passphrase protection"
+msgstr "Passphrase-Schutz einrichten"
+
+#: data/ui/dialogs/generate_dialog.blp:131
+msgid "Protect with Passphrase"
+msgstr "Mit Passphrase schützen"
+
+#: data/ui/dialogs/generate_dialog.blp:132
+msgid "Recommended for enhanced security"
+msgstr "Empfohlen für erhöhte Sicherheit"
+
+#: data/ui/dialogs/generate_dialog.blp:142
+#: data/ui/dialogs/restore_backup_dialog.blp:80
+msgid "Passphrase"
+msgstr "Passphrase"
+
+#: data/ui/dialogs/generate_dialog.blp:159
+msgid "Confirm Passphrase"
+msgstr "Passphrase bestätigen"
+
+#: data/ui/dialogs/generate_dialog.blp:185
+msgid "Generating SSH key..."
+msgstr "SSH-Schlüssel wird erzeugt …"
+
+#. Check if this is a "key already exists" error
+#. Re-enable button first
+#. Re-enable the button
+#: data/ui/dialogs/generate_dialog.blp:202
+#: src/ui/dialogs/GenerateDialog.vala:379
+#: src/ui/dialogs/GenerateDialog.vala:391
+msgid "Generate"
+msgstr "Erzeugen"
+
+#: data/ui/dialogs/host_key_conflict_dialog.blp:5
+msgid "Host Key Verification Failed"
+msgstr "Überprüfung des Host-Schlüssels fehlgeschlagen"
+
+#: data/ui/dialogs/host_key_conflict_dialog.blp:6
+msgid ""
+"The host key has changed. This could indicate a man-in-the-middle attack!"
+msgstr ""
+"Der Host-Schlüssel hat sich geändert. Dies könnte auf einen Man-in-the-"
+"Middle-Angriff hindeuten."
+
+#: data/ui/dialogs/host_key_conflict_dialog.blp:18
+#: data/ui/dialogs/host_key_verification_dialog.blp:37
+#: data/ui/dialogs/key_service_mapping_dialog.blp:51
+msgid "Hostname"
+msgstr "Hostname"
+
+#: data/ui/dialogs/host_key_conflict_dialog.blp:28
+msgid "Stored Fingerprint"
+msgstr "Gespeicherter Fingerabdruck"
+
+#: data/ui/dialogs/host_key_conflict_dialog.blp:39
+msgid "Presented Fingerprint"
+msgstr "Übermittelter Fingerabdruck"
+
+#: data/ui/dialogs/host_key_conflict_dialog.blp:51
+msgid ""
+"⚠ Only update the key if you trust the new fingerprint and know why it "
+"changed (e.g., server reinstall)."
+msgstr ""
+"⚠ Den Schlüssel nur aktualisieren, wenn dem neuen Fingerabdruck vertraut "
+"wird und der Grund der Änderung bekannt ist (z. B. Neuinstallation des "
+"Servers)."
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:5
+msgid "Verify Host Key"
+msgstr "Host-Schlüssel überprüfen"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:14
+msgid "Host Key Verification"
+msgstr "Überprüfung des Host-Schlüssels"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:34
+msgid "Host Information"
+msgstr "Host-Informationen"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:56
+msgid "Fingerprints"
+msgstr "Fingerabdrücke"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:59
+msgid "SHA256"
+msgstr "SHA256"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:70
+msgid "Copy SHA256 Fingerprint"
+msgstr "SHA256-Fingerabdruck kopieren"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:77
+msgid "MD5"
+msgstr "MD5"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:88
+msgid "Copy MD5 Fingerprint"
+msgstr "MD5-Fingerabdruck kopieren"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:96
+msgid "Verification"
+msgstr "Überprüfung"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:99
+msgid "Verification Status"
+msgstr "Überprüfungsstatus"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:108
+msgid "Manual Verification"
+msgstr "Manuelle Überprüfung"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:117
+msgid "Verify"
+msgstr "Überprüfen"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:125
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:126
+msgid "For trusted services, verify against official documentation"
+msgstr "Bei vertrauenswürdigen Diensten anhand der offiziellen Dokumentation überprüfen"
+
+#: data/ui/dialogs/host_key_verification_dialog.blp:129
+msgid "Official Documentation"
+msgstr "Offizielle Dokumentation"
+
+#: data/ui/dialogs/key_details_dialog.blp:5
+#: data/ui/dialogs/key_details_dialog.blp:14
+msgid "SSH Key Details"
+msgstr "SSH-Schlüssel-Details"
+
+#: data/ui/dialogs/key_details_dialog.blp:15
+msgid "View detailed information about your SSH key"
+msgstr "Detaillierte Informationen zum SSH-Schlüssel anzeigen"
+
+#: data/ui/dialogs/key_details_dialog.blp:35
+msgid "Key Information"
+msgstr "Schlüsselinformationen"
+
+#: data/ui/dialogs/key_details_dialog.blp:48
+msgid "Bit Size"
+msgstr "Bitgröße"
+
+#: data/ui/dialogs/key_details_dialog.blp:59
+msgid "Fingerprint"
+msgstr "Fingerabdruck"
+
+#: data/ui/dialogs/key_details_dialog.blp:70
+msgid "Copy Fingerprint"
+msgstr "Fingerabdruck kopieren"
+
+#: data/ui/dialogs/key_details_dialog.blp:88
+msgid "File Information"
+msgstr "Dateiinformationen"
+
+#: data/ui/dialogs/key_details_dialog.blp:91
+msgid "Private Key"
+msgstr "Privater Schlüssel"
+
+#: data/ui/dialogs/key_details_dialog.blp:102
+#: data/ui/dialogs/key_details_dialog.blp:130
+msgid "Copy Path"
+msgstr "Pfad kopieren"
+
+#: data/ui/dialogs/key_details_dialog.blp:109
+msgid "Private Key Permissions"
+msgstr "Berechtigungen des privaten Schlüssels"
+
+#: data/ui/dialogs/key_details_dialog.blp:119
+msgid "Public Key"
+msgstr "Öffentlicher Schlüssel"
+
+#: data/ui/dialogs/key_details_dialog.blp:137
+msgid "Public Key Permissions"
+msgstr "Berechtigungen des öffentlichen Schlüssels"
+
+#: data/ui/dialogs/key_details_dialog.blp:147
+msgid "Last Modified"
+msgstr "Zuletzt geändert"
+
+#: data/ui/dialogs/key_details_dialog.blp:158
+msgid "Public Key Content"
+msgstr "Inhalt des öffentlichen Schlüssels"
+
+#: data/ui/dialogs/key_details_dialog.blp:161
+msgid "Copy Public Key Content"
+msgstr "Inhalt des öffentlichen Schlüssels kopieren"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:5
+msgid "Edit Key Service Mapping"
+msgstr "Schlüssel-Dienst-Zuordnung bearbeiten"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:14
+msgid "Service Mapping"
+msgstr "Dienstzuordnung"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:15
+msgid "Associate key with a service or server"
+msgstr "Schlüssel einem Dienst oder Server zuordnen"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:33
+msgid "Service Information"
+msgstr "Dienstinformationen"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:36
+msgid "Service Name"
+msgstr "Dienstname"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:41
+msgid "Service Type"
+msgstr "Diensttyp"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:42
+msgid "Choose the type of service or server"
+msgstr "Art des Dienstes oder Servers auswählen"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:47
+msgid "Connection Details"
+msgstr "Verbindungsdetails"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:48
+msgid "Optional connection information for servers"
+msgstr "Optionale Verbindungsinformationen für Server"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:62
+msgid "Additional Information"
+msgstr "Weitere Informationen"
+
+#. Add responses
+#: data/ui/dialogs/key_service_mapping_dialog.blp:76
+#: data/ui/dialogs/restore_backup_dialog.blp:21 src/ui/pages/HostsPage.vala:252
+#: src/ui/pages/KnownHostsPage.vala:412 src/ui/pages/KnownHostsPage.vala:463
+#: src/ui/dialogs/CreateBackupDialog.vala:423
+#: src/ui/dialogs/DeleteKeyDialog.vala:32
+#: src/ui/dialogs/GenerateDialog.vala:406
+#: src/ui/dialogs/PreferencesDialog.vala:316
+#: src/ui/dialogs/SshConfigDialog.vala:327
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: data/ui/dialogs/key_service_mapping_dialog.blp:80
+msgid "Save Mapping"
+msgstr "Zuordnung speichern"
+
+#: data/ui/dialogs/preferences_dialog.blp:5
+#: data/ui/dialogs/shortcuts_dialog.blp:11
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: data/ui/dialogs/preferences_dialog.blp:8
+msgid "General"
+msgstr "Allgemein"
+
+#: data/ui/dialogs/preferences_dialog.blp:12
+msgid "Appearance"
+msgstr "Erscheinungsbild"
+
+#: data/ui/dialogs/preferences_dialog.blp:15
+msgid "Theme"
+msgstr "Thema"
+
+#: data/ui/dialogs/preferences_dialog.blp:16
+msgid "Choose the application's theme"
+msgstr "Erscheinungsbild der Anwendung auswählen"
+
+#: data/ui/dialogs/preferences_dialog.blp:19
+msgid "Auto (System Default)"
+msgstr "Automatisch (Systemstandard)"
+
+#: data/ui/dialogs/preferences_dialog.blp:20
+#: src/ui/dialogs/PreferencesDialog.vala:59
+msgid "Light"
+msgstr "Hell"
+
+#: data/ui/dialogs/preferences_dialog.blp:21
+#: src/ui/dialogs/PreferencesDialog.vala:60
+msgid "Dark"
+msgstr "Dunkel"
+
+#: data/ui/dialogs/preferences_dialog.blp:29
+msgid "Key Generation Defaults"
+msgstr "Standardwerte für die Schlüsselerzeugung"
+
+#: data/ui/dialogs/preferences_dialog.blp:30
+msgid "Set default values for new SSH key generation"
+msgstr "Standardwerte für die Erzeugung neuer SSH-Schlüssel festlegen"
+
+#: data/ui/dialogs/preferences_dialog.blp:33
+msgid "Default Key Type"
+msgstr "Standard-Schlüsseltyp"
+
+#: data/ui/dialogs/preferences_dialog.blp:34
+msgid "Default algorithm for new SSH keys"
+msgstr "Standardalgorithmus für neue SSH-Schlüssel"
+
+#: data/ui/dialogs/preferences_dialog.blp:46
+msgid "Default RSA Key Size"
+msgstr "Standard-RSA-Schlüsselgröße"
+
+#: data/ui/dialogs/preferences_dialog.blp:47
+msgid "Default bit size for RSA keys"
+msgstr "Standard-Bitgröße für RSA-Schlüssel"
+
+#: data/ui/dialogs/preferences_dialog.blp:61
+msgid "Default Comment"
+msgstr "Standardkommentar"
+
+#: data/ui/dialogs/preferences_dialog.blp:66
+msgid "Use Passphrase by Default"
+msgstr "Passphrase standardmäßig verwenden"
+
+#: data/ui/dialogs/preferences_dialog.blp:67
+msgid "Enable passphrase protection by default for new keys"
+msgstr "Passphrase-Schutz für neue Schlüssel standardmäßig aktivieren"
+
+#: data/ui/dialogs/preferences_dialog.blp:73
+msgid "Application Behavior"
+msgstr "Anwendungsverhalten"
+
+#: data/ui/dialogs/preferences_dialog.blp:76
+msgid "Auto-refresh Interval"
+msgstr "Intervall zur automatischen Aktualisierung"
+
+#: data/ui/dialogs/preferences_dialog.blp:77
+msgid "Automatically refresh key list (0 to disable, in seconds)"
+msgstr "Schlüsselliste automatisch aktualisieren (0 zum Deaktivieren, in Sekunden)"
+
+#: data/ui/dialogs/preferences_dialog.blp:88
+msgid "Confirm Key Deletions"
+msgstr "Löschen von Schlüsseln bestätigen"
+
+#: data/ui/dialogs/preferences_dialog.blp:89
+msgid "Show confirmation dialog before deleting SSH keys"
+msgstr "Vor dem Löschen von SSH-Schlüsseln einen Bestätigungsdialog anzeigen"
+
+#: data/ui/dialogs/preferences_dialog.blp:95
+msgid "Interface"
+msgstr "Oberfläche"
+
+#: data/ui/dialogs/preferences_dialog.blp:98
+msgid "Show Fingerprints"
+msgstr "Fingerabdrücke anzeigen"
+
+#: data/ui/dialogs/preferences_dialog.blp:99
+msgid "Display key fingerprints in the key list"
+msgstr "Schlüssel-Fingerabdrücke in der Schlüsselliste anzeigen"
+
+#: data/ui/dialogs/preferences_dialog.blp:105
+msgid "SSH Connections"
+msgstr "SSH-Verbindungen"
+
+#: data/ui/dialogs/preferences_dialog.blp:106
+msgid "Configure SSH connection behavior"
+msgstr "Verhalten von SSH-Verbindungen einrichten"
+
+#: data/ui/dialogs/preferences_dialog.blp:109
+msgid "Preferred Terminal"
+msgstr "Bevorzugtes Terminal"
+
+#: data/ui/dialogs/preferences_dialog.blp:110
+msgid "Terminal emulator to use for SSH connections"
+msgstr "Für SSH-Verbindungen zu verwendender Terminal-Emulator"
+
+#. Setup terminal model
+#: data/ui/dialogs/preferences_dialog.blp:113
+#: src/ui/dialogs/PreferencesDialog.vala:80
+msgid "Auto (Detect Automatically)"
+msgstr "Automatisch (automatisch erkennen)"
+
+#: data/ui/dialogs/preferences_dialog.blp:114
+msgid "Alacritty"
+msgstr "Alacritty"
+
+#: data/ui/dialogs/preferences_dialog.blp:115
+msgid "GNOME Console"
+msgstr "GNOME Console"
+
+#: data/ui/dialogs/preferences_dialog.blp:116
+msgid "GNOME Terminal"
+msgstr "GNOME-Terminal"
+
+#: data/ui/dialogs/preferences_dialog.blp:117
+msgid "Kitty"
+msgstr "Kitty"
+
+#: data/ui/dialogs/preferences_dialog.blp:118
+msgid "Konsole"
+msgstr "Konsole"
+
+#: data/ui/dialogs/preferences_dialog.blp:119
+msgid "LXTerminal"
+msgstr "LXTerminal"
+
+#: data/ui/dialogs/preferences_dialog.blp:120
+msgid "MATE Terminal"
+msgstr "MATE-Terminal"
+
+#: data/ui/dialogs/preferences_dialog.blp:121
+msgid "Ptyxis"
+msgstr "Ptyxis"
+
+#: data/ui/dialogs/preferences_dialog.blp:122
+msgid "Terminator"
+msgstr "Terminator"
+
+#: data/ui/dialogs/preferences_dialog.blp:123
+msgid "Tilix"
+msgstr "Tilix"
+
+#: data/ui/dialogs/preferences_dialog.blp:124
+msgid "Warp"
+msgstr "Warp"
+
+#: data/ui/dialogs/preferences_dialog.blp:125
+msgid "XFCE Terminal"
+msgstr "XFCE-Terminal"
+
+#: data/ui/dialogs/preferences_dialog.blp:126
+msgid "XTerm"
+msgstr "XTerm"
+
+#: data/ui/dialogs/preferences_dialog.blp:134
+msgid "Diagnostics"
+msgstr "Diagnose"
+
+#: data/ui/dialogs/preferences_dialog.blp:135
+msgid "Configure diagnostic testing behavior"
+msgstr "Verhalten der Diagnosetests einrichten"
+
+#: data/ui/dialogs/preferences_dialog.blp:138
+msgid "Auto-run Diagnostics"
+msgstr "Diagnose automatisch ausführen"
+
+#: data/ui/dialogs/preferences_dialog.blp:139
+msgid "Automatically start diagnostic tests when created"
+msgstr "Diagnosetests beim Erstellen automatisch starten"
+
+#: data/ui/dialogs/preferences_dialog.blp:144
+msgid "History Retention"
+msgstr "Aufbewahrung des Verlaufs"
+
+#: data/ui/dialogs/preferences_dialog.blp:145
+msgid "Number of days to keep diagnostic history"
+msgstr "Anzahl der Tage, für die der Diagnoseverlauf aufbewahrt wird"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:5
+#: data/ui/dialogs/restore_backup_dialog.blp:15
+msgid "Restore from Backup"
+msgstr "Aus Sicherung wiederherstellen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:16
+msgid "Recover your SSH keys"
+msgstr "SSH-Schlüssel wiederherstellen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:30
+msgid "Restore Key(s)"
+msgstr "Schlüssel wiederherstellen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:39
+msgid "Select Backup"
+msgstr "Sicherung auswählen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:55
+msgid "Available Backups"
+msgstr "Verfügbare Sicherungen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:56
+msgid "Select a backup to restore"
+msgstr "Sicherung zum Wiederherstellen auswählen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:65
+msgid "Restore Options"
+msgstr "Wiederherstellungsoptionen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:68
+msgid "Overwrite Existing Keys"
+msgstr "Vorhandene Schlüssel überschreiben"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:69
+msgid "Replace keys that already exist"
+msgstr "Bereits vorhandene Schlüssel ersetzen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:74
+msgid "Backup Existing Keys"
+msgstr "Vorhandene Schlüssel sichern"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:75
+msgid "Create backups before overwriting"
+msgstr "Vor dem Überschreiben Sicherungen erstellen"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:86
+msgid "Shamir Secret Shares"
+msgstr "Shamir-Geheimnisteile"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:107
+msgid "Restoring"
+msgstr "Wird wiederhergestellt"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:127
+msgid "Initializing restore..."
+msgstr "Wiederherstellung wird vorbereitet …"
+
+#: data/ui/dialogs/restore_backup_dialog.blp:132
+msgid "Please wait while your keys are being restored"
+msgstr "Bitte warten, während die Schlüssel wiederhergestellt werden"
+
+#: data/ui/dialogs/shortcuts_dialog.blp:5
+#: data/ui/dialogs/shortcuts_dialog.blp:21
+msgid "Keyboard Shortcuts"
+msgstr "Tastenkürzel"
+
+#: data/ui/dialogs/shortcuts_dialog.blp:8
+msgid "Application"
+msgstr "Anwendung"
+
+#: data/ui/dialogs/shortcuts_dialog.blp:16
+msgid "Quit"
+msgstr "Beenden"
+
+#: data/ui/dialogs/shortcuts_dialog.blp:27
+msgid "Keys"
+msgstr "Schlüssel"
+
+#: data/ui/dialogs/shortcuts_dialog.blp:30
+msgid "Generate New Key"
+msgstr "Neuen Schlüssel erzeugen"
+
+#: data/ui/dialogs/shortcuts_dialog.blp:40
+msgid "Search Keys"
+msgstr "Schlüssel suchen"
+
+#: data/ui/dialogs/shortcuts_dialog.blp:46
+msgid "Connections"
+msgstr "Verbindungen"
+
+#: data/ui/dialogs/shortcuts_dialog.blp:49
+msgid "New Connection"
+msgstr "Neue Verbindung"
+
+#: data/ui/dialogs/ssh_agent_dialog.blp:5
+#: data/ui/dialogs/ssh_agent_dialog.blp:14
+msgid "SSH Agent Manager"
+msgstr "SSH-Agent-Verwaltung"
+
+#: data/ui/dialogs/ssh_agent_dialog.blp:23
+msgid "Loading..."
+msgstr "Wird geladen …"
+
+#: data/ui/dialogs/ssh_agent_dialog.blp:24
+msgid "Checking SSH agent status"
+msgstr "SSH-Agent-Status wird geprüft"
+
+#: data/ui/dialogs/ssh_agent_dialog.blp:44
+msgid "Keys Loaded in Agent"
+msgstr "In den Agenten geladene Schlüssel"
+
+#: data/ui/dialogs/ssh_agent_dialog.blp:45
+msgid "These keys are currently available for SSH authentication"
+msgstr "Diese Schlüssel sind derzeit für die SSH-Authentifizierung verfügbar"
+
+#: data/ui/dialogs/ssh_agent_dialog.blp:60
+msgid "Refresh Agent Keys"
+msgstr "Agenten-Schlüssel aktualisieren"
+
+#: data/ui/dialogs/ssh_agent_dialog.blp:67
+msgid "Remove All Keys"
+msgstr "Alle Schlüssel entfernen"
+
+#: data/ui/dialogs/ssh_config_dialog.blp:5
+#: data/ui/dialogs/ssh_config_dialog.blp:13
+msgid "SSH Configuration"
+msgstr "SSH-Konfiguration"
+
+#: data/ui/dialogs/ssh_config_dialog.blp:14
+msgid "Manage SSH client host configurations"
+msgstr "SSH-Client-Host-Konfigurationen verwalten"
+
+#: data/ui/dialogs/ssh_config_dialog.blp:26
+#: data/ui/pages/known_hosts_page.blp:47
+msgid "Search hosts..."
+msgstr "Hosts suchen …"
+
+#: data/ui/dialogs/ssh_config_dialog.blp:37 src/ui/pages/HostsPage.vala:203
+msgid "No SSH Hosts"
+msgstr "Keine SSH-Hosts"
+
+#: data/ui/dialogs/ssh_config_dialog.blp:38
+msgid "Add SSH host configurations to manage your connections"
+msgstr "SSH-Host-Konfigurationen hinzufügen, um Verbindungen zu verwalten"
+
+#: data/ui/dialogs/ssh_config_dialog.blp:60 data/ui/pages/hosts_page.blp:40
+msgid "SSH Hosts"
+msgstr "SSH-Hosts"
+
+#: data/ui/dialogs/ssh_config_dialog.blp:61 data/ui/pages/hosts_page.blp:41
+msgid "Configure SSH client host settings from ~/.ssh/config"
+msgstr "SSH-Client-Host-Einstellungen aus ~/.ssh/config einrichten"
+
+#. Add New Host
+#: data/ui/dialogs/ssh_config_dialog.blp:68 data/ui/pages/hosts_page.blp:51
+#: src/ui/pages/HostsPage.vala:78
+msgid "Add New Host"
+msgstr "Neuen Host hinzufügen"
+
+#. Reload
+#: data/ui/dialogs/ssh_config_dialog.blp:75 data/ui/pages/hosts_page.blp:58
+#: src/ui/pages/HostsPage.vala:88
+msgid "Reload Configuration"
+msgstr "Konfiguration neu laden"
+
+#: data/ui/dialogs/ssh_config_dialog.blp:82 data/ui/pages/hosts_page.blp:65
+#: src/ui/pages/HostsPage.vala:101 src/ui/pages/HostsPage.vala:250
+msgid "Remove All Hosts"
+msgstr "Alle Hosts entfernen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:5
+msgid "Edit SSH Host"
+msgstr "SSH-Host bearbeiten"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:14
+msgid "SSH Host Configuration"
+msgstr "SSH-Host-Konfiguration"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:34
+msgid "Template"
+msgstr "Vorlage"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:35
+msgid "Choose a template to pre-fill common configurations"
+msgstr "Vorlage auswählen, um gängige Konfigurationen vorauszufüllen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:38
+msgid "Host Template"
+msgstr "Host-Vorlage"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:39
+msgid "Pre-configured settings for common services"
+msgstr "Vorkonfigurierte Einstellungen für gängige Dienste"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:49
+msgid "Basic Information"
+msgstr "Grundlegende Informationen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:52
+msgid "Name"
+msgstr "Name"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:73
+msgid "Connection Settings"
+msgstr "Verbindungseinstellungen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:87
+msgid "SSH port number (default: 22)"
+msgstr "SSH-Port-Nummer (Standard: 22)"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:104
+msgid "Authentication"
+msgstr "Authentifizierung"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:107
+msgid "Multiple Identity Files"
+msgstr "Mehrere Identitätsdateien"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:108
+msgid "Enable selection of multiple SSH keys for this host"
+msgstr "Auswahl mehrerer SSH-Schlüssel für diesen Host aktivieren"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:117
+msgid "Identity File"
+msgstr "Identitätsdatei"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:118
+msgid "SSH private key for authentication"
+msgstr "Privater SSH-Schlüssel für die Authentifizierung"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:127
+msgid "Identity Files"
+msgstr "Identitätsdateien"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:128
+msgid "Select multiple SSH private keys for authentication"
+msgstr "Mehrere private SSH-Schlüssel für die Authentifizierung auswählen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:139
+msgid "Advanced Options"
+msgstr "Erweiterte Optionen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:142
+msgid "Proxy Jump"
+msgstr "Proxy-Sprung"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:143
+msgid "Select a host to use as proxy"
+msgstr "Host auswählen, der als Proxy verwendet werden soll"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:152
+msgid "Forward SSH Agent"
+msgstr "SSH-Agent weiterleiten"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:153
+msgid "Forward authentication agent connections"
+msgstr "Verbindungen des Authentifizierungs-Agenten weiterleiten"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:162
+msgid "Strict Host Key Checking"
+msgstr "Strenge Host-Schlüssel-Prüfung"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:163
+msgid "Verify host keys for security"
+msgstr "Host-Schlüssel aus Sicherheitsgründen überprüfen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:173
+msgid "Warn Weak Crypto"
+msgstr "Vor schwacher Kryptografie warnen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:174
+msgid "Warn when negotiating weak ciphers, MACs, or key exchange"
+msgstr "Beim Aushandeln schwacher Chiffren, MACs oder Schlüsselaustauschverfahren warnen"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:184
+msgid "Identities Only"
+msgstr "Nur Identitäten"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:185
+msgid "Only use identity files configured for this host"
+msgstr "Nur für diesen Host konfigurierte Identitätsdateien verwenden"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:194
+msgid "Identity Agent"
+msgstr "Identitäts-Agent"
+
+#: data/ui/dialogs/ssh_host_edit_dialog.blp:213
+msgid "Save Host"
+msgstr "Host speichern"
+
+#: data/ui/dialogs/terminal_dialog.blp:5
+msgid "Terminal"
+msgstr "Terminal"
+
+#: data/ui/dialogs/terminal_dialog.blp:14
+msgid "SSH Terminal"
+msgstr "SSH-Terminal"
+
+#: data/ui/dialogs/terminal_dialog.blp:15
+msgid "Connected to server"
+msgstr "Mit Server verbunden"
+
+#: data/ui/dialogs/terminal_dialog.blp:29
+msgid "Terminal Options"
+msgstr "Terminal-Optionen"
+
+#: data/ui/dialogs/terminal_dialog.blp:58
+msgid "Ready"
+msgstr "Bereit"
+
+#: data/ui/dialogs/terminal_dialog.blp:64
+msgid "Connected"
+msgstr "Verbunden"
+
+#: data/ui/dialogs/terminal_dialog.blp:80
+msgid "Paste"
+msgstr "Einfügen"
+
+#: data/ui/dialogs/terminal_dialog.blp:87
+msgid "Select All"
+msgstr "Alles auswählen"
+
+#: data/ui/dialogs/terminal_dialog.blp:91
+msgid "Clear"
+msgstr "Leeren"
+
+#: data/ui/dialogs/terminal_dialog.blp:98
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: data/ui/pages/backup_page.blp:89
+msgid "No backups"
+msgstr "Keine Sicherungen"
+
+#: data/ui/pages/backup_page.blp:103
+msgid "Disaster recovery and secure emergency access"
+msgstr "Notfallwiederherstellung und sicherer Notfallzugriff"
+
+#: data/ui/pages/known_hosts_page.blp:41
+msgid "Manage SSH host key fingerprints from ~/.ssh/known_hosts"
+msgstr "SSH-Host-Schlüssel-Fingerabdrücke aus ~/.ssh/known_hosts verwalten"
+
+#. Refresh
+#: data/ui/pages/known_hosts_page.blp:59 src/ui/pages/KnownHostsPage.vala:205
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#. Import
+#: data/ui/pages/known_hosts_page.blp:66 src/ui/pages/KnownHostsPage.vala:175
+#: src/ui/pages/KnownHostsPage.vala:508
+msgid "Import Known Hosts"
+msgstr "Bekannte Hosts importieren"
+
+#. Export
+#: data/ui/pages/known_hosts_page.blp:73 src/ui/pages/KnownHostsPage.vala:185
+#: src/ui/pages/KnownHostsPage.vala:559
+msgid "Export Known Hosts"
+msgstr "Bekannte Hosts exportieren"
+
+#. Remove Stale
+#: data/ui/pages/known_hosts_page.blp:80 src/ui/pages/KnownHostsPage.vala:195
+msgid "Remove Stale Entries"
+msgstr "Veraltete Einträge entfernen"
+
+#: src/Application.vala:257
+msgid "Show version information"
+msgstr "Versionsinformationen anzeigen"
+
+#: src/Application.vala:259
+msgid "Enable verbose logging"
+msgstr "Ausführliche Protokollierung aktivieren"
+
+#: src/ui/Window.vala:182
+msgid "Add Existing SSH Key"
+msgstr "Vorhandenen SSH-Schlüssel hinzufügen"
+
+#. Add filter for SSH private keys
+#: src/ui/Window.vala:187
+msgid "SSH Private Keys"
+msgstr "Private SSH-Schlüssel"
+
+#. Refresh the key list to ensure everything is properly updated
+#: src/ui/Window.vala:314
+#, c-format
+msgid "SSH key '%s' generated successfully"
+msgstr "SSH-Schlüssel »%s« erfolgreich erzeugt"
+
+#. Show error toast on failure
+#: src/ui/Window.vala:337
+#, c-format
+msgid "Failed to delete key: %s"
+msgstr "Löschen des Schlüssels fehlgeschlagen: %s"
+
+#: src/ui/Window.vala:343
+#, c-format
+msgid "SSH key '%s' deleted successfully"
+msgstr "SSH-Schlüssel »%s« erfolgreich gelöscht"
+
+#: src/ui/Window.vala:348
+#, c-format
+msgid "Passphrase changed for key '%s'"
+msgstr "Passphrase für Schlüssel »%s« geändert"
+
+#: src/ui/Window.vala:358
+msgid "Public key copied to clipboard"
+msgstr "Öffentlicher Schlüssel in die Zwischenablage kopiert"
+
+#: src/ui/Window.vala:361
+#, c-format
+msgid "Failed to copy public key: %s"
+msgstr "Kopieren des öffentlichen Schlüssels fehlgeschlagen: %s"
+
+#. Ensure .ssh directory exists
+#. Check if key already exists in .ssh directory
+#: src/ui/Window.vala:377
+#, c-format
+msgid "Key '%s' already exists in SSH directory"
+msgstr "Schlüssel »%s« existiert bereits im SSH-Verzeichnis"
+
+#. Refresh the key list to show the new key
+#: src/ui/Window.vala:401
+#, c-format
+msgid "SSH key '%s' added successfully"
+msgstr "SSH-Schlüssel »%s« erfolgreich hinzugefügt"
+
+#: src/ui/Window.vala:404
+#, c-format
+msgid "Failed to add SSH key: %s"
+msgstr "Hinzufügen des SSH-Schlüssels fehlgeschlagen: %s"
+
+#. Key has no passphrase - hide current passphrase field
+#: src/ui/KeyRow.vala:247 src/ui/dialogs/ChangePassphraseDialog.vala:85
+#: src/ui/dialogs/ChangePassphraseDialog.vala:87
+msgid "Add Passphrase"
+msgstr "Passphrase hinzufügen"
+
+#. Restore
+#: src/ui/pages/BackupPage.vala:382 src/ui/pages/BackupPage.vala:574
+msgid "Restore Backup"
+msgstr "Sicherung wiederherstellen"
+
+#: src/ui/pages/BackupPage.vala:395 src/ui/pages/BackupPage.vala:589
+msgid "Delete Backup"
+msgstr "Sicherung löschen"
+
+#: src/ui/pages/HostsPage.vala:65 src/ui/pages/KeysPage.vala:86
+#: src/ui/pages/KnownHostsPage.vala:162
+msgid "Page Actions"
+msgstr "Seitenaktionen"
+
+#. Refresh the UI
+#: src/ui/pages/HostsPage.vala:153
+#, c-format
+msgid "Host '%s' saved successfully"
+msgstr "Host »%s« erfolgreich gespeichert"
+
+#: src/ui/pages/HostsPage.vala:157
+#, c-format
+msgid "Failed to save host: %s"
+msgstr "Speichern des Hosts fehlgeschlagen: %s"
+
+#: src/ui/pages/HostsPage.vala:181
+#, c-format
+msgid "Failed to load SSH hosts: %s"
+msgstr "Laden der SSH-Hosts fehlgeschlagen: %s"
+
+#: src/ui/pages/HostsPage.vala:204
+msgid "Click the + button above to add your first SSH host configuration"
+msgstr "Auf die Schaltfläche »+« oben klicken, um die erste SSH-Host-Konfiguration hinzuzufügen"
+
+#: src/ui/pages/HostsPage.vala:251
+msgid ""
+"This will remove all SSH host configurations from ~/.ssh/config. This action "
+"cannot be undone."
+msgstr ""
+"Dadurch werden alle SSH-Host-Konfigurationen aus ~/.ssh/config entfernt. "
+"Diese Aktion kann nicht rückgängig gemacht werden."
+
+#: src/ui/pages/HostsPage.vala:253 src/ui/pages/KnownHostsPage.vala:464
+#: src/ui/dialogs/SshConfigDialog.vala:328
+msgid "Remove All"
+msgstr "Alle entfernen"
+
+#. Remove all hosts
+#. Clear the config (this would need to be implemented in SSHConfig)
+#. For now, just refresh
+#: src/ui/pages/HostsPage.vala:276
+msgid "All hosts removed successfully"
+msgstr "Alle Hosts erfolgreich entfernt"
+
+#: src/ui/pages/HostsPage.vala:280
+#, c-format
+msgid "Failed to remove hosts: %s"
+msgstr "Entfernen der Hosts fehlgeschlagen: %s"
+
+#: src/ui/pages/HostsPage.vala:344
+msgid "Connect via SSH"
+msgstr "Über SSH verbinden"
+
+#. Edit
+#: src/ui/pages/HostsPage.vala:355
+msgid "Edit Host"
+msgstr "Host bearbeiten"
+
+#: src/ui/pages/HostsPage.vala:368
+msgid "Delete Host"
+msgstr "Host löschen"
+
+#: src/ui/pages/HostsPage.vala:457
+#, c-format
+msgid "Host '%s' removed successfully"
+msgstr "Host »%s« erfolgreich entfernt"
+
+#: src/ui/pages/HostsPage.vala:461
+#, c-format
+msgid "Failed to remove host: %s"
+msgstr "Entfernen des Hosts fehlgeschlagen: %s"
+
+#: src/ui/pages/HostsPage.vala:477
+msgid "Failed to open terminal: No parent window"
+msgstr "Öffnen des Terminals fehlgeschlagen: Kein übergeordnetes Fenster"
+
+#: src/ui/pages/HostsPage.vala:489
+#, c-format
+msgid "Failed to open terminal: %s"
+msgstr "Öffnen des Terminals fehlgeschlagen: %s"
+
+#: src/ui/pages/HostsPage.vala:549
+#, c-format
+msgid "Host '%s' deleted successfully"
+msgstr "Host »%s« erfolgreich gelöscht"
+
+#: src/ui/pages/HostsPage.vala:555
+#, c-format
+msgid "Failed to delete host: %s"
+msgstr "Löschen des Hosts fehlgeschlagen: %s"
+
+#: src/ui/pages/KeysPage.vala:167 src/ui/pages/KeysPage.vala:170
+#, c-format
+msgid "Failed to scan SSH keys: %s"
+msgstr "Durchsuchen der SSH-Schlüssel fehlgeschlagen: %s"
+
+#: src/ui/pages/KnownHostsPage.vala:101
+#, c-format
+msgid "Failed to load known hosts: %s"
+msgstr "Laden der bekannten Hosts fehlgeschlagen: %s"
+
+#: src/ui/pages/KnownHostsPage.vala:136
+msgid "No Known Hosts"
+msgstr "Keine bekannten Hosts"
+
+#: src/ui/pages/KnownHostsPage.vala:137
+msgid "Known hosts will be added automatically when you connect to SSH servers"
+msgstr "Bekannte Hosts werden beim Verbinden mit SSH-Servern automatisch hinzugefügt"
+
+#: src/ui/pages/KnownHostsPage.vala:139
+msgid "No Matching Hosts"
+msgstr "Keine passenden Hosts"
+
+#: src/ui/pages/KnownHostsPage.vala:140
+msgid "Try a different search term"
+msgstr "Einen anderen Suchbegriff versuchen"
+
+#: src/ui/pages/KnownHostsPage.vala:253
+msgid "unreachable"
+msgstr "nicht erreichbar"
+
+#: src/ui/pages/KnownHostsPage.vala:255
+msgid "verified"
+msgstr "überprüft"
+
+#. Verify
+#: src/ui/pages/KnownHostsPage.vala:300 src/ui/pages/KnownHostsPage.vala:332
+msgid "Verify Fingerprint"
+msgstr "Fingerabdruck überprüfen"
+
+#: src/ui/pages/KnownHostsPage.vala:313 src/ui/pages/KnownHostsPage.vala:346
+msgid "Remove Entry"
+msgstr "Eintrag entfernen"
+
+#: src/ui/pages/KnownHostsPage.vala:409
+msgid "Remove Known Host Entry?"
+msgstr "Eintrag eines bekannten Hosts entfernen?"
+
+#: src/ui/pages/KnownHostsPage.vala:410
+#, c-format
+msgid "This will remove the host key for '%s' from your known hosts file."
+msgstr "Dadurch wird der Host-Schlüssel für »%s« aus der Datei der bekannten Hosts entfernt."
+
+#: src/ui/pages/KnownHostsPage.vala:413
+msgid "Remove"
+msgstr "Entfernen"
+
+#: src/ui/pages/KnownHostsPage.vala:439
+msgid "Host entry removed successfully"
+msgstr "Host-Eintrag erfolgreich entfernt"
+
+#: src/ui/pages/KnownHostsPage.vala:443
+#, c-format
+msgid "Failed to remove entry: %s"
+msgstr "Entfernen des Eintrags fehlgeschlagen: %s"
+
+#: src/ui/pages/KnownHostsPage.vala:451
+msgid "No stale entries found"
+msgstr "Keine veralteten Einträge gefunden"
+
+#: src/ui/pages/KnownHostsPage.vala:456
+msgid "Remove Stale Entries?"
+msgstr "Veraltete Einträge entfernen?"
+
+#: src/ui/pages/KnownHostsPage.vala:458
+#, c-format
+msgid "This will remove %d unreachable host entry from your known hosts file."
+msgid_plural ""
+"This will remove %d unreachable host entries from your known hosts file."
+msgstr[0] "Dadurch wird %d nicht erreichbarer Host-Eintrag aus der Datei der bekannten Hosts entfernt."
+msgstr[1] "Dadurch werden %d nicht erreichbare Host-Einträge aus der Datei der bekannten Hosts entfernt."
+
+#: src/ui/pages/KnownHostsPage.vala:494
+#, c-format
+msgid "%d stale entry removed"
+msgid_plural "%d stale entries removed"
+msgstr[0] "%d veralteter Eintrag entfernt"
+msgstr[1] "%d veraltete Einträge entfernt"
+
+#: src/ui/pages/KnownHostsPage.vala:502
+#, c-format
+msgid "Failed to remove stale entries: %s"
+msgstr "Entfernen veralteter Einträge fehlgeschlagen: %s"
+
+#: src/ui/pages/KnownHostsPage.vala:511
+msgid "Known Hosts Files"
+msgstr "Dateien bekannter Hosts"
+
+#. Show summary dialog
+#: src/ui/pages/KnownHostsPage.vala:543
+#, c-format
+msgid ""
+"Import completed:\n"
+"• %d entries imported\n"
+"• %d duplicates skipped\n"
+"• %d invalid entries skipped"
+msgstr ""
+"Import abgeschlossen:\n"
+"• %d Einträge importiert\n"
+"• %d Duplikate übersprungen\n"
+"• %d ungültige Einträge übersprungen"
+
+#: src/ui/pages/KnownHostsPage.vala:546
+msgid "Import Complete"
+msgstr "Import abgeschlossen"
+
+#: src/ui/pages/KnownHostsPage.vala:547 src/ui/dialogs/DeleteKeyDialog.vala:60
+#: src/ui/dialogs/EmergencyVaultDialog.vala:366
+#: src/ui/dialogs/SshHostEditDialog.vala:557
+msgid "OK"
+msgstr "OK"
+
+#: src/ui/pages/KnownHostsPage.vala:553
+#, c-format
+msgid "Failed to import: %s"
+msgstr "Import fehlgeschlagen: %s"
+
+#: src/ui/pages/KnownHostsPage.vala:575
+msgid "Known hosts exported successfully"
+msgstr "Bekannte Hosts erfolgreich exportiert"
+
+#: src/ui/pages/KnownHostsPage.vala:579
+#, c-format
+msgid "Failed to export: %s"
+msgstr "Export fehlgeschlagen: %s"
+
+#: src/ui/dialogs/AboutDialog.vala:46
+msgid "translator-credits"
+msgstr "Samuel Rüegger <samuel@rueegger.me>"
+
+#: src/ui/dialogs/ChangePassphraseDialog.vala:86
+msgid "Add a passphrase to your SSH key"
+msgstr "Eine Passphrase zum SSH-Schlüssel hinzufügen"
+
+#. Disable the change button to prevent double-clicking
+#: src/ui/dialogs/ChangePassphraseDialog.vala:134
+msgid "Changing..."
+msgstr "Wird geändert …"
+
+#: src/ui/dialogs/ChangePassphraseDialog.vala:134
+msgid "Adding..."
+msgstr "Wird hinzugefügt …"
+
+#. Use Adw.AlertDialog instead which presents on the Dialog itself
+#: src/ui/dialogs/CreateBackupDialog.vala:416
+msgid "QR Backup Security Warning"
+msgstr "Sicherheitswarnung zur QR-Sicherung"
+
+#: src/ui/dialogs/CreateBackupDialog.vala:417
+msgid ""
+"QR backups store your private keys as unencrypted base64 data.\n"
+"\n"
+"Anyone who gains access to the QR code can read your private key.\n"
+"\n"
+"For maximum security, use encrypted archive backups instead.\n"
+"\n"
+"Do you want to proceed with QR backup?"
+msgstr ""
+"QR-Sicherungen speichern private Schlüssel als unverschlüsselte Base64-Daten.\n"
+"\n"
+"Jede Person mit Zugriff auf den QR-Code kann den privaten Schlüssel lesen.\n"
+"\n"
+"Für höchste Sicherheit stattdessen verschlüsselte Archivsicherungen verwenden.\n"
+"\n"
+"Soll mit der QR-Sicherung fortgefahren werden?"
+
+#: src/ui/dialogs/CreateBackupDialog.vala:424
+msgid "Proceed Anyway"
+msgstr "Trotzdem fortfahren"
+
+#: src/ui/dialogs/DeleteKeyDialog.vala:27
+msgid "Delete SSH Key?"
+msgstr "SSH-Schlüssel löschen?"
+
+#: src/ui/dialogs/DeleteKeyDialog.vala:28
+#, c-format
+msgid ""
+"This will permanently delete the key pair '%s'.\n"
+"\n"
+"This action cannot be undone."
+msgstr ""
+"Dadurch wird das Schlüsselpaar »%s« dauerhaft gelöscht.\n"
+"\n"
+"Diese Aktion kann nicht rückgängig gemacht werden."
+
+#: src/ui/dialogs/DeleteKeyDialog.vala:33
+msgid "Delete"
+msgstr "Löschen"
+
+#. Show error dialog
+#: src/ui/dialogs/DeleteKeyDialog.vala:57
+msgid "Delete Failed"
+msgstr "Löschen fehlgeschlagen"
+
+#: src/ui/dialogs/DeleteKeyDialog.vala:58
+#, c-format
+msgid "Failed to delete SSH key: %s"
+msgstr "Löschen des SSH-Schlüssels fehlgeschlagen: %s"
+
+#. Show warning for QR code backups
+#: src/ui/dialogs/EmergencyBackupDetailsDialog.vala:99
+msgid "Security Warning: QR code backups contain unencrypted private keys"
+msgstr "Sicherheitswarnung: QR-Code-Sicherungen enthalten unverschlüsselte private Schlüssel"
+
+#: src/ui/dialogs/EmergencyBackupDetailsDialog.vala:100
+msgid "Learn More"
+msgstr "Mehr erfahren"
+
+#: src/ui/dialogs/EmergencyBackupDetailsDialog.vala:103
+msgid "QR Code Security"
+msgstr "Sicherheit von QR-Codes"
+
+#: src/ui/dialogs/EmergencyBackupDetailsDialog.vala:104
+msgid ""
+"QR code backups store your private keys in an unencrypted format that can be "
+"scanned with any QR code reader. Anyone who gains access to the QR code "
+"image can access your private keys.\n"
+"\n"
+"Recommendations:\n"
+"• Store QR code images in a secure, encrypted location\n"
+"• Never share QR codes via email or messaging\n"
+"• Consider using time-locked or Shamir secret sharing for better security\n"
+"• Print QR codes and store in a secure physical location"
+msgstr ""
+"QR-Code-Sicherungen speichern private Schlüssel in einem unverschlüsselten "
+"Format, das mit jedem QR-Code-Lesegerät gescannt werden kann. Jede Person "
+"mit Zugriff auf das QR-Code-Bild kann auf die privaten Schlüssel "
+"zugreifen.\n"
+"\n"
+"Empfehlungen:\n"
+"• QR-Code-Bilder an einem sicheren, verschlüsselten Ort aufbewahren\n"
+"• QR-Codes niemals per E-Mail oder Nachricht weitergeben\n"
+"• Für mehr Sicherheit zeitgesperrte Sicherungen oder Shamir-Geheimnisteilung in Betracht ziehen\n"
+"• QR-Codes ausdrucken und an einem sicheren, physischen Ort aufbewahren"
+
+#: src/ui/dialogs/EmergencyBackupDetailsDialog.vala:106
+msgid "I Understand"
+msgstr "Verstanden"
+
+#: src/ui/dialogs/EmergencyVaultDialog.vala:112
+msgid "Emergency vault is functioning properly"
+msgstr "Der Notfall-Tresor funktioniert ordnungsgemäß"
+
+#: src/ui/dialogs/EmergencyVaultDialog.vala:117
+msgid "Some backups may need attention"
+msgstr "Einige Sicherungen erfordern möglicherweise Aufmerksamkeit"
+
+#: src/ui/dialogs/EmergencyVaultDialog.vala:122
+msgid "Multiple backup issues detected"
+msgstr "Mehrere Probleme bei Sicherungen erkannt"
+
+#: src/ui/dialogs/EmergencyVaultDialog.vala:127
+msgid "Vault corruption detected - immediate action required"
+msgstr "Beschädigung des Tresors erkannt – sofortiges Handeln erforderlich"
+
+#: src/ui/dialogs/EmergencyVaultDialog.vala:362
+msgid "Backup Still Time-Locked"
+msgstr "Sicherung ist noch zeitgesperrt"
+
+#: src/ui/dialogs/GenerateDialog.vala:79
+#: src/ui/dialogs/PreferencesDialog.vala:67
+msgid "ECDSA"
+msgstr "ECDSA"
+
+#: src/ui/dialogs/GenerateDialog.vala:237
+msgid "Filename is required"
+msgstr "Dateiname ist erforderlich"
+
+#. Update UI
+#. Show passphrase validation feedback
+#: src/ui/dialogs/GenerateDialog.vala:274
+msgid "Passphrase cannot be empty"
+msgstr "Passphrase darf nicht leer sein"
+
+#. Show confirm passphrase validation feedback
+#: src/ui/dialogs/GenerateDialog.vala:284
+msgid "Passphrases do not match"
+msgstr "Passphrasen stimmen nicht überein"
+
+#. Disable the generate button to prevent double-clicking
+#: src/ui/dialogs/GenerateDialog.vala:355
+msgid "Generating..."
+msgstr "Wird erzeugt …"
+
+#: src/ui/dialogs/GenerateDialog.vala:386
+#, c-format
+msgid "Failed to generate SSH key: %s"
+msgstr "Erzeugen des SSH-Schlüssels fehlgeschlagen: %s"
+
+#: src/ui/dialogs/GenerateDialog.vala:402
+msgid "Key Name Already Exists"
+msgstr "Schlüsselname existiert bereits"
+
+#: src/ui/dialogs/GenerateDialog.vala:403
+#, c-format
+msgid "A key named \"%s\" already exists. What would you like to do?"
+msgstr "Ein Schlüssel namens »%s« existiert bereits. Was soll geschehen?"
+
+#: src/ui/dialogs/GenerateDialog.vala:407
+msgid "Use Different Name"
+msgstr "Anderen Namen verwenden"
+
+#: src/ui/dialogs/GenerateDialog.vala:408
+msgid "Overwrite Existing"
+msgstr "Vorhandenen überschreiben"
+
+#: src/ui/dialogs/GenerateDialog.vala:423
+#, c-format
+msgid "Using new name: %s"
+msgstr "Neuer Name wird verwendet: %s"
+
+#: src/ui/dialogs/GenerateDialog.vala:445
+msgid "Existing key backed up. Generating new key..."
+msgstr "Vorhandener Schlüssel wurde gesichert. Neuer Schlüssel wird erzeugt …"
+
+#: src/ui/dialogs/GenerateDialog.vala:454
+#, c-format
+msgid "Failed to backup existing key: %s"
+msgstr "Sichern des vorhandenen Schlüssels fehlgeschlagen: %s"
+
+#: src/ui/dialogs/HelpDialog.vala:15
+msgid ""
+"SSHer is a modern SSH key management application.\n"
+"\n"
+"<b>Generating SSH Keys:</b>\n"
+"• Click the \"+\" button to create a new SSH key\n"
+"• Ed25519 keys are recommended for best security\n"
+"• Use a strong passphrase to protect your private key\n"
+"\n"
+"<b>Managing Keys:</b>\n"
+"• Click the copy button to copy the public key\n"
+"• Use the server button to generate ssh-copy-id commands\n"
+"• Click the info button to view detailed key information\n"
+"\n"
+"<b>Security Tips:</b>\n"
+"• Always use passphrases for important keys\n"
+"• Regularly rotate your SSH keys\n"
+"• Keep your private keys secure and never share them\n"
+"\n"
+"For more information, visit the project website."
+msgstr ""
+"SSHer ist eine moderne Anwendung zur Verwaltung von SSH-Schlüsseln.\n"
+"\n"
+"<b>SSH-Schlüssel erzeugen:</b>\n"
+"• Auf die Schaltfläche »+« klicken, um einen neuen SSH-Schlüssel zu erstellen\n"
+"• Ed25519-Schlüssel werden für die beste Sicherheit empfohlen\n"
+"• Eine starke Passphrase verwenden, um den privaten Schlüssel zu schützen\n"
+"\n"
+"<b>Schlüssel verwalten:</b>\n"
+"• Auf die Schaltfläche zum Kopieren klicken, um den öffentlichen Schlüssel zu kopieren\n"
+"• Über die Server-Schaltfläche ssh-copy-id-Befehle erzeugen\n"
+"• Auf die Info-Schaltfläche klicken, um detaillierte Schlüsselinformationen anzuzeigen\n"
+"\n"
+"<b>Sicherheitstipps:</b>\n"
+"• Für wichtige Schlüssel stets Passphrasen verwenden\n"
+"• SSH-Schlüssel regelmäßig wechseln\n"
+"• Private Schlüssel sicher aufbewahren und niemals weitergeben\n"
+"\n"
+"Weitere Informationen finden sich auf der Projekt-Webseite."
+
+#: src/ui/dialogs/HelpDialog.vala:34
+msgid "SSHer Help"
+msgstr "SSHer-Hilfe"
+
+#. Add response
+#: src/ui/dialogs/HelpDialog.vala:38
+msgid "Close"
+msgstr "Schließen"
+
+#. Add responses
+#: src/ui/dialogs/HostKeyConflictDialog.vala:47
+msgid "Cancel Connection"
+msgstr "Verbindung abbrechen"
+
+#: src/ui/dialogs/HostKeyConflictDialog.vala:48
+msgid "Update Key"
+msgstr "Schlüssel aktualisieren"
+
+#. Set initial status
+#: src/ui/dialogs/HostKeyVerificationDialog.vala:82
+msgid "Not verified"
+msgstr "Nicht überprüft"
+
+#: src/ui/dialogs/HostKeyVerificationDialog.vala:128
+msgid "✓ Verified against trusted source"
+msgstr "✓ Anhand vertrauenswürdiger Quelle überprüft"
+
+#: src/ui/dialogs/HostKeyVerificationDialog.vala:133
+msgid "⚠ Does not match trusted fingerprint!"
+msgstr "⚠ Stimmt nicht mit dem vertrauenswürdigen Fingerabdruck überein."
+
+#: src/ui/dialogs/HostKeyVerificationDialog.vala:180
+msgid "Please enter a fingerprint to verify"
+msgstr "Fingerabdruck zur Überprüfung eingeben"
+
+#: src/ui/dialogs/HostKeyVerificationDialog.vala:191
+msgid "✓ SHA256 fingerprint matches!"
+msgstr "✓ SHA256-Fingerabdruck stimmt überein."
+
+#: src/ui/dialogs/HostKeyVerificationDialog.vala:195
+msgid "✓ MD5 fingerprint matches!"
+msgstr "✓ MD5-Fingerabdruck stimmt überein."
+
+#: src/ui/dialogs/HostKeyVerificationDialog.vala:199
+msgid "✗ Fingerprint does not match!"
+msgstr "✗ Fingerabdruck stimmt nicht überein."
+
+#: src/ui/dialogs/KeyDetailsDialog.vala:90
+msgid "(No comment)"
+msgstr "(Kein Kommentar)"
+
+#. Set file permissions
+#. Set last modified
+#: src/ui/dialogs/KeyDetailsDialog.vala:101
+msgid "%B %d, %Y at %I:%M %p"
+msgstr "%d. %B %Y um %H:%M"
+
+#: src/ui/dialogs/KeyDetailsDialog.vala:119
+msgid "Error loading public key content"
+msgstr "Fehler beim Laden des öffentlichen Schlüsselinhalts"
+
+#: src/ui/dialogs/KeyDetailsDialog.vala:141
+#: src/ui/dialogs/KeyDetailsDialog.vala:163
+msgid "Error reading permissions"
+msgstr "Fehler beim Lesen der Berechtigungen"
+
+#. Setup theme model
+#: src/ui/dialogs/PreferencesDialog.vala:58
+msgid "Follow System"
+msgstr "System folgen"
+
+#. Setup default key type model
+#: src/ui/dialogs/PreferencesDialog.vala:65
+msgid "Ed25519"
+msgstr "Ed25519"
+
+#: src/ui/dialogs/PreferencesDialog.vala:312
+msgid "Disable Delete Confirmations?"
+msgstr "Löschbestätigungen deaktivieren?"
+
+#: src/ui/dialogs/PreferencesDialog.vala:313
+msgid ""
+"Disabling delete confirmations is not recommended. SSH keys that are deleted "
+"cannot be restored.\n"
+"\n"
+"Are you sure you want to continue?"
+msgstr ""
+"Das Deaktivieren der Löschbestätigungen wird nicht empfohlen. Gelöschte "
+"SSH-Schlüssel können nicht wiederhergestellt werden.\n"
+"\n"
+"Soll wirklich fortgefahren werden?"
+
+#: src/ui/dialogs/PreferencesDialog.vala:317
+msgid "Disable Confirmations"
+msgstr "Bestätigungen deaktivieren"
+
+#. Add default option
+#. Fallback: just show the default option
+#: src/ui/dialogs/SshHostEditDialog.vala:132
+#: src/ui/dialogs/SshHostEditDialog.vala:166
+#: src/ui/dialogs/SshHostEditDialog.vala:177
+msgid "None (use default)"
+msgstr "Keiner (Standard verwenden)"
+
+#. Add "None" option first
+#: src/ui/dialogs/SshHostEditDialog.vala:217
+msgid "None"
+msgstr "Keiner"
+
+#: src/ui/dialogs/SshHostEditDialog.vala:532
+msgid "Host Name (no spaces allowed)"
+msgstr "Hostname (keine Leerzeichen erlaubt)"
+
+#: src/ui/dialogs/SshHostEditDialog.vala:535
+msgid "Host Name"
+msgstr "Hostname"
+
+#: src/ui/dialogs/SshHostEditDialog.vala:554
+msgid "Invalid Host Name"
+msgstr "Ungültiger Hostname"
+
+#: src/ui/dialogs/SshHostEditDialog.vala:555
+msgid ""
+"Host name cannot contain spaces. Please use a single name like 'myserver' or "
+"'web-server'."
+msgstr ""
+"Der Hostname darf keine Leerzeichen enthalten. Einen einzelnen Namen "
+"wie »myserver« oder »web-server« verwenden."
