@@ -76,6 +76,7 @@ venv_linux/
 builddir/
 build/
 build-*/
+install/
 
 # Flatpak build directories
 .flatpak-builder/

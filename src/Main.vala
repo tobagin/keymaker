@@ -1,10 +1,10 @@
 /*
  * SSHer - SSH Key Management Application
- * 
+ *
  * A GTK4/Libadwaita application for managing SSH keys with an intuitive GUI.
- * 
+ *
  * Copyright (C) 2025 Thiago Fernandes
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -12,6 +12,11 @@
  */
 
 int main (string[] args) {
+    Intl.setlocale (LocaleCategory.ALL, "");
+    Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
+    Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
+    Intl.textdomain (Config.GETTEXT_PACKAGE);
+
     var app = new KeyMaker.Application ();
     return app.run (args);
 }
