@@ -20,11 +20,11 @@ fi
 
 LANG_ARG="${1:-}"
 case "$LANG_ARG" in
-    de)     export LANG=de_DE.UTF-8 LANGUAGE=de ;;
-    de_CH)  export LANG=de_CH.UTF-8 LANGUAGE=de_CH:de ;;
-    en)     export LANG=C.UTF-8     LANGUAGE=C ;;
-    "")     ;;  # use system default
-    *)      export LANG="${LANG_ARG}.UTF-8" LANGUAGE="$LANG_ARG" ;;
+    de)     export LANG=de_DE.UTF-8 LANGUAGE=de ;          shift ;;
+    de_CH)  export LANG=de_CH.UTF-8 LANGUAGE=de_CH:de ;    shift ;;
+    en)     export LANG=C.UTF-8     LANGUAGE=C ;           shift ;;
+    "")     ;;  # no arg: use system default — nothing to shift
+    *)      export LANG="${LANG_ARG}.UTF-8" LANGUAGE="$LANG_ARG" ; shift ;;
 esac
 
 export GSETTINGS_SCHEMA_DIR="$PREFIX/share/glib-2.0/schemas"
