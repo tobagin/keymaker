@@ -11,14 +11,16 @@ Manage SSH keys easily with a modern native app.
 
 </div>
 
-## 🎉 Version 1.4.0 - More SSH Options
+## 🎉 Version 1.5.0 - Dependency Refresh
 
-**Keymaker 1.4.0** adds Warp terminal support and three new per-host SSH config options.
+**Keymaker 1.5.0** is a maintenance release updating the runtime and bundled dependencies.
 
-### 🆕 What's New in 1.4.0
+### 🆕 What's New in 1.5.0
 
-- **Warp Terminal**: Selectable as the preferred terminal emulator.
-- **SSH Host Options**: Configure `WarnWeakCrypto`, `IdentitiesOnly`, and `IdentityAgent` per host from the editor.
+- **Runtime**: Updated to the GNOME 50 platform/SDK.
+- **OpenSSH**: Bundled OpenSSH updated to 10.3p1.
+- **VTE**: Terminal widget updated to 0.84.0.
+- **Libraries**: Updated libsoup (3.6.6), simdutf (9.0.0), and fast_float (8.2.6).
 
 For detailed release notes and version history, see [CHANGELOG.md](CHANGELOG.md).
 
