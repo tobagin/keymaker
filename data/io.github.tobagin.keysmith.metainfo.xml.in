@@ -104,6 +104,17 @@
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
 
   <releases>
+    <release version="1.5.0" date="2026-06-03">
+      <description>
+        <p>Keymaker 1.5.0 is a maintenance release refreshing bundled dependencies.</p>
+        <ul>
+          <li>Update to the GNOME 50 runtime</li>
+          <li>Update bundled OpenSSH to 10.3p1</li>
+          <li>Update bundled VTE terminal widget to 0.84.0</li>
+          <li>Update libsoup, simdutf, and fast_float to their latest releases</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.4.0" date="2026-05-10">
       <description>
         <p>Keymaker 1.4.0 adds Warp terminal support and three new per-host SSH config options.</p>
