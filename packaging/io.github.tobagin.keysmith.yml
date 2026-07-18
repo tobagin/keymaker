@@ -41,8 +41,8 @@ modules:
       - install -m 755 contrib/ssh-copy-id /app/bin/ssh-copy-id
     sources:
       - type: archive
-        url: https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-10.3p1.tar.gz
-        sha256: 56682a36bb92dcf4b4f016fd8ec8e74059b79a8de25c15d670d731e7d18e45f4
+        url: https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-10.4p1.tar.gz
+        sha256: ef6026dd2aea8d56059638d5d3262902c892ceba9f88395835e0d06d3fb63238
     cleanup:
       - /share/man
       - /include
@@ -153,8 +153,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/fastfloat/fast_float.git
-        tag: v8.2.6
-        commit: cfd12ebcf1f82c4fd44a950b1815dd0549bc8d89
+        tag: v8.2.10
+        commit: 34164f547b7df3f5d794ff67e9f885c36819ebfc
     cleanup:
       - /include
       - /lib/cmake
