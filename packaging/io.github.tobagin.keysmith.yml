@@ -186,5 +186,5 @@ modules:
     sources:
       - type: git
         url: https://github.com/tobagin/keymaker.git
-        tag: v1.5.0
-        commit: 63a659891764580d0b9a693c2c3d716bdbd67664
+        tag: v1.5.1
+        commit: d50e5a15af3fe56e2599489a801e3900bd7733f0
