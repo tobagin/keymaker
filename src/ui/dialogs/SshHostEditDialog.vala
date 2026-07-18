@@ -1,5 +1,5 @@
 /*
- * SSHer - SSH Host Edit Dialog
+ * Keymaker - SSH Host Edit Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

@@ -1,5 +1,5 @@
 /*
- * SSHer - Structured Logging Utilities
+ * Keymaker - Structured Logging Utilities
  * 
  * Centralized logging with consistent categorization and structured output.
  */

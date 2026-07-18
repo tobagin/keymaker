@@ -1,5 +1,5 @@
 /*
- * SSHer - Backup Entry Data Models
+ * Keymaker - Backup Entry Data Models
  *
  * Data structures for backup entries and Shamir shares.
  */

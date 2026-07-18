@@ -1,5 +1,5 @@
 /*
- * SSHer - Known Hosts Page
+ * Keymaker - Known Hosts Page
  *
  * Copyright (C) 2025 Thiago Fernandes
  *

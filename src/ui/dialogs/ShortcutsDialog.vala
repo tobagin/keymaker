@@ -1,5 +1,5 @@
 /*
- * SSHer - Keyboard Shortcuts Dialog
+ * Keymaker - Keyboard Shortcuts Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

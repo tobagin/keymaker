@@ -1,5 +1,5 @@
 /*
- * SSHer - Known Host Entry Model
+ * Keymaker - Known Host Entry Model
  *
  * Represents an entry in the ~/.ssh/known_hosts file
  *

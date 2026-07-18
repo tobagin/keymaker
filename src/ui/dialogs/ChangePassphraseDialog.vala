@@ -1,5 +1,5 @@
 /*
- * SSHer - Change Passphrase Dialog
+ * Keymaker - Change Passphrase Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

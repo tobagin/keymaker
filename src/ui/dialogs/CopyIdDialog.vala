@@ -1,5 +1,5 @@
 /*
- * SSHer - Copy ID Dialog
+ * Keymaker - Copy ID Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

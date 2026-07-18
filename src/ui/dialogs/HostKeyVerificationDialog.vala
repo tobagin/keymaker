@@ -1,5 +1,5 @@
 /*
- * SSHer - Host Key Verification Dialog
+ * Keymaker - Host Key Verification Dialog
  *
  * Copyright (C) 2025 Thiago Fernandes
  *

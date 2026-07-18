@@ -2655,7 +2655,7 @@ msgstr "Sichern des vorhandenen Schlüssels fehlgeschlagen: %s"
 
 #: src/ui/dialogs/HelpDialog.vala:15
 msgid ""
-"SSHer is a modern SSH key management application.\n"
+"Keymaker is a modern SSH key management application.\n"
 "\n"
 "<b>Generating SSH Keys:</b>\n"
 "• Click the \"+\" button to create a new SSH key\n"
@@ -2674,7 +2674,7 @@ msgid ""
 "\n"
 "For more information, visit the project website."
 msgstr ""
-"SSHer ist eine moderne Anwendung zur Verwaltung von SSH-Schlüsseln.\n"
+"Keymaker ist eine moderne Anwendung zur Verwaltung von SSH-Schlüsseln.\n"
 "\n"
 "<b>SSH-Schlüssel erzeugen:</b>\n"
 "• Auf die Schaltfläche »+« klicken, um einen neuen SSH-Schlüssel zu erstellen\n"
@@ -2694,8 +2694,8 @@ msgstr ""
 "Weitere Informationen finden sich auf der Projekt-Webseite."
 
 #: src/ui/dialogs/HelpDialog.vala:34
-msgid "SSHer Help"
-msgstr "SSHer-Hilfe"
+msgid "Keymaker Help"
+msgstr "Keymaker-Hilfe"
 
 #. Add response
 #: src/ui/dialogs/HelpDialog.vala:38

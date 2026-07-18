@@ -1,5 +1,5 @@
 /*
- * SSHer - Key Service Mapping Dialog
+ * Keymaker - Key Service Mapping Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

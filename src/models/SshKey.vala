@@ -1,5 +1,5 @@
 /*
- * SSHer - SSH Key Data Models
+ * Keymaker - SSH Key Data Models
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

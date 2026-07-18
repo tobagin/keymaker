@@ -1,5 +1,5 @@
 /*
- * SSHer - Create Backup Dialog
+ * Keymaker - Create Backup Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

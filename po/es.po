@@ -2729,7 +2729,7 @@ msgstr "Falló al respaldar la clave existente: %s"
 
 #: src/ui/dialogs/HelpDialog.vala:15
 msgid ""
-"SSHer is a modern SSH key management application.\n"
+"Keymaker is a modern SSH key management application.\n"
 "\n"
 "<b>Generating SSH Keys:</b>\n"
 "• Click the \"+\" button to create a new SSH key\n"
@@ -2748,7 +2748,7 @@ msgid ""
 "\n"
 "For more information, visit the project website."
 msgstr ""
-"SSHer es una aplicación moderna de gestión de claves SSH.\n"
+"Keymaker es una aplicación moderna de gestión de claves SSH.\n"
 "\n"
 "<b>Generar claves SSH:</b>\n"
 "• Pulse el botón «+» para crear una clave SSH nueva\n"
@@ -2768,8 +2768,8 @@ msgstr ""
 "Para más información, visite el sitio web del proyecto."
 
 #: src/ui/dialogs/HelpDialog.vala:34
-msgid "SSHer Help"
-msgstr "Ayuda de SSHer"
+msgid "Keymaker Help"
+msgstr "Ayuda de Keymaker"
 
 #. Add response
 #: src/ui/dialogs/HelpDialog.vala:38

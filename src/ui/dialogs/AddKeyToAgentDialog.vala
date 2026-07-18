@@ -1,5 +1,5 @@
 /*
- * SSHer - Add Key to Agent Dialog
+ * Keymaker - Add Key to Agent Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

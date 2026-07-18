@@ -1,5 +1,5 @@
 /*
- * SSHer - Data Model Enums
+ * Keymaker - Data Model Enums
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

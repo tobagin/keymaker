@@ -1,5 +1,5 @@
 /*
- * SSHer - SSH Operations Backend (Facade)
+ * Keymaker - SSH Operations Backend (Facade)
  * 
  * Main facade for SSH operations, delegates to specialized modules.
  * 

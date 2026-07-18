@@ -1,5 +1,5 @@
 /*
- * SSHer - Preferences Dialog
+ * Keymaker - Preferences Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

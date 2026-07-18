@@ -1,5 +1,5 @@
 /*
- * SSHer - Emergency Vault Dialog
+ * Keymaker - Emergency Vault Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

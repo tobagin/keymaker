@@ -1,5 +1,5 @@
 /*
- * SSHer - Delete Key Dialog
+ * Keymaker - Delete Key Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 

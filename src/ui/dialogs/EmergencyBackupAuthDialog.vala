@@ -1,5 +1,5 @@
 /*
- * SSHer - Emergency Backup Authentication Dialog
+ * Keymaker - Emergency Backup Authentication Dialog
  *
  * Secure authentication dialog for emergency backup operations with
  * rate limiting to prevent brute-force attempts.

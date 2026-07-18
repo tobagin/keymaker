@@ -1,5 +1,5 @@
 /*
- * SSHer - Backup Management Helper Utilities
+ * Keymaker - Backup Management Helper Utilities
  *
  * Shared utility functions for backup management UI components.
  * Provides consistent formatting, dialog creation, and error handling

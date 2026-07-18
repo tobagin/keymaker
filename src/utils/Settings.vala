@@ -1,5 +1,5 @@
 /*
- * SSHer - Settings Utilities
+ * Keymaker - Settings Utilities
  *
  * Centralized settings access with consistent schema handling.
  */

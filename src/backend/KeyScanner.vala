@@ -1,5 +1,5 @@
 /*
- * SSHer - SSH Key Directory Scanner
+ * Keymaker - SSH Key Directory Scanner
  * 
  * SSH key directory scanning and metadata extraction.
  * 

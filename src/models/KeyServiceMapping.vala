@@ -1,5 +1,5 @@
 /*
- * SSHer - Key to Service Mapping Model
+ * Keymaker - Key to Service Mapping Model
  * 
  * Manages associations between SSH keys and services/servers.
  * 

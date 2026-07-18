@@ -1,5 +1,5 @@
 /*
- * SSHer - Known Hosts Manager
+ * Keymaker - Known Hosts Manager
  *
  * Manages the ~/.ssh/known_hosts file
  *

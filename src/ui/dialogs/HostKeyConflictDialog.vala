@@ -1,5 +1,5 @@
 /*
- * SSHer - Host Key Conflict Dialog
+ * Keymaker - Host Key Conflict Dialog
  *
  * Copyright (C) 2025 Thiago Fernandes
  *

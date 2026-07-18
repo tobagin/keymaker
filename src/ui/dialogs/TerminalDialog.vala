@@ -1,5 +1,5 @@
 /*
- * SSHer - Terminal Dialog
+ * Keymaker - Terminal Dialog
  * 
  * Copyright (C) 2025 Thiago Fernandes
  * 
