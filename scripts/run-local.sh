@@ -19,13 +19,15 @@ if [[ ! -x "$PREFIX/bin/keymaker" ]]; then
 fi
 
 LANG_ARG="${1:-}"
-case "$LANG_ARG" in
-    de)     export LANG=de_DE.UTF-8 LANGUAGE=de ;          shift ;;
-    de_CH)  export LANG=de_CH.UTF-8 LANGUAGE=de_CH:de ;    shift ;;
-    en)     export LANG=C.UTF-8     LANGUAGE=C ;           shift ;;
-    "")     ;;  # no arg: use system default — nothing to shift
-    *)      export LANG="${LANG_ARG}.UTF-8" LANGUAGE="$LANG_ARG" ; shift ;;
-esac
+if [[ -n "$LANG_ARG" ]]; then
+    shift
+    case "$LANG_ARG" in
+        de)     export LANG=de_DE.UTF-8 LANGUAGE=de ;;
+        de_CH)  export LANG=de_CH.UTF-8 LANGUAGE=de_CH:de ;;
+        en)     export LANG=C.UTF-8     LANGUAGE=C ;;
+        *)      export LANG="${LANG_ARG}.UTF-8" LANGUAGE="$LANG_ARG" ;;
+    esac
+fi
 
 export GSETTINGS_SCHEMA_DIR="$PREFIX/share/glib-2.0/schemas"
 export XDG_DATA_DIRS="$PREFIX/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
