@@ -1,7 +1,7 @@
 project(
     'keysmith',
     'vala', 'c',
-    version: '1.5.0',
+    version: '1.5.1',
     meson_version: '>= 1.0.0',
     default_options: [
         'warning_level=1',

@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2026-07-18
+
+### ✨ New Features
+- **Translations**: Added full German (`de`) and Swiss German (`de_CH`) translations, contributed by Samuel Rüegger (#20).
+- **Translations**: Refreshed the Spanish (`es`) translation to cover all current strings.
+
+### 🐛 Bug Fixes
+- **Localization**: Fixed translations never loading at runtime — gettext was not initialized at startup and the translation domain did not match the build (#20).
+- **Branding**: Replaced leftover references to the old "SSHer" name in the help dialog and generated SSH config comments.
+
+### 🏗️ Maintenance
+- **Dependencies**: Updated bundled OpenSSH to 10.4p1 and fast_float to 8.2.10.
+
 ## [1.5.0] - 2026-06-03
 
 ### 🏗️ Maintenance

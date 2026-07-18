@@ -104,6 +104,17 @@
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
 
   <releases>
+    <release version="1.5.1" date="2026-07-18">
+      <description>
+        <p>Keymaker 1.5.1 brings new translations and fixes localization.</p>
+        <ul>
+          <li>Add German and Swiss German translations</li>
+          <li>Refresh the Spanish translation</li>
+          <li>Fix translations never loading at runtime</li>
+          <li>Update bundled OpenSSH to 10.4p1 and fast_float to 8.2.10</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.5.0" date="2026-06-03">
       <description>
         <p>Keymaker 1.5.0 is a maintenance release refreshing bundled dependencies.</p>
