@@ -119,3 +119,9 @@ local_config.py
 test_keys/
 
 *.whl
+.fusion
+.pi
+fusion.db
+fusion.db-wal
+fusion.db-shm
+.fusion-knowledge/
