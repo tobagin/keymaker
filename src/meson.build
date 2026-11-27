@@ -77,13 +77,7 @@ dependencies_list = [
     json_dep,
     vte_dep,
     math_dep,
-    soup_dep,
-    secret_dep,
 ]
-
-if webkit_dep.found()
-    dependencies_list += [webkit_dep]
-endif
 
 # Build executable
 executable(

@@ -104,6 +104,17 @@
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
 
   <releases>
+    <release version="1.6.0" date="2026-11-27">
+      <description>
+        <p>Keymaker 1.6.0 is a maintenance release moving to the GNOME 51 runtime and updating bundled libraries.</p>
+        <ul>
+          <li>Update to the GNOME 51 runtime</li>
+          <li>Update bundled OpenSSH to 10.6p2</li>
+          <li>Update bundled VTE (0.84.2), zbar (0.23.95), simdutf (9.5.0), and fast_float (8.4.0)</li>
+          <li>Drop unused libsoup, libsecret, and webkitgtk dependencies</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.5.1" date="2026-07-18">
       <description>
         <p>Keymaker 1.5.1 brings new translations and fixes localization.</p>

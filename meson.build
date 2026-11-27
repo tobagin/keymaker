@@ -1,7 +1,7 @@
 project(
     'keysmith',
     'vala', 'c',
-    version: '1.5.1',
+    version: '1.6.0',
     meson_version: '>= 1.0.0',
     default_options: [
         'warning_level=1',
@@ -29,9 +29,6 @@ gio_dep = dependency('gio-2.0', version: '>= 2.76')
 gee_dep = dependency('gee-0.8')
 json_dep = dependency('json-glib-1.0')
 vte_dep = dependency('vte-2.91-gtk4', version: '>= 0.70')
-webkit_dep = dependency('webkitgtk-6.0', required: false)
-soup_dep = dependency('libsoup-3.0', version: '>= 3.0')
-secret_dep = dependency('libsecret-1', version: '>= 0.20')
 
 # Build configuration
 cc = meson.get_compiler('c')
@@ -72,10 +69,6 @@ if get_option('profile') == 'development'
     vala_args += ['-D', 'DEVELOPMENT']
 endif
 
-if webkit_dep.found()
-    vala_args += ['-D', 'HAS_WEBKIT']
-endif
-
 # C arguments
 c_args = [
     '-DGETTEXT_PACKAGE="' + meson.project_name() + '"',
@@ -109,8 +102,7 @@ summary({
     'GTK4': gtk_dep.version(),
     'LibAdwaita': adw_dep.version(),
     'GLib': gio_dep.version(),
-    'libsoup': soup_dep.version(),
-    'libsecret': secret_dep.version(),
+    'VTE': vte_dep.version(),
 }, section: 'Dependencies')
 
 # Post-install tasks

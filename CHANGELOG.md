@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-11-27
+
+### 🏗️ Maintenance
+- **Runtime**: Updated to the GNOME 51 platform/SDK.
+- **Dependencies**: Updated bundled OpenSSH to 10.6p2.
+- **Dependencies**: Updated bundled VTE to 0.84.2, zbar to 0.23.95 (migrated to Meson), simdutf to 9.5.0, and fast_float to 8.4.0.
+- **Packaging**: Dropped the bundled libsoup and libsecret modules, cutting two source builds from the Flatpak build.
+- **Build**: Removed the unused libsoup, libsecret, and webkitgtk build dependencies. None were referenced anywhere in the sources and the binary never linked them; the `HAS_WEBKIT` define guarded no code.
+
 ## [1.5.1] - 2026-07-18
 
 ### ✨ New Features

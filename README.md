@@ -11,16 +11,15 @@ Manage SSH keys easily with a modern native app.
 
 </div>
 
-## 🎉 Version 1.5.1 - Translations
+## 🎉 Version 1.6.0 - GNOME 51 & Library Updates
 
-**Keymaker 1.5.1** adds German, Swiss German, and refreshed Spanish translations, and fixes localization loading.
+**Keymaker 1.6.0** moves to the GNOME 51 runtime, refreshes all bundled dependencies, and drops unused build dependencies.
 
-### 🆕 What's New in 1.5.1
+### 🆕 What's New in 1.6.0
 
-- **German & Swiss German**: Full `de` and `de_CH` translations, contributed by Samuel Rüegger.
-- **Spanish**: Refreshed translation covering all current strings.
-- **Localization fix**: Translations now actually load at runtime.
-- **Libraries**: Updated bundled OpenSSH (10.4p1) and fast_float (8.2.10).
+- **GNOME 51 Runtime**: Updated Flatpak platform and SDK to GNOME 51.
+- **Updated Libraries**: Refreshed bundled OpenSSH (10.6p2), VTE (0.84.2), zbar (0.23.95), simdutf (9.5.0), and fast_float (8.4.0).
+- **Leaner Packaging**: Dropped unused libsoup, libsecret, and webkitgtk dependencies.
 
 For detailed release notes and version history, see [CHANGELOG.md](CHANGELOG.md).
 
